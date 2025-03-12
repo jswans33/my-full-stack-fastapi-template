@@ -8,8 +8,8 @@
     "editor.defaultFormatter": "charliermarsh.ruff",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.fixAll": "explicit",
-      "source.organizeImports": "explicit"
+      "source.fixAll.ruff": "explicit",
+      "source.organizeImports.ruff": "explicit"
     }
   },
   "[javascript]": {
@@ -36,10 +36,23 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
+  // Disable other Python linters/formatters as Ruff replaces them
   "python.linting.enabled": true,
-  "python.linting.mypyEnabled": true,
+  "python.linting.mypyEnabled": true, // Keep mypy for type checking
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": false,
+  "python.linting.pycodestyleEnabled": false,
+  "python.formatting.provider": "none", // Disable default formatter
+  "python.formatting.blackEnabled": false,
+  "isort.enabled": false, // Disable isort as Ruff handles imports
+
+  // Ruff configuration
   "ruff.enable": true,
   "ruff.organizeImports": true,
   "ruff.fixAll": true,
+  "ruff.codeAction.disableRuleComment": {
+    "enable": true
+  },
+
   "python.analysis.typeCheckingMode": "basic"
 }

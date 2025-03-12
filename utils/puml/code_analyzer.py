@@ -13,7 +13,6 @@ import ast
 import logging
 import os
 import sys
-from typing import Dict, List, Optional, Tuple
 
 from utils.puml.config import OUTPUT_DIR
 
@@ -32,14 +31,14 @@ class CodeVisitor(ast.NodeVisitor):
     def __init__(self, filename: str, module_name: str):
         self.filename = filename
         self.module_name = module_name
-        self.classes: Dict[str, Dict] = {}
-        self.functions: Dict[str, Dict] = {}
-        self.imports: Dict[str, str] = {}
-        self.relationships: List[Tuple[str, str, str]] = []
-        self.current_class: Optional[str] = None
-        self.current_function: Optional[str] = None
-        self.base_classes: Dict[str, List[str]] = {}
-        self.method_calls: List[Tuple[str, str, str]] = []
+        self.classes: dict[str, dict] = {}
+        self.functions: dict[str, dict] = {}
+        self.imports: dict[str, str] = {}
+        self.relationships: list[tuple[str, str, str]] = []
+        self.current_class: str | None = None
+        self.current_function: str | None = None
+        self.base_classes: dict[str, list[str]] = {}
+        self.method_calls: list[tuple[str, str, str]] = []
         logger.info(f"Analyzing file: {filename} (module: {module_name})")
 
     def visit_ClassDef(self, node: ast.ClassDef) -> None:
@@ -95,7 +94,7 @@ class CodeVisitor(ast.NodeVisitor):
                     "args": [arg.arg for arg in node.args.args],
                     "docstring": ast.get_docstring(node),
                     "lineno": node.lineno,
-                }
+                },
             )
 
             # Check if it's a special method
@@ -138,7 +137,7 @@ class CodeVisitor(ast.NodeVisitor):
                             {
                                 "name": attr_name,
                                 "lineno": node.lineno,
-                            }
+                            },
                         )
 
         # Continue visiting
@@ -164,7 +163,7 @@ class CodeVisitor(ast.NodeVisitor):
                         "name": attr_name,
                         "type": type_annotation,
                         "lineno": node.lineno,
-                    }
+                    },
                 )
 
         # Continue visiting
@@ -195,7 +194,8 @@ class CodeVisitor(ast.NodeVisitor):
     def visit_Call(self, node: ast.Call) -> None:
         """Visit a function call."""
         if isinstance(node.func, ast.Attribute) and isinstance(
-            node.func.value, ast.Name
+            node.func.value,
+            ast.Name,
         ):
             # This might be a method call on an object
             obj_name = node.func.value.id
@@ -214,12 +214,12 @@ class CodeVisitor(ast.NodeVisitor):
         """Get the full name of an attribute."""
         if isinstance(node.value, ast.Name):
             return f"{node.value.id}.{node.attr}"
-        elif isinstance(node.value, ast.Attribute):
+        if isinstance(node.value, ast.Attribute):
             return f"{self._get_attribute_name(node.value)}.{node.attr}"
         return node.attr
 
 
-def analyze_file(file_path: str) -> Optional[CodeVisitor]:
+def analyze_file(file_path: str) -> CodeVisitor | None:
     """
     Analyze a Python file and extract its structure.
 
@@ -230,7 +230,7 @@ def analyze_file(file_path: str) -> Optional[CodeVisitor]:
         CodeVisitor with the extracted information, or None if the file couldn't be parsed
     """
     try:
-        with open(file_path, "r", encoding="utf-8") as f:
+        with open(file_path, encoding="utf-8") as f:
             source = f.read()
 
         # Parse the source code into an AST
@@ -250,8 +250,9 @@ def analyze_file(file_path: str) -> Optional[CodeVisitor]:
 
 
 def analyze_directory(
-    directory: str, exclude_dirs: Optional[List[str]] = None
-) -> List[CodeVisitor]:
+    directory: str,
+    exclude_dirs: list[str] | None = None,
+) -> list[CodeVisitor]:
     """
     Analyze all Python files in a directory and its subdirectories.
 
@@ -285,7 +286,8 @@ def analyze_directory(
 
 
 def generate_class_diagram(
-    visitors: List[CodeVisitor], include_functions: bool = False
+    visitors: list[CodeVisitor],
+    include_functions: bool = False,
 ) -> str:
     """
     Generate a PlantUML class diagram from the analyzed code.
@@ -312,7 +314,7 @@ def generate_class_diagram(
         for class_name, class_info in visitor.classes.items():
             # Start the class definition
             diagram.append(
-                f'class "{class_info["name"]}" as {class_name.replace(".", "_")} {{'
+                f'class "{class_info["name"]}" as {class_name.replace(".", "_")} {{',
             )
 
             # Add attributes
@@ -338,7 +340,7 @@ def generate_class_diagram(
             for func_name, func_info in visitor.functions.items():
                 # Add the function as a class with a stereotype
                 diagram.append(
-                    f'class "{func_info["name"]}" as {func_name.replace(".", "_")} <<function>> {{'
+                    f'class "{func_info["name"]}" as {func_name.replace(".", "_")} <<function>> {{',
                 )
                 args_str = ", ".join(func_info["args"])
                 diagram.append(f"  +{func_info['name']}({args_str})")
@@ -352,7 +354,7 @@ def generate_class_diagram(
                 # Check if the base class is a known class or an import
                 base_full = visitor.imports.get(base, base)
                 diagram.append(
-                    f"{class_name.replace('.', '_')} --|> {base_full.replace('.', '_')}"
+                    f"{class_name.replace('.', '_')} --|> {base_full.replace('.', '_')}",
                 )
 
     # Add method call relationships (simplified)
@@ -370,7 +372,7 @@ def generate_class_diagram(
                         # This is a call to an imported module
                         if include_functions:
                             diagram.append(
-                                f"{caller.replace('.', '_')} ..> {called.replace('.', '_')} : calls"
+                                f"{caller.replace('.', '_')} ..> {called.replace('.', '_')} : calls",
                             )
                             method_calls_added.add(rel_key)
 
@@ -381,7 +383,7 @@ def generate_class_diagram(
     return "\n".join(diagram)
 
 
-def generate_module_diagram(visitors: List[CodeVisitor]) -> str:
+def generate_module_diagram(visitors: list[CodeVisitor]) -> str:
     """
     Generate a PlantUML component diagram showing module dependencies.
 
@@ -438,7 +440,7 @@ def generate_module_diagram(visitors: List[CodeVisitor]) -> str:
                 imported_module in modules
             ):  # Only add if the imported module is in our analysis
                 diagram.append(
-                    f"{module_name.replace('.', '_')} --> {imported_module.replace('.', '_')}"
+                    f"{module_name.replace('.', '_')} --> {imported_module.replace('.', '_')}",
                 )
 
     # End the diagram
@@ -469,7 +471,7 @@ def save_diagram(diagram: str, output_file: str) -> None:
 def parse_args() -> argparse.Namespace:
     """Parse command-line arguments."""
     parser = argparse.ArgumentParser(
-        description="Analyze code and generate PlantUML diagrams"
+        description="Analyze code and generate PlantUML diagrams",
     )
     parser.add_argument(
         "--path",
@@ -552,7 +554,7 @@ def main() -> int:
     print(f"\nGenerated {diagram_type} diagram: {output_file}")
     print(
         "You can render it using: python -m utils.puml.cli render --file=code_analysis/"
-        + f"{os.path.basename(output_file)}"
+        + f"{os.path.basename(output_file)}",
     )
 
     return 0

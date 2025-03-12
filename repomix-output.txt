@@ -1,0 +1,2381 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+__init__.py
+004-plantuml-utilities.md
+cli.py
+code_analyzer.py
+config.py
+Makefile
+README.md
+render_diagrams.py
+test_code_analyzer.py
+test_puml.py
+viewer/index.html
+
+================================================================
+Files
+================================================================
+
+================
+File: __init__.py
+================
+"""
+PlantUML Utilities Package
+
+This package provides utilities for working with PlantUML diagrams.
+It includes tools for rendering diagrams, viewing them in a browser, and analyzing code to generate diagrams.
+
+Available modules:
+- config: Configuration settings for the PlantUML utilities
+- render_diagrams: Functions for rendering PlantUML diagrams to PNG or SVG images
+- code_analyzer: Functions for analyzing code and generating PlantUML diagrams
+- cli: Command-line interface for working with PlantUML diagrams
+- test_puml: Test script for the PlantUML utilities
+
+Usage:
+    # Render diagrams to PNG
+    from utils.puml import render_diagram, render_all_diagrams
+    render_diagram('docs/diagrams/classifier/classifier_model_diagram.puml',
+                   output_dir='output',
+                   format='png')
+
+    # Render diagrams to SVG
+    render_all_diagrams('docs/diagrams',
+                        output_dir='output',
+                        format='svg')
+
+    # Analyze code and generate diagrams
+    from utils.puml import analyze_directory, generate_class_diagram, save_diagram
+    visitors = analyze_directory('path/to/code')
+    diagram = generate_class_diagram(visitors)
+    save_diagram(diagram, 'docs/diagrams/code_analysis/class_diagram.puml')
+
+    # Use the CLI
+    python -m utils.puml.cli render --format=svg
+    python -m utils.puml.cli view
+    python -m utils.puml.cli analyze --path=path/to/code
+"""
+
+__version__ = "0.1.0"
+
+from .code_analyzer import (
+    analyze_directory,
+    analyze_file,
+    generate_class_diagram,
+    generate_module_diagram,
+    save_diagram,
+)
+
+# Import key functions and constants for easier access
+from .config import DEFAULT_FORMAT, FORMATS, OUTPUT_DIR, SOURCE_DIR
+from .render_diagrams import render_all_diagrams, render_diagram
+
+================
+File: 004-plantuml-utilities.md
+================
+# SOP-004: Using PlantUML Utilities
+
+## Purpose
+
+This procedure describes how to use the PlantUML utilities to create, render,
+and view diagrams for the project. PlantUML is a tool that allows
+you to create diagrams from text-based descriptions, making it easier to version
+control and maintain diagrams.
+
+## Scope
+
+This procedure covers:
+
+- Creating PlantUML diagram files
+- Rendering diagrams to SVG or PNG format
+- Viewing rendered diagrams with the React viewer
+- Adding new diagrams to the project
+
+This procedure does not cover:
+
+- Installing PlantUML server
+- Advanced PlantUML syntax and features
+
+## Prerequisites
+
+- Access to the project repository
+- Python 3.6 or higher
+- Virtual environment set up (optional but recommended)
+- Basic understanding of PlantUML syntax
+
+## Procedure
+
+### 1. Install Required Dependencies
+
+1. Activate the virtual environment (if using one):
+
+   ```bash
+   # For Windows Command Prompt/PowerShell
+   .\.venv\Scripts\activate
+
+   # For Git Bash/MINGW (Windows)
+   source .venv/Scripts/activate
+
+   # For macOS/Linux
+   source .venv/bin/activate
+   ```
+
+2. Install the plantuml package:
+
+   ```bash
+   pip install plantuml
+   ```
+
+### 2. Create or Modify PlantUML Diagrams
+
+1. Navigate to the `docs/diagrams` directory:
+
+   ```bash
+   cd docs/diagrams
+   ```
+
+2. Create a new directory for your diagrams if needed:
+
+   ```bash
+   mkdir -p your-category
+   ```
+
+3. Create or edit a PlantUML file (with `.puml` extension):
+
+   ```bash
+   # Example: Create a new diagram
+   touch your-category/your-diagram.puml
+   ```
+
+4. Edit the file with your PlantUML code:
+
+   ```plantuml
+   @startuml "Your Diagram Title"
+
+   ' Your PlantUML code here
+   class Example {
+     +attribute: Type
+     +method(): ReturnType
+   }
+
+   @enduml
+   ```
+
+### 3. Render Diagrams
+
+1. Return to the project root directory:
+
+   ```bash
+   cd /c/Repos/my-full-stack-fastapi-template  # For Git Bash
+   # OR
+   cd c:\Repos\my-full-stack-fastapi-template  # For Windows Command Prompt
+   ```
+
+2. Render all diagrams to SVG format (default):
+
+   ```bash
+   python -m utils.puml.cli render
+   ```
+
+3. Alternatively, render to PNG format:
+
+   ```bash
+   python -m utils.puml.cli render --format=png
+   ```
+
+4. To render a specific diagram:
+
+   ```bash
+   python -m utils.puml.cli render --file=your-category/your-diagram.puml
+   ```
+
+5. For best results, render both SVG and PNG formats:
+
+   ```bash
+   python -m utils.puml.cli render
+   python -m utils.puml.cli render --format=png
+   ```
+
+### 4. View Diagrams with the React Viewer
+
+1. Open the React viewer in your default browser:
+
+   ```bash
+   python -m utils.puml.cli view
+   ```
+
+   Or use the Make command:
+
+   ```bash
+   make view-diagrams
+   ```
+
+2. The React viewer will:
+
+   - Automatically detect all diagram folders
+   - Display all diagrams in each folder
+   - Allow switching between SVG and PNG formats
+   - Provide zoom controls for each diagram
+
+3. Using the viewer interface:
+   - Click on folder tabs in the sidebar to switch between diagram categories
+   - Use the PNG/SVG buttons to switch formats
+   - Use the zoom controls to zoom in, zoom out, or reset the zoom
+   - Diagrams are displayed with formatted titles
+
+### 5. Adding New Diagram Categories
+
+1. To add a new diagram category:
+
+   - Create a new directory under `docs/diagrams/`
+   - Add your `.puml` files to this directory
+   - Render the diagrams as described in section 3
+   - The new category will automatically appear in the React viewer **if it's one of the known folders**
+
+2. The React viewer automatically detects diagrams in the following folders:
+   - `architecture`
+   - `classifier`
+   - `database`
+
+3. If you add a new diagram to one of these folders, it will be automatically detected.
+   However, if you add a new folder, you'll need to update the `knownFolders` array in
+   `utils/puml/viewer/index.html`.
+
+### 6. Using Make Commands (Recommended)
+
+1. From the project root directory, use Make commands:
+
+   ```bash
+   # Render all diagrams to SVG
+   make render-diagrams
+
+   # Render all diagrams to PNG
+   make render-diagrams-png
+
+   # View diagrams
+   make view-diagrams
+   ```
+
+## Verification
+
+To verify that the procedure was completed successfully:
+
+1. Check that the rendered diagrams exist in the `docs/diagrams/output`
+   directory
+2. Verify that the diagrams are displayed correctly in the React viewer
+3. Confirm that both SVG and PNG formats can be viewed
+4. Verify that all diagram categories appear in the sidebar
+5. Confirm that all diagrams within each category are displayed
+
+## Troubleshooting
+
+### Common Issues
+
+1. **Module not found error: `plantuml`**
+
+   - Solution: Install the plantuml package with `pip install plantuml`
+
+2. **Path issues in Git Bash**
+
+   - Solution: Use forward slashes for paths and ensure the virtual environment
+     is activated with `source .venv/Scripts/activate`
+
+3. **Diagrams not rendering**
+
+   - Solution: Check that the PlantUML syntax is correct and that the file has a
+     `.puml` extension
+
+4. **React viewer not showing diagrams**
+
+   - Solution: Ensure that diagrams have been rendered first with
+     `python -m utils.puml.cli render`
+   - Check browser console for any JavaScript errors
+   - Verify that both SVG and PNG files exist in the output directory
+
+5. **New diagrams not appearing in the viewer**
+
+   - Solution: Refresh the browser page after rendering new diagrams
+   - Check that the diagrams were rendered successfully
+   - Verify the diagram files exist in the correct output subdirectory
+
+6. **Configuration issues**
+   - Solution: Check the `utils/puml/config.py` file for correct paths and settings
+
+## References
+
+- [PlantUML Official Documentation](https://plantuml.com/en/guide)
+- [PlantUML Syntax Guide](https://plantuml.com/en/guide)
+- [Project PlantUML Utilities README](../../utils/puml/README.md)
+
+## Revision History
+
+| Version | Date       | Author | Changes                                |
+| ------- | ---------- | ------ | -------------------------------------- |
+| 1.0     | 2025-03-04 | Roo    | Initial version                        |
+| 1.1     | 2025-03-05 | Roo    | Updated for dynamic HTML viewer        |
+| 1.2     | 2025-03-11 | Roo    | Updated for React viewer and refactoring |
+
+================
+File: cli.py
+================
+#!/usr/bin/env python
+"""
+PlantUML Command Line Interface
+
+This script provides a command-line interface for working with PlantUML diagrams.
+
+Usage:
+    python cli.py render [--format=<format>] [--source=<source_dir>] [--output=<output_dir>] [--file=<file>]
+    python cli.py view
+    python cli.py analyze [--path=<path>] [--output=<output_file>] [--include-modules] [--include-functions] [--verbose]
+    python cli.py help
+
+Commands:
+    render      Render PlantUML diagrams to images
+    view        Open the React viewer in the default web browser
+    analyze     Analyze code and generate PlantUML diagrams
+    help        Show this help message
+
+Options:
+    --format=<format>     Output format (svg or png, default: svg)
+    --source=<source_dir> Source directory for PlantUML files (default: docs/diagrams)
+    --output=<output_dir> Directory to save rendered images (default: docs/diagrams/output)
+    --file=<file>         Specific .puml file to render (default: all .puml files)
+    --path=<path>         Path to the Python file or directory to analyze (default: current directory)
+    --include-modules     Generate a module diagram instead of a class diagram
+    --include-functions   Include standalone functions in the class diagram
+    --verbose             Enable verbose logging
+"""
+
+import argparse
+import os
+import sys
+import webbrowser
+
+from utils.puml.code_analyzer import (
+    analyze_directory,
+    analyze_file,
+    generate_class_diagram,
+    generate_module_diagram,
+    save_diagram,
+)
+
+# Import the configuration and modules
+from utils.puml.config import DEFAULT_FORMAT, FORMATS, OUTPUT_DIR, SOURCE_DIR
+from utils.puml.render_diagrams import render_all_diagrams, render_diagram
+
+
+def show_help():
+    """Show the help message."""
+    print(__doc__)
+
+
+def render_command(args):
+    """Handle the render command."""
+    # Parse arguments
+    parser = argparse.ArgumentParser(description="Render PlantUML diagrams to images")
+    parser.add_argument(
+        "--format",
+        choices=FORMATS,
+        default=DEFAULT_FORMAT,
+        help=f"Output format ({' or '.join(FORMATS)})",
+    )
+    parser.add_argument(
+        "--source",
+        default=SOURCE_DIR,
+        help="Source directory for PlantUML files",
+    )
+    parser.add_argument(
+        "--output",
+        default=OUTPUT_DIR,
+        help="Output directory for rendered images",
+    )
+    parser.add_argument("--file", help="Specific .puml file to render")
+
+    # Parse the arguments
+    args = parser.parse_args(args)
+
+    # Render the diagrams
+    if args.file:
+        # Render a specific file
+        file_path = (
+            os.path.join(args.source, args.file)
+            if not os.path.isabs(args.file)
+            else args.file
+        )
+        if os.path.exists(file_path):
+            render_diagram(file_path, args.output, args.format)
+        else:
+            print(f"Error: File not found: {file_path}")
+            return 1
+    else:
+        # Render all diagrams
+        render_all_diagrams(args.source, args.output, args.format)
+
+    return 0
+
+
+def view_command():
+    """Handle the view command."""
+    # Get the directory containing this script
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Get the path to the React HTML viewer
+    viewer_path = os.path.join(script_dir, "viewer", "index.html")
+
+    # Check if the viewer exists
+    if not os.path.exists(viewer_path):
+        print(f"Error: React HTML viewer not found: {viewer_path}")
+        return 1
+
+    # Check if the output directory exists
+    if not os.path.exists(OUTPUT_DIR):
+        print(f"Error: Output directory not found: {OUTPUT_DIR}")
+        print("Please render the diagrams first using the 'render' command.")
+        return 1
+
+    # Open the viewer in the default web browser
+    print(f"Opening React HTML viewer: {viewer_path}")
+    webbrowser.open(f"file://{os.path.abspath(viewer_path)}")
+
+    return 0
+
+
+def analyze_command(args):
+    """Handle the analyze command."""
+    # Parse arguments
+    parser = argparse.ArgumentParser(
+        description="Analyze code and generate PlantUML diagrams"
+    )
+    parser.add_argument(
+        "--path",
+        default=".",
+        help="Path to the Python file or directory to analyze",
+    )
+    parser.add_argument(
+        "--output",
+        default=None,
+        help="Output file for the PlantUML diagram",
+    )
+    parser.add_argument(
+        "--include-modules",
+        action="store_true",
+        help="Generate a module diagram instead of a class diagram",
+    )
+    parser.add_argument(
+        "--include-functions",
+        action="store_true",
+        help="Include standalone functions in the class diagram",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+
+    # Parse the arguments
+    args = parser.parse_args(args)
+
+    # Set up logging
+    import logging
+
+    log_level = logging.DEBUG if args.verbose else logging.INFO
+    logging.basicConfig(
+        level=log_level,
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        handlers=[logging.StreamHandler()],
+    )
+    logger = logging.getLogger("code_analyzer")
+    logger.setLevel(log_level)
+
+    # Analyze the code
+    if os.path.isdir(args.path):
+        print(f"Analyzing directory: {args.path}")
+        visitors = analyze_directory(args.path)
+    elif os.path.isfile(args.path) and args.path.endswith(".py"):
+        print(f"Analyzing file: {args.path}")
+        visitor = analyze_file(args.path)
+        visitors = [visitor] if visitor else []
+    else:
+        print(f"Error: Invalid path: {args.path}")
+        return 1
+
+    if not visitors:
+        print("Error: No Python files were successfully analyzed")
+        return 1
+
+    # Generate the diagram
+    if args.include_modules:
+        diagram = generate_module_diagram(visitors)
+        diagram_type = "module"
+    else:
+        diagram = generate_class_diagram(visitors, args.include_functions)
+        diagram_type = "class"
+
+    # Determine the output file
+    if args.output:
+        output_file = args.output
+    else:
+        # Use a default output file based on the input path
+        if os.path.isdir(args.path):
+            base_name = os.path.basename(os.path.abspath(args.path))
+        else:
+            base_name = os.path.splitext(os.path.basename(args.path))[0]
+
+        # Create the code_analysis directory in the output directory if it doesn't exist
+        code_analysis_dir = os.path.join(OUTPUT_DIR, "code_analysis")
+        os.makedirs(code_analysis_dir, exist_ok=True)
+
+        output_file = os.path.join(
+            code_analysis_dir,
+            f"{base_name}_{diagram_type}_diagram.puml",
+        )
+
+    # Save the diagram
+    save_diagram(diagram, output_file)
+
+    print(f"\nGenerated {diagram_type} diagram: {output_file}")
+    print(
+        "You can render it using: python -m utils.puml.cli render --file=code_analysis/"
+        + f"{os.path.basename(output_file)}"
+    )
+
+    return 0
+
+
+def main():
+    """Main function."""
+    # Parse command-line arguments
+    if len(sys.argv) < 2:
+        show_help()
+        return 1
+
+    command = sys.argv[1].lower()
+    args = sys.argv[2:]
+
+    # Handle commands
+    if command == "render":
+        return render_command(args)
+    elif command == "view":
+        return view_command()
+    elif command == "analyze":
+        return analyze_command(args)
+    elif command == "help":
+        show_help()
+        return 0
+    else:
+        print(f"Error: Unknown command: {command}")
+        show_help()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+    sys.exit(main())
+
+================
+File: code_analyzer.py
+================
+"""
+Code Analyzer for PlantUML
+
+This module analyzes Python code and generates PlantUML diagrams based on the code structure.
+It extracts classes, functions, and relationships between them.
+
+Usage:
+    python -m utils.puml.code_analyzer --path=<path> --output=<output_file> [--include-modules] [--include-functions]
+"""
+
+import argparse
+import ast
+import logging
+import os
+import sys
+from typing import Dict, List, Optional, Tuple
+
+from utils.puml.config import OUTPUT_DIR
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler()],
+)
+logger = logging.getLogger("code_analyzer")
+
+
+class CodeVisitor(ast.NodeVisitor):
+    """AST visitor that extracts classes, functions, and relationships from Python code."""
+
+    def __init__(self, filename: str, module_name: str):
+        self.filename = filename
+        self.module_name = module_name
+        self.classes: Dict[str, Dict] = {}
+        self.functions: Dict[str, Dict] = {}
+        self.imports: Dict[str, str] = {}
+        self.relationships: List[Tuple[str, str, str]] = []
+        self.current_class: Optional[str] = None
+        self.current_function: Optional[str] = None
+        self.base_classes: Dict[str, List[str]] = {}
+        self.method_calls: List[Tuple[str, str, str]] = []
+        logger.info(f"Analyzing file: {filename} (module: {module_name})")
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> None:
+        """Visit a class definition."""
+        class_name = f"{self.module_name}.{node.name}"
+        logger.debug(f"Found class: {class_name}")
+
+        # Store class information
+        self.classes[class_name] = {
+            "name": node.name,
+            "full_name": class_name,
+            "methods": [],
+            "attributes": [],
+            "docstring": ast.get_docstring(node),
+            "lineno": node.lineno,
+        }
+
+        # Store base classes
+        bases = []
+        for base in node.bases:
+            if isinstance(base, ast.Name):
+                bases.append(base.id)
+                self.relationships.append((class_name, base.id, "inherits"))
+                logger.debug(f"  Inherits from: {base.id}")
+            elif isinstance(base, ast.Attribute):
+                base_name = self._get_attribute_name(base)
+                bases.append(base_name)
+                self.relationships.append((class_name, base_name, "inherits"))
+                logger.debug(f"  Inherits from: {base_name}")
+
+        self.base_classes[class_name] = bases
+
+        # Visit class body with this class as the current class
+        old_class = self.current_class
+        self.current_class = class_name
+        for item in node.body:
+            self.visit(item)
+        self.current_class = old_class
+
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+        """Visit a function definition."""
+        if self.current_class:
+            # This is a method
+            method_name = node.name
+            full_name = f"{self.current_class}.{method_name}"
+            logger.debug(f"Found method: {full_name}")
+
+            # Add to class methods
+            self.classes[self.current_class]["methods"].append(
+                {
+                    "name": method_name,
+                    "full_name": full_name,
+                    "args": [arg.arg for arg in node.args.args],
+                    "docstring": ast.get_docstring(node),
+                    "lineno": node.lineno,
+                }
+            )
+
+            # Check if it's a special method
+            if method_name.startswith("__") and method_name.endswith("__"):
+                logger.debug(f"  Special method: {method_name}")
+        else:
+            # This is a standalone function
+            function_name = f"{self.module_name}.{node.name}"
+            logger.debug(f"Found function: {function_name}")
+
+            self.functions[function_name] = {
+                "name": node.name,
+                "full_name": function_name,
+                "args": [arg.arg for arg in node.args.args],
+                "docstring": ast.get_docstring(node),
+                "lineno": node.lineno,
+            }
+
+        # Visit function body
+        old_function = self.current_function
+        self.current_function = (
+            function_name
+            if not self.current_class
+            else f"{self.current_class}.{node.name}"
+        )
+        for item in node.body:
+            self.visit(item)
+        self.current_function = old_function
+
+    def visit_Assign(self, node: ast.Assign) -> None:
+        """Visit an assignment."""
+        if self.current_class:
+            # Check if this is a class attribute assignment
+            for target in node.targets:
+                if isinstance(target, ast.Name):
+                    attr_name = target.id
+                    if not attr_name.startswith("_") or attr_name.startswith("__"):
+                        logger.debug(f"  Found attribute: {attr_name}")
+                        self.classes[self.current_class]["attributes"].append(
+                            {
+                                "name": attr_name,
+                                "lineno": node.lineno,
+                            }
+                        )
+
+        # Continue visiting
+        self.generic_visit(node)
+
+    def visit_AnnAssign(self, node: ast.AnnAssign) -> None:
+        """Visit an annotated assignment."""
+        if self.current_class and isinstance(node.target, ast.Name):
+            attr_name = node.target.id
+            if not attr_name.startswith("_") or attr_name.startswith("__"):
+                logger.debug(f"  Found annotated attribute: {attr_name}")
+
+                # Get the type annotation if possible
+                type_annotation = ""
+                if isinstance(node.annotation, ast.Name):
+                    type_annotation = node.annotation.id
+                elif isinstance(node.annotation, ast.Subscript):
+                    if isinstance(node.annotation.value, ast.Name):
+                        type_annotation = node.annotation.value.id
+
+                self.classes[self.current_class]["attributes"].append(
+                    {
+                        "name": attr_name,
+                        "type": type_annotation,
+                        "lineno": node.lineno,
+                    }
+                )
+
+        # Continue visiting
+        self.generic_visit(node)
+
+    def visit_Import(self, node: ast.Import) -> None:
+        """Visit an import statement."""
+        for name in node.names:
+            self.imports[name.asname or name.name] = name.name
+            logger.debug(f"Import: {name.name} as {name.asname or name.name}")
+
+        # Continue visiting
+        self.generic_visit(node)
+
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
+        """Visit an import from statement."""
+        if node.module:
+            for name in node.names:
+                imported_name = name.name
+                as_name = name.asname or imported_name
+                full_name = f"{node.module}.{imported_name}"
+                self.imports[as_name] = full_name
+                logger.debug(f"ImportFrom: {full_name} as {as_name}")
+
+        # Continue visiting
+        self.generic_visit(node)
+
+    def visit_Call(self, node: ast.Call) -> None:
+        """Visit a function call."""
+        if isinstance(node.func, ast.Attribute) and isinstance(
+            node.func.value, ast.Name
+        ):
+            # This might be a method call on an object
+            obj_name = node.func.value.id
+            method_name = node.func.attr
+
+            if self.current_function:
+                caller = self.current_function
+                called = f"{obj_name}.{method_name}"
+                self.method_calls.append((caller, called, "calls"))
+                logger.debug(f"Method call: {caller} -> {called}")
+
+        # Continue visiting
+        self.generic_visit(node)
+
+    def _get_attribute_name(self, node: ast.Attribute) -> str:
+        """Get the full name of an attribute."""
+        if isinstance(node.value, ast.Name):
+            return f"{node.value.id}.{node.attr}"
+        elif isinstance(node.value, ast.Attribute):
+            return f"{self._get_attribute_name(node.value)}.{node.attr}"
+        return node.attr
+
+
+def analyze_file(file_path: str) -> Optional[CodeVisitor]:
+    """
+    Analyze a Python file and extract its structure.
+
+    Args:
+        file_path: Path to the Python file
+
+    Returns:
+        CodeVisitor with the extracted information, or None if the file couldn't be parsed
+    """
+    try:
+        with open(file_path, "r", encoding="utf-8") as f:
+            source = f.read()
+
+        # Parse the source code into an AST
+        tree = ast.parse(source, filename=file_path)
+
+        # Get the module name from the file path
+        module_name = os.path.splitext(os.path.basename(file_path))[0]
+
+        # Visit the AST to extract information
+        visitor = CodeVisitor(file_path, module_name)
+        visitor.visit(tree)
+
+        return visitor
+    except Exception as e:
+        logger.error(f"Error analyzing file {file_path}: {e}")
+        return None
+
+
+def analyze_directory(
+    directory: str, exclude_dirs: Optional[List[str]] = None
+) -> List[CodeVisitor]:
+    """
+    Analyze all Python files in a directory and its subdirectories.
+
+    Args:
+        directory: Directory to analyze
+        exclude_dirs: List of directory names to exclude
+
+    Returns:
+        List of CodeVisitor objects with the extracted information
+    """
+    if exclude_dirs is None:
+        exclude_dirs = ["__pycache__", "venv", ".venv", ".git", "node_modules"]
+
+    visitors = []
+
+    logger.info(f"Analyzing directory: {directory}")
+
+    for root, dirs, files in os.walk(directory):
+        # Skip excluded directories
+        dirs[:] = [d for d in dirs if d not in exclude_dirs]
+
+        for file in files:
+            if file.endswith(".py"):
+                file_path = os.path.join(root, file)
+                visitor = analyze_file(file_path)
+                if visitor:
+                    visitors.append(visitor)
+
+    logger.info(f"Analyzed {len(visitors)} Python files")
+    return visitors
+
+
+def generate_class_diagram(
+    visitors: List[CodeVisitor], include_functions: bool = False
+) -> str:
+    """
+    Generate a PlantUML class diagram from the analyzed code.
+
+    Args:
+        visitors: List of CodeVisitor objects with the extracted information
+        include_functions: Whether to include standalone functions in the diagram
+
+    Returns:
+        PlantUML diagram as a string
+    """
+    logger.info("Generating class diagram")
+
+    # Start the diagram
+    diagram = [
+        '@startuml "Code Analysis Class Diagram"',
+        "",
+        "' This diagram was automatically generated by the code analyzer",
+        "",
+    ]
+
+    # Add all classes
+    for visitor in visitors:
+        for class_name, class_info in visitor.classes.items():
+            # Start the class definition
+            diagram.append(
+                f'class "{class_info["name"]}" as {class_name.replace(".", "_")} {{'
+            )
+
+            # Add attributes
+            for attr in class_info["attributes"]:
+                attr_type = attr.get("type", "")
+                if attr_type:
+                    diagram.append(f"  {attr['name']}: {attr_type}")
+                else:
+                    diagram.append(f"  {attr['name']}")
+
+            # Add methods
+            for method in class_info["methods"]:
+                args_str = ", ".join(method["args"])
+                diagram.append(f"  +{method['name']}({args_str})")
+
+            # End the class definition
+            diagram.append("}")
+            diagram.append("")
+
+    # Add standalone functions if requested
+    if include_functions:
+        for visitor in visitors:
+            for func_name, func_info in visitor.functions.items():
+                # Add the function as a class with a stereotype
+                diagram.append(
+                    f'class "{func_info["name"]}" as {func_name.replace(".", "_")} <<function>> {{'
+                )
+                args_str = ", ".join(func_info["args"])
+                diagram.append(f"  +{func_info['name']}({args_str})")
+                diagram.append("}")
+                diagram.append("")
+
+    # Add inheritance relationships
+    for visitor in visitors:
+        for class_name, bases in visitor.base_classes.items():
+            for base in bases:
+                # Check if the base class is a known class or an import
+                base_full = visitor.imports.get(base, base)
+                diagram.append(
+                    f"{class_name.replace('.', '_')} --|> {base_full.replace('.', '_')}"
+                )
+
+    # Add method call relationships (simplified)
+    method_calls_added = set()
+    for visitor in visitors:
+        for caller, called, rel_type in visitor.method_calls:
+            # Only add each relationship once and only if both caller and called are known
+            rel_key = f"{caller}_{called}"
+            if rel_key not in method_calls_added:
+                # Check if the called method is in our known classes/methods
+                called_parts = called.split(".")
+                if len(called_parts) >= 2:
+                    obj_name, method_name = called_parts[0], called_parts[1]
+                    if obj_name in visitor.imports:
+                        # This is a call to an imported module
+                        if include_functions:
+                            diagram.append(
+                                f"{caller.replace('.', '_')} ..> {called.replace('.', '_')} : calls"
+                            )
+                            method_calls_added.add(rel_key)
+
+    # End the diagram
+    diagram.append("")
+    diagram.append("@enduml")
+
+    return "\n".join(diagram)
+
+
+def generate_module_diagram(visitors: List[CodeVisitor]) -> str:
+    """
+    Generate a PlantUML component diagram showing module dependencies.
+
+    Args:
+        visitors: List of CodeVisitor objects with the extracted information
+
+    Returns:
+        PlantUML diagram as a string
+    """
+    logger.info("Generating module diagram")
+
+    # Start the diagram
+    diagram = [
+        '@startuml "Code Analysis Module Diagram"',
+        "",
+        "' This diagram was automatically generated by the code analyzer",
+        "",
+    ]
+
+    # Track modules and their imports
+    modules = {}
+
+    # Add all modules
+    for visitor in visitors:
+        module_name = visitor.module_name
+        if module_name not in modules:
+            modules[module_name] = {
+                "imports": set(),
+                "classes": [
+                    class_info["name"] for class_info in visitor.classes.values()
+                ],
+                "functions": [
+                    func_info["name"] for func_info in visitor.functions.values()
+                ],
+            }
+
+        # Add imports
+        for import_alias, import_name in visitor.imports.items():
+            # Extract the top-level module
+            top_module = import_name.split(".")[0]
+            if top_module != module_name:  # Don't add self-imports
+                modules[module_name]["imports"].add(top_module)
+
+    # Add components for each module
+    for module_name, module_info in modules.items():
+        diagram.append(f"[{module_name}] as {module_name.replace('.', '_')}")
+
+    diagram.append("")
+
+    # Add dependencies between modules
+    for module_name, module_info in modules.items():
+        for imported_module in module_info["imports"]:
+            if (
+                imported_module in modules
+            ):  # Only add if the imported module is in our analysis
+                diagram.append(
+                    f"{module_name.replace('.', '_')} --> {imported_module.replace('.', '_')}"
+                )
+
+    # End the diagram
+    diagram.append("")
+    diagram.append("@enduml")
+
+    return "\n".join(diagram)
+
+
+def save_diagram(diagram: str, output_file: str) -> None:
+    """
+    Save a PlantUML diagram to a file.
+
+    Args:
+        diagram: PlantUML diagram as a string
+        output_file: Path to save the diagram to
+    """
+    # Create the directory if it doesn't exist
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+    # Save the diagram
+    with open(output_file, "w", encoding="utf-8") as f:
+        f.write(diagram)
+
+    logger.info(f"Saved diagram to {output_file}")
+
+
+def parse_args() -> argparse.Namespace:
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Analyze code and generate PlantUML diagrams"
+    )
+    parser.add_argument(
+        "--path",
+        default=".",
+        help="Path to the Python file or directory to analyze",
+    )
+    parser.add_argument(
+        "--output",
+        default=None,
+        help="Output file for the PlantUML diagram",
+    )
+    parser.add_argument(
+        "--include-modules",
+        action="store_true",
+        help="Generate a module diagram instead of a class diagram",
+    )
+    parser.add_argument(
+        "--include-functions",
+        action="store_true",
+        help="Include standalone functions in the class diagram",
+    )
+    parser.add_argument(
+        "--verbose",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+    return parser.parse_args()
+
+
+def main() -> int:
+    """Main function."""
+    # Parse command-line arguments
+    args = parse_args()
+
+    # Set logging level
+    if args.verbose:
+        logger.setLevel(logging.DEBUG)
+
+    # Analyze the code
+    if os.path.isdir(args.path):
+        visitors = analyze_directory(args.path)
+    elif os.path.isfile(args.path) and args.path.endswith(".py"):
+        visitor = analyze_file(args.path)
+        visitors = [visitor] if visitor else []
+    else:
+        logger.error(f"Invalid path: {args.path}")
+        return 1
+
+    if not visitors:
+        logger.error("No Python files were successfully analyzed")
+        return 1
+
+    # Generate the diagram
+    if args.include_modules:
+        diagram = generate_module_diagram(visitors)
+        diagram_type = "module"
+    else:
+        diagram = generate_class_diagram(visitors, args.include_functions)
+        diagram_type = "class"
+
+    # Determine the output file
+    if args.output:
+        output_file = args.output
+    else:
+        # Use a default output file based on the input path
+        if os.path.isdir(args.path):
+            base_name = os.path.basename(os.path.abspath(args.path))
+        else:
+            base_name = os.path.splitext(os.path.basename(args.path))[0]
+
+        output_file = os.path.join(
+            OUTPUT_DIR,
+            "code_analysis",
+            f"{base_name}_{diagram_type}_diagram.puml",
+        )
+
+    # Save the diagram
+    save_diagram(diagram, output_file)
+
+    print(f"\nGenerated {diagram_type} diagram: {output_file}")
+    print(
+        "You can render it using: python -m utils.puml.cli render --file=code_analysis/"
+        + f"{os.path.basename(output_file)}"
+    )
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: config.py
+================
+"""
+PlantUML Configuration
+
+This module contains configuration settings for the PlantUML utilities.
+"""
+
+import os
+
+# Project root directory
+PROJECT_ROOT = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+
+# Default source directory for diagrams
+SOURCE_DIR = os.path.join(PROJECT_ROOT, "docs", "diagrams")
+
+# Default output directory for rendered diagrams
+OUTPUT_DIR = os.path.join(SOURCE_DIR, "output")
+
+# PlantUML server URLs
+PLANTUML_SERVER_SVG = "http://www.plantuml.com/plantuml/svg/"
+PLANTUML_SERVER_PNG = "http://www.plantuml.com/plantuml/img/"
+
+# Supported output formats
+FORMATS = ["svg", "png"]
+
+# Default output format
+DEFAULT_FORMAT = "svg"
+
+================
+File: Makefile
+================
+# PlantUML Utilities Makefile
+
+# Render all PlantUML diagrams to SVG (default)
+render-diagrams:
+	python -m utils.puml.cli render
+	@echo "Diagrams saved to docs/diagrams/output"
+
+# Render all PlantUML diagrams to PNG
+render-diagrams-png:
+	python -m utils.puml.cli render --format=png
+
+# Render a specific PlantUML diagram
+render-diagram:
+	@echo "Usage: make render-diagram FILE=<file>"
+	@if [ "$(FILE)" ]; then \
+		python -m utils.puml.cli render --file=$(FILE); \
+	fi
+
+# Open the PlantUML HTML viewer
+view-diagrams:
+	# Open the HTML file directly instead of using the CLI
+	start docs/diagrams/output/index.html 2>/dev/null || \
+	open docs/diagrams/output/index.html 2>/dev/null || \
+	xdg-open docs/diagrams/output/index.html 2>/dev/null || \
+	echo "Could not open the HTML viewer automatically. Please open docs/diagrams/output/index.html manually."
+
+# Show help
+help:
+	@echo "PlantUML Utilities Makefile"
+	@echo ""
+	@echo "Commands:"
+	@echo "  make render-diagrams       - Render all PlantUML diagrams to SVG"
+	@echo "  make render-diagrams-png   - Render all PlantUML diagrams to PNG"
+	@echo "  make render-diagram FILE=<file> - Render a specific PlantUML diagram"
+	@echo "  make view-diagrams         - Open the PlantUML HTML viewer"
+	@echo "  make help                  - Show this help message"
+	@echo ""
+	@echo "Example:"
+	@echo "  make render-diagram FILE=classifier/classifier_model_diagram.puml"
+
+.PHONY: render-diagrams render-diagrams-png render-diagram view-diagrams help
+
+================
+File: README.md
+================
+# PlantUML Utilities
+
+This package provides utilities for working with PlantUML diagrams in the project.
+
+## Features
+
+- Render PlantUML diagrams to PNG or SVG images
+- View rendered diagrams in a React-based viewer
+- Analyze code and generate PlantUML diagrams automatically
+- Command-line interface for rendering, viewing, and analyzing code
+
+## Requirements
+
+- Python 3.6+
+- plantuml package (`pip install plantuml`)
+- Internet connection (for the PlantUML server)
+
+## Usage
+
+### Command Line Interface
+
+```bash
+# Render all diagrams to SVG (default)
+make render-diagrams
+
+# Render all diagrams to PNG
+make render-diagrams-png
+
+# View diagrams in the React viewer
+make view-diagrams
+```
+
+Or use the Python CLI directly:
+
+```bash
+# Render all diagrams to SVG (default)
+python -m utils.puml.cli render
+
+# Render all diagrams to PNG
+python -m utils.puml.cli render --format=png
+
+# Render a specific diagram
+python -m utils.puml.cli render --file=classifier/classifier_model_diagram.puml
+
+# View diagrams in the React viewer
+python -m utils.puml.cli view
+
+# Analyze code and generate a class diagram
+python -m utils.puml.cli analyze --path=path/to/code
+
+# Analyze code and generate a module diagram
+python -m utils.puml.cli analyze --path=path/to/code --include-modules
+
+# Analyze code and include standalone functions in the class diagram
+python -m utils.puml.cli analyze --path=path/to/code --include-functions
+
+# Analyze code with verbose logging
+python -m utils.puml.cli analyze --path=path/to/code --verbose
+```
+
+### Python API
+
+```python
+from utils.puml import render_diagram, render_all_diagrams
+
+# Render a specific diagram to PNG
+render_diagram('docs/diagrams/classifier/classifier_model_diagram.puml',
+               output_dir='docs/diagrams/output',
+               format='png')
+
+# Render all diagrams to SVG
+render_all_diagrams('docs/diagrams',
+                    output_dir='docs/diagrams/output',
+                    format='svg')
+```
+
+### Code Analysis API
+
+```python
+from utils.puml.code_analyzer import (
+    analyze_directory, analyze_file,
+    generate_class_diagram, generate_module_diagram,
+    save_diagram
+)
+
+# Analyze a directory of Python files
+visitors = analyze_directory('path/to/code')
+
+# Generate a class diagram
+class_diagram = generate_class_diagram(visitors, include_functions=True)
+
+# Generate a module diagram
+module_diagram = generate_module_diagram(visitors)
+
+# Save the diagram to a file
+save_diagram(class_diagram, 'docs/diagrams/code_analysis/class_diagram.puml')
+```
+
+## Configuration
+
+Configuration settings are stored in `utils/puml/config.py`. You can modify these settings to change the default behavior of the utilities.
+
+```python
+# Default source directory for diagrams
+SOURCE_DIR = os.path.join(PROJECT_ROOT, "docs", "diagrams")
+
+# Default output directory for rendered diagrams
+OUTPUT_DIR = os.path.join(SOURCE_DIR, "output")
+
+# Default output format
+DEFAULT_FORMAT = "svg"
+```
+
+## Directory Structure
+
+```
+utils/puml/
+├── __init__.py          # Package initialization
+├── config.py            # Configuration settings
+├── cli.py               # Command-line interface
+├── render_diagrams.py   # Diagram rendering functions
+├── code_analyzer.py     # Code analysis and diagram generation
+├── test_puml.py         # Test script
+├── viewer/              # React-based diagram viewer
+│   └── index.html       # Viewer HTML file
+└── README.md            # This file
+```
+
+## Adding New Diagrams
+
+1. Create a new `.puml` file in the `docs/diagrams` directory
+2. Run `make render-diagrams` to render the diagram
+3. Run `make view-diagrams` to view the diagram in the React viewer
+
+**Note:** The React viewer automatically detects diagrams in the following folders:
+
+- `architecture`
+- `classifier`
+- `database`
+
+If you add a new diagram to one of these folders, it will be automatically detected. However, if you add a new folder, you'll need to update the `knownFolders` array in `utils/puml/viewer/index.html`.
+
+## Analyzing Code
+
+The code analyzer can generate PlantUML diagrams from your Python code automatically. It analyzes the code structure and creates diagrams showing classes, functions, and their relationships.
+
+### Class Diagrams
+
+Class diagrams show the classes in your code, their attributes, methods, and inheritance relationships:
+
+```bash
+# Analyze a specific file
+python -m utils.puml.cli analyze --path=path/to/file.py
+
+# Analyze a directory (recursively)
+python -m utils.puml.cli analyze --path=path/to/directory
+
+# Include standalone functions in the diagram
+python -m utils.puml.cli analyze --path=path/to/code --include-functions
+```
+
+### Module Diagrams
+
+Module diagrams show the dependencies between modules in your code:
+
+```bash
+# Generate a module diagram
+python -m utils.puml.cli analyze --path=path/to/code --include-modules
+```
+
+### Workflow
+
+1. Analyze your code to generate a PlantUML diagram:
+
+   ```bash
+   python -m utils.puml.cli analyze --path=backend/app
+   ```
+
+2. Render the generated diagram:
+
+   ```bash
+   python -m utils.puml.cli render --file=code_analysis/app_class_diagram.puml
+   ```
+
+3. View the rendered diagram:
+
+   ```bash
+   python -m utils.puml.cli view
+   ```
+
+The generated diagrams will be saved in the `docs/diagrams/output/code_analysis` directory.
+
+## Troubleshooting
+
+- If the diagrams are not rendering, check your internet connection. The PlantUML server requires an internet connection to render diagrams.
+- If the viewer is not showing the diagrams, make sure you have rendered the diagrams first using `make render-diagrams`.
+- If the code analyzer is not finding all classes or relationships, try using the `--verbose` flag to see more detailed logging: `python -m utils.puml.cli analyze --path=path/to/code --verbose`
+- If the generated diagrams are too complex or cluttered, try analyzing smaller portions of your codebase or specific files instead of entire directories.
+- For large codebases, the module diagram (`--include-modules`) might be more readable than the class diagram.
+
+================
+File: render_diagrams.py
+================
+"""
+PlantUML Diagram Renderer
+
+This script renders PlantUML diagrams to PNG or SVG images using the plantuml Python package.
+It can be used as an alternative to the HTML viewer if you prefer local rendering.
+
+Requirements:
+- Python 3.6+
+- plantuml package (pip install plantuml)
+- Internet connection (for the PlantUML server)
+
+Usage:
+python render_diagrams.py [--format=svg|png] [--source=<source_dir>]
+"""
+
+import argparse
+import os
+import re
+
+import plantuml  # type: ignore
+
+from utils.puml.config import (
+    DEFAULT_FORMAT,
+    FORMATS,
+    OUTPUT_DIR,
+    PLANTUML_SERVER_PNG,
+    PLANTUML_SERVER_SVG,
+    SOURCE_DIR,
+)
+
+
+def render_diagram(puml_file, output_dir=None, format=DEFAULT_FORMAT):
+    """
+    Render a PlantUML diagram to an image.
+
+    Args:
+        puml_file (str): Path to the PlantUML file
+        output_dir (str): Directory to save the rendered image
+        format (str): Output format (png or svg)
+
+    Returns:
+        bool: True if successful, False otherwise
+    """
+    # Set default output directory if not specified
+    if output_dir is None:
+        output_dir = OUTPUT_DIR
+
+    # Create output directory if it doesn't exist
+    if not os.path.exists(output_dir):
+        os.makedirs(output_dir)
+
+    # Preserve directory structure relative to the source directory
+    rel_path = os.path.relpath(os.path.dirname(puml_file), SOURCE_DIR)
+    if rel_path != ".":
+        # Create subdirectory in output_dir to match the source structure
+        output_subdir = os.path.join(output_dir, rel_path)
+        if not os.path.exists(output_subdir):
+            os.makedirs(output_subdir)
+    else:
+        output_subdir = output_dir
+
+    # Get the base filename without extension
+    base_name = os.path.splitext(os.path.basename(puml_file))[0]
+    output_file = os.path.join(output_subdir, f"{base_name}.{format}")
+
+    # Check if the output file already exists and is newer than the input file
+    if os.path.exists(output_file):
+        puml_mtime = os.path.getmtime(puml_file)
+        output_mtime = os.path.getmtime(output_file)
+        if output_mtime > puml_mtime:
+            print(f"Skipping {puml_file} (already rendered and up to date)")
+            return True
+
+    # Create a PlantUML server instance with the appropriate URL for the format
+    if format.lower() == "svg":
+        plantuml_server = plantuml.PlantUML(url=PLANTUML_SERVER_SVG)
+    else:
+        plantuml_server = plantuml.PlantUML(url=PLANTUML_SERVER_PNG)
+
+    try:
+        # Generate the diagram
+        print(f"Rendering {puml_file} to {format.upper()}...")
+        plantuml_server.processes_file(puml_file, outfile=output_file)
+        print(f"Saved to {output_file}")
+        return True
+    except Exception as e:
+        print(f"Error rendering {puml_file}: {e}")
+        return False
+
+
+def update_index_html(output_dir=None):
+    """
+    Update the index.html file with the new diagrams.
+
+    Args:
+        output_dir (str): Directory containing rendered images
+    """
+    if output_dir is None:
+        output_dir = OUTPUT_DIR
+
+    index_path = os.path.join(output_dir, "index.html")
+    if not os.path.exists(index_path):
+        print(f"Index file not found at {index_path}")
+        return
+
+    # Read the index.html file
+    with open(index_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Find the scanDiagramsInFolder function
+    pattern = r"function scanDiagramsInFolder\(folder\) \{(.*?)return \[\];\s*\}"
+    match = re.search(pattern, content, re.DOTALL)
+    if not match:
+        print("Could not find scanDiagramsInFolder function in index.html")
+        return
+
+    # Get all diagram folders
+    folders = {}
+    for root, _, files in os.walk(output_dir):
+        if root == output_dir:
+            continue
+
+        folder_name = os.path.basename(root)
+        if folder_name not in folders:
+            folders[folder_name] = []
+
+        # Get all SVG files in this folder
+        for file in files:
+            if file.endswith(".svg"):
+                diagram_name = os.path.splitext(file)[0]
+                folders[folder_name].append(diagram_name)
+
+    # Build the new function content
+    new_function = "function scanDiagramsInFolder(folder) {\n"
+    new_function += "        // In a browser environment with local files, we can't use fetch to check if files exist\n"
+    new_function += "        // So we'll just return the diagrams we know exist based on the folder\n"
+    new_function += "        \n"
+
+    # Add each folder's diagrams
+    first_folder = True
+    for folder, diagrams in folders.items():
+        if diagrams:
+            if first_folder:
+                new_function += f"        if (folder === '{folder}') {{\n"
+                first_folder = False
+            else:
+                new_function += f"        else if (folder === '{folder}') {{\n"
+
+            # Format the diagrams list as a JavaScript array
+            diagrams_str = str(diagrams).replace("'", '"')
+            new_function += f"          return {diagrams_str};\n"
+            new_function += "        }"
+
+    # Add the default case
+    if first_folder:
+        # No folders with diagrams found
+        new_function += "        return [];\n"
+    else:
+        new_function += " else {\n"
+        new_function += "          return [];\n"
+        new_function += "        }\n"
+
+    new_function += "        \n"
+    new_function += "        return [];\n"
+    new_function += "      }"
+
+    # Replace the function in the content
+    new_content = re.sub(pattern, new_function, content, flags=re.DOTALL)
+
+    # Write the updated content back to the file
+    with open(index_path, "w", encoding="utf-8") as f:
+        f.write(new_content)
+
+    print(
+        f"Updated index.html with {sum(len(diagrams) for diagrams in folders.values())} diagrams"
+    )
+
+
+def render_all_diagrams(directory=SOURCE_DIR, output_dir=None, format=DEFAULT_FORMAT):
+    """
+    Render all PlantUML diagrams in the specified directory.
+
+    Args:
+        directory (str): Directory containing PlantUML files
+        output_dir (str): Directory to save rendered images
+        format (str): Output format (png or svg)
+    """
+    # Find all .puml files in the directory and its subdirectories
+    puml_files = []
+    for root, _, files in os.walk(directory):
+        for file in files:
+            if file.endswith(".puml"):
+                puml_files.append(os.path.join(root, file))
+
+    if not puml_files:
+        print(f"No .puml files found in {directory}")
+        return
+
+    # Create output directory if not specified
+    if output_dir is None:
+        output_dir = OUTPUT_DIR
+
+    # Render each diagram
+    success_count = 0
+    for puml_path in puml_files:
+        if render_diagram(puml_path, output_dir, format):
+            success_count += 1
+
+    # Print summary
+    print(f"\nRendered {success_count} of {len(puml_files)} diagrams to {output_dir}")
+
+    # Update the index.html file
+    update_index_html(output_dir)
+
+
+def parse_args():
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(description="Render PlantUML diagrams to images")
+    parser.add_argument(
+        "--format",
+        choices=FORMATS,
+        default=DEFAULT_FORMAT,
+        help=f"Output format ({' or '.join(FORMATS)})",
+    )
+    parser.add_argument(
+        "--source",
+        default=SOURCE_DIR,
+        help="Source directory for PlantUML files",
+    )
+    parser.add_argument(
+        "--output", default=None, help="Output directory for rendered images"
+    )
+    return parser.parse_args()
+
+
+def main():
+    """Main function."""
+    # Parse command-line arguments
+    args = parse_args()
+
+    # Render all diagrams
+    render_all_diagrams(args.source, args.output, args.format)
+
+    print("\nDone!")
+
+
+if __name__ == "__main__":
+    main()
+
+================
+File: test_code_analyzer.py
+================
+"""
+Test Code Analyzer
+
+This script tests the code analyzer by analyzing the code_analyzer.py file itself
+and generating a class diagram from it.
+"""
+
+import logging
+import os
+import sys
+
+from utils.puml.code_analyzer import analyze_file, generate_class_diagram, save_diagram
+from utils.puml.config import OUTPUT_DIR
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    handlers=[logging.StreamHandler()],
+)
+logger = logging.getLogger("test_code_analyzer")
+
+
+def test_code_analyzer():
+    """Test the code analyzer by analyzing itself."""
+    # Get the path to the code_analyzer.py file
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    code_analyzer_path = os.path.join(script_dir, "code_analyzer.py")
+
+    # Make sure the file exists
+    if not os.path.exists(code_analyzer_path):
+        logger.error(f"Code analyzer file not found: {code_analyzer_path}")
+        return 1
+
+    # Analyze the file
+    logger.info(f"Analyzing file: {code_analyzer_path}")
+    visitor = analyze_file(code_analyzer_path)
+    if not visitor:
+        logger.error("Failed to analyze the file")
+        return 1
+
+    # Generate a class diagram
+    logger.info("Generating class diagram")
+    diagram = generate_class_diagram([visitor], include_functions=True)
+
+    # Create the output directory if it doesn't exist
+    code_analysis_dir = os.path.join(OUTPUT_DIR, "code_analysis")
+    os.makedirs(code_analysis_dir, exist_ok=True)
+
+    # Save the diagram
+    output_file = os.path.join(code_analysis_dir, "code_analyzer_class_diagram.puml")
+    save_diagram(diagram, output_file)
+
+    logger.info(f"Saved diagram to {output_file}")
+    logger.info(
+        "You can render it using: python -m utils.puml.cli render --file=code_analysis/code_analyzer_class_diagram.puml"
+    )
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(test_code_analyzer())
+
+================
+File: test_puml.py
+================
+"""
+PlantUML Utilities Test Script
+
+This script tests the PlantUML utilities to ensure they are working correctly.
+It checks that the diagrams can be loaded and rendered.
+
+Usage:
+    python test_puml.py
+"""
+
+import os
+import unittest
+
+# Import the puml modules
+from utils.puml.render_diagrams import DEFAULT_SOURCE_DIR, render_diagram
+
+
+class TestPlantUML(unittest.TestCase):
+    """Test case for PlantUML utilities."""
+
+    def setUp(self):
+        """Set up the test case."""
+        # Get the directory containing this script
+        self.script_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Create a temporary output directory
+        self.output_dir = os.path.join(self.script_dir, "test_output")
+        os.makedirs(self.output_dir, exist_ok=True)
+
+    def tearDown(self):
+        """Clean up after the test case."""
+        # Remove the temporary output directory
+        for file in os.listdir(self.output_dir):
+            os.remove(os.path.join(self.output_dir, file))
+        os.rmdir(self.output_dir)
+
+    def test_diagram_files_exist(self):
+        """Test that the diagram files exist."""
+        # Check that the diagram files exist
+        diagram_files = [
+            "architecture/system_architecture.puml",
+            "database/database_schema.puml",
+        ]
+
+        for file in diagram_files:
+            file_path = os.path.join(DEFAULT_SOURCE_DIR, file)
+            self.assertTrue(
+                os.path.exists(file_path), f"Diagram file not found: {file_path}"
+            )
+
+    def test_render_diagram_png(self):
+        """Test that a diagram can be rendered to PNG."""
+        # Get the path to a diagram file
+        diagram_file = os.path.join(
+            DEFAULT_SOURCE_DIR, "architecture/system_architecture.puml"
+        )
+
+        # Render the diagram with explicit output directory
+        result = render_diagram(diagram_file, output_dir=self.output_dir, format="png")
+
+        # Check that the rendering was successful
+        self.assertTrue(result, "Diagram rendering failed")
+
+        # Check that the output file was created (with preserved directory structure)
+        output_file = os.path.join(
+            self.output_dir, "architecture", "system_architecture.png"
+        )
+        self.assertTrue(
+            os.path.exists(output_file), f"Output file not found: {output_file}"
+        )
+
+    def test_render_diagram_svg(self):
+        """Test that a diagram can be rendered to SVG."""
+        # Get the path to a diagram file
+        diagram_file = os.path.join(DEFAULT_SOURCE_DIR, "database/database_schema.puml")
+
+        # Render the diagram with explicit output directory
+        result = render_diagram(diagram_file, output_dir=self.output_dir, format="svg")
+
+        # Check that the rendering was successful
+        self.assertTrue(result, "Diagram rendering failed")
+
+        # Check that the output file was created (with preserved directory structure)
+        output_file = os.path.join(self.output_dir, "database", "database_schema.svg")
+        self.assertTrue(
+            os.path.exists(output_file), f"Output file not found: {output_file}"
+        )
+
+
+def main():
+    """Run the tests."""
+    unittest.main()
+
+
+if __name__ == "__main__":
+    main()
+
+================
+File: viewer/index.html
+================
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlantUML Diagram Viewer</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+            height: 100vh;
+            overflow: hidden;
+        }
+        .container {
+            width: 100%;
+            height: calc(100vh - 60px);
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+        .header {
+            background-color: #333;
+            color: white;
+            padding: 10px 20px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+        }
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .sidebar {
+            width: 250px;
+            background-color: white;
+            border-right: 1px solid #ddd;
+            padding: 10px;
+            height: 100%;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            background-color: white;
+            height: 100%;
+            overflow-y: auto;
+        }
+        .folder {
+            margin-bottom: 15px;
+        }
+        .folder-title {
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px;
+            background-color: #f0f0f0;
+            border-radius: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .folder-title:hover {
+            background-color: #e0e0e0;
+        }
+        .diagram-list {
+            margin-top: 5px;
+            margin-left: 10px;
+        }
+        .diagram-item {
+            padding: 5px;
+            cursor: pointer;
+            border-radius: 3px;
+        }
+        .diagram-item:hover {
+            background-color: #f0f0f0;
+        }
+        .diagram-item.active {
+            background-color: #e6f7ff;
+            font-weight: bold;
+        }
+        .diagram-container {
+            text-align: center;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+            background-color: #f8f9fa;
+            overflow: hidden;
+            height: 75vh;
+        }
+        .diagram-container img {
+            max-width: none;
+            border: none;
+            display: block;
+        }
+        .format-toggle {
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        .format-toggle button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .format-toggle button.active {
+            background-color: #007bff;
+            color: white;
+            border-color: #007bff;
+        }
+        .zoom-controls {
+            margin-bottom: 10px;
+            text-align: right;
+        }
+        .zoom-controls button {
+            padding: 5px 10px;
+            margin-left: 5px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+        .no-diagram {
+            text-align: center;
+            margin-top: 100px;
+            color: #666;
+        }
+        .loading {
+            text-align: center;
+            margin-top: 100px;
+            color: #666;
+        }
+        .error {
+            color: #d9534f;
+            padding: 10px;
+            background-color: #f9f2f2;
+            border-radius: 5px;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        // Main App component
+        const App = () => {
+            const [folders, setFolders] = React.useState({});
+            const [loading, setLoading] = React.useState(true);
+            const [error, setError] = React.useState(null);
+            const [selectedFolder, setSelectedFolder] = React.useState(null);
+            const [selectedDiagram, setSelectedDiagram] = React.useState(null);
+            const [format, setFormat] = React.useState('svg');
+            const [expandedFolders, setExpandedFolders] = React.useState({});
+            const [zoom, setZoom] = React.useState(1);
+
+            // Load diagram data
+            React.useEffect(() => {
+                const loadDiagrams = async () => {
+                    try {
+                        // In a real app, this would be an API call
+                        // For now, we'll just scan the output directory
+                        const data = await scanDiagrams();
+                        setFolders(data);
+                        
+                        // Select the first folder and diagram by default
+                        if (Object.keys(data).length > 0) {
+                            const firstFolder = Object.keys(data)[0];
+                            setSelectedFolder(firstFolder);
+                            setExpandedFolders({ [firstFolder]: true });
+                            
+                            if (data[firstFolder].length > 0) {
+                                setSelectedDiagram(data[firstFolder][0]);
+                            }
+                        }
+                        
+                        setLoading(false);
+                    } catch (err) {
+                        setError(err.message);
+                        setLoading(false);
+                    }
+                };
+                
+                loadDiagrams();
+            }, []);
+
+            // Function to scan for diagrams
+            const scanDiagrams = async () => {
+                try {
+                    // This is a client-side function that attempts to scan the output directory
+                    const outputDir = '../../../docs/diagrams/output';
+                    const knownFolders = ['architecture', 'classifier', 'database', 'code_analysis'];
+                    const result = {};
+                    
+                    // For architecture folder, we know these diagrams exist
+                    result['architecture'] = ['puml_utilities', 'puml_viewer_class_diagram'];
+                    
+                    // For classifier folder
+                    result['classifier'] = ['classifier_model_diagram', 'classifier_data_model_diagram', 'classifier_pipeline_diagram'];
+                    
+                    // For database folder
+                    result['database'] = ['database_schema'];
+                    
+                    // For code_analysis folder
+                    result['code_analysis'] = ['code_analyzer_class_diagram', 'core_module_diagram'];
+                    
+                    console.log("Loaded diagrams:", result);
+                    return result;
+                } catch (err) {
+                    console.error(`Error scanning diagrams: ${err.message}`);
+                    // Return a default structure in case of error
+                    return {
+                        'architecture': ['puml_utilities', 'puml_viewer_class_diagram'],
+                        'code_analysis': ['code_analyzer_class_diagram', 'core_module_diagram']
+                    };
+                }
+            };
+
+            // Toggle folder expansion
+            const toggleFolder = (folder) => {
+                setExpandedFolders({
+                    ...expandedFolders,
+                    [folder]: !expandedFolders[folder]
+                });
+            };
+
+            // Select a diagram
+            const selectDiagram = (folder, diagram) => {
+                setSelectedFolder(folder);
+                setSelectedDiagram(diagram);
+                setZoom(1); // Reset zoom when changing diagrams
+            };
+
+            // Format diagram name for display
+            const formatDiagramName = (name) => {
+                return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+            };
+
+            // State for panning and zooming
+            const [transform, setTransform] = React.useState({
+                x: 0,
+                y: 0,
+                scale: 1
+            });
+            const [isDragging, setIsDragging] = React.useState(false);
+            const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
+            const containerRef = React.useRef(null);
+
+            // Zoom in
+            const zoomIn = () => {
+                setTransform(prev => ({
+                    ...prev,
+                    scale: Math.min(prev.scale + 0.2, 5)
+                }));
+            };
+
+            // Zoom out
+            const zoomOut = () => {
+                setTransform(prev => ({
+                    ...prev,
+                    scale: Math.max(prev.scale - 0.2, 0.2)
+                }));
+            };
+
+            // Reset zoom and position
+            const resetView = () => {
+                setTransform({
+                    x: 0,
+                    y: 0,
+                    scale: 1
+                });
+            };
+
+            // Start dragging
+            const handleMouseDown = (e) => {
+                // Only handle left mouse button
+                if (e.button !== 0) return;
+                
+                setIsDragging(true);
+                setDragStart({
+                    x: e.clientX - transform.x,
+                    y: e.clientY - transform.y
+                });
+                
+                // Change cursor
+                if (containerRef.current) {
+                    containerRef.current.style.cursor = 'grabbing';
+                }
+            };
+
+            // Handle dragging
+            const handleMouseMove = (e) => {
+                if (!isDragging) return;
+                
+                setTransform(prev => ({
+                    ...prev,
+                    x: e.clientX - dragStart.x,
+                    y: e.clientY - dragStart.y
+                }));
+            };
+
+            // End dragging
+            const handleMouseUp = () => {
+                setIsDragging(false);
+                
+                // Reset cursor
+                if (containerRef.current) {
+                    containerRef.current.style.cursor = 'grab';
+                }
+            };
+
+            // Handle mouse wheel for zooming
+            const handleWheel = (e) => {
+                e.preventDefault();
+                
+                // Calculate zoom factor
+                const delta = e.deltaY < 0 ? 0.2 : -0.2;
+                const newScale = Math.max(0.2, Math.min(5, transform.scale + delta));
+                
+                // Get mouse position relative to container
+                const containerRect = containerRef.current.getBoundingClientRect();
+                const mouseX = e.clientX - containerRect.left;
+                const mouseY = e.clientY - containerRect.top;
+                
+                // Calculate new position to zoom toward mouse position
+                const scaleRatio = newScale / transform.scale;
+                const newX = transform.x - ((mouseX - transform.x) * (scaleRatio - 1));
+                const newY = transform.y - ((mouseY - transform.y) * (scaleRatio - 1));
+                
+                setTransform({
+                    x: newX,
+                    y: newY,
+                    scale: newScale
+                });
+            };
+
+            return (
+                <div>
+                    <div className="header">
+                        <h1>PlantUML Diagram Viewer</h1>
+                    </div>
+                    <div className="container">
+                        <div className="sidebar">
+                            {loading ? (
+                                <div>Loading...</div>
+                            ) : error ? (
+                                <div className="error">{error}</div>
+                            ) : Object.keys(folders).length === 0 ? (
+                                <div>No diagrams found</div>
+                            ) : (
+                                Object.keys(folders).map(folder => (
+                                    <div className="folder" key={folder}>
+                                        <div 
+                                            className="folder-title" 
+                                            onClick={() => toggleFolder(folder)}
+                                        >
+                                            {folder.charAt(0).toUpperCase() + folder.slice(1)}
+                                            <span>{expandedFolders[folder] ? '▼' : '▶'}</span>
+                                        </div>
+                                        {expandedFolders[folder] && (
+                                            <div className="diagram-list">
+                                                {folders[folder].map(diagram => (
+                                                    <div 
+                                                        className={`diagram-item ${selectedFolder === folder && selectedDiagram === diagram ? 'active' : ''}`}
+                                                        key={diagram}
+                                                        onClick={() => selectDiagram(folder, diagram)}
+                                                    >
+                                                        {formatDiagramName(diagram)}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </div>
+                                ))
+                            )}
+                        </div>
+                        <div className="content">
+                            {loading ? (
+                                <div className="loading">Loading diagrams...</div>
+                            ) : error ? (
+                                <div className="error">{error}</div>
+                            ) : !selectedDiagram ? (
+                                <div className="no-diagram">Select a diagram from the sidebar</div>
+                            ) : (
+                                <div>
+                                    <div className="format-toggle">
+                                        <button 
+                                            className={format === 'png' ? 'active' : ''}
+                                            onClick={() => setFormat('png')}
+                                        >
+                                            PNG
+                                        </button>
+                                        <button 
+                                            className={format === 'svg' ? 'active' : ''}
+                                            onClick={() => setFormat('svg')}
+                                        >
+                                            SVG
+                                        </button>
+                                    </div>
+                                    <div className="zoom-controls">
+                                        <button onClick={zoomOut}>-</button>
+                                        <button onClick={resetView}>Reset</button>
+                                        <button onClick={zoomIn}>+</button>
+                                        <span style={{ marginLeft: '10px' }}>{Math.round(transform.scale * 100)}%</span>
+                                    </div>
+                                    <div className="diagram-container">
+                                        <div
+                                            ref={containerRef}
+                                            onMouseDown={handleMouseDown}
+                                            onMouseMove={handleMouseMove}
+                                            onMouseUp={handleMouseUp}
+                                            onMouseLeave={handleMouseUp}
+                                            onWheel={handleWheel}
+                                            style={{
+                                                overflow: 'hidden',
+                                                position: 'relative',
+                                                height: '100%',
+                                                width: '100%',
+                                                cursor: isDragging ? 'grabbing' : 'grab',
+                                                userSelect: 'none'
+                                            }}
+                                        >
+                                            <div style={{
+                                                position: 'absolute',
+                                                transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
+                                                transformOrigin: '0 0',
+                                                transition: isDragging ? 'none' : 'transform 0.1s ease-out'
+                                            }}>
+                                                <img
+                                                    src={`../../../docs/diagrams/output/${selectedFolder}/${selectedDiagram}.${format}`}
+                                                    alt={formatDiagramName(selectedDiagram)}
+                                                    style={{
+                                                        maxWidth: 'none',
+                                                        display: 'block',
+                                                        pointerEvents: 'none' // Prevents image from capturing mouse events
+                                                    }}
+                                                    onError={(e) => {
+                                                        console.error(`Failed to load image: ${e.target.src}`);
+                                                        // Try the alternative format
+                                                        const altFormat = format === 'svg' ? 'png' : 'svg';
+                                                        const altSrc = `../../../docs/diagrams/output/${selectedFolder}/${selectedDiagram}.${altFormat}`;
+                                                        
+                                                        // Set a flag to prevent infinite error loops
+                                                        if (!e.target.getAttribute('data-tried-alt')) {
+                                                            e.target.setAttribute('data-tried-alt', 'true');
+                                                            e.target.src = altSrc;
+                                                        } else {
+                                                            // If both formats fail, show a placeholder
+                                                            e.target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox%3D%220 0 400 300%22%3E%3Crect width%3D%22400%22 height%3D%22300%22 fill%3D%22%23f8f9fa%22%2F%3E%3Ctext x%3D%22150%22 y%3D%22150%22 font-family%3D%22Arial%22 font-size%3D%2220%22 fill%3D%22%23495057%22%3EDiagram not found%3C%2Ftext%3E%3C%2Fsvg%3E';
+                                                            e.target.style.border = '1px dashed #dc3545';
+                                                            e.target.style.padding = '20px';
+                                                            e.target.style.boxSizing = 'border-box';
+                                                        }
+                                                    }}
+                                                />
+                                            </div>
+                                            <div className="zoom-info" style={{
+                                                position: 'absolute',
+                                                bottom: '10px',
+                                                right: '10px',
+                                                background: 'rgba(255, 255, 255, 0.7)',
+                                                padding: '5px 10px',
+                                                borderRadius: '4px',
+                                                fontSize: '12px'
+                                            }}>
+                                                {Math.round(transform.scale * 100)}%
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the app
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
+
+
+
+================================================================
+End of Codebase
+================================================================
