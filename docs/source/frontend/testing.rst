@@ -282,4 +282,3 @@ Best Practices
    * Keep tests simple
    * Avoid test duplication
    * Update tests with code changes
-

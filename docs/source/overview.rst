@@ -76,3 +76,4 @@ The project includes several make commands to help with development:
 * ``make migrate`` - Run database migrations
 * ``make docs`` - Build documentation
 
+

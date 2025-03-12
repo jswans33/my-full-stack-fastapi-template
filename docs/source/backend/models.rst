@@ -199,3 +199,4 @@ Model Mixins
         id: Optional[int] = Field(default=None, primary_key=True)
         # ... other fields
 
+

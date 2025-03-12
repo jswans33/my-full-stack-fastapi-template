@@ -227,3 +227,4 @@ Quick Reference
    # Generate Frontend Client
    ./scripts/generate-client.sh
 
+
