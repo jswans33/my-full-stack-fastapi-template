@@ -197,75 +197,21 @@
                     const knownFolders = ['architecture', 'classifier', 'database'];
                     const result = {};
                     
-                    // For each known folder, dynamically scan for SVG files
-                    for (const folder of knownFolders) {
-                        try {
-                            const folderPath = `${outputDir}/${folder}`;
-                            
-                            // In a browser environment, we can't directly scan directories
-                            // So we'll use a workaround to check for common diagram names
-                            
-                            // Start with an empty array for this folder
-                            const diagrams = [];
-                            
-                            // First, add the diagrams we know about
-                            const knownDiagrams = {
-                                'architecture': ['system_architecture', 'puml_utilities'],
-                                'classifier': ['classifier_model_diagram', 'classifier_data_model_diagram', 'classifier_pipeline_diagram'],
-                                'database': ['database_schema']
-                            };
-                            
-                            // Only add diagrams from knownDiagrams if the folder exists in knownDiagrams
-                            if (knownDiagrams[folder]) {
-                                // Check each diagram to see if it exists before adding it
-                                for (const diagram of knownDiagrams[folder]) {
-                                    try {
-                                        // We'll do a simple check by creating an Image object
-                                        // and seeing if it loads successfully
-                                        const img = new Image();
-                                        img.src = `${outputDir}/${folder}/${diagram}.svg`;
-                                        
-                                        // If the image loads, add it to the diagrams array
-                                        img.onload = () => {
-                                            if (!diagrams.includes(diagram)) {
-                                                diagrams.push(diagram);
-                                                console.log(`Found diagram: ${folder}/${diagram}`);
-                                            }
-                                        };
-                                        
-                                        // If the image fails to load, don't add it
-                                        img.onerror = () => {
-                                            console.log(`Diagram not found: ${folder}/${diagram}`);
-                                        };
-                                    } catch (e) {
-                                        console.log(`Error checking diagram: ${folder}/${diagram}`);
-                                    }
-                                }
-                            }
-                            
-                            // If we found diagrams, add them to the result
-                            if (diagrams.length > 0) {
-                                // Remove duplicates
-                                result[folder] = [...new Set(diagrams)];
-                            }
-                            
-                            console.log(`Found ${diagrams.length} diagrams in ${folder}`);
-                        } catch (err) {
-                            console.warn(`Could not scan folder ${folder}: ${err.message}`);
-                        }
-                    }
+                    // For architecture folder, we know these diagrams exist
+                    result['architecture'] = ['puml_utilities', 'puml_viewer_class_diagram'];
                     
-                    // If no folders have diagrams, return a default structure
-                    if (Object.keys(result).length === 0) {
-                        // Add architecture folder with puml_utilities diagram
-                        result['architecture'] = ['puml_utilities'];
-                    }
+                    // For classifier folder
+                    result['classifier'] = ['classifier_model_diagram', 'classifier_data_model_diagram', 'classifier_pipeline_diagram'];
                     
+                    // For database folder
+                    result['database'] = ['database_schema'];
+                    
+                    console.log("Loaded diagrams:", result);
                     return result;
                 } catch (err) {
                     console.error(`Error scanning diagrams: ${err.message}`);
                     // Return a default structure in case of error
-                    return { 'architecture': ['puml_utilities'] };
+                    return { 'architecture': ['puml_utilities', 'puml_viewer_class_diagram'] };
                 }
             };
 
