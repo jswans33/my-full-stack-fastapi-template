@@ -1,0 +1,11 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "run_logging_example" {
+  class Functions <<(F,orange)>> {
+    + main() -> Any
+  }
+}
+
+' Relationships
+@enduml

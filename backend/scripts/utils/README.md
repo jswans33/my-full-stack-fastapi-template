@@ -9,6 +9,7 @@ This utility generates PlantUML class diagrams from Python source code. It analy
 - **Method Parameter Parsing**: Support for complex type annotations, default values, \*args, \*\*kwargs
 - **Visibility Indicators**: Public/private/protected indicators for attributes and methods
 - **Relationship Detection**: Detects associations, compositions, and inheritance from type annotations
+- **Import Tracking**: Identifies and displays imports (classes, functions, and types) between modules
 - **Comprehensive CLI**: Multiple input options, configurable output directory, verbosity control
 
 ## Installation
@@ -35,6 +36,7 @@ python backend/scripts/utils/generate_uml.py --app-dir
 ```
 usage: generate_uml.py [-h] (-f FILE | -d DIRECTORY | --app-dir) [-o OUTPUT]
                       [--subdirs SUBDIRS [SUBDIRS ...]] [--recursive]
+                      [--list-only] [--show-imports]
                       [-v | -q | --debug]
 
 Generate PlantUML class diagrams from Python source code.
@@ -50,6 +52,8 @@ options:
   --subdirs SUBDIRS [SUBDIRS ...]
                         List of subdirectories to process (only with --directory or --app-dir) (default: ['models', 'services'])
   --recursive           Recursively process directories (default: False)
+  --list-only           Only list Python files without generating UML diagrams (for troubleshooting) (default: False)
+  --show-imports        Show imports (classes, functions, and types) in the UML diagrams (default: False)
   -v, --verbose         Enable verbose output (default: False)
   -q, --quiet           Suppress all output except errors (default: False)
   --debug               Enable debug logging (default: False)
@@ -97,6 +101,22 @@ python backend/scripts/utils/generate_uml.py -d backend/app -o custom/output/pat
 
 This will save the generated UML diagrams to the specified output directory.
 
+#### Show Imports in UML Diagrams
+
+```bash
+python backend/scripts/utils/generate_uml.py -d backend/app --show-imports
+```
+
+This will include import relationships in the UML diagrams, showing which classes import other classes, functions, and types. This is particularly useful for understanding dependencies between modules.
+
+#### List Files Without Generating UML Diagrams
+
+```bash
+python backend/scripts/utils/generate_uml.py -d backend/app --list-only
+```
+
+This will only list the Python files found in the directory without generating UML diagrams. This is useful for troubleshooting when you want to see which files would be processed.
+
 #### Enable Verbose Logging
 
 ```bash
@@ -116,6 +136,7 @@ The UML diagrams include:
 - Inheritance relationships
 - Associations and compositions detected from type annotations
 - Classes grouped by source file in packages
+- Import relationships (when using the `--show-imports` option)
 
 ## Viewing UML Diagrams
 

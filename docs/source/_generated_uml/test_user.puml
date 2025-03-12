@@ -1,0 +1,19 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "test_user" {
+  class Functions <<(F,orange)>> {
+    + test_create_user(db: Session) -> None
+    + test_authenticate_user(db: Session) -> None
+    + test_not_authenticate_user(db: Session) -> None
+    + test_check_if_user_is_active(db: Session) -> None
+    + test_check_if_user_is_active_inactive(db: Session) -> None
+    + test_check_if_user_is_superuser(db: Session) -> None
+    + test_check_if_user_is_superuser_normal_user(db: Session) -> None
+    + test_get_user(db: Session) -> None
+    + test_update_user(db: Session) -> None
+  }
+}
+
+' Relationships
+@enduml

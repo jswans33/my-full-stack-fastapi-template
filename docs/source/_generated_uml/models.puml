@@ -1,0 +1,102 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "models" {
+  class UserBase {
+    + email: EmailStr
+    + is_active: bool
+    + is_superuser: bool
+    + full_name: str | None
+  }
+  class UserCreate {
+    + password: str
+  }
+  class UserRegister {
+    + email: EmailStr
+    + password: str
+    + full_name: str | None
+  }
+  class UserUpdate {
+    + email: EmailStr | None
+    + password: str | None
+  }
+  class UserUpdateMe {
+    + full_name: str | None
+    + email: EmailStr | None
+  }
+  class UpdatePassword {
+    + current_password: str
+    + new_password: str
+  }
+  class User {
+    + id: uuid.UUID
+    + hashed_password: str
+    + items: list['Item']
+  }
+  class UserPublic {
+    + id: uuid.UUID
+  }
+  class UsersPublic {
+    + data: list[UserPublic]
+    + count: int
+  }
+  class ItemBase {
+    + title: str
+    + description: str | None
+  }
+  class ItemCreate {
+  }
+  class ItemUpdate {
+    + title: str | None
+  }
+  class Item {
+    + id: uuid.UUID
+    + title: str
+    + owner_id: uuid.UUID
+    + owner: User | None
+  }
+  class ItemPublic {
+    + id: uuid.UUID
+    + owner_id: uuid.UUID
+  }
+  class ItemsPublic {
+    + data: list[ItemPublic]
+    + count: int
+  }
+  class Message {
+    + message: str
+  }
+  class Token {
+    + access_token: str
+    + token_type: str
+  }
+  class TokenPayload {
+    + sub: str | None
+  }
+  class NewPassword {
+    + token: str
+    + new_password: str
+  }
+}
+
+' Relationships
+SQLModel <|-- "models".UserBase
+UserBase <|-- "models".UserCreate
+SQLModel <|-- "models".UserRegister
+UserBase <|-- "models".UserUpdate
+SQLModel <|-- "models".UserUpdateMe
+SQLModel <|-- "models".UpdatePassword
+UserBase <|-- "models".User
+UserBase <|-- "models".UserPublic
+SQLModel <|-- "models".UsersPublic
+SQLModel <|-- "models".ItemBase
+ItemBase <|-- "models".ItemCreate
+ItemBase <|-- "models".ItemUpdate
+ItemBase <|-- "models".Item
+ItemBase <|-- "models".ItemPublic
+SQLModel <|-- "models".ItemsPublic
+SQLModel <|-- "models".Message
+SQLModel <|-- "models".Token
+SQLModel <|-- "models".TokenPayload
+SQLModel <|-- "models".NewPassword
+@enduml

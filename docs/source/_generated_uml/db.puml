@@ -1,0 +1,11 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "db" {
+  class Functions <<(F,orange)>> {
+    + init_db(session: Session) -> None
+  }
+}
+
+' Relationships
+@enduml

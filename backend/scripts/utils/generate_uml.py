@@ -139,19 +139,54 @@ def find_class_relationships(
 # Type aliases for clarity
 ClassAttributes = tuple[str, str, str]  # (name, type, visibility)
 ClassRelationship = tuple[str, str]  # (relationship_type, target_class)
-ClassInfo = dict[str, str | list[str] | list[ClassAttributes] | list[ClassRelationship]]
+ImportInfo = tuple[str, str]  # (module, name)
+FunctionInfo = dict[str, str | list[str]]  # Function information
+ClassInfo = dict[
+    str,
+    str
+    | list[str]
+    | list[ClassAttributes]
+    | list[ClassRelationship]
+    | list[ImportInfo],
+]
+
+
+def parse_imports(tree: ast.AST) -> list[tuple[str, str]]:
+    """Parse imports from an AST tree.
+
+    Returns a list of tuples (module, name) for each imported name.
+    """
+    imports = []
+
+    for node in ast.walk(tree):
+        # Handle 'import module' statements
+        if isinstance(node, ast.Import):
+            for name in node.names:
+                imports.append((name.name, name.asname or name.name))
+
+        # Handle 'from module import name' statements
+        elif isinstance(node, ast.ImportFrom):
+            module = node.module or ""
+            for name in node.names:
+                imports.append((f"{module}.{name.name}", name.asname or name.name))
+
+    return imports
 
 
 def parse_classes_from_file(
     filepath: str,
-) -> dict[str, ClassInfo]:
-    """Parse Python classes, their inheritance, methods, attributes, and relationships."""
+) -> tuple[dict[str, ClassInfo], list[FunctionInfo]]:
+    """Parse Python classes, their inheritance, methods, attributes, relationships, and standalone functions."""
     file_path = Path(filepath)
     filename = file_path.name
     logger.info(f"Parsing file: {filename}")
 
     with open(file_path, encoding="utf-8") as file:
         tree = ast.parse(file.read(), filename=str(file_path))
+
+    # Parse imports
+    imports = parse_imports(tree)
+    logger.debug(f"Imports in {filename}: {imports}")
 
     # First pass: collect all class names
     class_names = {
@@ -212,88 +247,131 @@ def parse_classes_from_file(
                 "methods": methods,
                 "attributes": attributes,
                 "relationships": relationships,
+                "imports": imports,  # Add imports to class info
             }
 
-    return classes
+    # Extract standalone functions
+    functions = []
+    for node in ast.walk(tree):
+        if (
+            isinstance(node, ast.FunctionDef)
+            and not hasattr(node, "parent")
+            and not any(
+                isinstance(parent, ast.ClassDef)
+                for parent in ast.iter_child_nodes(node)
+            )
+        ):
+            function_name = node.name
+            function_signature = method_signature(node)
+            visibility = "+" if not function_name.startswith("_") else "-"
+            functions.append(
+                {
+                    "name": function_name,
+                    "signature": function_signature,
+                    "visibility": visibility,
+                    "imports": imports,
+                },
+            )
+
+    return classes, functions
 
 
-def generate_plantuml(classes: dict[str, ClassInfo]) -> str:
-    """Generate PlantUML code from class definitions."""
+def generate_plantuml(
+    classes_and_functions: tuple[dict[str, ClassInfo], list[FunctionInfo]],
+    filename: str,
+    show_imports: bool = False,
+) -> str:
+    """Generate PlantUML code from class definitions and functions for a specific file."""
+    classes_dict, functions_list = classes_and_functions
     uml_lines = [PLANTUML_START, *PLANTUML_SETTINGS]
 
-    # Group classes by filename
-    classes_by_file: dict[str, list[dict]] = {}
-    for class_info in classes.values():
-        # Cast filename to str since we know it's a string in the dictionary
-        filename = str(class_info.get("filename", "unknown"))
-        if filename not in classes_by_file:
-            classes_by_file[filename] = []
-        classes_by_file[filename].append(class_info)
+    # Create a package for the file
+    uml_lines.append(f'\npackage "{filename}" {{')
 
-    # First pass: output all classes grouped by file as packages
-    for filename, file_classes in classes_by_file.items():
-        # Create a package for each file
-        uml_lines.append(f'\npackage "{filename}" {{')
+    # Add functions to the package if any
+    if functions_list:
+        uml_lines.append("  class Functions <<(F,orange)>> {")
+        for function in functions_list:
+            visibility = function["visibility"]
+            signature = function["signature"]
+            uml_lines.append(f"    {visibility} {signature}")
+        uml_lines.append("  }")
 
-        # Add classes to the package
-        for class_info in file_classes:
-            uml_lines.append(f"  class {class_info['name']} {{")
+    # Add classes to the package
+    for class_info in classes_dict.values():
+        uml_lines.append(f"  class {class_info['name']} {{")
 
-            # Handle attributes
-            attributes: list[ClassAttributes] = class_info["attributes"]  # type: ignore
-            for attr in attributes:
-                attr_name, attr_type, visibility = attr
-                uml_lines.append(f"    {visibility} {attr_name}: {attr_type}")
+        # Handle attributes
+        attributes: list[ClassAttributes] = class_info["attributes"]  # type: ignore
+        for attr in attributes:
+            attr_name, attr_type, visibility = attr
+            uml_lines.append(f"    {visibility} {attr_name}: {attr_type}")
 
-            # Handle methods
-            for method in class_info["methods"]:
-                uml_lines.append(f"    {method}")  # Visibility is already included
+        # Handle methods
+        for method in class_info["methods"]:
+            uml_lines.append(f"    {method}")  # Visibility is already included
 
-            uml_lines.append("  }")
+        uml_lines.append("  }")
 
-        # Close the package
-        uml_lines.append("}")
+    # Close the package
+    uml_lines.append("}")
 
-    # Second pass: output all relationships
+    # Add imports section if show_imports is True
+    if show_imports and any(
+        "imports" in class_info for class_info in classes_dict.values()
+    ):
+        uml_lines.append("\n' Imports")
+        for class_info in classes_dict.values():
+            if "imports" in class_info:
+                class_name = class_info["name"]
+                qualified_name = f'"{filename}".{class_name}'
+
+                # Add import relationships
+                imports: list[ImportInfo] = class_info.get("imports", [])  # type: ignore
+                for module, name in imports:
+                    # Show imports for classes, functions, and types
+                    # Skip built-ins and standard library modules
+                    if not module.startswith(
+                        ("typing", "collections", "datetime", "builtins"),
+                    ):
+                        # Classes (start with uppercase)
+                        if name[0].isupper():
+                            uml_lines.append(
+                                f"note right of {qualified_name}: imports class {name} from {module}",
+                            )
+                        # Functions and types (don't start with underscore)
+                        elif not name.startswith("_"):
+                            uml_lines.append(
+                                f"note right of {qualified_name}: imports function/type {name} from {module}",
+                            )
+
+    # Add relationships
     uml_lines.append("\n' Relationships")
-    for class_info in classes.values():
+    for class_info in classes_dict.values():
         class_name = class_info["name"]
-        filename = class_info.get("filename", "unknown")
         qualified_name = f'"{filename}".{class_name}'
 
         # Add inheritance lines
         for base in class_info["bases"]:
-            # Check if base is in our classes to qualify it
-            base_qualified = base
-            for other_class in classes.values():
-                if other_class["name"] == base:
-                    base_qualified = (
-                        f'"{other_class.get("filename", "unknown")}".{base}'
-                    )
-                    break
-
-            uml_lines.append(f"{base_qualified} <|-- {qualified_name}")
+            # For now, we assume base classes might be in other files
+            uml_lines.append(f"{base} <|-- {qualified_name}")
 
         # Add other relationships
         if "relationships" in class_info:
             relationships: list[ClassRelationship] = class_info["relationships"]  # type: ignore
             for rel_type, target in relationships:
-                # Check if target is in our classes to qualify it
-                target_qualified = target
-                for other_class in classes.values():
-                    if other_class["name"] == target:
-                        target_qualified = (
-                            f'"{other_class.get("filename", "unknown")}".{target}'
-                        )
-                        break
-
-                uml_lines.append(f"{qualified_name} {rel_type} {target_qualified}")
+                # For now, we assume target classes might be in other files
+                uml_lines.append(f"{qualified_name} {rel_type} {target}")
 
     uml_lines.append(PLANTUML_END)
     return "\n".join(uml_lines)
 
 
-def generate_uml_for_file(file_path: str, output_dir: str) -> None:
+def generate_uml_for_file(
+    file_path: str,
+    output_dir: str,
+    show_imports: bool = False,
+) -> None:
     """Generate UML diagram for a single Python file."""
     file_path_obj = Path(file_path)
     filename = file_path_obj.stem  # Get filename without extension
@@ -301,15 +379,16 @@ def generate_uml_for_file(file_path: str, output_dir: str) -> None:
     logger.info(f"Generating UML for file: {file_path}")
 
     try:
-        # Parse classes from the file
-        classes = parse_classes_from_file(file_path)
+        # Parse classes and functions from the file
+        classes_and_functions = parse_classes_from_file(file_path)
+        classes_dict, functions_list = classes_and_functions
 
-        if not classes:
-            logger.warning(f"No classes found in file: {file_path}")
+        if not classes_dict and not functions_list:
+            logger.warning(f"No classes or functions found in file: {file_path}")
             return
 
-        # Generate PlantUML code
-        plantuml_code = generate_plantuml(classes)
+        # Generate PlantUML code - pass the filename explicitly and show_imports flag
+        plantuml_code = generate_plantuml(classes_and_functions, filename, show_imports)
 
         # Create output path
         output_path = Path(output_dir) / f"{filename}{PLANTUML_FILE_EXTENSION}"
@@ -325,7 +404,8 @@ def generate_uml_for_file(file_path: str, output_dir: str) -> None:
             f"Generated UML diagram for {filename}",
             extra={
                 "output_path": str(output_path),
-                "class_count": len(classes),
+                "class_count": len(classes_dict),
+                "function_count": len(functions_list),
             },
         )
     except Exception as e:
@@ -335,7 +415,12 @@ def generate_uml_for_file(file_path: str, output_dir: str) -> None:
         )
 
 
-def generate_uml_for_folder(src_dir: str, output_dir: str) -> None:
+def generate_uml_for_folder(
+    src_dir: str,
+    output_dir: str,
+    list_only: bool = False,
+    show_imports: bool = False,
+) -> None:
     """Generate UML diagrams for all Python files in a directory."""
     src_path = Path(src_dir)
 
@@ -348,22 +433,43 @@ def generate_uml_for_folder(src_dir: str, output_dir: str) -> None:
         logger.warning(f"Source directory does not exist: {src_path}")
         return
 
-    file_count = 0
-    for root, _, files in os.walk(src_path):
+    # List all Python files in the directory for troubleshooting
+    python_files = []
+    for root, dirs, files in os.walk(src_path):
         for file in files:
             if file.endswith(PYTHON_FILE_EXTENSION):
                 file_path = os.path.join(root, file)
-                generate_uml_for_file(file_path, output_dir)
-                file_count += 1
+                python_files.append(file_path)
 
-    if file_count == 0:
+    # Log the files found
+    if python_files:
+        logger.info(f"Found {len(python_files)} Python files in {src_path}")
+        for file_path in python_files:
+            logger.info(f"  - {file_path}")
+    else:
         logger.warning(f"No Python files found in directory: {src_path}")
+        return
+
+    # Process each file
+    file_count = 0
+    for file_path in python_files:
+        try:
+            generate_uml_for_file(file_path, output_dir)
+            file_count += 1
+        except Exception as e:
+            logger.error(f"Error processing file {file_path}: {e}")
+
+    logger.info(
+        f"Successfully processed {file_count} out of {len(python_files)} files in {src_path}",
+    )
 
 
 def generate_all(
     directory: str,
     output_dir: str,
     subdirs: list[str] | None = None,
+    list_only: bool = False,
+    show_imports: bool = False,
 ) -> None:
     """Generate UML diagrams for specified subdirectories."""
     if subdirs is None:
@@ -379,13 +485,13 @@ def generate_all(
     )
 
     # Process the base directory itself first
-    generate_uml_for_folder(directory, output_dir)
+    generate_uml_for_folder(directory, output_dir, list_only, show_imports)
 
     # Then process each subdirectory
     for subdir in subdirs:
         dir_path = os.path.join(directory, subdir)
         if os.path.exists(dir_path):
-            generate_uml_for_folder(dir_path, output_dir)
+            generate_uml_for_folder(dir_path, output_dir, list_only, show_imports)
         else:
             logger.warning(
                 "Directory not found",
@@ -469,6 +575,24 @@ For more information, see the README.md file in this directory.
         help="Recursively process directories",
     )
 
+    parser.add_argument(
+        "--list-only",
+        action="store_true",
+        help="Only list Python files without generating UML diagrams (for troubleshooting)",
+    )
+
+    parser.add_argument(
+        "--show-imports",
+        action="store_true",
+        help="Show imports (classes, functions, and types) in the UML diagrams",
+    )
+
+    parser.add_argument(
+        "--generate-report",
+        action="store_true",
+        help="Generate a report of files processed and the number of classes and functions found",
+    )
+
     # Verbosity options
     verbosity_group = parser.add_mutually_exclusive_group()
     verbosity_group.add_argument(
@@ -534,7 +658,12 @@ if __name__ == "__main__":
             exit(1)
 
         logger.info(f"Processing directory: {args.directory}")
-        generate_uml_for_folder(args.directory, args.output)
+        generate_uml_for_folder(
+            args.directory,
+            args.output,
+            args.list_only,
+            args.show_imports,
+        )
 
         # Process subdirectories if recursive flag is set
         if args.recursive:
@@ -542,7 +671,12 @@ if __name__ == "__main__":
                 dir_path = os.path.join(args.directory, subdir)
                 if os.path.exists(dir_path) and os.path.isdir(dir_path):
                     logger.info(f"Processing subdirectory: {dir_path}")
-                    generate_uml_for_folder(dir_path, args.output)
+                    generate_uml_for_folder(
+                        dir_path,
+                        args.output,
+                        args.list_only,
+                        args.show_imports,
+                    )
                 else:
                     logger.warning(f"Subdirectory not found: {dir_path}")
 

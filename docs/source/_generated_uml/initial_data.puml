@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "initial_data" {
+  class Functions <<(F,orange)>> {
+    + init() -> None
+    + main() -> None
+  }
+}
+
+' Relationships
+@enduml

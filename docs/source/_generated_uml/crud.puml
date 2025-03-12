@@ -1,0 +1,15 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "crud" {
+  class Functions <<(F,orange)>> {
+    + create_user() -> User
+    + update_user() -> Any
+    + get_user_by_email() -> User | None
+    + authenticate() -> User | None
+    + create_item() -> Item
+  }
+}
+
+' Relationships
+@enduml

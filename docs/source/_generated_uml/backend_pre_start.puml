@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "backend_pre_start" {
+  class Functions <<(F,orange)>> {
+    + init(db_engine: Engine) -> None
+    + main() -> None
+  }
+}
+
+' Relationships
+@enduml

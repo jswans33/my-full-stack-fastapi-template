@@ -1,0 +1,11 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "item" {
+  class Functions <<(F,orange)>> {
+    + create_random_item(db: Session) -> Item
+  }
+}
+
+' Relationships
+@enduml
