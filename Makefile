@@ -1,4 +1,4 @@
-.PHONY: help up down build test clean clean-py migrate generate-client lint format render-diagrams render-diagrams-png view-diagrams
+.PHONY: help up down build test clean clean-py migrate generate-client lint format render-diagrams render-diagrams-png view-diagrams docs
 
 # Default target
 help:
@@ -15,6 +15,7 @@ help:
 	@echo "  make generate-client - Generate frontend API client from OpenAPI schema"
 	@echo "  make lint            - Run linters on backend and frontend code"
 	@echo "  make format          - Format code in backend and frontend"
+	@echo "  make docs            - Build Sphinx documentation"
 
 
 # Start the development environment
@@ -103,3 +104,11 @@ frontend-install:
 # Create a new superuser
 create-superuser:
 	docker compose exec backend python -m app.initial_data
+
+# Build documentation
+docs:
+	cd docs && python -m sphinx source build/html
+
+# Build and open documentation
+docs-open: docs
+	start docs/build/html/index.html || xdg-open docs/build/html/index.html || open docs/build/html/index.html

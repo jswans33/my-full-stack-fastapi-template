@@ -65,6 +65,44 @@ python -m uvicorn api:app --reload
 
 [![API docs](img/docs.png)](https://github.com/fastapi/full-stack-fastapi-template)
 
+## Documentation
+
+The project includes comprehensive documentation:
+
+- [Backend Development](./backend/README.md)
+- [Frontend Development](./frontend/README.md)
+- [Deployment Guide](./deployment.md)
+- [Development Guide](./development.md)
+- [Database Schema Management](docs/database-schema-management.md)
+- [Makefile Reference](./MAKEFILE.md)
+
+### Technical Documentation
+
+The project includes detailed technical documentation built with Sphinx. To build and view the documentation:
+
+```bash
+# Install development dependencies
+cd backend
+python -m venv .venv
+source .venv/Scripts/activate  # Windows
+# source .venv/bin/activate   # Linux/Mac
+uv pip install -e ".[dev]"
+
+# Build documentation
+make docs
+
+# Build and open documentation in browser
+make docs-open
+```
+
+The documentation covers:
+
+- Database schema and management
+- Backend architecture and API
+- Frontend components and state management
+- Development workflow
+- Deployment procedures
+
 ## How To Use It
 
 You can **just fork or clone** this repository and use it as is.
