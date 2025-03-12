@@ -54,6 +54,7 @@ options:
   --recursive           Recursively process directories (default: False)
   --list-only           Only list Python files without generating UML diagrams (for troubleshooting) (default: False)
   --show-imports        Show imports (classes, functions, and types) in the UML diagrams (default: False)
+  --generate-report     Generate a report of files processed and the number of classes and functions found (default: False)
   -v, --verbose         Enable verbose output (default: False)
   -q, --quiet           Suppress all output except errors (default: False)
   --debug               Enable debug logging (default: False)
@@ -138,9 +139,72 @@ The UML diagrams include:
 - Classes grouped by source file in packages
 - Import relationships (when using the `--show-imports` option)
 
+## Sphinx Integration
+
+The script automatically generates an `index.rst` file in the output directory, which can be used to integrate the UML diagrams into Sphinx documentation.
+
+### Setup
+
+1. Install the required dependencies:
+
+```bash
+pip install sphinxcontrib-plantuml
+```
+
+2. Configure Sphinx in your `docs/source/conf.py` file:
+
+```python
+extensions = [
+    # existing extensions...
+    'sphinxcontrib.plantuml',
+]
+
+plantuml = 'java -jar /path/to/plantuml.jar'
+plantuml_output_format = 'svg'  # or png
+```
+
+3. Include the generated UML diagrams in your Sphinx documentation by creating a file like `docs/source/uml_diagrams.rst`:
+
+```rst
+UML Diagrams
+============
+
+.. include:: _generated_uml/index.rst
+```
+
+4. Add this file to your main `docs/source/index.rst`:
+
+```rst
+Welcome to My Project Docs
+==========================
+
+.. toctree::
+   :maxdepth: 2
+
+   uml_diagrams
+   other_sections...
+```
+
+### Automation
+
+You can automate the documentation generation by adding the following to your `Makefile`:
+
+```makefile
+docs-uml:
+ python backend/scripts/utils/generate_uml.py --app-dir --output docs/source/_generated_uml
+
+docs:
+ make docs-uml
+ cd docs && make html
+
+docs-open:
+ make docs
+ open docs/build/html/index.html
+```
+
 ## Viewing UML Diagrams
 
-To view the generated UML diagrams, you need a PlantUML viewer. You can use:
+To view the generated UML diagrams directly, you need a PlantUML viewer. You can use:
 
 - [PlantUML Online Server](http://www.plantuml.com/plantuml/uml/)
 - [PlantUML Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
@@ -176,3 +240,5 @@ Feel free to contribute to this utility by:
 ## License
 
 This utility is provided as-is, without any warranty or support.
+
+python backend/scripts/utils/generate_uml.py -d backend/app --recursive

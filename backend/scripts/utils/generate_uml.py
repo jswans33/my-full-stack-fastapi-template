@@ -29,7 +29,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent
 APP_DIR = PROJECT_ROOT / "app"
 DEFAULT_PROJECT_DIR = str(APP_DIR)
-DEFAULT_OUTPUT_DIR = str(Path("docs") / "source" / "_generated_uml")
+DEFAULT_OUTPUT_DIR = str(PROJECT_ROOT.parent / "docs" / "source" / "_generated_uml")
 
 # Ensure output directory exists
 Path(DEFAULT_OUTPUT_DIR).mkdir(parents=True, exist_ok=True)
@@ -464,12 +464,44 @@ def generate_uml_for_folder(
     )
 
 
+def generate_index_rst(output_dir: str) -> None:
+    """Generate an index.rst file for the generated UML diagrams."""
+    output_path = Path(output_dir) / "index.rst"
+    uml_files = sorted(Path(output_dir).glob("*.puml"))
+
+    content = [
+        "UML Class Diagrams",
+        "==================",
+        "",
+        ".. toctree::",
+        "   :maxdepth: 1",
+        "",
+    ]
+
+    for uml_file in uml_files:
+        name = uml_file.stem
+        content.extend(
+            [
+                f"{name}",
+                f"{'-' * len(name)}",
+                "",
+                f".. uml:: {uml_file.name}",
+                "   :align: center",
+                "",
+            ],
+        )
+
+    output_path.write_text("\n".join(content), encoding="utf-8")
+    logger.info(f"Generated UML index at {output_path}")
+
+
 def generate_all(
     directory: str,
     output_dir: str,
     subdirs: list[str] | None = None,
     list_only: bool = False,
     show_imports: bool = False,
+    generate_report: bool = False,
 ) -> None:
     """Generate UML diagrams for specified subdirectories."""
     if subdirs is None:
@@ -499,6 +531,9 @@ def generate_all(
             )
 
     logger.info("UML generation completed")
+
+    # Generate index.rst for Sphinx integration
+    generate_index_rst(output_dir)
 
 
 def parse_args():
@@ -683,7 +718,14 @@ if __name__ == "__main__":
     elif args.app_dir:
         # Process the app directory
         logger.info(f"Processing app directory: {DEFAULT_PROJECT_DIR}")
-        generate_all(DEFAULT_PROJECT_DIR, args.output, args.subdirs)
+        generate_all(
+            DEFAULT_PROJECT_DIR,
+            args.output,
+            args.subdirs,
+            args.list_only,
+            args.show_imports,
+            args.generate_report,
+        )
 
     logger.info("UML generation completed")
     logger.info(f"Output directory: {args.output}")

@@ -15,6 +15,7 @@ Welcome to the FastAPI Full Stack Template documentation.
    frontend/index
    deployment
    development
+   uml_diagrams
 
 Project Structure
 -----------------
@@ -36,6 +37,7 @@ Quick Links
 * :doc:`frontend/index` - Frontend documentation
 * :doc:`deployment` - Deployment guide
 * :doc:`development` - Development guide
+* :doc:`uml_diagrams` - UML Class Diagrams
 
 Indices and tables
 ==================

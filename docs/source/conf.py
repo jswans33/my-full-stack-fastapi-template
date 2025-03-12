@@ -43,3 +43,9 @@ napoleon_type_aliases = None
 # PlantUML configuration
 plantuml = r"java -jar C:\ProgramData\chocolatey\lib\plantuml\tools\plantuml.jar"
 plantuml_output_format = "svg"
+plantuml_latex_output_format = "pdf"
+
+# Configure PlantUML search paths
+import os
+
+plantuml_search_path = [os.path.abspath(os.path.join(os.path.dirname(__file__)))]

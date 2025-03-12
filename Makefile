@@ -116,11 +116,11 @@ docs-open: docs
 generate-uml:
 	cd docs && ../backend/.venv/Scripts/python ../scripts/ast_to_plantuml.py
 
-docs:
+docs-f:
 	cd docs && python -m sphinx source build/html
 
 docs-full:
 	make uml && make docs-open
 
 uml:
-	cd docs && ../backend/.venv/Scripts/python ../scripts/ast_to_plantuml.py
+	python backend/scripts/utils/generate_uml.py --app-dir --recursive --show-imports --output docs/source/_generated_uml

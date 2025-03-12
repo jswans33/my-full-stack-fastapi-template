@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "e2412789c190_initialize_models" {
+  class Functions <<(F,orange)>> {
+    + upgrade() -> Any
+    + downgrade() -> Any
+  }
+}
+
+' Relationships
+@enduml
