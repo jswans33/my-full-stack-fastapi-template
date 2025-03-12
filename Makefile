@@ -15,9 +15,7 @@ help:
 	@echo "  make generate-client - Generate frontend API client from OpenAPI schema"
 	@echo "  make lint            - Run linters on backend and frontend code"
 	@echo "  make format          - Format code in backend and frontend"
-	@echo "  make render-diagrams - Render PlantUML diagrams to SVG format"
-	@echo "  make render-diagrams-png - Render PlantUML diagrams to PNG format"
-	@echo "  make view-diagrams   - Open the PlantUML HTML viewer in a browser"
+
 
 # Start the development environment
 up:
@@ -105,15 +103,3 @@ frontend-install:
 # Create a new superuser
 create-superuser:
 	docker compose exec backend python -m app.initial_data
-
-# Render PlantUML diagrams to SVG format
-render-diagrams:
-	python -m utils.puml.cli render
-
-# Render PlantUML diagrams to PNG format
-render-diagrams-png:
-	python -m utils.puml.cli render --format=png
-
-# Open the PlantUML HTML viewer in a browser
-view-diagrams:
-	python -m utils.puml.cli view
