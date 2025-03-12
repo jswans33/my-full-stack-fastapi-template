@@ -5,250 +5,268 @@ PlantUML Command Line Interface
 This script provides a command-line interface for working with PlantUML diagrams.
 
 Usage:
-    python cli.py render [--format=<format>] [--source=<source_dir>] [--output=<output_dir>] [--file=<file>]
-    python cli.py view
-    python cli.py analyze [--path=<path>] [--output=<output_file>] [--include-modules] [--include-functions] [--verbose]
-    python cli.py help
-
-Commands:
-    render      Render PlantUML diagrams to images
-    view        Open the React viewer in the default web browser
-    analyze     Analyze code and generate PlantUML diagrams
-    help        Show this help message
-
-Options:
-    --format=<format>     Output format (svg or png, default: svg)
-    --source=<source_dir> Source directory for PlantUML files (default: docs/diagrams)
-    --output=<output_dir> Directory to save rendered images (default: docs/diagrams/output)
-    --file=<file>         Specific .puml file to render (default: all .puml files)
-    --path=<path>         Path to the Python file or directory to analyze (default: current directory)
-    --include-modules     Generate a module diagram instead of a class diagram
-    --include-functions   Include standalone functions in the class diagram
-    --verbose             Enable verbose logging
+    python -m utils.puml.cli render [--format=<format>] [--source=<source_dir>] [--output=<output_dir>] [--file=<file>]
+    python -m utils.puml.cli view
+    python -m utils.puml.cli analyze [--path=<path>] [--output=<output_file>] [--modules] [--functions] [--verbose]
+    python -m utils.puml.cli help
 """
 
 import argparse
-import os
 import sys
-import webbrowser
+from collections.abc import Sequence
+from pathlib import Path
 
-from utils.puml.code_analyzer import (
-    analyze_directory,
-    analyze_file,
-    generate_class_diagram,
-    generate_module_diagram,
-    save_diagram,
+from .code_analyzer import analyze_and_generate_diagram
+from .core import setup_logger
+from .exceptions import (
+    AnalyzerError,
+    PlantUMLError,
+    RenderError,
 )
+from .render_diagrams import launch_viewer, render_all_diagrams, render_diagram
+from .settings import settings
 
-# Import the configuration and modules
-from utils.puml.config import DEFAULT_FORMAT, FORMATS, OUTPUT_DIR, SOURCE_DIR
-from utils.puml.render_diagrams import render_all_diagrams, render_diagram
+# Set up logger
+logger = setup_logger("cli")
 
 
-def show_help():
+class CommandError(PlantUMLError):
+    """Base exception for command-line interface errors."""
+
+    pass
+
+
+class InvalidCommandError(CommandError):
+    """Raised when an invalid command is provided."""
+
+    pass
+
+
+class CommandArgumentError(CommandError):
+    """Raised when invalid command arguments are provided."""
+
+    pass
+
+
+def show_help() -> None:
     """Show the help message."""
     print(__doc__)
 
 
-def render_command(args):
-    """Handle the render command."""
-    # Parse arguments
-    parser = argparse.ArgumentParser(description="Render PlantUML diagrams to images")
-    parser.add_argument(
-        "--format",
-        choices=FORMATS,
-        default=DEFAULT_FORMAT,
-        help=f"Output format ({' or '.join(FORMATS)})",
-    )
-    parser.add_argument(
-        "--source",
-        default=SOURCE_DIR,
-        help="Source directory for PlantUML files",
-    )
-    parser.add_argument(
-        "--output",
-        default=OUTPUT_DIR,
-        help="Output directory for rendered images",
-    )
-    parser.add_argument("--file", help="Specific .puml file to render")
+def path_type(value: str) -> Path:
+    """Convert string argument to Path object."""
+    return Path(value)
 
-    # Parse the arguments
-    args = parser.parse_args(args)
 
-    # Render the diagrams
-    if args.file:
-        # Render a specific file
-        file_path = (
-            os.path.join(args.source, args.file)
-            if not os.path.isabs(args.file)
-            else args.file
+def render_command(args: Sequence[str]) -> int:
+    """
+    Handle the render command.
+
+    Args:
+        args: Command-line arguments
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+
+    Raises:
+        CommandArgumentError: If invalid arguments are provided
+        RenderError: If there is an error rendering diagrams
+    """
+    try:
+        # Parse arguments
+        parser = argparse.ArgumentParser(
+            description="Render PlantUML diagrams to images"
         )
-        if os.path.exists(file_path):
-            render_diagram(file_path, args.output, args.format)
-        else:
-            print(f"Error: File not found: {file_path}")
-            return 1
-    else:
+        parser.add_argument(
+            "--format",
+            choices=settings.supported_formats,
+            default=settings.default_format,
+            help=f"Output format ({' or '.join(settings.supported_formats)})",
+        )
+        parser.add_argument(
+            "--source",
+            type=path_type,
+            default=settings.source_dir,
+            help="Source directory for PlantUML files",
+        )
+        parser.add_argument(
+            "--output",
+            type=path_type,
+            default=settings.output_dir,
+            help="Output directory for rendered images",
+        )
+        parser.add_argument(
+            "--file",
+            type=path_type,
+            help="Specific .puml file to render",
+        )
+
+        # Parse the arguments
+        parsed_args = parser.parse_args(args)
+
+        # Render the diagrams
+        if parsed_args.file:
+            # Render a specific file
+            file_path = (
+                parsed_args.source / parsed_args.file
+                if not parsed_args.file.is_absolute()
+                else parsed_args.file
+            )
+            if not file_path.exists():
+                raise CommandArgumentError(f"File not found: {file_path}")
+
+            success = render_diagram(file_path, parsed_args.output, parsed_args.format)
+            return 0 if success else 1
+
         # Render all diagrams
-        render_all_diagrams(args.source, args.output, args.format)
+        success_count, total_count = render_all_diagrams(
+            parsed_args.source,
+            parsed_args.output,
+            parsed_args.format,
+        )
+        return 0 if success_count > 0 else 1
 
-    return 0
-
-
-def view_command():
-    """Handle the view command."""
-    # Get the directory containing this script
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Get the path to the React HTML viewer
-    viewer_path = os.path.join(script_dir, "viewer", "index.html")
-
-    # Check if the viewer exists
-    if not os.path.exists(viewer_path):
-        print(f"Error: React HTML viewer not found: {viewer_path}")
+    except (CommandArgumentError, RenderError) as e:
+        logger.error(str(e))
+        return 1
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
         return 1
 
-    # Check if the output directory exists
-    if not os.path.exists(OUTPUT_DIR):
-        print(f"Error: Output directory not found: {OUTPUT_DIR}")
-        print("Please render the diagrams first using the 'render' command.")
+
+def view_command() -> int:
+    """
+    Handle the view command.
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    try:
+        success = launch_viewer()
+        return 0 if success else 1
+    except RenderError as e:
+        logger.error(str(e))
+        return 1
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
         return 1
 
-    # Open the viewer in the default web browser
-    print(f"Opening React HTML viewer: {viewer_path}")
-    webbrowser.open(f"file://{os.path.abspath(viewer_path)}")
 
-    return 0
+def analyze_command(args: Sequence[str]) -> int:
+    """
+    Handle the analyze command.
 
+    Args:
+        args: Command-line arguments
 
-def analyze_command(args):
-    """Handle the analyze command."""
-    # Parse arguments
-    parser = argparse.ArgumentParser(
-        description="Analyze code and generate PlantUML diagrams"
-    )
-    parser.add_argument(
-        "--path",
-        default=".",
-        help="Path to the Python file or directory to analyze",
-    )
-    parser.add_argument(
-        "--output",
-        default=None,
-        help="Output file for the PlantUML diagram",
-    )
-    parser.add_argument(
-        "--include-modules",
-        action="store_true",
-        help="Generate a module diagram instead of a class diagram",
-    )
-    parser.add_argument(
-        "--include-functions",
-        action="store_true",
-        help="Include standalone functions in the class diagram",
-    )
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Enable verbose logging",
-    )
+    Returns:
+        Exit code (0 for success, non-zero for failure)
 
-    # Parse the arguments
-    args = parser.parse_args(args)
-
-    # Set up logging
-    import logging
-
-    log_level = logging.DEBUG if args.verbose else logging.INFO
-    logging.basicConfig(
-        level=log_level,
-        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-        handlers=[logging.StreamHandler()],
-    )
-    logger = logging.getLogger("code_analyzer")
-    logger.setLevel(log_level)
-
-    # Analyze the code
-    if os.path.isdir(args.path):
-        print(f"Analyzing directory: {args.path}")
-        visitors = analyze_directory(args.path)
-    elif os.path.isfile(args.path) and args.path.endswith(".py"):
-        print(f"Analyzing file: {args.path}")
-        visitor = analyze_file(args.path)
-        visitors = [visitor] if visitor else []
-    else:
-        print(f"Error: Invalid path: {args.path}")
-        return 1
-
-    if not visitors:
-        print("Error: No Python files were successfully analyzed")
-        return 1
-
-    # Generate the diagram
-    if args.include_modules:
-        diagram = generate_module_diagram(visitors)
-        diagram_type = "module"
-    else:
-        diagram = generate_class_diagram(visitors, args.include_functions)
-        diagram_type = "class"
-
-    # Determine the output file
-    if args.output:
-        output_file = args.output
-    else:
-        # Use a default output file based on the input path
-        if os.path.isdir(args.path):
-            base_name = os.path.basename(os.path.abspath(args.path))
-        else:
-            base_name = os.path.splitext(os.path.basename(args.path))[0]
-
-        # Create the code_analysis directory in the output directory if it doesn't exist
-        code_analysis_dir = os.path.join(OUTPUT_DIR, "code_analysis")
-        os.makedirs(code_analysis_dir, exist_ok=True)
-
-        output_file = os.path.join(
-            code_analysis_dir,
-            f"{base_name}_{diagram_type}_diagram.puml",
+    Raises:
+        CommandArgumentError: If invalid arguments are provided
+        AnalyzerError: If there is an error analyzing code
+    """
+    try:
+        # Parse arguments
+        parser = argparse.ArgumentParser(
+            description="Analyze code and generate PlantUML diagrams",
+        )
+        parser.add_argument(
+            "--path",
+            type=path_type,
+            default=Path("."),
+            help="Path to the Python file or directory to analyze",
+        )
+        parser.add_argument(
+            "--output",
+            type=path_type,
+            default=None,
+            help="Output file for the PlantUML diagram",
+        )
+        parser.add_argument(
+            "--modules",
+            action="store_true",
+            help="Generate a module diagram instead of a class diagram",
+        )
+        parser.add_argument(
+            "--functions",
+            action="store_true",
+            help="Include standalone functions in the class diagram",
+        )
+        parser.add_argument(
+            "--verbose",
+            action="store_true",
+            help="Enable verbose logging",
         )
 
-    # Save the diagram
-    save_diagram(diagram, output_file)
+        # Parse the arguments
+        parsed_args = parser.parse_args(args)
 
-    print(f"\nGenerated {diagram_type} diagram: {output_file}")
-    print(
-        "You can render it using: python -m utils.puml.cli render --file=code_analysis/"
-        + f"{os.path.basename(output_file)}"
-    )
+        # Set up verbose logging if requested
+        if parsed_args.verbose:
+            setup_logger("code_analyzer", verbose=True)
+            setup_logger("cli", verbose=True)
 
-    return 0
+        # Analyze the code and generate the diagram
+        output_file = analyze_and_generate_diagram(
+            path=parsed_args.path,
+            output=parsed_args.output,
+            modules=parsed_args.modules,
+            functions=parsed_args.functions,
+        )
 
+        logger.info(f"\nGenerated diagram: {output_file}")
+        logger.info(
+            "You can render it using: python -m utils.puml.cli render --file="
+            + f"code_analysis/{output_file.name}",
+        )
+        return 0
 
-def main():
-    """Main function."""
-    # Parse command-line arguments
-    if len(sys.argv) < 2:
-        show_help()
+    except AnalyzerError as e:
+        logger.error(str(e))
+        return 1
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
         return 1
 
-    command = sys.argv[1].lower()
-    args = sys.argv[2:]
 
-    # Handle commands
-    if command == "render":
-        return render_command(args)
-    elif command == "view":
-        return view_command()
-    elif command == "analyze":
-        return analyze_command(args)
-    elif command == "help":
+def main() -> int:
+    """
+    Main function.
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    try:
+        # Parse command-line arguments
+        if len(sys.argv) < 2:
+            show_help()
+            return 1
+
+        command = sys.argv[1].lower()
+        args = sys.argv[2:]
+
+        # Handle commands
+        if command == "render":
+            return render_command(args)
+        if command == "view":
+            return view_command()
+        if command == "analyze":
+            return analyze_command(args)
+        if command == "help":
+            show_help()
+            return 0
+
+        raise InvalidCommandError(f"Unknown command: {command}")
+
+    except InvalidCommandError as e:
+        logger.error(str(e))
         show_help()
-        return 0
-    else:
-        print(f"Error: Unknown command: {command}")
-        show_help()
+        return 1
+    except Exception as e:
+        logger.error(f"Unexpected error: {e}")
         return 1
 
 
 if __name__ == "__main__":
-    sys.exit(main())
     sys.exit(main())

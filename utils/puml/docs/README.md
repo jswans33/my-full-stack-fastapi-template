@@ -49,10 +49,10 @@ python -m utils.puml.cli view
 python -m utils.puml.cli analyze --path=path/to/code
 
 # Analyze code and generate a module diagram
-python -m utils.puml.cli analyze --path=path/to/code --include-modules
+python -m utils.puml.cli analyze --path=path/to/code --modules
 
 # Analyze code and include standalone functions in the class diagram
-python -m utils.puml.cli analyze --path=path/to/code --include-functions
+python -m utils.puml.cli analyze --path=path/to/code --functions
 
 # Analyze code with verbose logging
 python -m utils.puml.cli analyze --path=path/to/code --verbose
@@ -77,13 +77,20 @@ render_all_diagrams('docs/diagrams',
 ### Code Analysis API
 
 ```python
-from utils.puml.code_analyzer import (
+from utils.puml import (
     analyze_directory, analyze_file,
     generate_class_diagram, generate_module_diagram,
-    save_diagram
+    save_diagram, analyze_and_generate_diagram
 )
 
-# Analyze a directory of Python files
+# Quick way to analyze code and generate a diagram
+output_file = analyze_and_generate_diagram(
+    path='path/to/code',
+    modules=False,  # Set to True for module diagram
+    functions=True  # Include standalone functions
+)
+
+# Or use the individual functions for more control
 visitors = analyze_directory('path/to/code')
 
 # Generate a class diagram
@@ -115,12 +122,14 @@ DEFAULT_FORMAT = "svg"
 
 ```
 utils/puml/
-├── __init__.py          # Package initialization
+├── __init__.py          # Package initialization and public API
 ├── config.py            # Configuration settings
+├── core.py              # Core utilities and shared functions
 ├── cli.py               # Command-line interface
 ├── render_diagrams.py   # Diagram rendering functions
 ├── code_analyzer.py     # Code analysis and diagram generation
-├── test_puml.py         # Test script
+├── test_puml.py         # Test script for rendering
+├── test_code_analyzer.py # Test script for code analysis
 ├── viewer/              # React-based diagram viewer
 │   └── index.html       # Viewer HTML file
 └── README.md            # This file
@@ -156,7 +165,7 @@ python -m utils.puml.cli analyze --path=path/to/file.py
 python -m utils.puml.cli analyze --path=path/to/directory
 
 # Include standalone functions in the diagram
-python -m utils.puml.cli analyze --path=path/to/code --include-functions
+python -m utils.puml.cli analyze --path=path/to/code --functions
 ```
 
 ### Module Diagrams
@@ -165,7 +174,7 @@ Module diagrams show the dependencies between modules in your code:
 
 ```bash
 # Generate a module diagram
-python -m utils.puml.cli analyze --path=path/to/code --include-modules
+python -m utils.puml.cli analyze --path=path/to/code --modules
 ```
 
 ### Workflow
@@ -196,4 +205,4 @@ The generated diagrams will be saved in the `docs/diagrams/output/code_analysis`
 - If the viewer is not showing the diagrams, make sure you have rendered the diagrams first using `make render-diagrams`.
 - If the code analyzer is not finding all classes or relationships, try using the `--verbose` flag to see more detailed logging: `python -m utils.puml.cli analyze --path=path/to/code --verbose`
 - If the generated diagrams are too complex or cluttered, try analyzing smaller portions of your codebase or specific files instead of entire directories.
-- For large codebases, the module diagram (`--include-modules`) might be more readable than the class diagram.
+- For large codebases, the module diagram (`--modules`) might be more readable than the class diagram.

@@ -1,487 +1,495 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>PlantUML Diagram Viewer</title>
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f5f5f5;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .container {
-            width: 100%;
-            height: calc(100vh - 60px);
-            margin: 0;
-            padding: 0;
-            display: flex;
-        }
-        .header {
-            background-color: #333;
-            color: white;
-            padding: 10px 20px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-        }
-        .header h1 {
-            margin: 0;
-            font-size: 24px;
-        }
-        .sidebar {
-            width: 250px;
-            background-color: white;
-            border-right: 1px solid #ddd;
-            padding: 10px;
-            height: 100%;
-            overflow-y: auto;
-            flex-shrink: 0;
-        }
-        .content {
-            flex-grow: 1;
-            padding: 20px;
-            background-color: white;
-            height: 100%;
-            overflow-y: auto;
-        }
-        .folder {
-            margin-bottom: 15px;
-        }
-        .folder-title {
-            font-weight: bold;
-            cursor: pointer;
-            padding: 5px;
-            background-color: #f0f0f0;
-            border-radius: 3px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .folder-title:hover {
-            background-color: #e0e0e0;
-        }
-        .diagram-list {
-            margin-top: 5px;
-            margin-left: 10px;
-        }
-        .diagram-item {
-            padding: 5px;
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .diagram-item:hover {
-            background-color: #f0f0f0;
-        }
-        .diagram-item.active {
-            background-color: #e6f7ff;
-            font-weight: bold;
-        }
-        .diagram-container {
-            text-align: center;
-            margin-top: 20px;
-            border: 1px solid #ddd;
-            background-color: #f8f9fa;
-            overflow: hidden;
-            height: 75vh;
-        }
-        .diagram-container img {
-            max-width: none;
-            border: none;
-            display: block;
-        }
-        .format-toggle {
-            margin-bottom: 10px;
-            text-align: right;
-        }
-        .format-toggle button {
-            padding: 5px 10px;
-            margin-left: 5px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .format-toggle button.active {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-        .zoom-controls {
-            margin-bottom: 10px;
-            text-align: right;
-        }
-        .zoom-controls button {
-            padding: 5px 10px;
-            margin-left: 5px;
-            background-color: #f0f0f0;
-            border: 1px solid #ddd;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-        .no-diagram {
-            text-align: center;
-            margin-top: 100px;
-            color: #666;
-        }
-        .loading {
-            text-align: center;
-            margin-top: 100px;
-            color: #666;
-        }
-        .error {
-            color: #d9534f;
-            padding: 10px;
-            background-color: #f9f2f2;
-            border-radius: 5px;
-            margin: 10px 0;
-        }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        height: 100vh;
+        overflow: hidden;
+      }
+      .container {
+        width: 100%;
+        height: calc(100vh - 60px);
+        margin: 0;
+        padding: 0;
+        display: flex;
+      }
+      .header {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+      }
+      .sidebar {
+        width: 250px;
+        background-color: white;
+        border-right: 1px solid #ddd;
+        padding: 10px;
+        height: 100%;
+        overflow-y: auto;
+        flex-shrink: 0;
+      }
+      .content {
+        flex-grow: 1;
+        padding: 20px;
+        background-color: white;
+        height: 100%;
+        overflow-y: auto;
+      }
+      .folder {
+        margin-bottom: 15px;
+      }
+      .folder-title {
+        font-weight: bold;
+        cursor: pointer;
+        padding: 5px;
+        background-color: #f0f0f0;
+        border-radius: 3px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .folder-title:hover {
+        background-color: #e0e0e0;
+      }
+      .diagram-list {
+        margin-top: 5px;
+        margin-left: 10px;
+      }
+      .diagram-item {
+        padding: 5px;
+        cursor: pointer;
+        border-radius: 3px;
+      }
+      .diagram-item:hover {
+        background-color: #f0f0f0;
+      }
+      .diagram-item.active {
+        background-color: #e6f7ff;
+        font-weight: bold;
+      }
+      .diagram-container {
+        text-align: center;
+        margin-top: 20px;
+        border: 1px solid #ddd;
+        background-color: #f8f9fa;
+        overflow: hidden;
+        height: 75vh;
+      }
+      .diagram-container img {
+        max-width: none;
+        border: none;
+        display: block;
+      }
+      .format-toggle {
+        margin-bottom: 10px;
+        text-align: right;
+      }
+      .format-toggle button {
+        padding: 5px 10px;
+        margin-left: 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .format-toggle button.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+      }
+      .zoom-controls {
+        margin-bottom: 10px;
+        text-align: right;
+      }
+      .zoom-controls button {
+        padding: 5px 10px;
+        margin-left: 5px;
+        background-color: #f0f0f0;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        cursor: pointer;
+      }
+      .no-diagram {
+        text-align: center;
+        margin-top: 100px;
+        color: #666;
+      }
+      .loading {
+        text-align: center;
+        margin-top: 100px;
+        color: #666;
+      }
+      .error {
+        color: #d9534f;
+        padding: 10px;
+        background-color: #f9f2f2;
+        border-radius: 5px;
+        margin: 10px 0;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div id="root"></div>
 
     <script type="text/babel">
-        // Main App component
-        const App = () => {
-            const [folders, setFolders] = React.useState({});
-            const [loading, setLoading] = React.useState(true);
-            const [error, setError] = React.useState(null);
-            const [selectedFolder, setSelectedFolder] = React.useState(null);
-            const [selectedDiagram, setSelectedDiagram] = React.useState(null);
-            const [format, setFormat] = React.useState('svg');
-            const [expandedFolders, setExpandedFolders] = React.useState({});
-            const [zoom, setZoom] = React.useState(1);
+      // Main App component
+      const App = () => {
+        const [folders, setFolders] = React.useState({});
+        const [loading, setLoading] = React.useState(true);
+        const [error, setError] = React.useState(null);
+        const [selectedFolder, setSelectedFolder] = React.useState(null);
+        const [selectedDiagram, setSelectedDiagram] = React.useState(null);
+        const [format, setFormat] = React.useState("svg");
+        const [expandedFolders, setExpandedFolders] = React.useState({});
+        const [zoom, setZoom] = React.useState(1);
 
-            // Load diagram data
-            React.useEffect(() => {
-                const loadDiagrams = async () => {
-                    try {
-                        // In a real app, this would be an API call
-                        // For now, we'll just scan the output directory
-                        const data = await scanDiagrams();
-                        setFolders(data);
-                        
-                        // Select the first folder and diagram by default
-                        if (Object.keys(data).length > 0) {
-                            const firstFolder = Object.keys(data)[0];
-                            setSelectedFolder(firstFolder);
-                            setExpandedFolders({ [firstFolder]: true });
-                            
-                            if (data[firstFolder].length > 0) {
-                                setSelectedDiagram(data[firstFolder][0]);
-                            }
-                        }
-                        
-                        setLoading(false);
-                    } catch (err) {
-                        setError(err.message);
-                        setLoading(false);
-                    }
-                };
-                
-                loadDiagrams();
-            }, []);
+        // Load diagram data
+        React.useEffect(() => {
+          const loadDiagrams = async () => {
+            try {
+              // In a real app, this would be an API call
+              // For now, we'll just scan the output directory
+              const data = await scanDiagrams();
+              setFolders(data);
 
-            // Function to scan for diagrams
-            const scanDiagrams = async () => {
-                try {
-                    // This is a client-side function that attempts to scan the output directory
-                    const outputDir = '../../../docs/diagrams/output';
-                    const knownFolders = ['architecture', 'classifier', 'database', 'code_analysis'];
-                    const result = {};
-                    
-                    // For architecture folder, we know these diagrams exist
-                    result['architecture'] = ['puml_utilities', 'puml_viewer_class_diagram'];
-                    
-                    // For classifier folder
-                    result['classifier'] = ['classifier_model_diagram', 'classifier_data_model_diagram', 'classifier_pipeline_diagram'];
-                    
-                    // For database folder
-                    result['database'] = ['database_schema'];
-                    
-                    // For code_analysis folder
-                    result['code_analysis'] = ['code_analyzer_class_diagram', 'core_module_diagram'];
-                    
-                    console.log("Loaded diagrams:", result);
-                    return result;
-                } catch (err) {
-                    console.error(`Error scanning diagrams: ${err.message}`);
-                    // Return a default structure in case of error
-                    return {
-                        'architecture': ['puml_utilities', 'puml_viewer_class_diagram'],
-                        'code_analysis': ['code_analyzer_class_diagram', 'core_module_diagram']
-                    };
+              // Select the first folder and diagram by default
+              if (Object.keys(data).length > 0) {
+                const firstFolder = Object.keys(data)[0];
+                setSelectedFolder(firstFolder);
+                setExpandedFolders({ [firstFolder]: true });
+
+                if (data[firstFolder].length > 0) {
+                  setSelectedDiagram(data[firstFolder][0]);
                 }
-            };
+              }
 
-            // Toggle folder expansion
-            const toggleFolder = (folder) => {
-                setExpandedFolders({
-                    ...expandedFolders,
-                    [folder]: !expandedFolders[folder]
-                });
-            };
+              setLoading(false);
+            } catch (err) {
+              setError(err.message);
+              setLoading(false);
+            }
+          };
 
-            // Select a diagram
-            const selectDiagram = (folder, diagram) => {
-                setSelectedFolder(folder);
-                setSelectedDiagram(diagram);
-                setZoom(1); // Reset zoom when changing diagrams
-            };
+          loadDiagrams();
+        }, []);
 
-            // Format diagram name for display
-            const formatDiagramName = (name) => {
-                return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-            };
-
-            // State for panning and zooming
-            const [transform, setTransform] = React.useState({
-                x: 0,
-                y: 0,
-                scale: 1
-            });
-            const [isDragging, setIsDragging] = React.useState(false);
-            const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
-            const containerRef = React.useRef(null);
-
-            // Zoom in
-            const zoomIn = () => {
-                setTransform(prev => ({
-                    ...prev,
-                    scale: Math.min(prev.scale + 0.2, 5)
-                }));
-            };
-
-            // Zoom out
-            const zoomOut = () => {
-                setTransform(prev => ({
-                    ...prev,
-                    scale: Math.max(prev.scale - 0.2, 0.2)
-                }));
-            };
-
-            // Reset zoom and position
-            const resetView = () => {
-                setTransform({
-                    x: 0,
-                    y: 0,
-                    scale: 1
-                });
-            };
-
-            // Start dragging
-            const handleMouseDown = (e) => {
-                // Only handle left mouse button
-                if (e.button !== 0) return;
-                
-                setIsDragging(true);
-                setDragStart({
-                    x: e.clientX - transform.x,
-                    y: e.clientY - transform.y
-                });
-                
-                // Change cursor
-                if (containerRef.current) {
-                    containerRef.current.style.cursor = 'grabbing';
-                }
-            };
-
-            // Handle dragging
-            const handleMouseMove = (e) => {
-                if (!isDragging) return;
-                
-                setTransform(prev => ({
-                    ...prev,
-                    x: e.clientX - dragStart.x,
-                    y: e.clientY - dragStart.y
-                }));
-            };
-
-            // End dragging
-            const handleMouseUp = () => {
-                setIsDragging(false);
-                
-                // Reset cursor
-                if (containerRef.current) {
-                    containerRef.current.style.cursor = 'grab';
-                }
-            };
-
-            // Handle mouse wheel for zooming
-            const handleWheel = (e) => {
-                e.preventDefault();
-                
-                // Calculate zoom factor
-                const delta = e.deltaY < 0 ? 0.2 : -0.2;
-                const newScale = Math.max(0.2, Math.min(5, transform.scale + delta));
-                
-                // Get mouse position relative to container
-                const containerRect = containerRef.current.getBoundingClientRect();
-                const mouseX = e.clientX - containerRect.left;
-                const mouseY = e.clientY - containerRect.top;
-                
-                // Calculate new position to zoom toward mouse position
-                const scaleRatio = newScale / transform.scale;
-                const newX = transform.x - ((mouseX - transform.x) * (scaleRatio - 1));
-                const newY = transform.y - ((mouseY - transform.y) * (scaleRatio - 1));
-                
-                setTransform({
-                    x: newX,
-                    y: newY,
-                    scale: newScale
-                });
-            };
-
-            return (
-                <div>
-                    <div className="header">
-                        <h1>PlantUML Diagram Viewer</h1>
-                    </div>
-                    <div className="container">
-                        <div className="sidebar">
-                            {loading ? (
-                                <div>Loading...</div>
-                            ) : error ? (
-                                <div className="error">{error}</div>
-                            ) : Object.keys(folders).length === 0 ? (
-                                <div>No diagrams found</div>
-                            ) : (
-                                Object.keys(folders).map(folder => (
-                                    <div className="folder" key={folder}>
-                                        <div 
-                                            className="folder-title" 
-                                            onClick={() => toggleFolder(folder)}
-                                        >
-                                            {folder.charAt(0).toUpperCase() + folder.slice(1)}
-                                            <span>{expandedFolders[folder] ? '▼' : '▶'}</span>
-                                        </div>
-                                        {expandedFolders[folder] && (
-                                            <div className="diagram-list">
-                                                {folders[folder].map(diagram => (
-                                                    <div 
-                                                        className={`diagram-item ${selectedFolder === folder && selectedDiagram === diagram ? 'active' : ''}`}
-                                                        key={diagram}
-                                                        onClick={() => selectDiagram(folder, diagram)}
-                                                    >
-                                                        {formatDiagramName(diagram)}
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        )}
-                                    </div>
-                                ))
-                            )}
-                        </div>
-                        <div className="content">
-                            {loading ? (
-                                <div className="loading">Loading diagrams...</div>
-                            ) : error ? (
-                                <div className="error">{error}</div>
-                            ) : !selectedDiagram ? (
-                                <div className="no-diagram">Select a diagram from the sidebar</div>
-                            ) : (
-                                <div>
-                                    <div className="format-toggle">
-                                        <button 
-                                            className={format === 'png' ? 'active' : ''}
-                                            onClick={() => setFormat('png')}
-                                        >
-                                            PNG
-                                        </button>
-                                        <button 
-                                            className={format === 'svg' ? 'active' : ''}
-                                            onClick={() => setFormat('svg')}
-                                        >
-                                            SVG
-                                        </button>
-                                    </div>
-                                    <div className="zoom-controls">
-                                        <button onClick={zoomOut}>-</button>
-                                        <button onClick={resetView}>Reset</button>
-                                        <button onClick={zoomIn}>+</button>
-                                        <span style={{ marginLeft: '10px' }}>{Math.round(transform.scale * 100)}%</span>
-                                    </div>
-                                    <div className="diagram-container">
-                                        <div
-                                            ref={containerRef}
-                                            onMouseDown={handleMouseDown}
-                                            onMouseMove={handleMouseMove}
-                                            onMouseUp={handleMouseUp}
-                                            onMouseLeave={handleMouseUp}
-                                            onWheel={handleWheel}
-                                            style={{
-                                                overflow: 'hidden',
-                                                position: 'relative',
-                                                height: '100%',
-                                                width: '100%',
-                                                cursor: isDragging ? 'grabbing' : 'grab',
-                                                userSelect: 'none'
-                                            }}
-                                        >
-                                            <div style={{
-                                                position: 'absolute',
-                                                transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
-                                                transformOrigin: '0 0',
-                                                transition: isDragging ? 'none' : 'transform 0.1s ease-out'
-                                            }}>
-                                                <img
-                                                    src={`../../../docs/diagrams/output/${selectedFolder}/${selectedDiagram}.${format}`}
-                                                    alt={formatDiagramName(selectedDiagram)}
-                                                    style={{
-                                                        maxWidth: 'none',
-                                                        display: 'block',
-                                                        pointerEvents: 'none' // Prevents image from capturing mouse events
-                                                    }}
-                                                    onError={(e) => {
-                                                        console.error(`Failed to load image: ${e.target.src}`);
-                                                        // Try the alternative format
-                                                        const altFormat = format === 'svg' ? 'png' : 'svg';
-                                                        const altSrc = `../../../docs/diagrams/output/${selectedFolder}/${selectedDiagram}.${altFormat}`;
-                                                        
-                                                        // Set a flag to prevent infinite error loops
-                                                        if (!e.target.getAttribute('data-tried-alt')) {
-                                                            e.target.setAttribute('data-tried-alt', 'true');
-                                                            e.target.src = altSrc;
-                                                        } else {
-                                                            // If both formats fail, show a placeholder
-                                                            e.target.src = 'data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox%3D%220 0 400 300%22%3E%3Crect width%3D%22400%22 height%3D%22300%22 fill%3D%22%23f8f9fa%22%2F%3E%3Ctext x%3D%22150%22 y%3D%22150%22 font-family%3D%22Arial%22 font-size%3D%2220%22 fill%3D%22%23495057%22%3EDiagram not found%3C%2Ftext%3E%3C%2Fsvg%3E';
-                                                            e.target.style.border = '1px dashed #dc3545';
-                                                            e.target.style.padding = '20px';
-                                                            e.target.style.boxSizing = 'border-box';
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                            <div className="zoom-info" style={{
-                                                position: 'absolute',
-                                                bottom: '10px',
-                                                right: '10px',
-                                                background: 'rgba(255, 255, 255, 0.7)',
-                                                padding: '5px 10px',
-                                                borderRadius: '4px',
-                                                fontSize: '12px'
-                                            }}>
-                                                {Math.round(transform.scale * 100)}%
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-                </div>
-            );
+        // Function to scan for diagrams
+        const scanDiagrams = async () => {
+          try {
+            const response = await fetch("http://localhost:8000/api/diagrams");
+            if (!response.ok) {
+              throw new Error(
+                `Failed to fetch diagrams: ${response.statusText}`
+              );
+            }
+            const data = await response.json();
+            console.log("Loaded diagrams:", data);
+            return data;
+          } catch (err) {
+            console.error(`Error scanning diagrams: ${err.message}`);
+            throw err; // Let the error handler in useEffect handle it
+          }
         };
 
-        // Render the app
-        ReactDOM.render(<App />, document.getElementById('root'));
+        // Toggle folder expansion
+        const toggleFolder = (folder) => {
+          setExpandedFolders({
+            ...expandedFolders,
+            [folder]: !expandedFolders[folder],
+          });
+        };
+
+        // Select a diagram
+        const selectDiagram = (folder, diagram) => {
+          setSelectedFolder(folder);
+          setSelectedDiagram(diagram);
+          setZoom(1); // Reset zoom when changing diagrams
+        };
+
+        // Format diagram name for display
+        const formatDiagramName = (name) => {
+          return name
+            .replace(/_/g, " ")
+            .replace(/\b\w/g, (l) => l.toUpperCase());
+        };
+
+        // State for panning and zooming
+        const [transform, setTransform] = React.useState({
+          x: 0,
+          y: 0,
+          scale: 1,
+        });
+        const [isDragging, setIsDragging] = React.useState(false);
+        const [dragStart, setDragStart] = React.useState({ x: 0, y: 0 });
+        const containerRef = React.useRef(null);
+
+        // Zoom in
+        const zoomIn = () => {
+          setTransform((prev) => ({
+            ...prev,
+            scale: Math.min(prev.scale + 0.2, 5),
+          }));
+        };
+
+        // Zoom out
+        const zoomOut = () => {
+          setTransform((prev) => ({
+            ...prev,
+            scale: Math.max(prev.scale - 0.2, 0.2),
+          }));
+        };
+
+        // Reset zoom and position
+        const resetView = () => {
+          setTransform({
+            x: 0,
+            y: 0,
+            scale: 1,
+          });
+        };
+
+        // Start dragging
+        const handleMouseDown = (e) => {
+          // Only handle left mouse button
+          if (e.button !== 0) return;
+
+          setIsDragging(true);
+          setDragStart({
+            x: e.clientX - transform.x,
+            y: e.clientY - transform.y,
+          });
+
+          // Change cursor
+          if (containerRef.current) {
+            containerRef.current.style.cursor = "grabbing";
+          }
+        };
+
+        // Handle dragging
+        const handleMouseMove = (e) => {
+          if (!isDragging) return;
+
+          setTransform((prev) => ({
+            ...prev,
+            x: e.clientX - dragStart.x,
+            y: e.clientY - dragStart.y,
+          }));
+        };
+
+        // End dragging
+        const handleMouseUp = () => {
+          setIsDragging(false);
+
+          // Reset cursor
+          if (containerRef.current) {
+            containerRef.current.style.cursor = "grab";
+          }
+        };
+
+        // Handle mouse wheel for zooming
+        const handleWheel = (e) => {
+          e.preventDefault();
+
+          // Calculate zoom factor
+          const delta = e.deltaY < 0 ? 0.2 : -0.2;
+          const newScale = Math.max(0.2, Math.min(5, transform.scale + delta));
+
+          // Get mouse position relative to container
+          const containerRect = containerRef.current.getBoundingClientRect();
+          const mouseX = e.clientX - containerRect.left;
+          const mouseY = e.clientY - containerRect.top;
+
+          // Calculate new position to zoom toward mouse position
+          const scaleRatio = newScale / transform.scale;
+          const newX = transform.x - (mouseX - transform.x) * (scaleRatio - 1);
+          const newY = transform.y - (mouseY - transform.y) * (scaleRatio - 1);
+
+          setTransform({
+            x: newX,
+            y: newY,
+            scale: newScale,
+          });
+        };
+
+        return (
+          <div>
+            <div className="header">
+              <h1>PlantUML Diagram Viewer</h1>
+            </div>
+            <div className="container">
+              <div className="sidebar">
+                {loading ? (
+                  <div>Loading...</div>
+                ) : error ? (
+                  <div className="error">{error}</div>
+                ) : Object.keys(folders).length === 0 ? (
+                  <div>No diagrams found</div>
+                ) : (
+                  Object.keys(folders).map((folder) => (
+                    <div className="folder" key={folder}>
+                      <div
+                        className="folder-title"
+                        onClick={() => toggleFolder(folder)}
+                      >
+                        {folder.charAt(0).toUpperCase() + folder.slice(1)}
+                        <span>{expandedFolders[folder] ? "▼" : "▶"}</span>
+                      </div>
+                      {expandedFolders[folder] && (
+                        <div className="diagram-list">
+                          {folders[folder].map((diagram) => (
+                            <div
+                              className={`diagram-item ${
+                                selectedFolder === folder &&
+                                selectedDiagram === diagram
+                                  ? "active"
+                                  : ""
+                              }`}
+                              key={diagram}
+                              onClick={() => selectDiagram(folder, diagram)}
+                            >
+                              {formatDiagramName(diagram)}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))
+                )}
+              </div>
+              <div className="content">
+                {loading ? (
+                  <div className="loading">Loading diagrams...</div>
+                ) : error ? (
+                  <div className="error">{error}</div>
+                ) : !selectedDiagram ? (
+                  <div className="no-diagram">
+                    Select a diagram from the sidebar
+                  </div>
+                ) : (
+                  <div>
+                    <div className="format-toggle">
+                      <button
+                        className={format === "png" ? "active" : ""}
+                        onClick={() => setFormat("png")}
+                      >
+                        PNG
+                      </button>
+                      <button
+                        className={format === "svg" ? "active" : ""}
+                        onClick={() => setFormat("svg")}
+                      >
+                        SVG
+                      </button>
+                    </div>
+                    <div className="zoom-controls">
+                      <button onClick={zoomOut}>-</button>
+                      <button onClick={resetView}>Reset</button>
+                      <button onClick={zoomIn}>+</button>
+                      <span style={{ marginLeft: "10px" }}>
+                        {Math.round(transform.scale * 100)}%
+                      </span>
+                    </div>
+                    <div className="diagram-container">
+                      <div
+                        ref={containerRef}
+                        onMouseDown={handleMouseDown}
+                        onMouseMove={handleMouseMove}
+                        onMouseUp={handleMouseUp}
+                        onMouseLeave={handleMouseUp}
+                        onWheel={handleWheel}
+                        style={{
+                          overflow: "hidden",
+                          position: "relative",
+                          height: "100%",
+                          width: "100%",
+                          cursor: isDragging ? "grabbing" : "grab",
+                          userSelect: "none",
+                        }}
+                      >
+                        <div
+                          style={{
+                            position: "absolute",
+                            transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
+                            transformOrigin: "0 0",
+                            transition: isDragging
+                              ? "none"
+                              : "transform 0.1s ease-out",
+                          }}
+                        >
+                          <img
+                            src={`http://localhost:8000/diagrams/${selectedFolder}/${selectedDiagram}.${format}`}
+                            alt={formatDiagramName(selectedDiagram)}
+                            style={{
+                              maxWidth: "none",
+                              display: "block",
+                              pointerEvents: "none", // Prevents image from capturing mouse events
+                            }}
+                            onError={(e) => {
+                              console.error(
+                                `Failed to load image: ${e.target.src}`
+                              );
+                              // Try the alternative format
+                              const altFormat =
+                                format === "svg" ? "png" : "svg";
+                              const altSrc = `http://localhost:8000/diagrams/${selectedFolder}/${selectedDiagram}.${altFormat}`;
+
+                              // Set a flag to prevent infinite error loops
+                              if (!e.target.getAttribute("data-tried-alt")) {
+                                e.target.setAttribute("data-tried-alt", "true");
+                                e.target.src = altSrc;
+                              } else {
+                                // If both formats fail, show a placeholder
+                                e.target.src =
+                                  "data:image/svg+xml;charset=utf-8,%3Csvg xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22 viewBox%3D%220 0 400 300%22%3E%3Crect width%3D%22400%22 height%3D%22300%22 fill%3D%22%23f8f9fa%22%2F%3E%3Ctext x%3D%22150%22 y%3D%22150%22 font-family%3D%22Arial%22 font-size%3D%2220%22 fill%3D%22%23495057%22%3EDiagram not found%3C%2Ftext%3E%3C%2Fsvg%3E";
+                                e.target.style.border = "1px dashed #dc3545";
+                                e.target.style.padding = "20px";
+                                e.target.style.boxSizing = "border-box";
+                              }
+                            }}
+                          />
+                        </div>
+                        <div
+                          className="zoom-info"
+                          style={{
+                            position: "absolute",
+                            bottom: "10px",
+                            right: "10px",
+                            background: "rgba(255, 255, 255, 0.7)",
+                            padding: "5px 10px",
+                            borderRadius: "4px",
+                            fontSize: "12px",
+                          }}
+                        >
+                          {Math.round(transform.scale * 100)}%
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        );
+      };
+
+      // Render the app
+      ReactDOM.render(<App />, document.getElementById("root"));
     </script>
-</body>
+  </body>
 </html>

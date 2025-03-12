@@ -3,33 +3,39 @@ Code Analyzer for PlantUML
 
 This module analyzes Python code and generates PlantUML diagrams based on the code structure.
 It extracts classes, functions, and relationships between them.
-
-Usage:
-    python -m utils.puml.code_analyzer --path=<path> --output=<output_file> [--include-modules] [--include-functions]
 """
 
-import argparse
 import ast
-import logging
-import os
-import sys
+from pathlib import Path
+from typing import TypedDict
 
-from utils.puml.config import OUTPUT_DIR
-
-# Configure logging
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.StreamHandler()],
+from .core import ensure_dir_exists, setup_logger
+from .exceptions import (
+    AnalyzerError,
+    DiagramGenerationError,
+    InvalidPathError,
+    NoFilesAnalyzedError,
+    ParseError,
 )
-logger = logging.getLogger("code_analyzer")
+from .settings import settings
+
+
+# Define a TypedDict for module information
+class ModuleInfo(TypedDict):
+    imports: set[str]
+    classes: list[str]
+    functions: list[str]
+
+
+# Set up logger
+logger = setup_logger("code_analyzer")
 
 
 class CodeVisitor(ast.NodeVisitor):
     """AST visitor that extracts classes, functions, and relationships from Python code."""
 
-    def __init__(self, filename: str, module_name: str):
-        self.filename = filename
+    def __init__(self, filename: str | Path, module_name: str):
+        self.filename = str(filename)
         self.module_name = module_name
         self.classes: dict[str, dict] = {}
         self.functions: dict[str, dict] = {}
@@ -41,7 +47,11 @@ class CodeVisitor(ast.NodeVisitor):
         self.method_calls: list[tuple[str, str, str]] = []
         logger.info(f"Analyzing file: {filename} (module: {module_name})")
 
-    def visit_ClassDef(self, node: ast.ClassDef) -> None:
+    # Note: We're keeping the method names as-is despite the N802 warnings
+    # because these are overriding methods from ast.NodeVisitor and need to match
+    # the expected method names for the visitor pattern to work correctly.
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> None:  # noqa: N802
         """Visit a class definition."""
         class_name = f"{self.module_name}.{node.name}"
         logger.debug(f"Found class: {class_name}")
@@ -78,7 +88,7 @@ class CodeVisitor(ast.NodeVisitor):
             self.visit(item)
         self.current_class = old_class
 
-    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:  # noqa: N802
         """Visit a function definition."""
         if self.current_class:
             # This is a method
@@ -124,7 +134,7 @@ class CodeVisitor(ast.NodeVisitor):
             self.visit(item)
         self.current_function = old_function
 
-    def visit_Assign(self, node: ast.Assign) -> None:
+    def visit_Assign(self, node: ast.Assign) -> None:  # noqa: N802
         """Visit an assignment."""
         if self.current_class:
             # Check if this is a class attribute assignment
@@ -143,7 +153,7 @@ class CodeVisitor(ast.NodeVisitor):
         # Continue visiting
         self.generic_visit(node)
 
-    def visit_AnnAssign(self, node: ast.AnnAssign) -> None:
+    def visit_AnnAssign(self, node: ast.AnnAssign) -> None:  # noqa: N802
         """Visit an annotated assignment."""
         if self.current_class and isinstance(node.target, ast.Name):
             attr_name = node.target.id
@@ -154,9 +164,10 @@ class CodeVisitor(ast.NodeVisitor):
                 type_annotation = ""
                 if isinstance(node.annotation, ast.Name):
                     type_annotation = node.annotation.id
-                elif isinstance(node.annotation, ast.Subscript):
-                    if isinstance(node.annotation.value, ast.Name):
-                        type_annotation = node.annotation.value.id
+                elif isinstance(node.annotation, ast.Subscript) and isinstance(
+                    node.annotation.value, ast.Name
+                ):
+                    type_annotation = node.annotation.value.id
 
                 self.classes[self.current_class]["attributes"].append(
                     {
@@ -169,7 +180,7 @@ class CodeVisitor(ast.NodeVisitor):
         # Continue visiting
         self.generic_visit(node)
 
-    def visit_Import(self, node: ast.Import) -> None:
+    def visit_Import(self, node: ast.Import) -> None:  # noqa: N802
         """Visit an import statement."""
         for name in node.names:
             self.imports[name.asname or name.name] = name.name
@@ -178,7 +189,7 @@ class CodeVisitor(ast.NodeVisitor):
         # Continue visiting
         self.generic_visit(node)
 
-    def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> None:  # noqa: N802
         """Visit an import from statement."""
         if node.module:
             for name in node.names:
@@ -191,11 +202,10 @@ class CodeVisitor(ast.NodeVisitor):
         # Continue visiting
         self.generic_visit(node)
 
-    def visit_Call(self, node: ast.Call) -> None:
+    def visit_Call(self, node: ast.Call) -> None:  # noqa: N802
         """Visit a function call."""
         if isinstance(node.func, ast.Attribute) and isinstance(
-            node.func.value,
-            ast.Name,
+            node.func.value, ast.Name
         ):
             # This might be a method call on an object
             obj_name = node.func.value.id
@@ -219,7 +229,7 @@ class CodeVisitor(ast.NodeVisitor):
         return node.attr
 
 
-def analyze_file(file_path: str) -> CodeVisitor | None:
+def analyze_file(file_path: str | Path) -> CodeVisitor | None:
     """
     Analyze a Python file and extract its structure.
 
@@ -227,30 +237,25 @@ def analyze_file(file_path: str) -> CodeVisitor | None:
         file_path: Path to the Python file
 
     Returns:
-        CodeVisitor with the extracted information, or None if the file couldn't be parsed
+        CodeVisitor with the extracted information
+
+    Raises:
+        ParseError: If there is an error parsing the file
     """
+    path = Path(file_path)
     try:
-        with open(file_path, encoding="utf-8") as f:
-            source = f.read()
-
-        # Parse the source code into an AST
-        tree = ast.parse(source, filename=file_path)
-
-        # Get the module name from the file path
-        module_name = os.path.splitext(os.path.basename(file_path))[0]
-
-        # Visit the AST to extract information
-        visitor = CodeVisitor(file_path, module_name)
+        source = path.read_text(encoding="utf-8")
+        tree = ast.parse(source, filename=str(path))
+        module_name = path.stem
+        visitor = CodeVisitor(path, module_name)
         visitor.visit(tree)
-
         return visitor
     except Exception as e:
-        logger.error(f"Error analyzing file {file_path}: {e}")
-        return None
+        raise ParseError(str(path), e)
 
 
 def analyze_directory(
-    directory: str,
+    directory: str | Path,
     exclude_dirs: list[str] | None = None,
 ) -> list[CodeVisitor]:
     """
@@ -262,54 +267,39 @@ def analyze_directory(
 
     Returns:
         List of CodeVisitor objects with the extracted information
+
+    Raises:
+        AnalyzerError: If there is an error analyzing the directory
     """
     if exclude_dirs is None:
         exclude_dirs = ["__pycache__", "venv", ".venv", ".git", "node_modules"]
 
-    visitors = []
+    try:
+        path = Path(directory)
+        visitors = []
+        logger.info(f"Analyzing directory: {path}")
 
-    logger.info(f"Analyzing directory: {directory}")
+        # Use pathlib's rglob to find all Python files
+        for file_path in path.rglob("*.py"):
+            # Skip files in excluded directories
+            if any(d in file_path.parts for d in exclude_dirs):
+                continue
 
-    for root, dirs, files in os.walk(directory):
-        # Skip excluded directories
-        dirs[:] = [d for d in dirs if d not in exclude_dirs]
-
-        for file in files:
-            if file.endswith(".py"):
-                file_path = os.path.join(root, file)
+            try:
                 visitor = analyze_file(file_path)
                 if visitor:
                     visitors.append(visitor)
+            except ParseError as e:
+                logger.warning(str(e))
 
-    logger.info(f"Analyzed {len(visitors)} Python files")
-    return visitors
+        logger.info(f"Analyzed {len(visitors)} Python files")
+        return visitors
+    except Exception as e:
+        raise AnalyzerError(f"Error analyzing directory {directory}: {e}")
 
 
-def generate_class_diagram(
-    visitors: list[CodeVisitor],
-    include_functions: bool = False,
-) -> str:
-    """
-    Generate a PlantUML class diagram from the analyzed code.
-
-    Args:
-        visitors: List of CodeVisitor objects with the extracted information
-        include_functions: Whether to include standalone functions in the diagram
-
-    Returns:
-        PlantUML diagram as a string
-    """
-    logger.info("Generating class diagram")
-
-    # Start the diagram
-    diagram = [
-        '@startuml "Code Analysis Class Diagram"',
-        "",
-        "' This diagram was automatically generated by the code analyzer",
-        "",
-    ]
-
-    # Add all classes
+def _add_classes_to_diagram(visitors: list[CodeVisitor], diagram: list[str]) -> None:
+    """Add class definitions to the diagram."""
     for visitor in visitors:
         for class_name, class_info in visitor.classes.items():
             # Start the class definition
@@ -334,19 +324,27 @@ def generate_class_diagram(
             diagram.append("}")
             diagram.append("")
 
-    # Add standalone functions if requested
-    if include_functions:
-        for visitor in visitors:
-            for func_name, func_info in visitor.functions.items():
-                # Add the function as a class with a stereotype
-                diagram.append(
-                    f'class "{func_info["name"]}" as {func_name.replace(".", "_")} <<function>> {{',
-                )
-                args_str = ", ".join(func_info["args"])
-                diagram.append(f"  +{func_info['name']}({args_str})")
-                diagram.append("}")
-                diagram.append("")
 
+def _add_functions_to_diagram(visitors: list[CodeVisitor], diagram: list[str]) -> None:
+    """Add standalone functions to the diagram."""
+    for visitor in visitors:
+        for func_name, func_info in visitor.functions.items():
+            # Add the function as a class with a stereotype
+            diagram.append(
+                f'class "{func_info["name"]}" as {func_name.replace(".", "_")} <<function>> {{',
+            )
+            args_str = ", ".join(func_info["args"])
+            diagram.append(f"  +{func_info['name']}({args_str})")
+            diagram.append("}")
+            diagram.append("")
+
+
+def _add_relationships_to_diagram(
+    visitors: list[CodeVisitor],
+    diagram: list[str],
+    include_functions: bool,
+) -> None:
+    """Add relationships between classes and functions to the diagram."""
     # Add inheritance relationships
     for visitor in visitors:
         for class_name, bases in visitor.base_classes.items():
@@ -358,29 +356,69 @@ def generate_class_diagram(
                 )
 
     # Add method call relationships (simplified)
-    method_calls_added = set()
+    method_calls_added: set[str] = set()
     for visitor in visitors:
-        for caller, called, rel_type in visitor.method_calls:
+        for caller, called, _ in visitor.method_calls:
             # Only add each relationship once and only if both caller and called are known
             rel_key = f"{caller}_{called}"
             if rel_key not in method_calls_added:
                 # Check if the called method is in our known classes/methods
                 called_parts = called.split(".")
-                if len(called_parts) >= 2:
-                    obj_name, method_name = called_parts[0], called_parts[1]
-                    if obj_name in visitor.imports:
-                        # This is a call to an imported module
-                        if include_functions:
-                            diagram.append(
-                                f"{caller.replace('.', '_')} ..> {called.replace('.', '_')} : calls",
-                            )
-                            method_calls_added.add(rel_key)
+                if (
+                    len(called_parts) >= 2
+                    and called_parts[0] in visitor.imports
+                    and include_functions
+                ):
+                    # This is a call to an imported module
+                    diagram.append(
+                        f"{caller.replace('.', '_')} ..> {called.replace('.', '_')} : calls",
+                    )
+                    method_calls_added.add(rel_key)
 
-    # End the diagram
-    diagram.append("")
-    diagram.append("@enduml")
 
-    return "\n".join(diagram)
+def generate_class_diagram(
+    visitors: list[CodeVisitor],
+    include_functions: bool = False,
+) -> str:
+    """
+    Generate a PlantUML class diagram from the analyzed code.
+
+    Args:
+        visitors: List of CodeVisitor objects with the extracted information
+        include_functions: Whether to include standalone functions in the diagram
+
+    Returns:
+        PlantUML diagram as a string
+
+    Raises:
+        DiagramGenerationError: If there is an error generating the diagram
+    """
+    try:
+        logger.info("Generating class diagram")
+
+        # Start the diagram
+        diagram = [
+            '@startuml "Code Analysis Class Diagram"',
+            "",
+            "' This diagram was automatically generated by the code analyzer",
+            "",
+        ]
+
+        # Add classes, functions, and relationships using helper functions
+        _add_classes_to_diagram(visitors, diagram)
+
+        if include_functions:
+            _add_functions_to_diagram(visitors, diagram)
+
+        _add_relationships_to_diagram(visitors, diagram, include_functions)
+
+        # End the diagram
+        diagram.append("")
+        diagram.append("@enduml")
+
+        return "\n".join(diagram)
+    except Exception as e:
+        raise DiagramGenerationError(f"Error generating class diagram: {e}")
 
 
 def generate_module_diagram(visitors: list[CodeVisitor]) -> str:
@@ -392,173 +430,160 @@ def generate_module_diagram(visitors: list[CodeVisitor]) -> str:
 
     Returns:
         PlantUML diagram as a string
+
+    Raises:
+        DiagramGenerationError: If there is an error generating the diagram
     """
-    logger.info("Generating module diagram")
+    try:
+        logger.info("Generating module diagram")
 
-    # Start the diagram
-    diagram = [
-        '@startuml "Code Analysis Module Diagram"',
-        "",
-        "' This diagram was automatically generated by the code analyzer",
-        "",
-    ]
+        # Start the diagram
+        diagram = [
+            '@startuml "Code Analysis Module Diagram"',
+            "",
+            "' This diagram was automatically generated by the code analyzer",
+            "",
+        ]
 
-    # Track modules and their imports
-    modules = {}
+        # Track modules and their imports
+        modules: dict[str, ModuleInfo] = {}
 
-    # Add all modules
-    for visitor in visitors:
-        module_name = visitor.module_name
-        if module_name not in modules:
-            modules[module_name] = {
-                "imports": set(),
-                "classes": [
-                    class_info["name"] for class_info in visitor.classes.values()
-                ],
-                "functions": [
-                    func_info["name"] for func_info in visitor.functions.values()
-                ],
-            }
+        # Add all modules
+        for visitor in visitors:
+            module_name = visitor.module_name
+            if module_name not in modules:
+                modules[module_name] = {
+                    "imports": set(),
+                    "classes": [
+                        class_info["name"] for class_info in visitor.classes.values()
+                    ],
+                    "functions": [
+                        func_info["name"] for func_info in visitor.functions.values()
+                    ],
+                }
 
-        # Add imports
-        for import_alias, import_name in visitor.imports.items():
-            # Extract the top-level module
-            top_module = import_name.split(".")[0]
-            if top_module != module_name:  # Don't add self-imports
-                modules[module_name]["imports"].add(top_module)
+            # Add imports
+            for _, import_name in visitor.imports.items():
+                # Extract the top-level module
+                top_module = import_name.split(".")[0]
+                if top_module != module_name:  # Don't add self-imports
+                    modules[module_name]["imports"].add(top_module)
 
-    # Add components for each module
-    for module_name, module_info in modules.items():
-        diagram.append(f"[{module_name}] as {module_name.replace('.', '_')}")
+        # Add components for each module
+        for module_name in modules:
+            diagram.append(f"[{module_name}] as {module_name.replace('.', '_')}")
 
-    diagram.append("")
+        diagram.append("")
 
-    # Add dependencies between modules
-    for module_name, module_info in modules.items():
-        for imported_module in module_info["imports"]:
-            if (
-                imported_module in modules
-            ):  # Only add if the imported module is in our analysis
-                diagram.append(
-                    f"{module_name.replace('.', '_')} --> {imported_module.replace('.', '_')}",
-                )
+        # Add dependencies between modules
+        for module_name, module_info in modules.items():
+            for imported_module in module_info["imports"]:
+                if (
+                    imported_module in modules
+                ):  # Only add if the imported module is in our analysis
+                    diagram.append(
+                        f"{module_name.replace('.', '_')} --> {imported_module.replace('.', '_')}",
+                    )
 
-    # End the diagram
-    diagram.append("")
-    diagram.append("@enduml")
+        # End the diagram
+        diagram.append("")
+        diagram.append("@enduml")
 
-    return "\n".join(diagram)
+        return "\n".join(diagram)
+    except Exception as e:
+        raise DiagramGenerationError(f"Error generating module diagram: {e}")
 
 
-def save_diagram(diagram: str, output_file: str) -> None:
+def save_diagram(diagram: str, output_file: str | Path) -> None:
     """
     Save a PlantUML diagram to a file.
 
     Args:
         diagram: PlantUML diagram as a string
         output_file: Path to save the diagram to
+
+    Raises:
+        DiagramGenerationError: If there is an error saving the diagram
     """
-    # Create the directory if it doesn't exist
-    os.makedirs(os.path.dirname(output_file), exist_ok=True)
-
-    # Save the diagram
-    with open(output_file, "w", encoding="utf-8") as f:
-        f.write(diagram)
-
-    logger.info(f"Saved diagram to {output_file}")
-
-
-def parse_args() -> argparse.Namespace:
-    """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(
-        description="Analyze code and generate PlantUML diagrams",
-    )
-    parser.add_argument(
-        "--path",
-        default=".",
-        help="Path to the Python file or directory to analyze",
-    )
-    parser.add_argument(
-        "--output",
-        default=None,
-        help="Output file for the PlantUML diagram",
-    )
-    parser.add_argument(
-        "--include-modules",
-        action="store_true",
-        help="Generate a module diagram instead of a class diagram",
-    )
-    parser.add_argument(
-        "--include-functions",
-        action="store_true",
-        help="Include standalone functions in the class diagram",
-    )
-    parser.add_argument(
-        "--verbose",
-        action="store_true",
-        help="Enable verbose logging",
-    )
-    return parser.parse_args()
+    try:
+        path = Path(output_file)
+        ensure_dir_exists(path.parent)
+        path.write_text(diagram, encoding="utf-8")
+        logger.info(f"Saved diagram to {path}")
+    except Exception as e:
+        raise DiagramGenerationError(f"Error saving diagram to {output_file}: {e}")
 
 
-def main() -> int:
-    """Main function."""
-    # Parse command-line arguments
-    args = parse_args()
+def analyze_and_generate_diagram(
+    path: str | Path = ".",
+    output: str | Path | None = None,
+    modules: bool = False,
+    functions: bool = False,
+) -> Path:
+    """
+    Analyze code and generate a PlantUML diagram.
 
-    # Set logging level
-    if args.verbose:
-        logger.setLevel(logging.DEBUG)
+    This is the main entry point for code analysis functionality.
 
-    # Analyze the code
-    if os.path.isdir(args.path):
-        visitors = analyze_directory(args.path)
-    elif os.path.isfile(args.path) and args.path.endswith(".py"):
-        visitor = analyze_file(args.path)
-        visitors = [visitor] if visitor else []
-    else:
-        logger.error(f"Invalid path: {args.path}")
-        return 1
+    Args:
+        path: Path to the Python file or directory to analyze
+        output: Output file for the PlantUML diagram
+        modules: Whether to generate a module diagram instead of a class diagram
+        functions: Whether to include standalone functions in the class diagram
 
-    if not visitors:
-        logger.error("No Python files were successfully analyzed")
-        return 1
+    Returns:
+        Path to the generated diagram file
 
-    # Generate the diagram
-    if args.include_modules:
-        diagram = generate_module_diagram(visitors)
-        diagram_type = "module"
-    else:
-        diagram = generate_class_diagram(visitors, args.include_functions)
-        diagram_type = "class"
+    Raises:
+        InvalidPathError: If the provided path is invalid
+        NoFilesAnalyzedError: If no Python files were successfully analyzed
+        AnalyzerError: If there is an error during analysis
+    """
+    try:
+        input_path = Path(path)
 
-    # Determine the output file
-    if args.output:
-        output_file = args.output
-    else:
-        # Use a default output file based on the input path
-        if os.path.isdir(args.path):
-            base_name = os.path.basename(os.path.abspath(args.path))
+        # Analyze the code
+        if input_path.is_dir():
+            logger.info(f"Analyzing directory: {input_path}")
+            visitors = analyze_directory(input_path)
+        elif input_path.is_file() and input_path.suffix == ".py":
+            logger.info(f"Analyzing file: {input_path}")
+            visitor = analyze_file(input_path)
+            visitors = [visitor] if visitor else []
         else:
-            base_name = os.path.splitext(os.path.basename(args.path))[0]
+            logger.error(f"Invalid path: {input_path}")
+            raise InvalidPathError(str(input_path))
 
-        output_file = os.path.join(
-            OUTPUT_DIR,
-            "code_analysis",
-            f"{base_name}_{diagram_type}_diagram.puml",
-        )
+        if not visitors:
+            logger.error("No Python files were successfully analyzed")
+            raise NoFilesAnalyzedError()
 
-    # Save the diagram
-    save_diagram(diagram, output_file)
+        # Generate the diagram
+        if modules:
+            diagram = generate_module_diagram(visitors)
+            diagram_type = "module"
+        else:
+            diagram = generate_class_diagram(visitors, functions)
+            diagram_type = "class"
 
-    print(f"\nGenerated {diagram_type} diagram: {output_file}")
-    print(
-        "You can render it using: python -m utils.puml.cli render --file=code_analysis/"
-        + f"{os.path.basename(output_file)}",
-    )
+        # Determine the output file
+        if output:
+            output_path = Path(output)
+        else:
+            # Use a default output file based on the input path
+            base_name = input_path.stem if input_path.is_file() else input_path.name
+            output_path = (
+                settings.output_dir
+                / "code_analysis"
+                / f"{base_name}_{diagram_type}_diagram.puml"
+            )
 
-    return 0
+        # Save the diagram
+        save_diagram(diagram, output_path)
+        logger.info(f"Generated {diagram_type} diagram: {output_path}")
 
-
-if __name__ == "__main__":
-    sys.exit(main())
+        return output_path
+    except (InvalidPathError, NoFilesAnalyzedError):
+        raise
+    except Exception as e:
+        raise AnalyzerError(f"Error analyzing and generating diagram: {e}")
