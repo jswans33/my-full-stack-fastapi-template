@@ -13,27 +13,27 @@
     }
   },
   "[javascript]": {
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
   "[typescript]": {
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
   "[typescriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
   "[javascriptreact]": {
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
   "[json]": {
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
   "[jsonc]": {
-    "editor.defaultFormatter": "biomejs.biome",
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true
   },
   "python.linting.enabled": true,
@@ -41,6 +41,5 @@
   "ruff.enable": true,
   "ruff.organizeImports": true,
   "ruff.fixAll": true,
-  "biome.lspBin": "node_modules/.bin/biome",
-  "biome.enabled": true
+  "python.analysis.typeCheckingMode": "basic"
 }

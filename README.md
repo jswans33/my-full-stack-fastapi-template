@@ -1,8 +1,5 @@
 # Full Stack FastAPI Template
 
-<a href="https://github.com/fastapi/full-stack-fastapi-template/actions?query=workflow%3ATest" target="_blank"><img src="https://github.com/fastapi/full-stack-fastapi-template/workflows/Test/badge.svg" alt="Test"></a>
-<a href="https://coverage-badge.samuelcolvin.workers.dev/redirect/fastapi/full-stack-fastapi-template" target="_blank"><img src="https://coverage-badge.samuelcolvin.workers.dev/fastapi/full-stack-fastapi-template.svg" alt="Coverage"></a>
-
 ## Technology Stack and Features
 
 - ⚡ [**FastAPI**](https://fastapi.tiangolo.com) for the Python backend API.
@@ -248,6 +245,7 @@ This project uses automated code formatting and linting to maintain consistent c
 - **Biome**: Modern JavaScript/TypeScript formatter and linter (alternative to Prettier + ESLint)
   - Configuration in `frontend/biome.json`
   - Handles formatting, linting, and import sorting
+- **Prettier**: Used for VSCode integration for formatting
 
 ### VSCode Integration
 
@@ -255,7 +253,7 @@ The project includes VSCode settings for automatic formatting on save:
 
 1. Install the recommended extensions:
    - [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff) for Python
-   - [Biome](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) for JavaScript/TypeScript
+   - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for JavaScript/TypeScript
 
 2. The `.vscode/settings.json` file configures:
    - Format on save for all supported file types
