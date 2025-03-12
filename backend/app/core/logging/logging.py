@@ -126,7 +126,19 @@ _request_user_id_var = "user_id"
 
 
 # Define sensitive fields that should be redacted from logs
-SENSITIVE_FIELDS = {"password", "secret", "token", "api_key", "auth", "credential"}
+SENSITIVE_FIELDS = {
+    "password",
+    "secret",
+    "token",
+    "api_key",
+    "auth",
+    "credential",
+    "credit_card",
+    "card",
+    "cc",
+    "cvv",
+    "ssn",
+}
 
 # Maximum message length to prevent overly large log entries
 MAX_MESSAGE_LENGTH = 5000  # 5KB

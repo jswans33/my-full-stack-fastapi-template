@@ -1,10 +1,24 @@
-from sqlmodel import Session, create_engine, select
-
 from app import crud
 from app.core.config import settings
+from app.core.logging import get_logger
 from app.models import User, UserCreate
+from sqlmodel import Session, create_engine, select
 
+# Create a logger for this module
+logger = get_logger(__name__)
+
+logger.info("Initializing database engine")
 engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
+
+# Redact password from URI for logging
+import re
+
+safe_uri = re.sub(
+    r"(postgresql\+psycopg:\/\/\w+:)([^@]+)(@)",
+    r"\1[REDACTED]\3",
+    str(settings.SQLALCHEMY_DATABASE_URI),
+)
+logger.debug(f"Database URI: {safe_uri}")
 
 
 # make sure all SQLModel models are imported (app.models) before initializing DB
@@ -13,6 +27,9 @@ engine = create_engine(str(settings.SQLALCHEMY_DATABASE_URI))
 
 
 def init_db(session: Session) -> None:
+    """Initialize the database with first superuser if it doesn't exist."""
+    logger.info("Initializing database")
+
     # Tables should be created with Alembic migrations
     # But if you don't want to use migrations, create
     # the tables un-commenting the next lines
@@ -21,13 +38,23 @@ def init_db(session: Session) -> None:
     # This works because the models are already imported and registered from app.models
     # SQLModel.metadata.create_all(engine)
 
-    user = session.exec(
-        select(User).where(User.email == settings.FIRST_SUPERUSER)
-    ).first()
-    if not user:
-        user_in = UserCreate(
-            email=settings.FIRST_SUPERUSER,
-            password=settings.FIRST_SUPERUSER_PASSWORD,
-            is_superuser=True,
-        )
-        user = crud.create_user(session=session, user_create=user_in)
+    try:
+        logger.debug(f"Checking if superuser exists: {settings.FIRST_SUPERUSER}")
+        user = session.exec(
+            select(User).where(User.email == settings.FIRST_SUPERUSER)
+        ).first()
+
+        if not user:
+            logger.info(f"Creating first superuser: {settings.FIRST_SUPERUSER}")
+            user_in = UserCreate(
+                email=settings.FIRST_SUPERUSER,
+                password=settings.FIRST_SUPERUSER_PASSWORD,
+                is_superuser=True,
+            )
+            user = crud.create_user(session=session, user_create=user_in)
+            logger.info(f"Superuser created with ID: {user.id}")
+        else:
+            logger.debug(f"Superuser already exists with ID: {user.id}")
+    except Exception as e:
+        logger.exception("Error initializing database", exc_info=e)
+        raise
