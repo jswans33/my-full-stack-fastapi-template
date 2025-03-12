@@ -15,6 +15,7 @@ python render_diagrams.py [--format=svg|png] [--source=<source_dir>]
 
 import argparse
 import os
+import re
 
 import plantuml
 
@@ -62,6 +63,14 @@ def render_diagram(puml_file, output_dir=None, format=DEFAULT_FORMAT):
     base_name = os.path.splitext(os.path.basename(puml_file))[0]
     output_file = os.path.join(output_subdir, f"{base_name}.{format}")
 
+    # Check if the output file already exists and is newer than the input file
+    if os.path.exists(output_file):
+        puml_mtime = os.path.getmtime(puml_file)
+        output_mtime = os.path.getmtime(output_file)
+        if output_mtime > puml_mtime:
+            print(f"Skipping {puml_file} (already rendered and up to date)")
+            return True
+
     # Create a PlantUML server instance with the appropriate URL for the format
     if format.lower() == "svg":
         plantuml_server = plantuml.PlantUML(url=PLANTUML_SERVER_SVG)
@@ -77,6 +86,94 @@ def render_diagram(puml_file, output_dir=None, format=DEFAULT_FORMAT):
     except Exception as e:
         print(f"Error rendering {puml_file}: {e}")
         return False
+
+
+def update_index_html(output_dir=None):
+    """
+    Update the index.html file with the new diagrams.
+
+    Args:
+        output_dir (str): Directory containing rendered images
+    """
+    if output_dir is None:
+        output_dir = OUTPUT_DIR
+
+    index_path = os.path.join(output_dir, "index.html")
+    if not os.path.exists(index_path):
+        print(f"Index file not found at {index_path}")
+        return
+
+    # Read the index.html file
+    with open(index_path, "r", encoding="utf-8") as f:
+        content = f.read()
+
+    # Find the scanDiagramsInFolder function
+    pattern = r"function scanDiagramsInFolder\(folder\) \{(.*?)return \[\];\s*\}"
+    match = re.search(pattern, content, re.DOTALL)
+    if not match:
+        print("Could not find scanDiagramsInFolder function in index.html")
+        return
+
+    # Get all diagram folders
+    folders = {}
+    for root, _, files in os.walk(output_dir):
+        if root == output_dir:
+            continue
+
+        folder_name = os.path.basename(root)
+        if folder_name not in folders:
+            folders[folder_name] = []
+
+        # Get all SVG files in this folder
+        for file in files:
+            if file.endswith(".svg"):
+                diagram_name = os.path.splitext(file)[0]
+                folders[folder_name].append(diagram_name)
+
+    # Build the new function content
+    new_function = "function scanDiagramsInFolder(folder) {\n"
+    new_function += "        // In a browser environment with local files, we can't use fetch to check if files exist\n"
+    new_function += "        // So we'll just return the diagrams we know exist based on the folder\n"
+    new_function += "        \n"
+
+    # Add each folder's diagrams
+    first_folder = True
+    for folder, diagrams in folders.items():
+        if diagrams:
+            if first_folder:
+                new_function += f"        if (folder === '{folder}') {{\n"
+                first_folder = False
+            else:
+                new_function += f"        else if (folder === '{folder}') {{\n"
+
+            # Format the diagrams list as a JavaScript array
+            diagrams_str = str(diagrams).replace("'", '"')
+            new_function += f"          return {diagrams_str};\n"
+            new_function += "        }"
+
+    # Add the default case
+    if first_folder:
+        # No folders with diagrams found
+        new_function += "        return [];\n"
+    else:
+        new_function += " else {\n"
+        new_function += "          return [];\n"
+        new_function += "        }\n"
+
+    new_function += "        \n"
+    new_function += "        return [];\n"
+    new_function += "      }"
+
+    # Replace the function in the content
+    new_content = re.sub(pattern, new_function, content, flags=re.DOTALL)
+
+    # Write the updated content back to the file
+    with open(index_path, "w", encoding="utf-8") as f:
+        f.write(new_content)
+
+    print(
+        f"Updated index.html with {sum(len(diagrams) for diagrams in folders.values())} diagrams"
+    )
 
 
 def render_all_diagrams(directory=SOURCE_DIR, output_dir=None, format=DEFAULT_FORMAT):
@@ -111,6 +208,9 @@ def render_all_diagrams(directory=SOURCE_DIR, output_dir=None, format=DEFAULT_FO
 
     # Print summary
     print(f"\nRendered {success_count} of {len(puml_files)} diagrams to {output_dir}")
+
+    # Update the index.html file
+    update_index_html(output_dir)
 
 
 def parse_args():

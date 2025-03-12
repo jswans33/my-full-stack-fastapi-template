@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FastAPI Template Diagrams</title>
+    <style>
+      html,
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+        height: 100%;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+      }
+      .container {
+        max-width: 95%;
+        width: 95%;
+        margin: 0 auto;
+        background-color: white;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 90vh;
+      }
+      #diagram-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .tab-content {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      .diagram-content-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+      h1 {
+        color: #333;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 5px;
+        font-size: 1.5em;
+        margin: 10px 0;
+      }
+      h2 {
+        color: #444;
+        margin-top: 15px;
+        margin-bottom: 10px;
+        font-size: 1.2em;
+      }
+      h3,
+      h4 {
+        font-size: 1em;
+        margin: 8px 0;
+      }
+      .diagram {
+        margin: 0;
+        text-align: center;
+        transform-origin: 0 0;
+        position: relative;
+        display: inline-block;
+      }
+      .diagram img,
+      .diagram svg {
+        max-width: none; /* Allow image to be larger than container for zooming */
+        height: auto;
+        border: 1px solid #ddd;
+        display: block;
+      }
+
+      .diagram-container {
+        position: relative;
+        overflow: hidden;
+        width: 100%;
+        border: 1px solid #ddd;
+        margin: 10px 0;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .diagram-wrapper {
+        position: relative;
+        overflow: auto;
+        max-height: 75vh;
+        width: 100%;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        touch-action: none; /* Prevents default touch actions */
+      }
+
+      .zoom-controls {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        z-index: 100;
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 3px;
+        padding: 3px;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+      }
+
+      .zoom-controls button {
+        width: 24px;
+        height: 24px;
+        margin: 0 1px;
+        font-size: 14px;
+        cursor: pointer;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 2px;
+        padding: 0;
+      }
+
+      .zoom-controls button:hover {
+        background-color: #f0f0f0;
+      }
+      .tabs {
+        display: flex;
+        border-bottom: 1px solid #ddd;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+      }
+      .tab {
+        padding: 10px 20px;
+        cursor: pointer;
+        background-color: #f1f1f1;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        border-radius: 5px 5px 0 0;
+      }
+      .tab.active {
+        background-color: #fff;
+        border: 1px solid #ddd;
+        border-bottom: 1px solid #fff;
+        margin-bottom: -1px;
+      }
+      .tab-content {
+        display: none;
+      }
+      .tab-content.active {
+        display: block;
+      }
+
+      /* Diagram tabs */
+      .diagram-tabs {
+        display: flex;
+        border-bottom: 2px solid #007bff;
+        margin: 10px 0 0 0;
+        flex-wrap: wrap;
+        background-color: #f0f8ff;
+        padding: 5px 5px 0 5px;
+        border-radius: 3px 3px 0 0;
+      }
+      .diagram-tab {
+        padding: 5px 10px;
+        cursor: pointer;
+        background-color: #e6f2ff;
+        margin-right: 3px;
+        margin-bottom: 0;
+        border-radius: 3px 3px 0 0;
+        font-size: 12px;
+        border: 1px solid #cce5ff;
+        border-bottom: none;
+        position: relative;
+        top: 2px;
+        transition: all 0.2s ease;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 150px;
+      }
+      .diagram-tab:hover {
+        background-color: #d4e9ff;
+      }
+      .diagram-tab.active {
+        background-color: #fff;
+        border: 1px solid #007bff;
+        border-bottom: 2px solid #fff;
+        margin-bottom: -2px;
+        font-weight: bold;
+        color: #007bff;
+        z-index: 1;
+      }
+      .diagram-tab-content {
+        display: none;
+        margin-top: 0;
+        flex: 1;
+        flex-direction: column;
+        border: 1px solid #007bff;
+        border-top: none;
+        padding: 10px;
+        background-color: #fff;
+        border-radius: 0 0 5px 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+      .diagram-tab-content.active {
+        display: flex;
+      }
+      .diagram-content-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        border-radius: 0 0 5px 5px;
+        background-color: #fff;
+      }
+      .format-toggle {
+        margin: 5px 0;
+        text-align: right;
+      }
+      .format-toggle button {
+        padding: 3px 8px;
+        background-color: #f1f1f1;
+        border: 1px solid #ddd;
+        border-radius: 3px;
+        cursor: pointer;
+        font-size: 12px;
+      }
+      .format-toggle button.active {
+        background-color: #007bff;
+        color: white;
+        border-color: #007bff;
+      }
+      .diagram-title {
+        font-weight: bold;
+        margin-top: 30px;
+        color: #555;
+      }
+      .loading {
+        text-align: center;
+        padding: 20px;
+        font-style: italic;
+        color: #666;
+      }
+      .error {
+        color: #d9534f;
+        padding: 10px;
+        background-color: #f9f2f2;
+        border-radius: 5px;
+        margin: 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>FastAPI Template Diagrams</h1>
+
+      <div class="tabs" id="folder-tabs">
+        <!-- Tabs will be dynamically generated -->
+        <div class="tab" onclick="openTab(event, 'instructions')">
+          Instructions
+        </div>
+      </div>
+
+      <div id="diagram-container">
+        <!-- Diagram content will be dynamically generated -->
+      </div>
+
+      <div id="instructions" class="tab-content">
+        <h2>How to View PlantUML Diagrams</h2>
+
+        <h3>Using this HTML Viewer</h3>
+        <p>
+          This HTML file displays the rendered PlantUML diagrams. You can switch
+          between PNG and SVG formats using the buttons at the top of the
+          viewer.
+        </p>
+
+        <h3>Rendering Diagrams</h3>
+        <p>
+          If you need to update the diagrams, you can render them using the
+          following commands:
+        </p>
+
+        <h4>Windows Command Prompt/PowerShell</h4>
+        <pre
+          style="background-color: #f8f8f8; padding: 10px; border-radius: 5px"
+        >
+# From the project root directory
+cd c:/Repos/my-full-stack-fastapi-template
+
+# Activate the virtual environment (if needed)
+.\.venv\Scripts\activate
+
+# Render all diagrams to SVG (default)
+python -m utils.puml.cli render
+
+# Render all diagrams to PNG
+python -m utils.puml.cli render --format=png
+
+# Render a specific diagram
+python -m utils.puml.cli render --file=classifier/classifier_model_diagram.puml
+            </pre
+        >
+
+        <h4>Git Bash/MINGW (Windows)</h4>
+        <pre
+          style="background-color: #f8f8f8; padding: 10px; border-radius: 5px"
+        >
+# From the project root directory
+cd /c/Repos/my-full-stack-fastapi-template
+
+# Activate the virtual environment (if needed)
+source .venv/Scripts/activate
+
+# Render all diagrams to SVG (default)
+python -m utils.puml.cli render
+
+# Render all diagrams to PNG
+python -m utils.puml.cli render --format=png
+
+# Render a specific diagram
+python -m utils.puml.cli render --file=classifier/classifier_model_diagram.puml
+            </pre
+        >
+
+        <h3>Using Make Commands</h3>
+        <p>You can also use Make commands to render and view diagrams:</p>
+
+        <h4>Windows Command Prompt/PowerShell</h4>
+        <pre
+          style="background-color: #f8f8f8; padding: 10px; border-radius: 5px"
+        >
+# From the project root directory
+cd c:/Repos/my-full-stack-fastapi-template
+
+# Render all diagrams to SVG
+make render-diagrams
+
+# Render all diagrams to PNG
+make render-diagrams-png
+
+# View diagrams (opens this HTML file)
+make view-diagrams
+            </pre
+        >
+
+        <h4>Git Bash/MINGW (Windows)</h4>
+        <pre
+          style="background-color: #f8f8f8; padding: 10px; border-radius: 5px"
+        >
+# From the project root directory
+cd /c/Repos/my-full-stack-fastapi-template
+
+# Render all diagrams to SVG
+make render-diagrams
+
+# Render all diagrams to PNG
+make render-diagrams-png
+
+# View diagrams (opens this HTML file)
+make view-diagrams
+            </pre
+        >
+      </div>
+    </div>
+
+    <script>
+      // Current format (png or svg)
+      let currentFormat = 'svg';
+
+      // Function to set the format (png or svg)
+      function setFormat(format) {
+        currentFormat = format;
+
+        // Update all diagram images
+        const diagrams = document.querySelectorAll('.diagram-image');
+        diagrams.forEach(diagram => {
+          const basePath = diagram.getAttribute('data-base-path');
+          diagram.src = basePath + '.' + format;
+        });
+
+        // Update the active button
+        document.querySelectorAll('.format-toggle button').forEach(button => {
+          button.classList.toggle(
+            'active',
+            button.getAttribute('data-format') === format
+          );
+        });
+      }
+
+      // Function to switch tabs
+      function openTab(evt, tabName) {
+        const tabContents = document.getElementsByClassName('tab-content');
+        for (let i = 0; i < tabContents.length; i++) {
+          tabContents[i].classList.remove('active');
+        }
+
+        const tabs = document.getElementsByClassName('tab');
+        for (let i = 0; i < tabs.length; i++) {
+          tabs[i].classList.remove('active');
+        }
+
+        document.getElementById(tabName).classList.add('active');
+        evt.currentTarget.classList.add('active');
+      }
+
+      // Function to scan for available folders and diagrams
+      async function scanDiagrams() {
+        try {
+          // First, scan for available folders
+          const folders = await scanFolders();
+
+          // Create tabs for each folder
+          const tabsContainer = document.getElementById('folder-tabs');
+          const diagramContainer = document.getElementById('diagram-container');
+
+          // Add tabs and content for each folder
+          folders.forEach((folder, index) => {
+            // Create tab
+            const tab = document.createElement('div');
+            tab.className = 'tab' + (index === 0 ? ' active' : '');
+            tab.textContent =
+              folder.charAt(0).toUpperCase() + folder.slice(1) + ' Diagrams';
+            tab.onclick = function (event) {
+              openTab(event, folder);
+            };
+            tabsContainer.insertBefore(tab, tabsContainer.lastChild);
+
+            // Create content div
+            const contentDiv = document.createElement('div');
+            contentDiv.id = folder;
+            contentDiv.className =
+              'tab-content' + (index === 0 ? ' active' : '');
+
+            // Add format toggle
+            const formatToggle = document.createElement('div');
+            formatToggle.className = 'format-toggle';
+            formatToggle.innerHTML = `
+                        <button id="${folder}-png-button" data-format="png" onclick="setFormat('png')">PNG</button>
+                        <button id="${folder}-svg-button" data-format="svg" class="active" onclick="setFormat('svg')">SVG</button>
+                    `;
+            contentDiv.appendChild(formatToggle);
+
+            // Add loading indicator
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'loading';
+            loadingDiv.textContent = 'Loading diagrams...';
+            contentDiv.appendChild(loadingDiv);
+
+            diagramContainer.appendChild(contentDiv);
+
+            // Load diagrams for this folder
+            loadDiagramsForFolder(folder, contentDiv);
+          });
+        } catch (error) {
+          console.error('Error scanning diagrams:', error);
+          const diagramContainer = document.getElementById('diagram-container');
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'error';
+          errorDiv.textContent = 'Error loading diagrams: ' + error.message;
+          diagramContainer.appendChild(errorDiv);
+        }
+      }
+
+      // Function to scan for available folders
+      async function scanFolders() {
+        // Get all subdirectories in the current directory
+        const folders = [];
+        
+        // Check for common diagram directories
+        const commonFolders = ['architecture', 'classifier', 'database'];
+        
+        for (const folder of commonFolders) {
+          try {
+            // Check if folder exists by trying to load a file from it
+            const response = await fetch(folder + '/');
+            if (response.ok) {
+              folders.push(folder);
+            }
+          } catch (error) {
+            // Ignore errors, just means the folder doesn't exist or can't be accessed
+            console.log(`Folder ${folder} not found or not accessible`);
+          }
+        }
+        
+        return folders;
+      }
+
+      // Function to load diagrams for a folder
+      async function loadDiagramsForFolder(folder, containerDiv) {
+        try {
+          // Get diagrams for this folder
+          const diagrams = await scanDiagramsInFolder(folder);
+
+          // Remove loading indicator
+          const loadingDiv = containerDiv.querySelector('.loading');
+          if (loadingDiv) {
+            containerDiv.removeChild(loadingDiv);
+          }
+
+          if (diagrams.length === 0) {
+            const noDataDiv = document.createElement('div');
+            noDataDiv.className = 'error';
+            noDataDiv.textContent = `No diagrams found in the ${folder} folder.`;
+            containerDiv.appendChild(noDataDiv);
+            return;
+          }
+
+          // Create tabs container for diagrams
+          const diagramTabsContainer = document.createElement('div');
+          diagramTabsContainer.className = 'diagram-tabs';
+          containerDiv.appendChild(diagramTabsContainer);
+
+          // Create container for diagram content
+          const diagramContentContainer = document.createElement('div');
+          diagramContentContainer.className = 'diagram-content-container';
+          containerDiv.appendChild(diagramContentContainer);
+
+          // Add each diagram as a tab
+          diagrams.forEach((diagram, index) => {
+            // Create tab for this diagram
+            const diagramTab = document.createElement('div');
+            diagramTab.className =
+              'diagram-tab' + (index === 0 ? ' active' : '');
+            diagramTab.textContent = formatDiagramName(diagram);
+            diagramTab.setAttribute('data-diagram', diagram);
+            diagramTab.setAttribute('data-folder', folder);
+            diagramTab.onclick = function () {
+              openDiagramTab(this);
+            };
+            diagramTabsContainer.appendChild(diagramTab);
+
+            // Create content div for this diagram
+            const diagramContent = document.createElement('div');
+            diagramContent.className =
+              'diagram-tab-content' + (index === 0 ? ' active' : '');
+            diagramContent.id = `${folder}-${diagram}-content`;
+            diagramContentContainer.appendChild(diagramContent);
+
+            // Create container for diagram with zoom controls
+            const diagramContainer = document.createElement('div');
+            diagramContainer.className = 'diagram-container';
+
+            // Add zoom controls
+            const zoomControls = document.createElement('div');
+            zoomControls.className = 'zoom-controls';
+            zoomControls.innerHTML = `
+              <button class="zoom-in" title="Zoom In">+</button>
+              <button class="zoom-out" title="Zoom Out">-</button>
+              <button class="zoom-reset" title="Reset Zoom">↺</button>
+            `;
+            diagramContainer.appendChild(zoomControls);
+
+            // Create wrapper for scrollable content
+            const diagramWrapper = document.createElement('div');
+            diagramWrapper.className = 'diagram-wrapper';
+            diagramContainer.appendChild(diagramWrapper);
+
+            // Create actual diagram div
+            const diagramDiv = document.createElement('div');
+            diagramDiv.className = 'diagram';
+            diagramDiv.setAttribute('data-scale', '1');
+            diagramDiv.setAttribute('data-translate-x', '0');
+            diagramDiv.setAttribute('data-translate-y', '0');
+            diagramDiv.style.cursor = 'grab'; // Show grab cursor to indicate draggable
+
+            // Add mouse event listeners for panning
+            diagramWrapper.addEventListener('mousedown', function (event) {
+              startDrag(event, diagramDiv);
+            });
+
+            diagramWrapper.addEventListener('mousemove', function (event) {
+              handleDrag(event, diagramDiv);
+            });
+
+            diagramWrapper.addEventListener('mouseup', function () {
+              endDrag(diagramDiv);
+            });
+
+            diagramWrapper.addEventListener('mouseleave', function () {
+              endDrag(diagramDiv);
+            });
+
+            // Add wheel event listener for zooming
+            diagramWrapper.addEventListener(
+              'wheel',
+              function (event) {
+                handleMouseWheel(event, diagramDiv);
+              },
+              { passive: false }
+            );
+
+            // Add double-click to reset zoom
+            diagramWrapper.addEventListener('dblclick', function () {
+              resetZoom(diagramDiv);
+            });
+
+            diagramWrapper.appendChild(diagramDiv);
+
+            // Create image element
+            const img = document.createElement('img');
+            img.className = 'diagram-image';
+            img.setAttribute('data-base-path', folder + '/' + diagram);
+            img.src = folder + '/' + diagram + '.svg'; // Default to SVG
+            img.alt = formatDiagramName(diagram);
+
+            // Add event listeners for zoom controls
+            zoomControls
+              .querySelector('.zoom-in')
+              .addEventListener('click', function () {
+                zoomDiagram(diagramDiv, 0.1);
+              });
+
+            zoomControls
+              .querySelector('.zoom-out')
+              .addEventListener('click', function () {
+                zoomDiagram(diagramDiv, -0.1);
+              });
+
+            zoomControls
+              .querySelector('.zoom-reset')
+              .addEventListener('click', function () {
+                resetZoom(diagramDiv);
+              });
+
+            diagramDiv.appendChild(img);
+            diagramContent.appendChild(diagramContainer);
+          });
+        } catch (error) {
+          console.error(`Error loading diagrams for folder ${folder}:`, error);
+          const errorDiv = document.createElement('div');
+          errorDiv.className = 'error';
+          errorDiv.textContent = `Error loading diagrams for ${folder}: ${error.message}`;
+          containerDiv.appendChild(errorDiv);
+        }
+      }
+
+      // Function to scan for diagrams in a folder
+      async function scanDiagramsInFolder(folder) {
+        // In a browser environment with local files, we can't use fetch to check if files exist
+        // So we'll just return the diagrams we know exist based on the folder
+        
+        if (folder === 'architecture') {
+          return ["puml_utilities", "puml_viewer_class_diagram"];
+        } else {
+          return [];
+        }
+        
+        return [];
+      }
+        
+        return [];
+      }
+        
+        return [];
+      }
+
+      // Function to switch between diagram tabs
+      function openDiagramTab(tabElement) {
+        const folder = tabElement.getAttribute('data-folder');
+        const diagram = tabElement.getAttribute('data-diagram');
+
+        // Hide all diagram content
+        const diagramContents = document.querySelectorAll(
+          '.diagram-tab-content'
+        );
+        diagramContents.forEach(content => {
+          content.classList.remove('active');
+        });
+
+        // Deactivate all tabs
+        const diagramTabs = document.querySelectorAll('.diagram-tab');
+        diagramTabs.forEach(tab => {
+          tab.classList.remove('active');
+        });
+
+        // Activate the selected tab and content
+        document
+          .getElementById(`${folder}-${diagram}-content`)
+          .classList.add('active');
+        tabElement.classList.add('active');
+      }
+
+      // Track mouse state for panning
+      const mouseState = {
+        isDragging: false,
+        lastX: 0,
+        lastY: 0,
+        translateX: 0,
+        translateY: 0,
+      };
+
+      // Function to zoom a diagram
+      function zoomDiagram(
+        diagramDiv,
+        zoomDelta,
+        mouseX = null,
+        mouseY = null
+      ) {
+        const wrapper = diagramDiv.parentElement;
+        const wrapperRect = wrapper.getBoundingClientRect();
+
+        // Get current transform values
+        const currentScale =
+          parseFloat(diagramDiv.getAttribute('data-scale')) || 1;
+        const translateX =
+          parseFloat(diagramDiv.getAttribute('data-translate-x')) || 0;
+        const translateY =
+          parseFloat(diagramDiv.getAttribute('data-translate-y')) || 0;
+
+        // Calculate new scale
+        const newScale = Math.max(0.5, Math.min(5, currentScale + zoomDelta));
+
+        // If mouse position is provided, zoom toward that point
+        let newTranslateX = translateX;
+        let newTranslateY = translateY;
+
+        if (mouseX !== null && mouseY !== null) {
+          // Calculate mouse position relative to diagram
+          const relativeX = mouseX - wrapperRect.left;
+          const relativeY = mouseY - wrapperRect.top;
+
+          // Adjust translation to zoom toward mouse position
+          newTranslateX =
+            relativeX - (relativeX - translateX) * (newScale / currentScale);
+          newTranslateY =
+            relativeY - (relativeY - translateY) * (newScale / currentScale);
+        }
+
+        // Update diagram attributes and style
+        diagramDiv.setAttribute('data-scale', newScale);
+        diagramDiv.setAttribute('data-translate-x', newTranslateX);
+        diagramDiv.setAttribute('data-translate-y', newTranslateY);
+        diagramDiv.style.transform = `translate(${newTranslateX}px, ${newTranslateY}px) scale(${newScale})`;
+        diagramDiv.style.transformOrigin = '0 0';
+      }
+
+      // Function to pan a diagram
+      function panDiagram(diagramDiv, deltaX, deltaY) {
+        // Get current transform values
+        const translateX =
+          parseFloat(diagramDiv.getAttribute('data-translate-x')) || 0;
+        const translateY =
+          parseFloat(diagramDiv.getAttribute('data-translate-y')) || 0;
+
+        // Calculate new translation
+        const newTranslateX = translateX + deltaX;
+        const newTranslateY = translateY + deltaY;
+
+        // Update diagram attributes and style
+        diagramDiv.setAttribute('data-translate-x', newTranslateX);
+        diagramDiv.setAttribute('data-translate-y', newTranslateY);
+
+        const scale = parseFloat(diagramDiv.getAttribute('data-scale')) || 1;
+        diagramDiv.style.transform = `translate(${newTranslateX}px, ${newTranslateY}px) scale(${scale})`;
+      }
+
+      // Function to handle mouse wheel zoom
+      function handleMouseWheel(event, diagramDiv) {
+        // Prevent the default scroll behavior
+        event.preventDefault();
+
+        // Determine the zoom direction
+        const delta = event.deltaY < 0 ? 0.1 : -0.1;
+
+        // Apply the zoom at the mouse position
+        zoomDiagram(diagramDiv, delta, event.clientX, event.clientY);
+      }
+
+      // Function to start dragging
+      function startDrag(event, diagramDiv) {
+        // Only start dragging on left mouse button (button 0)
+        if (event.button !== 0) return;
+
+        event.preventDefault();
+        mouseState.isDragging = true;
+        mouseState.lastX = event.clientX;
+        mouseState.lastY = event.clientY;
+
+        // Change cursor to indicate dragging
+        diagramDiv.style.cursor = 'grabbing';
+
+        // Add event listeners to document to handle dragging outside the element
+        document.addEventListener('mousemove', function mouseMoveHandler(e) {
+          handleDrag(e, diagramDiv);
+        });
+
+        document.addEventListener(
+          'mouseup',
+          function mouseUpHandler() {
+            endDrag(diagramDiv);
+            // Remove these document-level handlers when done dragging
+            document.removeEventListener('mousemove', mouseMoveHandler);
+            document.removeEventListener('mouseup', mouseUpHandler);
+          },
+          { once: true }
+        );
+      }
+
+      // Function to handle dragging
+      function handleDrag(event, diagramDiv) {
+        if (!mouseState.isDragging) return;
+
+        event.preventDefault();
+
+        // Calculate the distance moved
+        const deltaX = event.clientX - mouseState.lastX;
+        const deltaY = event.clientY - mouseState.lastY;
+
+        // Only update if there's actual movement
+        if (deltaX !== 0 || deltaY !== 0) {
+          // Update the last position
+          mouseState.lastX = event.clientX;
+          mouseState.lastY = event.clientY;
+
+          // Pan the diagram
+          panDiagram(diagramDiv, deltaX, deltaY);
+        }
+      }
+
+      // Function to end dragging
+      function endDrag(diagramDiv) {
+        if (!mouseState.isDragging) return;
+
+        mouseState.isDragging = false;
+
+        // Reset cursor
+        diagramDiv.style.cursor = 'grab';
+      }
+
+      // Function to reset zoom and pan
+      function resetZoom(diagramDiv) {
+        diagramDiv.setAttribute('data-scale', '1');
+        diagramDiv.setAttribute('data-translate-x', '0');
+        diagramDiv.setAttribute('data-translate-y', '0');
+        diagramDiv.style.transform = 'translate(0px, 0px) scale(1)';
+      }
+
+      // Function to format diagram name for display
+      function formatDiagramName(name) {
+        return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+      }
+
+      // Initialize when the page loads
+      window.onload = function () {
+        scanDiagrams();
+        setFormat('svg');
+      };
+    </script>
+  </body>
+</html>

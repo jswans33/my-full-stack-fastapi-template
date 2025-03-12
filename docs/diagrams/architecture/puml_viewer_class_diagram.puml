@@ -1,0 +1,77 @@
+@startuml "PlantUML Viewer Class Diagram"
+
+!theme crt-green
+
+' Define the classes
+class App {
+  - folders: Object
+  - loading: boolean
+  - error: string
+  - selectedFolder: string
+  - selectedDiagram: string
+  - format: string
+  - expandedFolders: Object
+  - transform: {x, y, scale}
+  - isDragging: boolean
+  - dragStart: {x, y}
+  - containerRef: React.RefObject
+  + loadDiagrams(): void
+  + scanDiagrams(): Object
+  + toggleFolder(folder: string): void
+  + selectDiagram(folder: string, diagram: string): void
+  + formatDiagramName(name: string): string
+  + zoomIn(): void
+  + zoomOut(): void
+  + resetView(): void
+  + handleMouseDown(e: MouseEvent): void
+  + handleMouseMove(e: MouseEvent): void
+  + handleMouseUp(): void
+  + handleWheel(e: WheelEvent): void
+  + render(): ReactElement
+}
+
+class Config {
+  + PROJECT_ROOT: string
+  + SOURCE_DIR: string
+  + OUTPUT_DIR: string
+  + DEFAULT_FORMAT: string
+}
+
+class CLI {
+  + render_command(file: string, format: string): void
+  + view_command(): void
+  + main(): void
+}
+
+class RenderDiagrams {
+  + render_diagram(file_path: string, output_dir: string, format: string): string
+  + render_all_diagrams(source_dir: string, output_dir: string, format: string): void
+}
+
+' Define relationships
+Config <-- RenderDiagrams : uses
+Config <-- CLI : uses
+RenderDiagrams <-- CLI : uses
+App ..> "HTTP" : fetches diagrams
+
+note right of App
+  React component that provides
+  the interactive viewer interface
+end note
+
+note right of Config
+  Central configuration for
+  diagram paths and formats
+end note
+
+note right of CLI
+  Command-line interface for
+  rendering and viewing diagrams
+end note
+
+note right of RenderDiagrams
+  Core functionality for
+  rendering PlantUML diagrams
+end note
+
+@enduml
