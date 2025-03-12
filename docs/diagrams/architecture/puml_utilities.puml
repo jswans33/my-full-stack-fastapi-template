@@ -1,7 +1,7 @@
 @startuml "PlantUML Utilities Architecture"
 
-' Define the components
-package "PlantUML Utilities" as PumlUtils {
+' Define components with simpler syntax
+package "PlantUML Utilities" {
   [config.py] as Config
   [render_diagrams.py] as Renderer
   [cli.py] as CLI
@@ -15,87 +15,47 @@ package "PlantUML Utilities" as PumlUtils {
   [004-plantuml-utilities.md] as SOP
 }
 
-package "External Dependencies" {
+package "External" {
   [plantuml] as PlantUML
   [webbrowser] as Browser
 }
 
-package "Project Structure" {
+package "Project" {
   folder "docs/diagrams" {
-    folder "architecture" as ArchFolder {
-      [*.puml] as ArchDiagrams
-    }
-    
-    folder "classifier" as ClassifierFolder {
-      [*.puml] as ClassifierDiagrams
-    }
-    
-    folder "database" as DBFolder {
-      [*.puml] as DBDiagrams
-    }
-    
-    folder "output" as OutputFolder {
-      folder "architecture" as OutputArchFolder
-      folder "classifier" as OutputClassifierFolder
-      folder "database" as OutputDBFolder
-    }
+    [*.puml files] as DiagramFiles
+    folder "output" as OutputFolder
   }
   
   [Makefile] as ProjectMakefile
 }
 
-' Define the relationships
-Config <-- Renderer : imports
-Config <-- CLI : imports
-Renderer <-- CLI : imports
-Config <-- Init : imports
-Renderer <-- Init : imports
+' Define relationships with simpler syntax
+Config --> Renderer
+Config --> CLI
+Renderer --> CLI
+Config --> Init
+Renderer --> Init
 
-CLI --> Browser : uses
-Renderer --> PlantUML : uses
+CLI --> Browser
+Renderer --> PlantUML
 
-CLI ..> Viewer : opens
-Renderer ..> OutputFolder : writes to
+CLI --> Viewer
+Renderer --> OutputFolder
 
-ProjectMakefile ..> CLI : calls
+ProjectMakefile --> CLI
 
-ArchDiagrams ..> OutputArchFolder : rendered to
-ClassifierDiagrams ..> OutputClassifierFolder : rendered to
-DBDiagrams ..> OutputDBFolder : rendered to
+DiagramFiles --> OutputFolder
+Viewer --> OutputFolder
 
-Viewer ..> OutputFolder : reads from
+' Add simple notes
+note right of Config : Central configuration
 
-' Add notes
-note right of Config
-  Central configuration for:
-  - Paths
-  - Formats
-  - Server URLs
-end note
+note right of Renderer : Renders diagrams to\nSVG and PNG
 
-note right of Renderer
-  Renders PlantUML diagrams to:
-  - SVG
-  - PNG
-end note
+note right of CLI : Commands:\n- render\n- view\n- help
 
-note right of CLI
-  Commands:
-  - render
-  - view
-  - help
-end note
+note right of Viewer : React-based viewer
 
-note right of Viewer
-  React-based viewer with:
-  - Folder navigation
-  - Format switching
-  - Zoom controls
-end note
-
-note bottom of OutputFolder
-  Contains rendered diagrams
-  in SVG and PNG formats
-end note
+note bottom of OutputFolder : Contains rendered\ndiagrams
 
 @enduml
