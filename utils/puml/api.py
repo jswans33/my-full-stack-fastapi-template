@@ -1,10 +1,16 @@
-import os
+"""
+PlantUML API Server
+
+This module provides a FastAPI server for serving PlantUML diagrams and diagram metadata.
+"""
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
 
-app = FastAPI()
+from .settings import settings
+
+app = FastAPI(title="PlantUML API")
 
 # Allow CORS for React development server
 app.add_middleware(
@@ -16,44 +22,44 @@ app.add_middleware(
 )
 
 
-# Convert relative path to absolute path
-diagrams_dir = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../../docs/diagrams/output"),
-)
-
-
 @app.get("/api/diagrams")
 def get_diagrams():
+    """Get all available diagrams grouped by folder."""
     diagram_structure = {}
-    for root, _, files in os.walk(diagrams_dir):
-        rel_dir = os.path.relpath(root, diagrams_dir)
-        # Group files by base name (without extension)
-        diagram_files = {}
-        for f in files:
-            if f.endswith((".svg", ".png")):
-                base_name = os.path.splitext(f)[0]
-                diagram_files[base_name] = True
+    output_dir = settings.output_dir
 
-        if diagram_files:
-            if rel_dir == ".":
-                rel_dir = "root"
-            diagram_structure[rel_dir] = list(diagram_files.keys())
-    return diagram_structure
+    for path in output_dir.glob("**/*"):
+        if path.is_file() and path.suffix in (".svg", ".png"):
+            # Get folder relative to output directory
+            rel_dir = path.parent.relative_to(output_dir)
+            folder = str(rel_dir) if rel_dir.name != "." else "root"
+
+            # Get base name without extension
+            base_name = path.stem
+
+            # Add to diagram structure
+            if folder not in diagram_structure:
+                diagram_structure[folder] = set()
+            diagram_structure[folder].add(base_name)
+
+    # Convert sets to sorted lists for JSON serialization
+    return {k: sorted(v) for k, v in diagram_structure.items()}
 
 
 # Serve diagrams statically
-# Convert relative path to absolute path
-diagrams_dir = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../../docs/diagrams/output"),
-)
-
 app.mount(
     "/diagrams",
-    StaticFiles(directory=diagrams_dir),
+    StaticFiles(directory=str(settings.output_dir)),
     name="diagrams",
 )
 
-if __name__ == "__main__":
+
+def run_server(host: str = "127.0.0.1", port: int = 8088):
+    """Run the API server."""
     import uvicorn
 
-    uvicorn.run(app, host="0.0.0.0", port=8088)
+    uvicorn.run(app, host=host, port=port)
+
+
+if __name__ == "__main__":
+    run_server()

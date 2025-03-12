@@ -10,17 +10,30 @@ Requirements:
 - Internet connection (for the PlantUML server)
 """
 
-import re
+import socket
+import threading
+import time
 from pathlib import Path
 
 import plantuml  # type: ignore
 
+from .api import run_server
 from .core import ensure_dir_exists, get_output_path, setup_logger
 from .exceptions import RenderError
 from .settings import settings
 
 # Set up logger
 logger = setup_logger("render_diagrams")
+
+
+def is_port_in_use(port: int) -> bool:
+    """Check if a port is in use."""
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        try:
+            s.bind(("127.0.0.1", port))
+            return False
+        except OSError:
+            return True
 
 
 def render_diagram(
@@ -79,107 +92,6 @@ def render_diagram(
         raise RenderError(f"Error rendering {puml_file}: {e}") from e
 
 
-def update_viewer_index(output_dir: str | Path | None = None) -> None:
-    """
-    Update the index.html file with the new diagrams.
-
-    Args:
-        output_dir: Directory containing rendered images (default: settings.output_dir)
-
-    Raises:
-        RenderError: If there is an error updating the index file
-    """
-    try:
-        out_dir = Path(output_dir) if output_dir else settings.output_dir
-        index_path = out_dir / "index.html"
-
-        if not index_path.exists():
-            logger.warning(f"Index file not found at {index_path}")
-            return
-
-        # Read the index.html file
-        content = index_path.read_text(encoding="utf-8")
-
-        # Find the scanDiagramsInFolder function
-        pattern = r"function scanDiagramsInFolder\(folder\) \{(.*?)return \[\];\s*\}"
-        match = re.search(pattern, content, re.DOTALL)
-        if not match:
-            logger.warning("Could not find scanDiagramsInFolder function in index.html")
-            return
-
-        # Get all diagram folders
-        folders: dict[str, list[str]] = {}
-        for path in out_dir.glob("**/*.svg"):
-            if path.parent == out_dir:
-                continue
-
-            folder_name = path.parent.name
-            if folder_name not in folders:
-                folders[folder_name] = []
-
-            folders[folder_name].append(path.stem)
-
-        # Build the new function content
-        new_function = [
-            "function scanDiagramsInFolder(folder) {",
-            "        // In a browser environment with local files, we can't use fetch to check if files exist",
-            "        // So we'll just return the diagrams we know exist based on the folder",
-            "",
-        ]
-
-        # Add each folder's diagrams
-        first_folder = True
-        for folder, diagrams in folders.items():
-            if diagrams:
-                if first_folder:
-                    new_function.append(f"        if (folder === '{folder}') {{")
-                    first_folder = False
-                else:
-                    new_function.append(f"        else if (folder === '{folder}') {{")
-
-                # Format the diagrams list as a JavaScript array
-                diagrams_str = str(diagrams).replace("'", '"')
-                new_function.append(f"          return {diagrams_str};")
-                new_function.append("        }")
-
-        # Add the default case
-        if first_folder:
-            new_function.append("        return [];")
-        else:
-            new_function.extend(
-                [
-                    " else {",
-                    "          return [];",
-                    "        }",
-                ],
-            )
-
-        new_function.extend(
-            [
-                "",
-                "        return [];",
-                "      }",
-            ],
-        )
-
-        # Replace the function in the content
-        new_content = re.sub(
-            pattern,
-            "\n".join(new_function),
-            content,
-            flags=re.DOTALL,
-        )
-
-        # Write the updated content back to the file
-        index_path.write_text(new_content, encoding="utf-8")
-        logger.info(
-            f"Updated index.html with {sum(len(diagrams) for diagrams in folders.values())} diagrams",
-        )
-
-    except Exception as e:
-        raise RenderError(f"Error updating index file: {e}") from e
-
-
 def render_all_diagrams(
     directory: str | Path | None = None,
     output_dir: str | Path | None = None,
@@ -225,9 +137,6 @@ def render_all_diagrams(
             f"Rendered {success_count} of {len(puml_files)} diagrams to {out_dir}",
         )
 
-        # Update the index.html file
-        update_viewer_index(out_dir)
-
         return (success_count, len(puml_files))
 
     except Exception as e:
@@ -248,22 +157,60 @@ def launch_viewer() -> bool:
         import webbrowser
 
         # Get the path to the HTML viewer
-        viewer_path = settings.output_dir / "index.html"
+        viewer_template = Path(__file__).parent / "viewer" / "index.html"
 
         # Check if the viewer exists
-        if not viewer_path.exists():
-            raise RenderError(f"React HTML viewer not found: {viewer_path}")
+        if not viewer_template.exists():
+            raise RenderError(f"Viewer template not found: {viewer_template}")
 
-        # Check if the output directory exists
+        # Check if the output directory exists and render diagrams if needed
         if not settings.output_dir.exists():
-            raise RenderError(
-                f"Output directory not found: {settings.output_dir}\n"
-                "Please render the diagrams first using the 'render' command.",
+            logger.info("Output directory not found, rendering diagrams...")
+            render_all_diagrams()
+            render_all_diagrams(format="png")  # Also render PNG versions
+        else:
+            # Check if any diagrams need to be rendered
+            puml_files = list(settings.source_dir.glob("**/*.puml"))
+            needs_render = False
+            for puml_path in puml_files:
+                svg_path = get_output_path(puml_path, "svg")
+                png_path = get_output_path(puml_path, "png")
+                if not svg_path.exists() or not png_path.exists():
+                    needs_render = True
+                    break
+
+            if needs_render:
+                logger.info("Some diagrams need to be rendered...")
+                render_all_diagrams()
+                render_all_diagrams(format="png")
+
+        # Check if the API server is already running
+        port = 8088
+        if is_port_in_use(port):
+            logger.info(f"API server already running on port {port}")
+        else:
+            # Start the API server in a background thread
+            server_thread = threading.Thread(
+                target=run_server,
+                kwargs={"host": "127.0.0.1", "port": port},
+                daemon=True,
             )
+            server_thread.start()
+            logger.info(f"Starting API server on http://localhost:{port}")
+
+            # Give the server a moment to start
+            time.sleep(1)
 
         # Open the viewer in the default web browser
-        logger.info(f"Opening React HTML viewer: {viewer_path}")
-        webbrowser.open(f"file://{viewer_path.resolve()}")
+        logger.info("Opening viewer...")
+        webbrowser.open(f"file://{viewer_template.resolve()}")
+
+        # Keep the main thread alive while the server is running
+        try:
+            while True:
+                time.sleep(1)
+        except KeyboardInterrupt:
+            logger.info("Shutting down server...")
 
         return True
 

@@ -119,11 +119,16 @@ def render_command(args: Sequence[str]) -> int:
         # Render the diagrams
         if parsed_args.file:
             # Render a specific file
-            file_path = (
-                parsed_args.source / parsed_args.file
-                if not parsed_args.file.is_absolute()
-                else parsed_args.file
-            )
+            file_path = parsed_args.file
+            if not file_path.is_absolute():
+                # Try relative to project root first
+                project_root_path = settings.project_root / file_path
+                if project_root_path.exists():
+                    file_path = project_root_path
+                else:
+                    # Fall back to relative to source directory
+                    file_path = parsed_args.source / file_path
+
             if not file_path.exists():
                 raise CommandArgumentError(f"File not found: {file_path}")
 
@@ -273,7 +278,7 @@ def analyze_command(args: Sequence[str]) -> int:
         logger.info(f"\nGenerated diagram: {output_file}")
         logger.info(
             "You can render it using: python -m utils.puml.cli render --file="
-            + f"code_analysis/{output_file.name}",
+            + str(output_file.relative_to(settings.project_root)),
         )
         return 0
 

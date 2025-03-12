@@ -163,8 +163,6 @@
         React.useEffect(() => {
           const loadDiagrams = async () => {
             try {
-              // In a real app, this would be an API call
-              // For now, we'll just scan the output directory
               const data = await scanDiagrams();
               setFolders(data);
 
@@ -192,7 +190,7 @@
         // Function to scan for diagrams
         const scanDiagrams = async () => {
           try {
-            const response = await fetch("http://localhost:8000/api/diagrams");
+            const response = await fetch("http://localhost:8088/api/diagrams");
             if (!response.ok) {
               throw new Error(
                 `Failed to fetch diagrams: ${response.statusText}`
@@ -203,7 +201,7 @@
             return data;
           } catch (err) {
             console.error(`Error scanning diagrams: ${err.message}`);
-            throw err; // Let the error handler in useEffect handle it
+            throw err;
           }
         };
 
@@ -433,7 +431,7 @@
                           }}
                         >
                           <img
-                            src={`http://localhost:8000/diagrams/${selectedFolder}/${selectedDiagram}.${format}`}
+                            src={`http://localhost:8088/diagrams/${selectedFolder}/${selectedDiagram}.${format}`}
                             alt={formatDiagramName(selectedDiagram)}
                             style={{
                               maxWidth: "none",
@@ -447,7 +445,7 @@
                               // Try the alternative format
                               const altFormat =
                                 format === "svg" ? "png" : "svg";
-                              const altSrc = `http://localhost:8000/diagrams/${selectedFolder}/${selectedDiagram}.${altFormat}`;
+                              const altSrc = `http://localhost:8088/diagrams/${selectedFolder}/${selectedDiagram}.${altFormat}`;
 
                               // Set a flag to prevent infinite error loops
                               if (!e.target.getAttribute("data-tried-alt")) {

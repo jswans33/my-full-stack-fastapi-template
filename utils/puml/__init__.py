@@ -10,7 +10,6 @@ Features:
 - Command-line interface for rendering, viewing, and analyzing code
 """
 
-import os
 import sys
 from pathlib import Path
 
@@ -26,17 +25,10 @@ try:
     # Try absolute imports first
     from utils.puml.code_analyzer import (
         analyze_and_generate_diagram,
-        analyze_directory,
         analyze_file,
         generate_class_diagram,
         generate_module_diagram,
         save_diagram,
-    )
-    from utils.puml.config import (
-        DEFAULT_FORMAT,
-        FORMATS,
-        OUTPUT_DIR,
-        SOURCE_DIR,
     )
     from utils.puml.core import ensure_dir_exists, setup_logger
     from utils.puml.render_diagrams import (
@@ -44,21 +36,15 @@ try:
         render_all_diagrams,
         render_diagram,
     )
+    from utils.puml.settings import settings
 except ImportError:
     # Fall back to relative imports
     from .code_analyzer import (
         analyze_and_generate_diagram,
-        analyze_directory,
         analyze_file,
         generate_class_diagram,
         generate_module_diagram,
         save_diagram,
-    )
-    from .config import (
-        DEFAULT_FORMAT,
-        FORMATS,
-        OUTPUT_DIR,
-        SOURCE_DIR,
     )
     from .core import ensure_dir_exists, setup_logger
     from .render_diagrams import (
@@ -66,6 +52,7 @@ except ImportError:
         render_all_diagrams,
         render_diagram,
     )
+    from .settings import settings
 
 # Define what's available when using "from utils.puml import *"
 __all__ = [
@@ -75,16 +62,12 @@ __all__ = [
     "launch_viewer",
     # Code analysis functions
     "analyze_file",
-    "analyze_directory",
     "analyze_and_generate_diagram",
     "generate_class_diagram",
     "generate_module_diagram",
     "save_diagram",
     # Configuration
-    "SOURCE_DIR",
-    "OUTPUT_DIR",
-    "DEFAULT_FORMAT",
-    "FORMATS",
+    "settings",
     # Utilities
     "setup_logger",
     "ensure_dir_exists",
