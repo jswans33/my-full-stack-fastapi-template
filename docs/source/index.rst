@@ -8,6 +8,8 @@ Welcome to the FastAPI Full Stack Template documentation.
    :caption: Contents:
 
    overview
+   sop
+   architecture
    database
    backend/index
    frontend/index
@@ -27,6 +29,8 @@ The project is organized into several main components:
 Quick Links
 -----------
 
+* :doc:`sop` - Standard Operating Procedures
+* :doc:`architecture` - System Architecture and C4 Diagrams
 * :doc:`database` - Database schema and management
 * :doc:`backend/index` - Backend API documentation
 * :doc:`frontend/index` - Frontend documentation
@@ -39,5 +43,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
-

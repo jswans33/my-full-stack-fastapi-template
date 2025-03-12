@@ -14,6 +14,8 @@ Prerequisites
 * Docker and Docker Compose
 * Git
 * Make (optional, but recommended)
+* Java Runtime Environment (JRE) for PlantUML diagrams
+* PlantUML (for documentation diagrams)
 
 Initial Setup
 ~~~~~~~~~~~~~
@@ -25,7 +27,28 @@ Initial Setup
       git clone https://github.com/fastapi/full-stack-fastapi-template.git
       cd full-stack-fastapi-template
 
-2. Configure environment:
+2. Install PlantUML:
+
+   Windows (using Chocolatey):
+   
+   .. code-block:: bash
+
+      choco install plantuml
+
+   macOS (using Homebrew):
+   
+   .. code-block:: bash
+
+      brew install plantuml
+
+   Linux (Ubuntu/Debian):
+   
+   .. code-block:: bash
+
+      sudo apt-get update
+      sudo apt-get install plantuml
+
+3. Configure environment:
 
    .. code-block:: bash
 
@@ -37,7 +60,7 @@ Initial Setup
       # Generate a secret key:
       python -c "import secrets; print(secrets.token_urlsafe(32))"
 
-3. Install dependencies:
+4. Install dependencies:
 
    .. code-block:: bash
 
@@ -204,11 +227,15 @@ Common Issues
    * Clean containers: ``make clean``
    * Rebuild: ``make build``
 
+4. Documentation build issues:
+
+   * Verify PlantUML installation: ``plantuml -version``
+   * Check Java installation: ``java -version``
+   * Update dependencies: ``uv pip install -e ".[dev]"``
+
 Getting Help
 ~~~~~~~~~~~~
 
 * Check the project documentation
 * Search existing GitHub issues
 * Create a new issue if needed
-
-

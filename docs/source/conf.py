@@ -17,6 +17,7 @@ extensions = [
     "sphinx.ext.napoleon",
     "myst_parser",
     "sphinxcontrib.mermaid",
+    "sphinxcontrib.plantuml",
 ]
 
 templates_path = ["_templates"]
@@ -38,3 +39,7 @@ napoleon_use_ivar = True
 napoleon_use_param = True
 napoleon_use_rtype = True
 napoleon_type_aliases = None
+
+# PlantUML configuration
+plantuml = r"java -jar C:\ProgramData\chocolatey\lib\plantuml\tools\plantuml.jar"
+plantuml_output_format = "svg"
