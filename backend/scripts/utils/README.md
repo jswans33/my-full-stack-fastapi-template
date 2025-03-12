@@ -1,0 +1,157 @@
+# UML Generator Usage Guide
+
+This utility generates PlantUML class diagrams from Python source code. It analyzes Python files, extracts class definitions, methods, attributes, and relationships, and generates PlantUML diagrams.
+
+## Features
+
+- **File-by-File UML Generation**: Each Python file gets its own UML diagram
+- **Visual File Grouping**: Classes are grouped by source file in packages
+- **Method Parameter Parsing**: Support for complex type annotations, default values, \*args, \*\*kwargs
+- **Visibility Indicators**: Public/private/protected indicators for attributes and methods
+- **Relationship Detection**: Detects associations, compositions, and inheritance from type annotations
+- **Comprehensive CLI**: Multiple input options, configurable output directory, verbosity control
+
+## Installation
+
+No additional installation is required beyond the standard Python libraries. The script uses the `ast` module for parsing Python code.
+
+## Usage
+
+### Basic Usage
+
+```bash
+# Process a single file
+python backend/scripts/utils/generate_uml.py -f path/to/file.py
+
+# Process a directory
+python backend/scripts/utils/generate_uml.py -d path/to/directory
+
+# Process the app directory
+python backend/scripts/utils/generate_uml.py --app-dir
+```
+
+### Command-Line Options
+
+```
+usage: generate_uml.py [-h] (-f FILE | -d DIRECTORY | --app-dir) [-o OUTPUT]
+                      [--subdirs SUBDIRS [SUBDIRS ...]] [--recursive]
+                      [-v | -q | --debug]
+
+Generate PlantUML class diagrams from Python source code.
+
+options:
+  -h, --help            show this help message and exit
+  -f FILE, --file FILE  Process a single Python file (default: None)
+  -d DIRECTORY, --directory DIRECTORY
+                        Process a directory containing Python files (default: None)
+  --app-dir             Process the app directory (default: False)
+  -o OUTPUT, --output OUTPUT
+                        Output directory for PlantUML files (default: docs/source/_generated_uml)
+  --subdirs SUBDIRS [SUBDIRS ...]
+                        List of subdirectories to process (only with --directory or --app-dir) (default: ['models', 'services'])
+  --recursive           Recursively process directories (default: False)
+  -v, --verbose         Enable verbose output (default: False)
+  -q, --quiet           Suppress all output except errors (default: False)
+  --debug               Enable debug logging (default: False)
+```
+
+### Examples
+
+#### Process a Single File
+
+```bash
+python backend/scripts/utils/generate_uml.py -f backend/app/models.py
+```
+
+This will generate a UML diagram for the `models.py` file and save it to `docs/source/_generated_uml/models.puml`.
+
+#### Process a Directory
+
+```bash
+python backend/scripts/utils/generate_uml.py -d backend/app
+```
+
+This will process all Python files in the `backend/app` directory and generate UML diagrams for each file.
+
+#### Process the App Directory with Specific Subdirectories
+
+```bash
+python backend/scripts/utils/generate_uml.py --app-dir --subdirs models api core
+```
+
+This will process the app directory and the specified subdirectories (`models`, `api`, `core`).
+
+#### Process a Directory Recursively
+
+```bash
+python backend/scripts/utils/generate_uml.py -d backend/app --recursive
+```
+
+This will recursively process all Python files in the `backend/app` directory and its subdirectories.
+
+#### Specify a Custom Output Directory
+
+```bash
+python backend/scripts/utils/generate_uml.py -d backend/app -o custom/output/path
+```
+
+This will save the generated UML diagrams to the specified output directory.
+
+#### Enable Verbose Logging
+
+```bash
+python backend/scripts/utils/generate_uml.py -d backend/app -v
+```
+
+This will enable verbose logging, showing more information about the processing.
+
+## Output
+
+The script generates PlantUML files (`.puml`) in the specified output directory. Each Python file gets its own UML diagram.
+
+The UML diagrams include:
+
+- Classes with their attributes and methods
+- Visibility indicators for attributes and methods
+- Inheritance relationships
+- Associations and compositions detected from type annotations
+- Classes grouped by source file in packages
+
+## Viewing UML Diagrams
+
+To view the generated UML diagrams, you need a PlantUML viewer. You can use:
+
+- [PlantUML Online Server](http://www.plantuml.com/plantuml/uml/)
+- [PlantUML Extension for VS Code](https://marketplace.visualstudio.com/items?itemName=jebbs.plantuml)
+- [PlantUML Viewer for JetBrains IDEs](https://plugins.jetbrains.com/plugin/7017-plantuml-integration)
+
+## Troubleshooting
+
+### No Classes Found
+
+If the script reports "No classes found in file", make sure the file contains class definitions.
+
+### File Not Found
+
+If the script reports "File not found", check the file path and make sure it exists.
+
+### Not a Python File
+
+If the script reports "Not a Python file", make sure the file has a `.py` extension.
+
+### Directory Not Found
+
+If the script reports "Directory not found", check the directory path and make sure it exists.
+
+## Contributing
+
+Feel free to contribute to this utility by:
+
+- Adding new features
+- Fixing bugs
+- Improving documentation
+- Adding tests
+
+## License
+
+This utility is provided as-is, without any warranty or support.

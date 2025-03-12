@@ -112,3 +112,15 @@ docs:
 # Build and open documentation
 docs-open: docs
 	start docs/build/html/index.html || xdg-open docs/build/html/index.html || open docs/build/html/index.html
+
+generate-uml:
+	cd docs && ../backend/.venv/Scripts/python ../scripts/ast_to_plantuml.py
+
+docs:
+	cd docs && python -m sphinx source build/html
+
+docs-full:
+	make uml && make docs-open
+
+uml:
+	cd docs && ../backend/.venv/Scripts/python ../scripts/ast_to_plantuml.py
