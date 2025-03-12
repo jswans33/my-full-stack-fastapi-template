@@ -12,39 +12,18 @@ Features:
 
 import os
 import sys
+from pathlib import Path
 
-# Add the parent directory to sys.path to allow imports to work
+# Add the project root to sys.path to allow imports to work
 # regardless of where the code is executed from
-package_dir = os.path.dirname(os.path.abspath(__file__))
-parent_dir = os.path.dirname(os.path.dirname(package_dir))
-if parent_dir not in sys.path:
-    sys.path.insert(0, parent_dir)
+package_dir = Path(__file__).parent.absolute()
+project_root = package_dir.parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
 
-# Try to import using relative imports first, then fall back to absolute imports
+# Import the main functions for the public API
 try:
-    # Import the main functions for the public API
-    from .code_analyzer import (
-        analyze_and_generate_diagram,
-        analyze_directory,
-        analyze_file,
-        generate_class_diagram,
-        generate_module_diagram,
-        save_diagram,
-    )
-    from .config import (
-        DEFAULT_FORMAT,
-        FORMATS,
-        OUTPUT_DIR,
-        SOURCE_DIR,
-    )
-    from .core import ensure_dir_exists, setup_logger
-    from .render_diagrams import (
-        launch_viewer,
-        render_all_diagrams,
-        render_diagram,
-    )
-except (ImportError, ValueError):
-    # Fall back to absolute imports
+    # Try absolute imports first
     from utils.puml.code_analyzer import (
         analyze_and_generate_diagram,
         analyze_directory,
@@ -61,6 +40,28 @@ except (ImportError, ValueError):
     )
     from utils.puml.core import ensure_dir_exists, setup_logger
     from utils.puml.render_diagrams import (
+        launch_viewer,
+        render_all_diagrams,
+        render_diagram,
+    )
+except ImportError:
+    # Fall back to relative imports
+    from .code_analyzer import (
+        analyze_and_generate_diagram,
+        analyze_directory,
+        analyze_file,
+        generate_class_diagram,
+        generate_module_diagram,
+        save_diagram,
+    )
+    from .config import (
+        DEFAULT_FORMAT,
+        FORMATS,
+        OUTPUT_DIR,
+        SOURCE_DIR,
+    )
+    from .core import ensure_dir_exists, setup_logger
+    from .render_diagrams import (
         launch_viewer,
         render_all_diagrams,
         render_diagram,

@@ -18,7 +18,7 @@ app.add_middleware(
 
 # Convert relative path to absolute path
 diagrams_dir = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "../../docs/diagrams/output")
+    os.path.join(os.path.dirname(__file__), "../../docs/diagrams/output"),
 )
 
 
@@ -52,3 +52,8 @@ app.mount(
     StaticFiles(directory=diagrams_dir),
     name="diagrams",
 )
+
+if __name__ == "__main__":
+    import uvicorn
+
+    uvicorn.run(app, host="0.0.0.0", port=8088)

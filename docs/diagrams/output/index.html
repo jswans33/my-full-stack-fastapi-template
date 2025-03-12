@@ -369,42 +369,42 @@ make view-diagrams
 
     <script>
       // Current format (png or svg)
-      let currentFormat = 'svg';
+      let currentFormat = "svg";
 
       // Function to set the format (png or svg)
       function setFormat(format) {
         currentFormat = format;
 
         // Update all diagram images
-        const diagrams = document.querySelectorAll('.diagram-image');
-        diagrams.forEach(diagram => {
-          const basePath = diagram.getAttribute('data-base-path');
-          diagram.src = basePath + '.' + format;
+        const diagrams = document.querySelectorAll(".diagram-image");
+        diagrams.forEach((diagram) => {
+          const basePath = diagram.getAttribute("data-base-path");
+          diagram.src = basePath + "." + format;
         });
 
         // Update the active button
-        document.querySelectorAll('.format-toggle button').forEach(button => {
+        document.querySelectorAll(".format-toggle button").forEach((button) => {
           button.classList.toggle(
-            'active',
-            button.getAttribute('data-format') === format
+            "active",
+            button.getAttribute("data-format") === format
           );
         });
       }
 
       // Function to switch tabs
       function openTab(evt, tabName) {
-        const tabContents = document.getElementsByClassName('tab-content');
+        const tabContents = document.getElementsByClassName("tab-content");
         for (let i = 0; i < tabContents.length; i++) {
-          tabContents[i].classList.remove('active');
+          tabContents[i].classList.remove("active");
         }
 
-        const tabs = document.getElementsByClassName('tab');
+        const tabs = document.getElementsByClassName("tab");
         for (let i = 0; i < tabs.length; i++) {
-          tabs[i].classList.remove('active');
+          tabs[i].classList.remove("active");
         }
 
-        document.getElementById(tabName).classList.add('active');
-        evt.currentTarget.classList.add('active');
+        document.getElementById(tabName).classList.add("active");
+        evt.currentTarget.classList.add("active");
       }
 
       // Function to scan for available folders and diagrams
@@ -414,40 +414,40 @@ make view-diagrams
           const folders = await scanFolders();
 
           // Create tabs for each folder
-          const tabsContainer = document.getElementById('folder-tabs');
-          const diagramContainer = document.getElementById('diagram-container');
+          const tabsContainer = document.getElementById("folder-tabs");
+          const diagramContainer = document.getElementById("diagram-container");
 
           // Add tabs and content for each folder
           folders.forEach((folder, index) => {
             // Create tab
-            const tab = document.createElement('div');
-            tab.className = 'tab' + (index === 0 ? ' active' : '');
+            const tab = document.createElement("div");
+            tab.className = "tab" + (index === 0 ? " active" : "");
             tab.textContent =
-              folder.charAt(0).toUpperCase() + folder.slice(1) + ' Diagrams';
+              folder.charAt(0).toUpperCase() + folder.slice(1) + " Diagrams";
             tab.onclick = function (event) {
               openTab(event, folder);
             };
             tabsContainer.insertBefore(tab, tabsContainer.lastChild);
 
             // Create content div
-            const contentDiv = document.createElement('div');
+            const contentDiv = document.createElement("div");
             contentDiv.id = folder;
             contentDiv.className =
-              'tab-content' + (index === 0 ? ' active' : '');
+              "tab-content" + (index === 0 ? " active" : "");
 
             // Add format toggle
-            const formatToggle = document.createElement('div');
-            formatToggle.className = 'format-toggle';
+            const formatToggle = document.createElement("div");
+            formatToggle.className = "format-toggle";
             formatToggle.innerHTML = `
-                        <button id="${folder}-png-button" data-format="png" onclick="setFormat('png')">PNG</button>
-                        <button id="${folder}-svg-button" data-format="svg" class="active" onclick="setFormat('svg')">SVG</button>
-                    `;
+                             <button id="${folder}-png-button" data-format="png" onclick="setFormat('png')">PNG</button>
+                             <button id="${folder}-svg-button" data-format="svg" class="active" onclick="setFormat('svg')">SVG</button>
+                         `;
             contentDiv.appendChild(formatToggle);
 
             // Add loading indicator
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'loading';
-            loadingDiv.textContent = 'Loading diagrams...';
+            const loadingDiv = document.createElement("div");
+            loadingDiv.className = "loading";
+            loadingDiv.textContent = "Loading diagrams...";
             contentDiv.appendChild(loadingDiv);
 
             diagramContainer.appendChild(contentDiv);
@@ -456,11 +456,11 @@ make view-diagrams
             loadDiagramsForFolder(folder, contentDiv);
           });
         } catch (error) {
-          console.error('Error scanning diagrams:', error);
-          const diagramContainer = document.getElementById('diagram-container');
-          const errorDiv = document.createElement('div');
-          errorDiv.className = 'error';
-          errorDiv.textContent = 'Error loading diagrams: ' + error.message;
+          console.error("Error scanning diagrams:", error);
+          const diagramContainer = document.getElementById("diagram-container");
+          const errorDiv = document.createElement("div");
+          errorDiv.className = "error";
+          errorDiv.textContent = "Error loading diagrams: " + error.message;
           diagramContainer.appendChild(errorDiv);
         }
       }
@@ -469,14 +469,14 @@ make view-diagrams
       async function scanFolders() {
         // Get all subdirectories in the current directory
         const folders = [];
-        
+
         // Check for common diagram directories
-        const commonFolders = ['architecture', 'classifier', 'database'];
-        
+        const commonFolders = ["architecture", "classifier", "database"];
+
         for (const folder of commonFolders) {
           try {
             // Check if folder exists by trying to load a file from it
-            const response = await fetch(folder + '/');
+            const response = await fetch(folder + "/");
             if (response.ok) {
               folders.push(folder);
             }
@@ -485,7 +485,7 @@ make view-diagrams
             console.log(`Folder ${folder} not found or not accessible`);
           }
         }
-        
+
         return folders;
       }
 
@@ -496,97 +496,97 @@ make view-diagrams
           const diagrams = await scanDiagramsInFolder(folder);
 
           // Remove loading indicator
-          const loadingDiv = containerDiv.querySelector('.loading');
+          const loadingDiv = containerDiv.querySelector(".loading");
           if (loadingDiv) {
             containerDiv.removeChild(loadingDiv);
           }
 
           if (diagrams.length === 0) {
-            const noDataDiv = document.createElement('div');
-            noDataDiv.className = 'error';
+            const noDataDiv = document.createElement("div");
+            noDataDiv.className = "error";
             noDataDiv.textContent = `No diagrams found in the ${folder} folder.`;
             containerDiv.appendChild(noDataDiv);
             return;
           }
 
           // Create tabs container for diagrams
-          const diagramTabsContainer = document.createElement('div');
-          diagramTabsContainer.className = 'diagram-tabs';
+          const diagramTabsContainer = document.createElement("div");
+          diagramTabsContainer.className = "diagram-tabs";
           containerDiv.appendChild(diagramTabsContainer);
 
           // Create container for diagram content
-          const diagramContentContainer = document.createElement('div');
-          diagramContentContainer.className = 'diagram-content-container';
+          const diagramContentContainer = document.createElement("div");
+          diagramContentContainer.className = "diagram-content-container";
           containerDiv.appendChild(diagramContentContainer);
 
           // Add each diagram as a tab
           diagrams.forEach((diagram, index) => {
             // Create tab for this diagram
-            const diagramTab = document.createElement('div');
+            const diagramTab = document.createElement("div");
             diagramTab.className =
-              'diagram-tab' + (index === 0 ? ' active' : '');
+              "diagram-tab" + (index === 0 ? " active" : "");
             diagramTab.textContent = formatDiagramName(diagram);
-            diagramTab.setAttribute('data-diagram', diagram);
-            diagramTab.setAttribute('data-folder', folder);
+            diagramTab.setAttribute("data-diagram", diagram);
+            diagramTab.setAttribute("data-folder", folder);
             diagramTab.onclick = function () {
               openDiagramTab(this);
             };
             diagramTabsContainer.appendChild(diagramTab);
 
             // Create content div for this diagram
-            const diagramContent = document.createElement('div');
+            const diagramContent = document.createElement("div");
             diagramContent.className =
-              'diagram-tab-content' + (index === 0 ? ' active' : '');
+              "diagram-tab-content" + (index === 0 ? " active" : "");
             diagramContent.id = `${folder}-${diagram}-content`;
             diagramContentContainer.appendChild(diagramContent);
 
             // Create container for diagram with zoom controls
-            const diagramContainer = document.createElement('div');
-            diagramContainer.className = 'diagram-container';
+            const diagramContainer = document.createElement("div");
+            diagramContainer.className = "diagram-container";
 
             // Add zoom controls
-            const zoomControls = document.createElement('div');
-            zoomControls.className = 'zoom-controls';
+            const zoomControls = document.createElement("div");
+            zoomControls.className = "zoom-controls";
             zoomControls.innerHTML = `
-              <button class="zoom-in" title="Zoom In">+</button>
-              <button class="zoom-out" title="Zoom Out">-</button>
-              <button class="zoom-reset" title="Reset Zoom">↺</button>
-            `;
+                   <button class="zoom-in" title="Zoom In">+</button>
+                   <button class="zoom-out" title="Zoom Out">-</button>
+                   <button class="zoom-reset" title="Reset Zoom">↺</button>
+                 `;
             diagramContainer.appendChild(zoomControls);
 
             // Create wrapper for scrollable content
-            const diagramWrapper = document.createElement('div');
-            diagramWrapper.className = 'diagram-wrapper';
+            const diagramWrapper = document.createElement("div");
+            diagramWrapper.className = "diagram-wrapper";
             diagramContainer.appendChild(diagramWrapper);
 
             // Create actual diagram div
-            const diagramDiv = document.createElement('div');
-            diagramDiv.className = 'diagram';
-            diagramDiv.setAttribute('data-scale', '1');
-            diagramDiv.setAttribute('data-translate-x', '0');
-            diagramDiv.setAttribute('data-translate-y', '0');
-            diagramDiv.style.cursor = 'grab'; // Show grab cursor to indicate draggable
+            const diagramDiv = document.createElement("div");
+            diagramDiv.className = "diagram";
+            diagramDiv.setAttribute("data-scale", "1");
+            diagramDiv.setAttribute("data-translate-x", "0");
+            diagramDiv.setAttribute("data-translate-y", "0");
+            diagramDiv.style.cursor = "grab"; // Show grab cursor to indicate draggable
 
             // Add mouse event listeners for panning
-            diagramWrapper.addEventListener('mousedown', function (event) {
+            diagramWrapper.addEventListener("mousedown", function (event) {
               startDrag(event, diagramDiv);
             });
 
-            diagramWrapper.addEventListener('mousemove', function (event) {
+            diagramWrapper.addEventListener("mousemove", function (event) {
               handleDrag(event, diagramDiv);
             });
 
-            diagramWrapper.addEventListener('mouseup', function () {
+            diagramWrapper.addEventListener("mouseup", function () {
               endDrag(diagramDiv);
             });
 
-            diagramWrapper.addEventListener('mouseleave', function () {
+            diagramWrapper.addEventListener("mouseleave", function () {
               endDrag(diagramDiv);
             });
 
             // Add wheel event listener for zooming
             diagramWrapper.addEventListener(
-              'wheel',
+              "wheel",
               function (event) {
                 handleMouseWheel(event, diagramDiv);
               },
@@ -594,35 +594,35 @@ make view-diagrams
             );
 
             // Add double-click to reset zoom
-            diagramWrapper.addEventListener('dblclick', function () {
+            diagramWrapper.addEventListener("dblclick", function () {
               resetZoom(diagramDiv);
             });
 
             diagramWrapper.appendChild(diagramDiv);
 
             // Create image element
-            const img = document.createElement('img');
-            img.className = 'diagram-image';
-            img.setAttribute('data-base-path', folder + '/' + diagram);
-            img.src = folder + '/' + diagram + '.svg'; // Default to SVG
+            const img = document.createElement("img");
+            img.className = "diagram-image";
+            img.setAttribute("data-base-path", folder + "/" + diagram);
+            img.src = folder + "/" + diagram + ".svg"; // Default to SVG
             img.alt = formatDiagramName(diagram);
 
             // Add event listeners for zoom controls
             zoomControls
-              .querySelector('.zoom-in')
-              .addEventListener('click', function () {
+              .querySelector(".zoom-in")
+              .addEventListener("click", function () {
                 zoomDiagram(diagramDiv, 0.1);
               });
 
             zoomControls
-              .querySelector('.zoom-out')
-              .addEventListener('click', function () {
+              .querySelector(".zoom-out")
+              .addEventListener("click", function () {
                 zoomDiagram(diagramDiv, -0.1);
               });
 
             zoomControls
-              .querySelector('.zoom-reset')
-              .addEventListener('click', function () {
+              .querySelector(".zoom-reset")
+              .addEventListener("click", function () {
                 resetZoom(diagramDiv);
               });
 
@@ -631,8 +631,8 @@ make view-diagrams
           });
         } catch (error) {
           console.error(`Error loading diagrams for folder ${folder}:`, error);
-          const errorDiv = document.createElement('div');
-          errorDiv.className = 'error';
+          const errorDiv = document.createElement("div");
+          errorDiv.className = "error";
           errorDiv.textContent = `Error loading diagrams for ${folder}: ${error.message}`;
           containerDiv.appendChild(errorDiv);
         }
@@ -642,46 +642,45 @@ make view-diagrams
       async function scanDiagramsInFolder(folder) {
         // In a browser environment with local files, we can't use fetch to check if files exist
         // So we'll just return the diagrams we know exist based on the folder
-        
-        if (folder === 'architecture') {
+
+        if (folder === "architecture") {
           return ["puml_utilities", "puml_viewer_class_diagram"];
+        } else if (folder === "code_analysis") {
+          return [
+            "analyzer_class_diagram",
+            "analyzer_class_diagram",
+            "code_analyzer_class_diagram",
+            "core_module_diagram",
+          ];
         } else {
           return [];
         }
-        
-        return [];
-      }
-        
-        return [];
-      }
-        
-        return [];
       }
 
       // Function to switch between diagram tabs
       function openDiagramTab(tabElement) {
-        const folder = tabElement.getAttribute('data-folder');
-        const diagram = tabElement.getAttribute('data-diagram');
+        const folder = tabElement.getAttribute("data-folder");
+        const diagram = tabElement.getAttribute("data-diagram");
 
         // Hide all diagram content
         const diagramContents = document.querySelectorAll(
-          '.diagram-tab-content'
+          ".diagram-tab-content"
         );
-        diagramContents.forEach(content => {
-          content.classList.remove('active');
+        diagramContents.forEach((content) => {
+          content.classList.remove("active");
         });
 
         // Deactivate all tabs
-        const diagramTabs = document.querySelectorAll('.diagram-tab');
-        diagramTabs.forEach(tab => {
-          tab.classList.remove('active');
+        const diagramTabs = document.querySelectorAll(".diagram-tab");
+        diagramTabs.forEach((tab) => {
+          tab.classList.remove("active");
         });
 
         // Activate the selected tab and content
         document
           .getElementById(`${folder}-${diagram}-content`)
-          .classList.add('active');
-        tabElement.classList.add('active');
+          .classList.add("active");
+        tabElement.classList.add("active");
       }
 
       // Track mouse state for panning
@@ -705,11 +704,11 @@ make view-diagrams
 
         // Get current transform values
         const currentScale =
-          parseFloat(diagramDiv.getAttribute('data-scale')) || 1;
+          parseFloat(diagramDiv.getAttribute("data-scale")) || 1;
         const translateX =
-          parseFloat(diagramDiv.getAttribute('data-translate-x')) || 0;
+          parseFloat(diagramDiv.getAttribute("data-translate-x")) || 0;
         const translateY =
-          parseFloat(diagramDiv.getAttribute('data-translate-y')) || 0;
+          parseFloat(diagramDiv.getAttribute("data-translate-y")) || 0;
 
         // Calculate new scale
         const newScale = Math.max(0.5, Math.min(5, currentScale + zoomDelta));
@@ -731,30 +730,30 @@ make view-diagrams
         }
 
         // Update diagram attributes and style
-        diagramDiv.setAttribute('data-scale', newScale);
-        diagramDiv.setAttribute('data-translate-x', newTranslateX);
-        diagramDiv.setAttribute('data-translate-y', newTranslateY);
+        diagramDiv.setAttribute("data-scale", newScale);
+        diagramDiv.setAttribute("data-translate-x", newTranslateX);
+        diagramDiv.setAttribute("data-translate-y", newTranslateY);
         diagramDiv.style.transform = `translate(${newTranslateX}px, ${newTranslateY}px) scale(${newScale})`;
-        diagramDiv.style.transformOrigin = '0 0';
+        diagramDiv.style.transformOrigin = "0 0";
       }
 
       // Function to pan a diagram
       function panDiagram(diagramDiv, deltaX, deltaY) {
         // Get current transform values
         const translateX =
-          parseFloat(diagramDiv.getAttribute('data-translate-x')) || 0;
+          parseFloat(diagramDiv.getAttribute("data-translate-x")) || 0;
         const translateY =
-          parseFloat(diagramDiv.getAttribute('data-translate-y')) || 0;
+          parseFloat(diagramDiv.getAttribute("data-translate-y")) || 0;
 
         // Calculate new translation
         const newTranslateX = translateX + deltaX;
         const newTranslateY = translateY + deltaY;
 
         // Update diagram attributes and style
-        diagramDiv.setAttribute('data-translate-x', newTranslateX);
-        diagramDiv.setAttribute('data-translate-y', newTranslateY);
+        diagramDiv.setAttribute("data-translate-x", newTranslateX);
+        diagramDiv.setAttribute("data-translate-y", newTranslateY);
 
-        const scale = parseFloat(diagramDiv.getAttribute('data-scale')) || 1;
+        const scale = parseFloat(diagramDiv.getAttribute("data-scale")) || 1;
         diagramDiv.style.transform = `translate(${newTranslateX}px, ${newTranslateY}px) scale(${scale})`;
       }
 
@@ -781,20 +780,20 @@ make view-diagrams
         mouseState.lastY = event.clientY;
 
         // Change cursor to indicate dragging
-        diagramDiv.style.cursor = 'grabbing';
+        diagramDiv.style.cursor = "grabbing";
 
         // Add event listeners to document to handle dragging outside the element
-        document.addEventListener('mousemove', function mouseMoveHandler(e) {
+        document.addEventListener("mousemove", function mouseMoveHandler(e) {
           handleDrag(e, diagramDiv);
         });
 
         document.addEventListener(
-          'mouseup',
+          "mouseup",
           function mouseUpHandler() {
             endDrag(diagramDiv);
             // Remove these document-level handlers when done dragging
-            document.removeEventListener('mousemove', mouseMoveHandler);
-            document.removeEventListener('mouseup', mouseUpHandler);
+            document.removeEventListener("mousemove", mouseMoveHandler);
+            document.removeEventListener("mouseup", mouseUpHandler);
           },
           { once: true }
         );
@@ -828,26 +827,26 @@ make view-diagrams
         mouseState.isDragging = false;
 
         // Reset cursor
-        diagramDiv.style.cursor = 'grab';
+        diagramDiv.style.cursor = "grab";
       }
 
       // Function to reset zoom and pan
       function resetZoom(diagramDiv) {
-        diagramDiv.setAttribute('data-scale', '1');
-        diagramDiv.setAttribute('data-translate-x', '0');
-        diagramDiv.setAttribute('data-translate-y', '0');
-        diagramDiv.style.transform = 'translate(0px, 0px) scale(1)';
+        diagramDiv.setAttribute("data-scale", "1");
+        diagramDiv.setAttribute("data-translate-x", "0");
+        diagramDiv.setAttribute("data-translate-y", "0");
+        diagramDiv.style.transform = "translate(0px, 0px) scale(1)";
       }
 
       // Function to format diagram name for display
       function formatDiagramName(name) {
-        return name.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+        return name.replace(/_/g, " ").replace(/\b\w/g, (l) => l.toUpperCase());
       }
 
       // Initialize when the page loads
       window.onload = function () {
         scanDiagrams();
-        setFormat('svg');
+        setFormat("svg");
       };
     </script>
   </body>

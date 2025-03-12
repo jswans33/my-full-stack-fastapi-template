@@ -20,6 +20,22 @@
 - 📞 [Traefik](https://traefik.io) as a reverse proxy / load balancer.
 - 🚢 Deployment instructions using Docker Compose, including how to set up a frontend Traefik proxy to handle automatic HTTPS certificates.
 - 🏭 CI (continuous integration) and CD (continuous deployment) based on GitHub Actions.
+- 📊 PlantUML diagram generation and viewing system.
+
+## PlantUML Diagrams
+
+This project includes a PlantUML diagram viewer system for visualizing architecture and code structure. For detailed instructions, see [utils/puml/README.md](utils/puml/README.md).
+
+Quick start:
+
+```bash
+# 1. Render diagrams
+python -m utils.puml.cli render
+
+# 2. Start viewer server (keep this running)
+cd utils/puml
+python -m uvicorn api:app --reload
+```
 
 ### Dashboard Login
 
@@ -252,6 +268,7 @@ This project uses automated code formatting and linting to maintain consistent c
 The project includes VSCode settings for automatic formatting on save:
 
 1. Install the recommended extensions:
+
    - [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff) for Python
    - [Prettier](https://marketplace.visualstudio.com/items?itemName=esbenp.prettier-vscode) for JavaScript/TypeScript
 

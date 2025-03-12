@@ -151,7 +151,7 @@ def update_viewer_index(output_dir: str | Path | None = None) -> None:
                     " else {",
                     "          return [];",
                     "        }",
-                ]
+                ],
             )
 
         new_function.extend(
@@ -159,7 +159,7 @@ def update_viewer_index(output_dir: str | Path | None = None) -> None:
                 "",
                 "        return [];",
                 "      }",
-            ]
+            ],
         )
 
         # Replace the function in the content
@@ -247,8 +247,8 @@ def launch_viewer() -> bool:
     try:
         import webbrowser
 
-        # Get the path to the React HTML viewer
-        viewer_path = Path(__file__).parent / "viewer" / "index.html"
+        # Get the path to the HTML viewer
+        viewer_path = settings.output_dir / "index.html"
 
         # Check if the viewer exists
         if not viewer_path.exists():
