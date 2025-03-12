@@ -75,3 +75,21 @@ class DiagramGenerationError(AnalyzerError):
     """Raised when there is an error generating a diagram."""
 
     pass
+
+
+class CacheError(AnalyzerError):
+    """Raised when there is an error with the caching system."""
+
+    def __init__(self, message: str, original_error: Exception | None = None):
+        self.original_error = original_error
+        super().__init__(f"Cache error: {message}")
+
+
+class FilterError(AnalyzerError):
+    """Raised when there is an error applying filters to the analysis."""
+
+    def __init__(self, message: str, pattern: str | None = None):
+        self.pattern = pattern
+        super().__init__(
+            f"Filter error: {message}" + (f" (pattern: {pattern})" if pattern else ""),
+        )

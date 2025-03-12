@@ -94,7 +94,8 @@ def _add_relationships_to_diagram(modules: list[Module], diagram: list[str]) -> 
 
 
 def generate_class_diagram(
-    modules: list[Module], include_functions: bool = False
+    modules: list[Module],
+    include_functions: bool = False,
 ) -> str:
     """
     Generate a PlantUML class diagram from analyzed code.
@@ -175,14 +176,21 @@ def generate_module_diagram(modules: list[Module]) -> str:
         # Add dependencies between modules
         dependencies_added = set()
         for module in modules:
-            for imported_name in module.imports.values():
+            # Get direct dependencies from imports
+            for import_info in module.imports.values():
+                if not import_info["is_direct"]:
+                    continue
+
                 # Get the top-level module name
-                top_module = imported_name.split(".")[0]
+                source = import_info["source"]
+                top_module = source.split(".")[0]
+
                 if top_module in module_names and top_module != module.name:
                     dep_key = f"{module.name}_{top_module}"
                     if dep_key not in dependencies_added:
                         diagram.append(
-                            f"{module.name.replace('.', '_')} --> {top_module.replace('.', '_')}",
+                            f"{module.name.replace('.', '_')} --> {top_module.replace('.', '_')}"
+                            + (" <<uses>>" if import_info["used"] else " <<unused>>"),
                         )
                         dependencies_added.add(dep_key)
 

@@ -128,23 +128,90 @@ class CodeVisitor(ast.NodeVisitor):
                         )
 
     def visit_Import(self, node: ast.Import) -> None:
-        """Process an import node."""
+        """
+        Process an import node.
+
+        Handles imports like:
+        - import foo
+        - import foo.bar
+        - import foo as bar
+        """
         for name in node.names:
-            self.module.add_import(name.asname or name.name, name.name)
+            imported_name = name.name
+            as_name = name.asname or imported_name
+
+            # Track both the imported name and any submodules
+            parts = imported_name.split(".")
+            for i in range(len(parts)):
+                partial_import = ".".join(parts[: i + 1])
+                self.module.add_import(
+                    name=as_name if i == len(parts) - 1 else partial_import,
+                    source=partial_import,
+                    is_direct=i == len(parts) - 1,
+                )
 
     def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
-        """Process an import from node."""
-        if node.module:
+        """
+        Process an import from node.
+
+        Handles imports like:
+        - from foo import bar
+        - from foo.bar import baz
+        - from foo import bar as baz
+        - from . import foo
+        - from .foo import bar
+        - from ..foo import bar
+        """
+        # Handle relative imports
+        if node.level > 0:
+            # Calculate the full module path for relative import
+            current_package = self.module.name.split(".")
+            if len(current_package) < node.level:
+                logger.warning(
+                    f"Invalid relative import in {self.module.name}: "
+                    f"attempted to go up {node.level} levels but only {len(current_package)} available",
+                )
+                return
+
+            base_package = ".".join(current_package[: -node.level])
+            if node.module:
+                base_module = (
+                    f"{base_package}.{node.module}" if base_package else node.module
+                )
+            else:
+                base_module = base_package
+        else:
+            base_module = node.module
+
+        if base_module:
             for name in node.names:
                 imported_name = name.name
                 as_name = name.asname or imported_name
-                full_name = f"{node.module}.{imported_name}"
-                self.module.add_import(as_name, full_name)
+
+                # Handle star imports
+                if imported_name == "*":
+                    self.module.add_import(
+                        name="*",
+                        source=base_module,
+                        is_direct=True,
+                        is_star=True,
+                    )
+                    logger.warning(
+                        f"Star import from {base_module} in {self.module.name}"
+                    )
+                else:
+                    full_name = f"{base_module}.{imported_name}"
+                    self.module.add_import(
+                        name=as_name,
+                        source=full_name,
+                        is_direct=True,
+                    )
 
     def visit_Call(self, node: ast.Call) -> None:
         """Process a function call node."""
         if isinstance(node.func, ast.Attribute) and isinstance(
-            node.func.value, ast.Name
+            node.func.value,
+            ast.Name,
         ):
             if self.current_function:
                 obj_name = node.func.value.id

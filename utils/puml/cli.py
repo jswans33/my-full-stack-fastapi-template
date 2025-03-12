@@ -8,7 +8,19 @@ Usage:
     python -m utils.puml.cli render [--format=<format>] [--source=<source_dir>] [--output=<output_dir>] [--file=<file>]
     python -m utils.puml.cli view
     python -m utils.puml.cli analyze [--path=<path>] [--output=<output_file>] [--modules] [--functions] [--verbose]
+                                    [--exclude=<patterns>] [--include-private] [--max-workers=<n>] [--progress]
     python -m utils.puml.cli help
+
+Options for analyze command:
+    --path=<path>           Path to Python file or directory to analyze [default: .]
+    --output=<output_file>  Output file for the PlantUML diagram
+    --modules              Generate module diagram instead of class diagram
+    --functions           Include standalone functions in class diagram
+    --verbose             Enable verbose logging
+    --exclude=<patterns>  Comma-separated glob patterns to exclude [default: __pycache__,*.pyc,venv,.*]
+    --include-private     Include private classes and methods in diagram
+    --max-workers=<n>     Maximum number of parallel workers [default: 4]
+    --progress           Show progress bar for large codebases
 """
 
 import argparse
@@ -75,7 +87,7 @@ def render_command(args: Sequence[str]) -> int:
     try:
         # Parse arguments
         parser = argparse.ArgumentParser(
-            description="Render PlantUML diagrams to images"
+            description="Render PlantUML diagrams to images",
         )
         parser.add_argument(
             "--format",
@@ -198,6 +210,28 @@ def analyze_command(args: Sequence[str]) -> int:
             action="store_true",
             help="Enable verbose logging",
         )
+        parser.add_argument(
+            "--exclude",
+            type=str,
+            help="Comma-separated glob patterns to exclude",
+            default="__pycache__,*.pyc,venv,.*",
+        )
+        parser.add_argument(
+            "--include-private",
+            action="store_true",
+            help="Include private classes and methods in diagram",
+        )
+        parser.add_argument(
+            "--max-workers",
+            type=int,
+            default=4,
+            help="Maximum number of parallel workers",
+        )
+        parser.add_argument(
+            "--progress",
+            action="store_true",
+            help="Show progress bar for large codebases",
+        )
 
         # Parse the arguments
         parsed_args = parser.parse_args(args)
@@ -207,12 +241,33 @@ def analyze_command(args: Sequence[str]) -> int:
             setup_logger("code_analyzer", verbose=True)
             setup_logger("cli", verbose=True)
 
+        # Convert exclude patterns to set
+        exclude_patterns = set(
+            pattern.strip() for pattern in parsed_args.exclude.split(",")
+        )
+
+        # Progress callback for large codebases
+        def progress_callback(current: int, total: int) -> None:
+            if parsed_args.progress:
+                percent = (current / total) * 100
+                print(
+                    f"\rAnalyzing files: {current}/{total} ({percent:.1f}%)",
+                    end="",
+                    flush=True,
+                )
+                if current == total:
+                    print()  # New line at the end
+
         # Analyze the code and generate the diagram
         output_file = analyze_and_generate_diagram(
             path=parsed_args.path,
             output=parsed_args.output,
             modules=parsed_args.modules,
             functions=parsed_args.functions,
+            exclude_patterns=exclude_patterns,
+            max_workers=parsed_args.max_workers,
+            include_private=parsed_args.include_private,
+            progress_callback=progress_callback if parsed_args.progress else None,
         )
 
         logger.info(f"\nGenerated diagram: {output_file}")

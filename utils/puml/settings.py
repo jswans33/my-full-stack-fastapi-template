@@ -23,6 +23,12 @@ class PlantUMLSettings(BaseModel):
     source_dir: Path = Field(description="Source directory for PlantUML files")
     output_dir: Path = Field(description="Output directory for rendered diagrams")
 
+    # Analysis settings
+    default_exclude_patterns: set[str] = Field(
+        default={"__pycache__", ".git", "venv", ".venv", "node_modules"},
+        description="Default patterns to exclude from analysis",
+    )
+
     # PlantUML server configuration
     plantuml_server_svg: str = Field(
         default="http://www.plantuml.com/plantuml/svg/",
@@ -67,7 +73,7 @@ class PlantUMLSettings(BaseModel):
             project_root = values.get("project_root")
             if project_root is None:
                 raise ProjectRootError(
-                    "Project root must be set before source directory"
+                    "Project root must be set before source directory",
                 )
             v = project_root / "docs" / "diagrams"
 
@@ -82,7 +88,7 @@ class PlantUMLSettings(BaseModel):
             source_dir = values.get("source_dir")
             if source_dir is None:
                 raise ProjectRootError(
-                    "Source directory must be set before output directory"
+                    "Source directory must be set before output directory",
                 )
             v = source_dir / "output"
 
@@ -95,7 +101,7 @@ class PlantUMLSettings(BaseModel):
         """Validate the default format is supported."""
         if v not in values["supported_formats"]:
             raise ValueError(
-                f"Default format '{v}' must be one of {values['supported_formats']}"
+                f"Default format '{v}' must be one of {values['supported_formats']}",
             )
         return v
 
