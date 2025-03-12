@@ -1,0 +1,51 @@
+@startuml "Classifier Data Model"
+
+' Define entities
+entity "Dataset" as dataset {
+  * id : UUID <<PK>>
+  --
+  * name : VARCHAR(255)
+  * description : TEXT
+  * created_at : TIMESTAMP
+  * version : VARCHAR(50)
+  * status : ENUM
+}
+
+entity "Feature" as feature {
+  * id : UUID <<PK>>
+  * dataset_id : UUID <<FK>>
+  --
+  * name : VARCHAR(255)
+  * type : ENUM
+  * importance : FLOAT
+  * description : TEXT
+}
+
+entity "Model" as model {
+  * id : UUID <<PK>>
+  * dataset_id : UUID <<FK>>
+  --
+  * name : VARCHAR(255)
+  * type : VARCHAR(100)
+  * version : VARCHAR(50)
+  * accuracy : FLOAT
+  * created_at : TIMESTAMP
+  * parameters : JSONB
+}
+
+entity "Prediction" as prediction {
+  * id : UUID <<PK>>
+  * model_id : UUID <<FK>>
+  --
+  * input_data : JSONB
+  * result : JSONB
+  * confidence : FLOAT
+  * created_at : TIMESTAMP
+}
+
+' Define relationships
+dataset ||--o{ feature : contains
+dataset ||--o{ model : trains
+model ||--o{ prediction : generates
+
+@enduml

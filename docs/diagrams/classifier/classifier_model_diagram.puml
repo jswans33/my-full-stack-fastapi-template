@@ -1,0 +1,25 @@
+@startuml "Classifier Model"
+
+' Define components
+package "Classifier System" {
+  [Data Preprocessing] as Preprocess
+  [Feature Engineering] as Features
+  [Model Training] as Training
+  [Model Evaluation] as Evaluation
+  [Prediction Service] as Prediction
+}
+
+database "Training Data" as TrainingData
+database "Model Storage" as ModelStorage
+database "Evaluation Results" as EvalResults
+
+' Define relationships
+TrainingData --> Preprocess : input
+Preprocess --> Features : clean data
+Features --> Training : features
+Training --> ModelStorage : save model
+ModelStorage --> Prediction : load model
+Training --> Evaluation : validate
+Evaluation --> EvalResults : store metrics
+
+@enduml

@@ -1,4 +1,4 @@
-.PHONY: help up down build test clean migrate generate-client lint format
+.PHONY: help up down build test clean clean-py migrate generate-client lint format render-diagrams render-diagrams-png view-diagrams
 
 # Default target
 help:
@@ -10,10 +10,14 @@ help:
 	@echo "  make test-backend    - Run backend tests"
 	@echo "  make test-frontend   - Run frontend tests"
 	@echo "  make clean           - Remove Docker containers, volumes, and images"
+	@echo "  make clean-py        - Remove Python generated files (__pycache__, .pyc, etc.)"
 	@echo "  make migrate         - Run database migrations"
 	@echo "  make generate-client - Generate frontend API client from OpenAPI schema"
 	@echo "  make lint            - Run linters on backend and frontend code"
 	@echo "  make format          - Format code in backend and frontend"
+	@echo "  make render-diagrams - Render PlantUML diagrams to SVG format"
+	@echo "  make render-diagrams-png - Render PlantUML diagrams to PNG format"
+	@echo "  make view-diagrams   - Open the PlantUML HTML viewer in a browser"
 
 # Start the development environment
 up:
@@ -49,6 +53,11 @@ test-e2e:
 # Clean up Docker resources
 clean:
 	docker compose down -v --rmi local
+
+# Clean up generated Python files
+clean-py:
+	python -c "import os, shutil; [shutil.rmtree(os.path.join(root, d)) for root, dirs, _ in os.walk('.') for d in dirs if d == '__pycache__' or d.endswith('.egg-info') or d.endswith('.egg') or d == '.pytest_cache' or d == 'htmlcov' or d == '.mypy_cache']"
+	python -c "import os; [os.remove(os.path.join(root, f)) for root, _, files in os.walk('.') for f in files if f.endswith('.pyc') or f.endswith('.pyo') or f.endswith('.pyd') or f == '.coverage']"
 
 # Run database migrations
 migrate:
@@ -96,3 +105,15 @@ frontend-install:
 # Create a new superuser
 create-superuser:
 	docker compose exec backend python -m app.initial_data
+
+# Render PlantUML diagrams to SVG format
+render-diagrams:
+	python -m utils.puml.cli render
+
+# Render PlantUML diagrams to PNG format
+render-diagrams-png:
+	python -m utils.puml.cli render --format=png
+
+# Open the PlantUML HTML viewer in a browser
+view-diagrams:
+	python -m utils.puml.cli view

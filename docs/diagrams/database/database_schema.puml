@@ -1,0 +1,29 @@
+@startuml "Database Schema"
+
+' Define entities
+entity "User" as user {
+  * id : UUID <<PK>>
+  --
+  * email : VARCHAR(255)
+  * hashed_password : VARCHAR(255)
+  * is_active : BOOLEAN
+  * is_superuser : BOOLEAN
+  * full_name : VARCHAR(255)
+  created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+entity "Item" as item {
+  * id : UUID <<PK>>
+  * owner_id : UUID <<FK>>
+  --
+  * title : VARCHAR(255)
+  * description : TEXT
+  * created_at : TIMESTAMP
+  updated_at : TIMESTAMP
+}
+
+' Define relationships
+user ||--o{ item : owns
+
+@enduml

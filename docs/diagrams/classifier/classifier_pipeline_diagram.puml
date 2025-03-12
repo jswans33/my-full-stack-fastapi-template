@@ -1,0 +1,35 @@
+@startuml "Classifier Pipeline"
+
+' Define the pipeline as an activity diagram
+start
+
+:Load Raw Data;
+
+:Data Cleaning;
+note right: Remove duplicates, handle missing values
+
+:Feature Selection;
+note right: Choose relevant features
+
+:Feature Engineering;
+note right: Create new features, normalize data
+
+:Split Data;
+note right: Training set (80%), Test set (20%)
+
+:Train Model;
+note right: Use various algorithms (Random Forest, SVM, etc.)
+
+:Hyperparameter Tuning;
+note right: Grid search, cross-validation
+
+:Evaluate Model;
+note right: Accuracy, precision, recall, F1 score
+
+:Save Model;
+
+:Deploy Model;
+
+stop
+
+@enduml
