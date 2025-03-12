@@ -230,6 +230,23 @@ General development docs: [development.md](./development.md).
 
 This includes using Docker Compose, custom local domains, `.env` configurations, etc.
 
+## Makefile Support
+
+This project includes a Makefile to simplify common development tasks. You can use commands like:
+
+```bash
+# Start the development environment
+make up
+
+# Run tests
+make test
+
+# Apply database migrations
+make migrate
+```
+
+For a complete list of available commands and detailed usage instructions, see [MAKEFILE.md](./MAKEFILE.md).
+
 ## Release Notes
 
 Check the file [release-notes.md](./release-notes.md).
