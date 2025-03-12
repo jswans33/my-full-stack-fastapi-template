@@ -6,15 +6,15 @@
 ## Technology Stack and Features
 
 - ⚡ [**FastAPI**](https://fastapi.tiangolo.com) for the Python backend API.
-    - 🧰 [SQLModel](https://sqlmodel.tiangolo.com) for the Python SQL database interactions (ORM).
-    - 🔍 [Pydantic](https://docs.pydantic.dev), used by FastAPI, for the data validation and settings management.
-    - 💾 [PostgreSQL](https://www.postgresql.org) as the SQL database.
+  - 🧰 [SQLModel](https://sqlmodel.tiangolo.com) for the Python SQL database interactions (ORM).
+  - 🔍 [Pydantic](https://docs.pydantic.dev), used by FastAPI, for the data validation and settings management.
+  - 💾 [PostgreSQL](https://www.postgresql.org) as the SQL database.
 - 🚀 [React](https://react.dev) for the frontend.
-    - 💃 Using TypeScript, hooks, Vite, and other parts of a modern frontend stack.
-    - 🎨 [Chakra UI](https://chakra-ui.com) for the frontend components.
-    - 🤖 An automatically generated frontend client.
-    - 🧪 [Playwright](https://playwright.dev) for End-to-End testing.
-    - 🦇 Dark mode support.
+  - 💃 Using TypeScript, hooks, Vite, and other parts of a modern frontend stack.
+  - 🎨 [Chakra UI](https://chakra-ui.com) for the frontend components.
+  - 🤖 An automatically generated frontend client.
+  - 🧪 [Playwright](https://playwright.dev) for End-to-End testing.
+  - 🦇 Dark mode support.
 - 🐋 [Docker Compose](https://www.docker.com) for development and production.
 - 🔒 Secure password hashing by default.
 - 🔑 JWT (JSON Web Token) authentication.
@@ -229,6 +229,50 @@ Deployment docs: [deployment.md](./deployment.md).
 General development docs: [development.md](./development.md).
 
 This includes using Docker Compose, custom local domains, `.env` configurations, etc.
+
+## Code Formatting and Linting
+
+This project uses automated code formatting and linting to maintain consistent code quality:
+
+### Backend (Python)
+
+- **Ruff**: Used for both linting and formatting Python code
+  - Configuration in `pyproject.toml` and `.pre-commit-config.yaml`
+  - Enforces PEP 8 style guide, import sorting, and other best practices
+- **Mypy**: Static type checking for Python
+  - Configuration in `pyproject.toml`
+  - Runs in strict mode to ensure type safety
+
+### Frontend (TypeScript/JavaScript)
+
+- **Biome**: Modern JavaScript/TypeScript formatter and linter (alternative to Prettier + ESLint)
+  - Configuration in `frontend/biome.json`
+  - Handles formatting, linting, and import sorting
+
+### VSCode Integration
+
+The project includes VSCode settings for automatic formatting on save:
+
+1. Install the recommended extensions:
+   - [Ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff) for Python
+   - [Biome](https://marketplace.visualstudio.com/items?itemName=biomejs.biome) for JavaScript/TypeScript
+
+2. The `.vscode/settings.json` file configures:
+   - Format on save for all supported file types
+   - Automatic import organization
+   - Linting as you type
+
+### Pre-commit Hooks
+
+The project uses pre-commit hooks to ensure code quality before commits:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Install the git hooks
+pre-commit install
+```
 
 ## Makefile Support
 
