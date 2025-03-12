@@ -194,7 +194,7 @@
                 try {
                     // This is a client-side function that attempts to scan the output directory
                     const outputDir = '../../../docs/diagrams/output';
-                    const knownFolders = ['architecture', 'classifier', 'database'];
+                    const knownFolders = ['architecture', 'classifier', 'database', 'code_analysis'];
                     const result = {};
                     
                     // For architecture folder, we know these diagrams exist
@@ -206,12 +206,18 @@
                     // For database folder
                     result['database'] = ['database_schema'];
                     
+                    // For code_analysis folder
+                    result['code_analysis'] = ['code_analyzer_class_diagram', 'core_module_diagram'];
+                    
                     console.log("Loaded diagrams:", result);
                     return result;
                 } catch (err) {
                     console.error(`Error scanning diagrams: ${err.message}`);
                     // Return a default structure in case of error
-                    return { 'architecture': ['puml_utilities', 'puml_viewer_class_diagram'] };
+                    return {
+                        'architecture': ['puml_utilities', 'puml_viewer_class_diagram'],
+                        'code_analysis': ['code_analyzer_class_diagram', 'core_module_diagram']
+                    };
                 }
             };
 

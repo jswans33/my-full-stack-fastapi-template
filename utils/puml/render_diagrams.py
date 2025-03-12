@@ -17,7 +17,7 @@ import argparse
 import os
 import re
 
-import plantuml
+import plantuml  # type: ignore
 
 from utils.puml.config import (
     DEFAULT_FORMAT,
