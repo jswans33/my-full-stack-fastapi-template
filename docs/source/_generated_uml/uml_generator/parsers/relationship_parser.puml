@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "relationship_parser" {
+  class RelationshipParser {
+    +__init__(self: Any) -> Any
+    +find_relationships(self: Any, annotation: ast.AST, known_classes: set[str]) -> list[tuple[str, str]]
+  }
+}
+
+' Relationships
+@enduml

@@ -206,6 +206,198 @@ Utils Utils.Py
 
 
 
+Uml Generator
+-------------
+
+
+Cli
+~~~
+
+.. uml:: uml_generator/cli.puml
+
+
+Config
+~~~~~~
+
+.. uml:: uml_generator/config.puml
+
+
+Exceptions
+~~~~~~~~~~
+
+.. uml:: uml_generator/exceptions.puml
+
+
+Factories
+~~~~~~~~~
+
+.. uml:: uml_generator/factories.puml
+
+
+Filesystem
+~~~~~~~~~~
+
+.. uml:: uml_generator/filesystem.puml
+
+
+Interfaces
+~~~~~~~~~~
+
+.. uml:: uml_generator/interfaces.puml
+
+
+Models
+~~~~~~
+
+.. uml:: uml_generator/models.puml
+
+
+Path Resolver
+~~~~~~~~~~~~~
+
+.. uml:: uml_generator/path_resolver.puml
+
+
+Service
+~~~~~~~
+
+.. uml:: uml_generator/service.puml
+
+
+Test Uml Gen
+~~~~~~~~~~~~
+
+.. uml:: uml_generator/test_uml_gen.puml
+
+
+
+Uml Generator - Config
+----------------------
+
+
+Loader
+~~~~~~
+
+.. uml:: uml_generator/config/loader.puml
+
+
+
+Uml Generator - Generator
+-------------------------
+
+
+Plantuml Generator
+~~~~~~~~~~~~~~~~~~
+
+.. uml:: uml_generator/generator/plantuml_generator.puml
+
+
+
+Uml Generator - Models
+----------------------
+
+
+Models
+~~~~~~
+
+.. uml:: uml_generator/models/models.puml
+
+
+
+Uml Generator - Parsers
+-----------------------
+
+
+Ast Parser
+~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/ast_parser.puml
+
+
+Base Parser
+~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/base_parser.puml
+
+
+Class Parser
+~~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/class_parser.puml
+
+
+Function Parser
+~~~~~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/function_parser.puml
+
+
+Import Parser
+~~~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/import_parser.puml
+
+
+Relationship Parser
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/relationship_parser.puml
+
+
+Type Parser
+~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/type_parser.puml
+
+
+
+Uml Generator - Tests
+---------------------
+
+
+Conftest
+~~~~~~~~
+
+.. uml:: uml_generator/tests/conftest.puml
+
+
+Test Cli
+~~~~~~~~
+
+.. uml:: uml_generator/tests/test_cli.puml
+
+
+Test Config
+~~~~~~~~~~~
+
+.. uml:: uml_generator/tests/test_config.puml
+
+
+Test Generator
+~~~~~~~~~~~~~~
+
+.. uml:: uml_generator/tests/test_generator.puml
+
+
+Test Integration
+~~~~~~~~~~~~~~~~
+
+.. uml:: uml_generator/tests/test_integration.puml
+
+
+Test Models
+~~~~~~~~~~~
+
+.. uml:: uml_generator/tests/test_models.puml
+
+
+Test Parser
+~~~~~~~~~~~
+
+.. uml:: uml_generator/tests/test_parser.puml
+
+
+
 Utils
 -----
 

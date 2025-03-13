@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "class_parser" {
+  class ClassParser {
+    +__init__(self: Any) -> Any
+    +parse_class(self: Any, node: ast.ClassDef, known_classes: set[str], filename: str) -> ClassModel
+  }
+}
+
+' Relationships
+@enduml

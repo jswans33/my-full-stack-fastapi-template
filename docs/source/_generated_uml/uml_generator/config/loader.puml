@@ -1,0 +1,47 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "loader" {
+  class Functions <<(F,orange)>> {
+    +load_config(cli_args: dict[str, Any] | None = None) -> Config
+  }
+  class GeneratorConfig {
+    +format: str
+    +plantuml_start: str
+    +plantuml_end: str
+    +plantuml_settings: list[str]
+  }
+  class ParserConfig {
+    +patterns: list[str]
+    +exclude_dirs: list[str]
+    +show_imports: bool
+    +list_only: bool
+    +recursive: bool
+  }
+  class LoggingConfig {
+    +level: str
+    +file: str | None
+  }
+  class Config {
+    +source_dir: Path
+    +output_dir: Path
+    +generator: GeneratorConfig
+    +parser: ParserConfig
+    +logging: LoggingConfig
+  }
+  class ConfigLoader {
+    +__init__(self: Any) -> Any
+    #_load_defaults(self: Any) -> None
+    #_load_toml(self: Any, path: Path) -> None
+    #_load_env_vars(self: Any) -> None
+    #_set_nested_value(self: Any, keys: list[str], value: Any) -> None
+    #_update_config(self: Any, data: dict[str, Any]) -> None
+    +load(self: Any = None, cli_args: dict[str, Any] | None) -> Config
+  }
+}
+
+' Relationships
+Config --> GeneratorConfig
+Config --> ParserConfig
+Config --> LoggingConfig
+@enduml

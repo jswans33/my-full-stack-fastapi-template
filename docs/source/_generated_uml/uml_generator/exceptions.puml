@@ -1,0 +1,33 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "exceptions" {
+  class UmlGeneratorError {
+  }
+  class ParserError {
+    +__init__(self: Any, message: str = None, filename: str | None = None, line_number: int | None) -> Any
+  }
+  class SyntaxParsingError {
+  }
+  class TypeAnnotationError {
+  }
+  class ImportError {
+  }
+  class FileSystemError {
+  }
+  class ConfigurationError {
+  }
+  class GeneratorError {
+  }
+}
+
+' Relationships
+Exception <|-- "exceptions".UmlGeneratorError
+UmlGeneratorError <|-- "exceptions".ParserError
+ParserError <|-- "exceptions".SyntaxParsingError
+ParserError <|-- "exceptions".TypeAnnotationError
+ParserError <|-- "exceptions".ImportError
+UmlGeneratorError <|-- "exceptions".FileSystemError
+UmlGeneratorError <|-- "exceptions".ConfigurationError
+UmlGeneratorError <|-- "exceptions".GeneratorError
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "base_parser" {
+  class BaseParser {
+    +__init__(self: Any, file_system: FileSystem) -> Any
+    +get_supported_extensions(self: Any) -> set[str]
+    +parse_file(self: Any, file_path: Path) -> FileModel
+  }
+}
+
+' Relationships
+ABC <|-- "base_parser".BaseParser
+@enduml

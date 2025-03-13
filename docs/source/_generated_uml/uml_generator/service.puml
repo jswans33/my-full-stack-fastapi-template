@@ -1,0 +1,14 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "service" {
+  class UmlGeneratorService {
+    +__init__(self: Any, config: Config, file_system: FileSystem, parser_factory: ParserFactory, generator_factory: GeneratorFactory = None, logger: logging.Logger | None) -> Any
+    +process_file(self: Any, file_path: Path) -> bool
+    +process_directory(self: Any, directory: Path) -> int
+    +run(self: Any) -> None
+  }
+}
+
+' Relationships
+@enduml

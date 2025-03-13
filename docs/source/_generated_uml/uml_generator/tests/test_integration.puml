@@ -1,0 +1,27 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "test_integration" {
+  class Functions <<(F,orange)>> {
+    +mock_fs() -> Any
+    +service(mock_fs: Any) -> Any
+    +test_process_single_file(service: Any) -> Any
+    +test_process_directory(service: Any) -> Any
+    +test_recursive_processing(service: Any) -> Any
+    +test_list_only_mode(service: Any) -> Any
+    +test_show_imports(service: Any) -> Any
+    +test_error_handling(service: Any) -> Any
+    +test_config_from_cli_args() -> Any
+  }
+  class MockFileSystem {
+    +__init__(self: Any, files: dict[str, str]) -> Any
+    +read_file(self: Any, path: Path) -> str
+    +write_file(self: Any, path: Path, content: str) -> None
+    +ensure_directory(self: Any, path: Path) -> None
+    +find_files(self: Any, directory: Path, pattern: str) -> list[Path]
+  }
+}
+
+' Relationships
+FileSystem <|-- "test_integration".MockFileSystem
+@enduml

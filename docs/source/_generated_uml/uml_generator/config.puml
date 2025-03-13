@@ -1,0 +1,26 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "config" {
+  class Functions <<(F,orange)>> {
+    +create_config_from_args(args: Any) -> Configuration
+    +configure_logging(args: Any) -> logging.Logger
+  }
+  class Configuration {
+    +source_dir: Path
+    +output_dir: Path
+    +single_file: Optional[Path]
+    +input_extension: str
+    +output_format: str
+    +subdirs: List[str]
+    +recursive: bool
+    +list_only: bool
+    +show_imports: bool
+    +generate_report: bool
+    +plantuml_settings: Dict[str, Any]
+    +__post_init__(self: Any) -> Any
+  }
+}
+
+' Relationships
+@enduml

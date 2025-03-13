@@ -1,0 +1,18 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "function_parser" {
+  class Functions <<(F,orange)>> {
+    +parse_decorator(decorator: ast.AST) -> str | None
+  }
+  class FunctionParser {
+    +__init__(self: Any) -> Any
+    +parse_parameters(self: Any, args: ast.arguments = False, is_method: bool) -> list[ParameterModel]
+    +get_method_visibility(self: Any, method_name: str) -> Visibility
+    +parse_function(self: Any, node: ast.FunctionDef | ast.AsyncFunctionDef) -> FunctionModel
+    +parse_method(self: Any, node: ast.FunctionDef | ast.AsyncFunctionDef) -> MethodModel
+  }
+}
+
+' Relationships
+@enduml

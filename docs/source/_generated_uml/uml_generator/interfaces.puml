@@ -1,0 +1,34 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "interfaces" {
+  class FileSystem {
+    +read_file(self: Any, path: Path) -> str
+    +write_file(self: Any, path: Path, content: str) -> None
+    +ensure_directory(self: Any, path: Path) -> None
+    +find_files(self: Any, directory: Path, pattern: str) -> list[Path]
+  }
+  class FileParser {
+    +parse_file(self: Any, file_path: Path) -> FileModel
+    +get_supported_extensions(self: Any) -> set[str]
+  }
+  class DiagramGenerator {
+    +generate_diagram(self: Any, file_model: FileModel, output_path: Path) -> None
+    +get_output_extension(self: Any) -> str
+    +generate_index(self: Any, output_dir: Path, diagrams: list[Path]) -> None
+  }
+  class ParserFactory {
+    +create_parser(self: Any, file_extension: str) -> FileParser
+  }
+  class GeneratorFactory {
+    +create_generator(self: Any, output_format: str) -> DiagramGenerator
+  }
+}
+
+' Relationships
+Protocol <|-- "interfaces".FileSystem
+ABC <|-- "interfaces".FileParser
+ABC <|-- "interfaces".DiagramGenerator
+ABC <|-- "interfaces".ParserFactory
+ABC <|-- "interfaces".GeneratorFactory
+@enduml

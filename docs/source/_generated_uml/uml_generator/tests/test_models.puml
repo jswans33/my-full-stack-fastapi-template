@@ -1,0 +1,18 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "test_models" {
+  class Functions <<(F,orange)>> {
+    +test_parameter() -> Any
+    +test_attribute() -> Any
+    +test_method_signature() -> Any
+    +test_relationship() -> Any
+    +test_import() -> Any
+    +test_class_model() -> Any
+    +test_function_model_signature() -> Any
+    +test_file_model() -> Any
+  }
+}
+
+' Relationships
+@enduml

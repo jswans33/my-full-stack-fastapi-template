@@ -1,0 +1,18 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "factories" {
+  class DefaultParserFactory {
+    +__init__(self: Any, file_system: FileSystem) -> Any
+    +create_parser(self: Any, file_extension: str) -> FileParser
+  }
+  class DefaultGeneratorFactory {
+    +__init__(self: Any, file_system: FileSystem = None, settings: dict[str, Any] | None) -> Any
+    +create_generator(self: Any, output_format: str) -> DiagramGenerator
+  }
+}
+
+' Relationships
+ParserFactory <|-- "factories".DefaultParserFactory
+GeneratorFactory <|-- "factories".DefaultGeneratorFactory
+@enduml

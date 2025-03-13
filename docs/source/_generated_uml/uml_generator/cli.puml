@@ -1,0 +1,13 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "cli" {
+  class Functions <<(F,orange)>> {
+    +parse_args(args: Any = None) -> argparse.Namespace
+    +configure_logging(args: argparse.Namespace) -> logging.Logger
+    +main() -> None
+  }
+}
+
+' Relationships
+@enduml

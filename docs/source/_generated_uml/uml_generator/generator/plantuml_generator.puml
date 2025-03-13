@@ -1,0 +1,16 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "plantuml_generator" {
+  class PlantUmlGenerator {
+    +__init__(self: Any, file_system: FileSystem = None, settings: dict[str, Any] | None) -> Any
+    +get_output_extension(self: Any) -> str
+    +generate_diagram(self: Any, file_model: FileModel, output_path: Path) -> None
+    #_generate_plantuml(self: Any, file_model: FileModel) -> str
+    +generate_index(self: Any, output_dir: Path, diagrams: list[Path]) -> None
+  }
+}
+
+' Relationships
+DiagramGenerator <|-- "plantuml_generator".PlantUmlGenerator
+@enduml

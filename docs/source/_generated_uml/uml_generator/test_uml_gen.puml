@@ -1,0 +1,19 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "test_uml_gen" {
+  class Functions <<(F,orange)>> {
+    +get_annotation(node: ast.AST | None) -> str
+    +method_signature(node: ast.FunctionDef) -> str
+    +method_name_with_visibility(method_name: str, node: ast.FunctionDef) -> str
+    +find_class_relationships(annotation: ast.AST, known_classes: set[str]) -> list[tuple[str, str]]
+    +parse_imports(tree: ast.AST) -> list[tuple[str, str]]
+    +parse_classes_from_file(filepath: str) -> tuple[dict[str, Dict], list[Dict]]
+    +generate_plantuml(classes_and_functions: tuple[dict[str, Dict], list[Dict]], filename: str, show_imports: bool = False) -> str
+    +generate_uml_for_file(file_path: str, output_dir: str, show_imports: bool = False) -> None
+    +main() -> Any
+  }
+}
+
+' Relationships
+@enduml

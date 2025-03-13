@@ -1,0 +1,78 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "models" {
+  class Visibility {
+    +PUBLIC: str
+    +PRIVATE: str
+    +PROTECTED: str
+  }
+  class ParameterModel {
+    +name: str
+    +type_annotation: TypeAnnotation
+    +default_value: str | None
+  }
+  class AttributeModel {
+    +name: AttributeName
+    +type_annotation: TypeAnnotation
+    +visibility: Visibility
+    +default_value: str | None
+    +docstring: str | None
+    +decorators: list[str]
+  }
+  class MethodModel {
+    +name: MethodName
+    +parameters: list[ParameterModel]
+    +return_type: TypeAnnotation
+    +visibility: Visibility
+    +is_static: bool
+    +is_classmethod: bool
+    +docstring: str | None
+    +decorators: list[str]
+    +default_value: str | None
+    +signature(self: Any) -> str
+  }
+  class RelationshipModel {
+    +source: ClassName
+    +target: ClassName
+    +type: str
+  }
+  class ImportModel {
+    +module: str
+    +name: str
+    +alias: str | None
+  }
+  class ClassModel {
+    +name: ClassName
+    +filename: str
+    +bases: list[ClassName]
+    +methods: list[MethodModel]
+    +attributes: list[AttributeModel]
+    +relationships: list[RelationshipModel]
+    +imports: list[ImportModel]
+    +docstring: str | None
+    +decorators: list[str]
+  }
+  class FunctionModel {
+    +name: str
+    +parameters: list[ParameterModel]
+    +return_type: TypeAnnotation
+    +visibility: Visibility
+    +signature(self: Any) -> str
+  }
+  class FileModel {
+    +path: Path
+    +classes: list[ClassModel]
+    +functions: list[FunctionModel]
+    +imports: list[ImportModel]
+    +filename(self: Any) -> str
+  }
+}
+
+' Relationships
+str <|-- "models".Visibility
+Enum <|-- "models".Visibility
+AttributeModel --> Visibility
+MethodModel --> Visibility
+FunctionModel --> Visibility
+@enduml

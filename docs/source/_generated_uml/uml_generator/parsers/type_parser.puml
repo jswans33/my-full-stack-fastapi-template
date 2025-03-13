@@ -1,0 +1,13 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "type_parser" {
+  class TypeAnnotationParser {
+    +__init__(self: Any) -> Any
+    +parse_annotation(self: Any, node: ast.AST | None) -> str
+    +extract_class_from_slice(self: Any, node: ast.AST, known_classes: set[str]) -> str | None
+  }
+}
+
+' Relationships
+@enduml

@@ -1,0 +1,14 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "ast_parser" {
+  class PythonAstParser {
+    +__init__(self: Any, file_system: FileSystem) -> Any
+    +get_supported_extensions(self: Any) -> set[str]
+    +parse_file(self: Any, file_path: Path) -> FileModel
+  }
+}
+
+' Relationships
+BaseParser <|-- "ast_parser".PythonAstParser
+@enduml

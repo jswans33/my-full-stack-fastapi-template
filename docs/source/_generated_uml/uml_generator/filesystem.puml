@@ -1,0 +1,15 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "filesystem" {
+  class DefaultFileSystem {
+    +read_file(self: Any, path: Path) -> str
+    +write_file(self: Any, path: Path, content: str) -> None
+    +ensure_directory(self: Any, path: Path) -> None
+    +find_files(self: Any, directory: Path, pattern: str) -> list[Path]
+  }
+}
+
+' Relationships
+FileSystem <|-- "filesystem".DefaultFileSystem
+@enduml

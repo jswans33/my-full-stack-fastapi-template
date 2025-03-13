@@ -1,0 +1,20 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "test_cli" {
+  class Functions <<(F,orange)>> {
+    +test_file_argument() -> Any
+    +test_directory_argument() -> Any
+    +test_app_dir_argument() -> Any
+    +test_recursive_flag() -> Any
+    +test_output_directory() -> Any
+    +test_format_option() -> Any
+    +test_subdirs_option() -> Any
+    +test_verbosity_options() -> Any
+    +test_mutually_exclusive_inputs() -> Any
+    +test_mutually_exclusive_verbosity() -> Any
+  }
+}
+
+' Relationships
+@enduml

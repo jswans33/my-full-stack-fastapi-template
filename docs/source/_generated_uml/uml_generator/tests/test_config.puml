@@ -1,0 +1,19 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "test_config" {
+  class Functions <<(F,orange)>> {
+    +temp_config_file() -> Any
+    +test_default_config() -> Any
+    +test_load_toml_config(temp_config_file: Any) -> Any
+    +test_load_env_vars() -> Any
+    +test_cli_args_override() -> Any
+    +test_config_precedence(temp_config_file: Any) -> Any
+    +test_invalid_config_file() -> Any
+    +test_missing_config_file() -> Any
+    +test_boolean_env_vars() -> Any
+  }
+}
+
+' Relationships
+@enduml

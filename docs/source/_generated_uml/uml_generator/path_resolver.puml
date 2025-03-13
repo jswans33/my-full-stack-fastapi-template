@@ -1,0 +1,14 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "path_resolver" {
+  class UmlPathResolver {
+    +__init__(self: Any, source_dir: Path, generated_dir: Path) -> Any
+    +get_plantuml_generator_path(self: Any, file_path: Path) -> str
+    +get_sphinx_path(self: Any, file_path: Path) -> str
+    +get_search_paths(self: Any) -> list[str]
+  }
+}
+
+' Relationships
+@enduml
