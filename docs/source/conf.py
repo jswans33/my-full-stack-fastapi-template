@@ -48,4 +48,7 @@ plantuml_latex_output_format = "pdf"
 # Configure PlantUML search paths
 import os
 
-plantuml_search_path = [os.path.abspath(os.path.join(os.path.dirname(__file__)))]
+plantuml_search_path = [
+    os.path.abspath(os.path.join(os.path.dirname(__file__), "_generated_uml")),
+    os.path.abspath(os.path.dirname(__file__)),
+]
