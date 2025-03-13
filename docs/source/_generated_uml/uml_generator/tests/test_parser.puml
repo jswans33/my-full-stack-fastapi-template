@@ -11,15 +11,7 @@ package "test_parser" {
     +test_parse_imports(parser: Any) -> Any
     +test_parse_module_functions(parser: Any) -> Any
   }
-  class MockFileSystem {
-    +__init__(self: Any, files: dict[str, str]) -> Any
-    +read_file(self: Any, path: Path) -> str
-    +write_file(self: Any, path: Path, content: str) -> None
-    +ensure_directory(self: Any, path: Path) -> None
-    +find_files(self: Any, directory: Path, pattern: str) -> list[Path]
-  }
 }
 
 ' Relationships
-FileSystem <|-- "test_parser".MockFileSystem
 @enduml

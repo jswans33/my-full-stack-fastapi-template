@@ -12,6 +12,7 @@ from typing import Any
 from utils.uml_generator.config.loader import load_config
 from utils.uml_generator.factories import DefaultGeneratorFactory, DefaultParserFactory
 from utils.uml_generator.filesystem import DefaultFileSystem
+from utils.uml_generator.generator.sequence_generator import SequenceDiagramGenerator
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
@@ -22,7 +23,9 @@ PROJECT_ROOT = Path(__file__).parent.parent
 sys.path.append(str(PROJECT_ROOT))
 
 # Constants
+
 OUTPUT_BASE_DIR = Path("docs/source/_generated_uml")
+SEQUENCE_OUTPUT_DIR = OUTPUT_BASE_DIR / "sequence"
 DEFAULT_PLANTUML_SETTINGS = [
     "skinparam classAttributeIconSize 0",
     "skinparam packageStyle folder",
@@ -342,6 +345,135 @@ def find_all_puml_diagrams(output_dir: Path) -> list:
     return diagrams
 
 
+def generate_sequence_diagrams() -> None:
+    """Generate sequence diagrams from YAML definitions."""
+    try:
+        import yaml
+    except ImportError:
+        logger.error("PyYAML is required for sequence diagram generation")
+        logger.error("Install with 'pip install pyyaml'")
+        return
+
+    sequence_dir = Path("examples/sequence_diagrams")
+    file_system = DefaultFileSystem()
+
+    if not sequence_dir.exists():
+        logger.warning(f"No sequence diagram definitions found at {sequence_dir}")
+        return
+
+    logger.info(f"Generating sequence diagrams from {sequence_dir}...")
+
+    # Create output directory
+    file_system.ensure_directory(SEQUENCE_OUTPUT_DIR)
+
+    # Create generator factory
+    generator_factory = DefaultGeneratorFactory(
+        file_system,
+        {
+            "sequence_settings": {
+                "HIDE_FOOTBOXES": True,
+                "AUTONUMBER": True,
+            },
+        },
+    )
+
+    try:
+        # Get the sequence diagram generator
+        sequence_generator = generator_factory.create_generator("sequence")
+
+        # Check if it's actually a SequenceDiagramGenerator
+        if not isinstance(sequence_generator, SequenceDiagramGenerator):
+            logger.error(
+                f"Expected SequenceDiagramGenerator but got {type(sequence_generator)}"
+            )
+            return
+
+        # Process all YAML files
+        yaml_count = 0
+        for yaml_file in sequence_dir.glob("*.yaml"):
+            output_file = SEQUENCE_OUTPUT_DIR / f"{yaml_file.stem}.puml"
+            logger.info(f"Processing sequence diagram from {yaml_file}")
+
+            try:
+                # Read and parse the YAML file
+                yaml_content = file_system.read_file(yaml_file)
+                diagram_def = yaml.safe_load(yaml_content)
+
+                # Create the model and generate the diagram
+                sequence_model = sequence_generator._create_model_from_yaml(diagram_def)
+                sequence_generator.generate_diagram(sequence_model, output_file)
+
+                yaml_count += 1
+            except Exception as yaml_error:
+                logger.error(f"Error processing {yaml_file}: {yaml_error}")
+                continue
+
+        if yaml_count > 0:
+            logger.info(
+                f"Generated {yaml_count} sequence diagrams in {SEQUENCE_OUTPUT_DIR}"
+            )
+        else:
+            logger.warning("No sequence diagrams were generated")
+
+    except Exception as e:
+        logger.error(f"Error generating sequence diagrams: {e}")
+
+
+def generate_static_sequence_diagrams() -> None:
+    """Generate sequence diagrams from code analysis."""
+    try:
+        from utils.sequence_extractor.analyzer import SequenceAnalyzer
+        from utils.sequence_extractor.generator import PlantUmlSequenceGenerator
+    except ImportError as e:
+        logger.error(f"Error importing sequence extractor: {e}")
+        logger.info(
+            "Sequence extractor may not be installed. Skipping static sequence diagram generation."
+        )
+        return
+
+    # Directories to analyze
+    app_dir = PROJECT_ROOT / "backend" / "app"
+    if not app_dir.exists():
+        logger.warning(
+            f"App directory {app_dir} not found. Skipping static sequence diagram generation."
+        )
+        return
+
+    # Create output directory
+    file_system = DefaultFileSystem()
+    file_system.ensure_directory(SEQUENCE_OUTPUT_DIR)
+
+    logger.info(f"Analyzing code in {app_dir} for sequence diagrams...")
+
+    # Create analyzer and analyze directories
+    analyzer = SequenceAnalyzer(app_dir)
+    analyzer.analyze_directory()
+
+    # Get key entry points to analyze (could be configured or detected)
+    # These would be entry points that are relevant for your application
+    entry_points = [
+        # Example entry points - replace with actual ones from your app
+        ("UserController", "create_user"),
+        ("AuthController", "login"),
+    ]
+
+    # Generate diagrams for each entry point
+    generator = PlantUmlSequenceGenerator()
+    for class_name, method_name in entry_points:
+        try:
+            logger.info(
+                f"Generating sequence diagram for {class_name}.{method_name}..."
+            )
+            diagram = analyzer.generate_sequence_diagram(class_name, method_name)
+            output_path = SEQUENCE_OUTPUT_DIR / f"{class_name}_{method_name}.puml"
+            generator.generate_file(diagram, output_path)
+            logger.info(f"Generated sequence diagram at {output_path}")
+        except Exception as e:
+            logger.error(
+                f"Error generating sequence for {class_name}.{method_name}: {e}"
+            )
+
+
 def verify_generated_files(output_dir: Path) -> None:
     """Verify and log the generated files structure."""
     logger.info("\nVerifying generated files structure:")
@@ -384,6 +516,12 @@ def main():
 
     # Generate index file with all diagrams
     generate_and_fix_index()
+
+    # Generate sequence diagrams if available
+    generate_sequence_diagrams()
+
+    # Generate sequence diagrams from code analysis
+    generate_static_sequence_diagrams()
 
     # Verify and log the generated files structure
     verify_generated_files(OUTPUT_BASE_DIR)

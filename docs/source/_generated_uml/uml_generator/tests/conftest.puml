@@ -6,15 +6,7 @@ package "conftest" {
     +mock_fs() -> Any
     +sample_code() -> Any
   }
-  class MockFileSystem {
-    +__init__(self: Any = None, files: dict[str, str] | None) -> Any
-    +find_files(self: Any, directory: Path, pattern: str) -> list[Path]
-    +read_file(self: Any, path: Path) -> str
-    +write_file(self: Any, path: Path, content: str) -> None
-    +ensure_directory(self: Any, path: Path) -> None
-  }
 }
 
 ' Relationships
-FileSystem <|-- "conftest".MockFileSystem
 @enduml

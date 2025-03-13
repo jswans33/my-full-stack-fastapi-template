@@ -1,0 +1,33 @@
+@startuml
+
+title UserService.create_user Sequence
+
+skinparam sequenceMessageAlign center
+skinparam monochrome true
+skinparam lifelinestrategy solid
+hide footbox
+
+class UserService
+class User
+class UserRepository
+class EmailService
+class DatabaseHandler
+
+UserService -->> User: create new user
+activate UserService
+UserService -> UserRepository: save_user(user)
+activate UserRepository
+UserRepository -> DatabaseHandler: update(sql, params)
+activate DatabaseHandler
+DatabaseHandler --> UserRepository: return True
+deactivate DatabaseHandler
+UserRepository --> UserService: return success
+deactivate UserRepository
+UserService -> EmailService: send_welcome_email(user)
+activate EmailService
+EmailService --> UserService: return True
+deactivate EmailService
+UserService --> main: return user
+deactivate UserService
+
+@enduml

@@ -13,15 +13,7 @@ package "test_integration" {
     +test_error_handling(service: Any) -> Any
     +test_config_from_cli_args() -> Any
   }
-  class MockFileSystem {
-    +__init__(self: Any, files: dict[str, str]) -> Any
-    +read_file(self: Any, path: Path) -> str
-    +write_file(self: Any, path: Path, content: str) -> None
-    +ensure_directory(self: Any, path: Path) -> None
-    +find_files(self: Any, directory: Path, pattern: str) -> list[Path]
-  }
 }
 
 ' Relationships
-FileSystem <|-- "test_integration".MockFileSystem
 @enduml

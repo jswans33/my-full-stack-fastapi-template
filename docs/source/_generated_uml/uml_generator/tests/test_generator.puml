@@ -11,15 +11,7 @@ package "test_generator" {
     +test_generate_index(generator: Any) -> Any
     +test_plantuml_settings(generator: Any) -> Any
   }
-  class MockFileSystem {
-    +__init__(self: Any) -> Any
-    +read_file(self: Any, path: Path) -> str
-    +write_file(self: Any, path: Path, content: str) -> None
-    +ensure_directory(self: Any, path: Path) -> None
-    +find_files(self: Any, directory: Path, pattern: str) -> list[Path]
-  }
 }
 
 ' Relationships
-FileSystem <|-- "test_generator".MockFileSystem
 @enduml

@@ -1,0 +1,21 @@
+@startuml
+title User Authentication Flow
+hide footboxes
+autonumber
+actor "User"
+boundary "AuthController"
+control "UserService"
+database "Database"
+User ->+ AuthController: login(credentials)
+AuthController ->+ UserService: authenticate(username, password)
+UserService ->+ Database: findUser(username)
+Database -->+ UserService: User or null
+alt if user exists
+UserService ->+ UserService: validatePassword(password)
+UserService -->+ AuthController: AuthResult(success=true, token=jwt)
+AuthController -->+ User: 200 OK, JWT Token
+else else
+UserService -->+ AuthController: AuthResult(success=false)
+AuthController -->+ User: 401 Unauthorized
+end
+@enduml

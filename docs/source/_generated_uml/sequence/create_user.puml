@@ -1,0 +1,15 @@
+@startuml
+
+title UserService.create_user Sequence
+
+skinparam sequenceMessageAlign center
+skinparam monochrome true
+skinparam lifelinestrategy solid
+hide footbox
+
+class UserService
+class User
+
+UserService -->> User: __init__()
+
+@enduml

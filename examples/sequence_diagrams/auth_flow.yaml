@@ -1,0 +1,71 @@
+title: User Authentication Flow
+hide_footboxes: true
+autonumber: true
+
+participants:
+  - name: User
+    type: actor
+  - name: AuthController
+    type: boundary
+  - name: UserService
+    type: control
+  - name: Database
+    type: database
+
+items:
+  - type: message
+    from: User
+    to: AuthController
+    text: "login(credentials)"
+  
+  - type: message
+    from: AuthController
+    to: UserService
+    text: "authenticate(username, password)"
+  
+  - type: message
+    from: UserService
+    to: Database
+    text: "findUser(username)"
+  
+  - type: message
+    from: Database
+    to: UserService
+    text: "User or null"
+    arrow_style: -->
+  
+  - type: alt
+    label: "if user exists"
+    messages:
+      - type: message
+        from: UserService
+        to: UserService
+        text: "validatePassword(password)"
+        is_self_message: true
+      
+      - type: message
+        from: UserService
+        to: AuthController
+        text: "AuthResult(success=true, token=jwt)"
+        arrow_style: -->
+      
+      - type: message
+        from: AuthController
+        to: User
+        text: "200 OK, JWT Token"
+        arrow_style: -->
+    
+    alternatives:
+      - label: "else"
+        messages:
+          - type: message
+            from: UserService
+            to: AuthController
+            text: "AuthResult(success=false)"
+            arrow_style: -->
+          
+          - type: message
+            from: AuthController
+            to: User
+            text: "401 Unauthorized"
+            arrow_style: -->

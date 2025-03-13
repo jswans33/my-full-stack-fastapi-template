@@ -5,6 +5,7 @@ package "cli" {
   class Functions <<(F,orange)>> {
     +parse_args(args: Any = None) -> argparse.Namespace
     +configure_logging(args: argparse.Namespace) -> logging.Logger
+    +generate_sequence_diagram(args: Any) -> Any
     +main() -> None
   }
 }

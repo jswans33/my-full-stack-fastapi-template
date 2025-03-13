@@ -18,6 +18,7 @@ Welcome to the FastAPI Full Stack Template documentation.
    uml_setup
    uml_diagrams
    uml_structure
+    sequence_diagrams
    uml_extension
    uml_implementation_guide
 

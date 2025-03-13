@@ -17,6 +17,17 @@ import tomli
 
 
 @dataclass
+class SequenceSettings:
+    """Settings for sequence diagram generation."""
+
+    PLANTUML_START: str = "@startuml"
+    PLANTUML_END: str = "@enduml"
+    DEFAULT_ARROW_STYLE: str = "->"
+    AUTONUMBER: bool = False
+    HIDE_FOOTBOXES: bool = True
+
+
+@dataclass
 class GeneratorConfig:
     """PlantUML generator configuration."""
 
@@ -28,6 +39,8 @@ class GeneratorConfig:
             "skinparam classAttributeIconSize 0",
         ],
     )
+
+    sequence_settings: dict = field(default_factory=dict)
 
 
 @dataclass
@@ -137,6 +150,8 @@ class ConfigLoader:
                     self.config.generator.plantuml_end = plantuml["end"]
                 if "settings" in plantuml:
                     self.config.generator.plantuml_settings = plantuml["settings"]
+            if "sequence_settings" in gen_data:
+                self.config.generator.sequence_settings = gen_data["sequence_settings"]
 
         if "parser" in data:
             parser_data = data["parser"]

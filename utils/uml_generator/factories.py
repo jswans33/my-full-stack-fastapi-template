@@ -2,6 +2,7 @@ import logging
 from typing import Any
 
 from .generator.plantuml_generator import PlantUmlGenerator
+from .generator.sequence_generator import SequenceDiagramGenerator
 from .interfaces import (
     DiagramGenerator,
     FileParser,
@@ -50,6 +51,11 @@ class DefaultGeneratorFactory(GeneratorFactory):
                 self._generators[output_format] = PlantUmlGenerator(
                     self.file_system,
                     self.settings,
+                )
+            elif output_format == "sequence":
+                self._generators[output_format] = SequenceDiagramGenerator(
+                    self.file_system,
+                    self.settings.get("sequence_settings", {}),
                 )
             else:
                 self.logger.warning(

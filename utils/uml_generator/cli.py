@@ -40,12 +40,19 @@ Examples:
   # Enable verbose logging
   python -m uml_generator -d backend/app -v
   
+  # Generate a sequence diagram from YAML
+  python -m uml_generator generate-sequence -f sequence.yaml -o sequence.puml
+  
 For more information, see the README.md file.
         """,
     )
 
+    # Create a subcommand structure
+    subparsers = parser.add_subparsers(dest="command", help="Command to execute")
+
+    # Main command arguments (default when no subcommand is specified)
     # Create a mutually exclusive group for input sources
-    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group = parser.add_mutually_exclusive_group(required=False)
 
     input_group.add_argument(
         "-f",
@@ -75,7 +82,7 @@ For more information, see the README.md file.
 
     parser.add_argument(
         "--format",
-        choices=["plantuml"],
+        choices=["plantuml", "sequence"],
         default="plantuml",
         help="Output format for UML diagrams",
     )
@@ -134,6 +141,20 @@ For more information, see the README.md file.
         help="Enable debug logging",
     )
 
+    # Add sequence diagram command
+    sequence_parser = subparsers.add_parser(
+        "generate-sequence", help="Generate a sequence diagram from a YAML definition"
+    )
+    sequence_parser.add_argument(
+        "--file", "-f", required=True, help="YAML file defining the sequence diagram"
+    )
+    sequence_parser.add_argument(
+        "--output",
+        "-o",
+        required=True,
+        help="Output file path for the generated diagram",
+    )
+
     # Pass the args parameter to parse_args
     return parser.parse_args(args)
 
@@ -159,6 +180,29 @@ def configure_logging(args: argparse.Namespace) -> logging.Logger:
     return logger
 
 
+def generate_sequence_diagram(args):
+    """Generate a sequence diagram from a YAML definition file."""
+    from pathlib import Path
+
+    from .generator.sequence_generator import SequenceDiagramGenerator
+
+    # Set up the generator
+    file_system = DefaultFileSystem()
+    factory = DefaultGeneratorFactory(file_system, {})
+    diagram_generator = factory.create_generator("sequence")
+
+    # Ensure we have a SequenceDiagramGenerator
+    if not isinstance(diagram_generator, SequenceDiagramGenerator):
+        print(
+            f"Error: Generator is not a SequenceDiagramGenerator: {type(diagram_generator)}"
+        )
+        return
+
+    # Generate the diagram
+    diagram_generator.generate_from_yaml(Path(args.file), Path(args.output))
+    print(f"Sequence diagram generated at {args.output}")
+
+
 def main() -> None:
     """Main entry point for the UML generator."""
     # Parse command-line arguments
@@ -166,6 +210,18 @@ def main() -> None:
 
     # Configure logging
     logger = configure_logging(args)
+
+    # Handle subcommands
+    if getattr(args, "command", None) == "generate-sequence":
+        generate_sequence_diagram(args)
+        return
+
+    # Standard UML generation requires at least one input source
+    if not any([args.file, args.directory, args.app_dir]):
+        logger.error(
+            "At least one input source (--file, --directory, --app-dir) is required"
+        )
+        return
 
     # Convert args to dict for config
     args_dict = {
