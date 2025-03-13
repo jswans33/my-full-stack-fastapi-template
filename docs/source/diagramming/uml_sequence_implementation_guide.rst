@@ -752,7 +752,7 @@ Update the uml_diagrams.rst file to include a section for sequence diagrams:
     Authentication Flow
     ~~~~~~~~~~~~~~~~~~
     
-    .. uml:: _generated_uml/sequence/auth_flow.puml
+    .. uml:: ../_generated_uml/sequence/auth_flow.puml
 
 Step 10: Update Main Project Documentation
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
