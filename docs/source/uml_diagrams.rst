@@ -6,6 +6,10 @@ This page contains automatically generated UML class diagrams for the FastAPI Fu
 .. contents:: Table of Contents
    :depth: 2
 
+.. note::
+   For a complete list of all generated UML diagram files and their directory structure,
+   see :doc:`uml_structure`.
+
 API Components
 -------------
 
@@ -104,6 +108,41 @@ Core Components
 .. uml:: _generated_uml/uml_generator/interfaces.puml
 
 .. uml:: _generated_uml/uml_generator/models.puml
+
+Parser Components
+~~~~~~~~~~~~~~~~
+
+Generic Parsers
+^^^^^^^^^^^^^^
+
+.. uml:: _generated_uml/uml_generator/parsers/base_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/type_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/relationship_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/class_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/function_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/import_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/ast_parser.puml
+
+Python-specific Parsers
+^^^^^^^^^^^^^^^^^^^^^^
+
+.. uml:: _generated_uml/uml_generator/parsers/python/type_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/python/relationship_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/python/class_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/python/function_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/python/import_parser.puml
+
+.. uml:: _generated_uml/uml_generator/parsers/python/ast_parser.puml
 
 Generator
 ~~~~~~~~~

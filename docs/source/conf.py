@@ -200,59 +200,36 @@ class UmlPathResolver:
     """Handles path resolution for UML files."""
 
     def __init__(self, source_dir: Path, generated_dir: Path):
-        """Initialize the path resolver.
-
-        Args:
-            source_dir: The source directory (docs/source)
-            generated_dir: The generated UML directory (docs/source/_generated_uml)
-        """
         self.source_dir = source_dir.resolve()
         self.generated_dir = generated_dir.resolve()
-        print("\nPath resolver initialized:")
-        print(f"Source dir: {self.source_dir}")
-        print(f"Generated dir: {self.generated_dir}")
+        self.logger = logging.getLogger(__name__)
+        self.logger.info("Path resolver initialized:")
+        self.logger.info(f"Source dir: {self.source_dir}")
+        self.logger.info(f"Generated dir: {self.generated_dir}")
 
-    def get_plantuml_generator_path(self, file_path: Path) -> str:
-        """Get path for use in plantuml_generator.py.
+    @staticmethod
+    def configure_plantuml_search_paths():
+        docs_dir = Path(__file__).parent
+        generated_dir = docs_dir / "_generated_uml"
+        path_resolver = UmlPathResolver(docs_dir, generated_dir)
 
-        Args:
-            file_path: The absolute path to a .puml file
+        plantuml_search_path = path_resolver.get_search_paths()
+        logging.info(f"Using path resolver search paths: {plantuml_search_path}")
 
-        Returns:
-            Path for use in index.rst, using forward slashes.
-            Path is relative to _generated_uml since that's configured as the plantuml search path.
-        """
-        abs_file_path = file_path.resolve()
-        rel_path = abs_file_path.relative_to(self.generated_dir)
-        rel_path_str = str(rel_path).replace(os.sep, "/")
+        return plantuml_search_path
 
-        print(f"\nPath resolution for: {file_path}")
-        print(f"Absolute path: {abs_file_path}")
-        print(f"Relative path: {rel_path_str}")
+    plantuml_include_path = configure_plantuml_search_paths()
 
-        # Return path relative to _generated_uml directory since:
-        # 1. Files are already in that directory
-        # 2. Sphinx search path points to that directory
-        # 3. Paths in index.rst should be relative to search path
-        # 4. This matches how Sphinx will look for the files
-        return "_generated_uml/" + rel_path_str
+    plantuml_include_path = configure_plantuml_search_paths()
 
     def get_sphinx_path(self, file_path: Path) -> str:
-        """Get path for use in Sphinx .rst files.
-
-        Args:
-            file_path: The absolute path to a .puml file
-
-        Returns:
-            Path for use in Sphinx .rst files, using forward slashes
-        """
         abs_file_path = file_path.resolve()
         rel_path = abs_file_path.relative_to(self.source_dir)
         rel_path_str = str(rel_path).replace(os.sep, "/")
 
-        print(f"\nPath resolution for: {file_path}")
-        print(f"Absolute path: {abs_file_path}")
-        print(f"Relative path: {rel_path_str}")
+        self.logger.debug(f"Path resolution for: {file_path}")
+        self.logger.debug(f"Absolute path: {abs_file_path}")
+        self.logger.debug(f"Relative path: {rel_path_str}")
 
         return rel_path_str
 
@@ -316,81 +293,86 @@ class PlantUmlGenerator:
         )
 
     def _generate_plantuml(self, file_model: FileModel) -> str:
-        """Generate PlantUML code from a FileModel."""
         uml_lines = [self.plantuml_start, *self.plantuml_settings]
-
-        # Create a package for the file
-        uml_lines.append(f'\npackage "{file_model.filename}" {{')
-
-        # Add functions to the package if any
-        if file_model.functions:
-            uml_lines.append("  class Functions <<(F,orange)>> {")
-            for function in file_model.functions:
-                visibility = function.visibility.value
-                signature = function.signature
-                uml_lines.append(f"    {visibility}{signature}")
-            uml_lines.append("  }")
-
-        # Add classes to the package
-        for class_model in file_model.classes:
-            uml_lines.append(f"  class {class_model.name} {{")
-
-            # Handle attributes
-            for attr in class_model.attributes:
-                uml_lines.append(
-                    f"    {attr.visibility.value}{attr.name}: {attr.type_annotation}",
-                )
-
-            # Handle methods
-            for method in class_model.methods:
-                uml_lines.append(f"    {method.visibility.value}{method.signature}")
-
-            uml_lines.append("  }")
-
-        # Close the package
-        uml_lines.append("}")
-
-        # Add imports section if show_imports is True
-        if self.show_imports:
-            uml_lines.append("\n' Imports")
-            for class_model in file_model.classes:
-                qualified_name = f'"{file_model.filename}".{class_model.name}'
-
-                # Add import relationships
-                for imp in file_model.imports:
-                    # Skip built-ins and standard library modules
-                    if not imp.module.startswith(
-                        ("typing", "collections", "datetime", "builtins"),
-                    ):
-                        # Classes (start with uppercase)
-                        if imp.name[0].isupper():
-                            uml_lines.append(
-                                f"note right of {qualified_name}: imports class {imp.name} from {imp.module}",
-                            )
-                        # Functions and types (don't start with underscore)
-                        elif not imp.name.startswith("_"):
-                            uml_lines.append(
-                                f"note right of {qualified_name}: imports function/type {imp.name} from {imp.module}",
-                            )
-
-        # Add relationships
-        uml_lines.append("\n' Relationships")
-        for class_model in file_model.classes:
-            qualified_name = f'"{file_model.filename}".{class_model.name}'
-
-            # Add inheritance lines
-            uml_lines.extend(
-                f"{base} <|-- {qualified_name}" for base in class_model.bases
-            )
-
-            # Add other relationships
-            for rel in class_model.relationships:
-                uml_lines.append(f"{rel.source} {rel.type} {rel.target}")
-
+        uml_lines.extend(self._generate_package_content(file_model))
+        uml_lines.extend(self._generate_imports(file_model))
+        uml_lines.extend(self._generate_relationships(file_model))
         uml_lines.append(self.plantuml_end)
         return "\n".join(uml_lines)
 
-    def generate_index(self, output_dir: Path, diagrams: list[Path]) -> None:
+    def _generate_package_content(self, file_model: FileModel) -> list[str]:
+        lines = [f'\npackage "{file_model.filename}" {{']
+        lines.extend(self._generate_functions(file_model.functions))
+        lines.extend(self._generate_classes(file_model.classes))
+        lines.append("}")
+        return lines
+
+    def _generate_functions(self, functions: list[FunctionModel]) -> list[str]:
+        if not functions:
+            return []
+        lines = ["  class Functions <<(F,orange)>> {"]
+        for function in functions:
+            lines.append(f"    {function.visibility.value}{function.signature}")
+        lines.append("  }")
+        return lines
+
+    def _generate_classes(self, classes: list[ClassModel]) -> list[str]:
+        lines = []
+        for class_model in classes:
+            lines.append(f"  class {class_model.name} {{")
+            lines.extend(self._generate_attributes(class_model.attributes))
+            lines.extend(self._generate_methods(class_model.methods))
+            lines.append("  }")
+        return lines
+
+    def _generate_attributes(self, attributes: list[AttributeModel]) -> list[str]:
+        return [
+            f"    {attr.visibility.value}{attr.name}: {attr.type_annotation}"
+            for attr in attributes
+        ]
+
+    def _generate_methods(self, methods: list[MethodModel]) -> list[str]:
+        return [
+            f"    {method.visibility.value}{method.signature}" for method in methods
+        ]
+
+    def _generate_imports(self, file_model: FileModel) -> list[str]:
+        if not self.show_imports:
+            return []
+        lines = ["\n' Imports"]
+        for class_model in file_model.classes:
+            qualified_name = f'"{file_model.filename}".{class_model.name}'
+            lines.extend(
+                self._generate_import_notes(qualified_name, file_model.imports),
+            )
+        return lines
+
+    def _generate_import_notes(
+        self,
+        qualified_name: str,
+        imports: list[ImportModel],
+    ) -> list[str]:
+        return [
+            f"note right of {qualified_name}: imports {'class' if imp.name[0].isupper() else 'function/type'} {imp.name} from {imp.module}"
+            for imp in imports
+            if not imp.module.startswith(
+                ("typing", "collections", "datetime", "builtins"),
+            )
+            and (imp.name[0].isupper() or not imp.name.startswith("_"))
+        ]
+
+    def _generate_relationships(self, file_model: FileModel) -> list[str]:
+        lines = ["\n' Relationships"]
+        for class_model in file_model.classes:
+            qualified_name = f'"{file_model.filename}".{class_model.name}'
+            lines.extend(f"{base} <|-- {qualified_name}" for base in class_model.bases)
+            lines.extend(
+                f"{rel.source} {rel.type} {rel.target}"
+                for rel in class_model.relationships
+            )
+        return lines
+
+    def generate_index(self, output_dir: Path) -> None:
         """Generate an index.rst file for the generated UML diagrams."""
         output_path = output_dir / "index.rst"
 
@@ -423,7 +405,7 @@ path_resolver = UmlPathResolver(docs_dir, generated_dir)
 
 # Configure PlantUML search paths based on path resolver
 plantuml_search_path = path_resolver.get_search_paths()
-print(f"Using path resolver search paths: {plantuml_search_path}")
+logging.info(f"Using path resolver search paths: {plantuml_search_path}")
 
 # This is the critical config that tells Sphinx where to find the .puml files
 plantuml_include_path = plantuml_search_path

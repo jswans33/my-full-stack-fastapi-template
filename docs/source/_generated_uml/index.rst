@@ -351,6 +351,47 @@ Type Parser
 
 
 
+Uml Generator - Parsers - Python
+--------------------------------
+
+
+Ast Parser
+~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/python/ast_parser.puml
+
+
+Class Parser
+~~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/python/class_parser.puml
+
+
+Function Parser
+~~~~~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/python/function_parser.puml
+
+
+Import Parser
+~~~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/python/import_parser.puml
+
+
+Relationship Parser
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/python/relationship_parser.puml
+
+
+Type Parser
+~~~~~~~~~~~
+
+.. uml:: uml_generator/parsers/python/type_parser.puml
+
+
+
 Uml Generator - Tests
 ---------------------
 

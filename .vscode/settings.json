@@ -65,5 +65,42 @@
     "Git Bash": {
       "source": "Git Bash"
     }
-  }
+  },
+  "cSpell.words": [
+    "autodoc",
+    "autonumber",
+    "conftest",
+    "dataclass",
+    "dataclasses",
+    "elif",
+    "enduml",
+    "footboxes",
+    "genindex",
+    "isinstance",
+    "ivar",
+    "levelname",
+    "linetype",
+    "modindex",
+    "mypy",
+    "pathlib",
+    "plantuml",
+    "pyproject",
+    "pytest",
+    "pyyaml",
+    "rtype",
+    "skinparam",
+    "SOURCEDIR",
+    "SPHINXBUILD",
+    "sphinxcontrib",
+    "SPHINXOPTS",
+    "splitlines",
+    "startswith",
+    "startuml",
+    "subdirs",
+    "toctree",
+    "typehints",
+    "usecase",
+    "varchar",
+    "viewcode"
+  ]
 }

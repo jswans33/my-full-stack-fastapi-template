@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "import_parser" {
+  class ImportParser {
+    +__init__(self: Any) -> Any
+    +parse_imports(self: Any, tree: ast.AST) -> list[ImportModel]
+  }
+}
+
+' Relationships
+@enduml

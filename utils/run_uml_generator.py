@@ -3,50 +3,49 @@
 Script to run the UML generator on the backend/app directory.
 """
 
+import logging
 import os
 import sys
 from pathlib import Path
-
-# Add the parent directory to the Python path
-sys.path.append(str(Path(__file__).parent.parent))
 
 from utils.uml_generator.config.loader import load_config
 from utils.uml_generator.factories import DefaultGeneratorFactory, DefaultParserFactory
 from utils.uml_generator.filesystem import DefaultFileSystem
 from utils.uml_generator.service import UmlGeneratorService
 
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
 
-def get_component_path(file_path: Path, base_dir: Path) -> str:
+# Add the parent directory to the Python path
+sys.path.append(str(Path(__file__).parent.parent))
+
+
+def get_component_path(file_path: Path, base_dir: Path) -> str | None:
     """Get the component path for a file."""
     rel_path = file_path.relative_to(base_dir)
-
-    # If the file is in the utils directory, treat differently
-    if "uml_generator" in str(file_path):
-        return "uml_generator"
-    if "utils" in str(file_path):
-        return "utils"
-
-    # Handle app directory components
     parts = rel_path.parts
 
-    # Handle special cases
-    if "tests" in parts:
-        return "tests"
-    if "api" in parts:
-        return "api"
-    if "core" in parts:
-        return "core"
-    if "models" in parts or "models.py" in str(file_path):
-        return "models"
-    if "examples" in parts:
-        return "examples"
-    return "utils"  # Default category for other files
+    component_map = {
+        "uml_generator": "uml_generator",
+        "utils": "utils",
+        "tests": "tests",
+        "api": "api",
+        "core": "core",
+        "models": "models",
+        "examples": "examples",
+    }
+
+    for key, value in component_map.items():
+        if key in str(file_path) or key in parts:
+            return value
+    return None
 
 
 def process_directory(directory: Path, base_dir: Path) -> None:
     """Process a specific directory and generate UML diagrams."""
     if not directory.exists():
-        print(f"Error: Directory {directory} does not exist.")
+        logger.error(f"Directory {directory} does not exist.")
         return
 
     # Create configuration with directory-specific settings
@@ -109,11 +108,11 @@ def process_directory(directory: Path, base_dir: Path) -> None:
     service = UmlGeneratorService(
         config=dir_config,
         file_system=file_system,
-        parser_factory=parser_factory,
         generator_factory=generator_factory,
+        parser_factory=parser_factory,
     )
 
-    print(f"Generating UML diagrams for {directory}...")
+    logger.info(f"Generating UML diagrams for {directory}...")
 
     # Process files and organize by component
     for root, _, files in os.walk(directory):
@@ -146,13 +145,12 @@ def process_directory(directory: Path, base_dir: Path) -> None:
 
 def main():
     """Run the UML generator on the backend/app directory structure."""
-    os.chdir(Path(__file__).parent.parent)  # Change to project root
-
-    project_root = Path.cwd()
+    # Define project root directory
+    project_root = Path(__file__).parent.parent
 
     app_dir = project_root / "backend" / "app"
     if not app_dir.exists():
-        print(f"Error: Directory {app_dir} does not exist.")
+        logger.error(f"Directory {app_dir} does not exist.")
         return 1
 
     # Process core components first
@@ -233,11 +231,9 @@ def main():
             },
         )
 
-        # Process UML generator directory
-        print(
-            f"Generating UML diagrams for {uml_generator_dir} (with special handling)..."
+        logger.info(
+            f"Generating UML diagrams for {uml_generator_dir} (with special handling)...",
         )
-
         # Create a dedicated UML diagram for the UML generator package itself
         for root, _, files in os.walk(uml_generator_dir):
             root_path = Path(root)
@@ -248,27 +244,34 @@ def main():
                     # Process the file
                     try:
                         file_model = parser_factory.create_parser(".py").parse_file(
-                            file_path
+                            file_path,
                         )
                         if file_model.classes or file_model.functions:
                             # Output to a dedicated folder
                             output_dir = Path(
-                                "docs/source/_generated_uml/uml_generator"
+                                "docs/source/_generated_uml/uml_generator",
                             )
                             file_system.ensure_directory(output_dir)
 
                             # Create component-specific folders
                             rel_path = file_path.relative_to(uml_generator_dir)
                             if len(rel_path.parts) > 1:  # It's in a subdirectory
-                                sub_output_dir = output_dir / rel_path.parts[0]
+                                # For deeper nesting, create subdirectories for all parts except the filename
+                                if len(rel_path.parts) > 2:
+                                    sub_dir_parts = rel_path.parts[:-1]
+                                    sub_output_dir = output_dir.joinpath(*sub_dir_parts)
+                                else:
+                                    # For single level of nesting, use the first part
+                                    sub_output_dir = output_dir / rel_path.parts[0]
+
                                 file_system.ensure_directory(sub_output_dir)
                                 output_path = sub_output_dir / f"{file_path.stem}.puml"
                             else:
                                 output_path = output_dir / f"{file_path.stem}.puml"
-
                             generator = generator_factory.create_generator("plantuml")
                             generator.generate_diagram(file_model, output_path)
                     except Exception as e:
+                        logger.exception(f"Error processing {file_path}: {e}")
                         print(f"Error processing {file_path}: {e}")
 
     # Generate index file with all diagrams
@@ -315,37 +318,35 @@ def main():
 
     # Fix path separators in index.rst for cross-platform compatibility
     fix_index_path_separators(output_dir / "index.rst")
+    logger.info("\nVerifying generated files structure:")
+    logger.info("===================================")
 
-    output_dir = Path("docs/source/_generated_uml")
-
-    # List all generated files
-    print("\nVerifying generated files structure:")
-    print("===================================")
     for root, dirs, files in os.walk(output_dir):
         rel_path = Path(root).relative_to(output_dir)
         if str(rel_path) == ".":
             level = 0
         else:
             level = len(rel_path.parts)
+
         indent = "  " * level
 
         # Print directory name
         if level > 0:
-            print(f"{indent[:-2]}+ {rel_path.name}/")
+            logger.info(f"{indent[:-2]}+ {rel_path.name}/")
 
         # Print files
         for file in sorted(files):
             if file.endswith(".puml"):
-                print(f"{indent}- {file}")
+                logger.info(f"{indent}- {file}")
+    logger.info("\nUML diagrams generated in docs/source/_generated_uml/")
 
-    print("\nUML diagrams generated in docs/source/_generated_uml/")
     return 0
 
 
 def fix_index_path_separators(index_path):
     """Fix path separators in index.rst to use forward slashes for cross-platform compatibility."""
     if not index_path.exists():
-        print(f"Warning: Index file not found at {index_path}")
+        logger.warning(f"Index file not found at {index_path}")
         return
 
     content = index_path.read_text()
@@ -363,12 +364,13 @@ def fix_index_path_separators(index_path):
             if fixed_path.startswith("../"):
                 fixed_path = fixed_path[3:]  # Remove the "../" prefix
 
-            modified_lines.append(f"{prefix}.. uml:: {fixed_path}")
+            line = f"{prefix}.. uml:: {fixed_path}"
+            modified_lines.append(line)
         else:
             modified_lines.append(line)
 
     index_path.write_text("\n".join(modified_lines))
-    print(f"Fixed path separators in {index_path.name}")
+    logger.info(f"Fixed path separators in {index_path.name}")
 
 
 if __name__ == "__main__":

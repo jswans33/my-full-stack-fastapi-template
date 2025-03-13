@@ -17,6 +17,9 @@ Welcome to the FastAPI Full Stack Template documentation.
    development
    uml_setup
    uml_diagrams
+   uml_structure
+   uml_extension
+   uml_implementation_guide
 
 Project Structure
 -----------------
@@ -40,6 +43,9 @@ Quick Links
 * :doc:`development` - Development guide
 * :doc:`uml_setup` - UML Setup and Dependencies
 * :doc:`uml_diagrams` - UML Class Diagrams
+* :doc:`uml_structure` - UML Diagrams Directory Structure
+* :doc:`uml_extension` - UML Diagram Extension Options
+* :doc:`uml_implementation_guide` - Concrete Implementation Guide for Sequence Diagrams
 
 Indices and tables
 ==================
