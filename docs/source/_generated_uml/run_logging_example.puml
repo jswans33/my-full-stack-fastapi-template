@@ -3,7 +3,7 @@ skinparam classAttributeIconSize 0
 
 package "run_logging_example" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC main() -> Any
+    +main() -> Any
   }
 }
 

@@ -4,6 +4,9 @@ pytest-cov>=4.0.0
 pytest-mock>=3.10.0
 pytest-asyncio>=0.21.0
 
+# Configuration
+tomli>=2.0.0
+
 # Type checking
 mypy>=1.0.0
 types-setuptools>=67.0.0

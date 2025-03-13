@@ -3,47 +3,47 @@ skinparam classAttributeIconSize 0
 
 package "config" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC parse_cors(v: Any) -> list[str] | str
+    +parse_cors(v: Any) -> list[str] | str
   }
   class Settings {
-    Visibility.PUBLIC model_config: Any
-    Visibility.PUBLIC API_V1_STR: str
-    Visibility.PUBLIC SECRET_KEY: str
-    Visibility.PUBLIC ACCESS_TOKEN_EXPIRE_MINUTES: int
-    Visibility.PUBLIC FRONTEND_HOST: str
-    Visibility.PUBLIC ENVIRONMENT: Literal['local', 'staging', 'production']
-    Visibility.PUBLIC BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)]
-    Visibility.PUBLIC PROJECT_NAME: str
-    Visibility.PUBLIC SENTRY_DSN: HttpUrl | None
-    Visibility.PUBLIC POSTGRES_SERVER: str
-    Visibility.PUBLIC POSTGRES_PORT: int
-    Visibility.PUBLIC POSTGRES_USER: str
-    Visibility.PUBLIC POSTGRES_PASSWORD: str
-    Visibility.PUBLIC POSTGRES_DB: str
-    Visibility.PUBLIC SMTP_TLS: bool
-    Visibility.PUBLIC SMTP_SSL: bool
-    Visibility.PUBLIC SMTP_PORT: int
-    Visibility.PUBLIC SMTP_HOST: str | None
-    Visibility.PUBLIC SMTP_USER: str | None
-    Visibility.PUBLIC SMTP_PASSWORD: str | None
-    Visibility.PUBLIC EMAILS_FROM_EMAIL: EmailStr | None
-    Visibility.PUBLIC EMAILS_FROM_NAME: EmailStr | None
-    Visibility.PUBLIC EMAIL_RESET_TOKEN_EXPIRE_HOURS: int
-    Visibility.PUBLIC EMAIL_TEST_USER: EmailStr
-    Visibility.PUBLIC FIRST_SUPERUSER: EmailStr
-    Visibility.PUBLIC FIRST_SUPERUSER_PASSWORD: str
-    Visibility.PUBLIC LOG_LEVEL: str
-    Visibility.PUBLIC LOG_FORMAT: str
-    Visibility.PUBLIC LOG_FILE: str | None
-    Visibility.PUBLIC LOG_ROTATION: bool
-    Visibility.PUBLIC LOG_ROTATION_SIZE: int
-    Visibility.PUBLIC LOG_ROTATION_BACKUPS: int
-    Visibility.PUBLICall_cors_origins() -> list[str]
-    Visibility.PUBLICSQLALCHEMY_DATABASE_URI() -> str
-    Visibility.PROTECTED_set_default_emails_from() -> Self
-    Visibility.PUBLICemails_enabled() -> bool
-    Visibility.PROTECTED_check_default_secret(var_name: str, value: str | None) -> None
-    Visibility.PROTECTED_enforce_non_default_secrets() -> Self
+    +model_config: Any
+    +API_V1_STR: str
+    +SECRET_KEY: str
+    +ACCESS_TOKEN_EXPIRE_MINUTES: int
+    +FRONTEND_HOST: str
+    +ENVIRONMENT: Literal['local', 'staging', 'production']
+    +BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)]
+    +PROJECT_NAME: str
+    +SENTRY_DSN: HttpUrl | None
+    +POSTGRES_SERVER: str
+    +POSTGRES_PORT: int
+    +POSTGRES_USER: str
+    +POSTGRES_PASSWORD: str
+    +POSTGRES_DB: str
+    +SMTP_TLS: bool
+    +SMTP_SSL: bool
+    +SMTP_PORT: int
+    +SMTP_HOST: str | None
+    +SMTP_USER: str | None
+    +SMTP_PASSWORD: str | None
+    +EMAILS_FROM_EMAIL: EmailStr | None
+    +EMAILS_FROM_NAME: EmailStr | None
+    +EMAIL_RESET_TOKEN_EXPIRE_HOURS: int
+    +EMAIL_TEST_USER: EmailStr
+    +FIRST_SUPERUSER: EmailStr
+    +FIRST_SUPERUSER_PASSWORD: str
+    +LOG_LEVEL: str
+    +LOG_FORMAT: str
+    +LOG_FILE: str | None
+    +LOG_ROTATION: bool
+    +LOG_ROTATION_SIZE: int
+    +LOG_ROTATION_BACKUPS: int
+    +all_cors_origins(self: Any) -> list[str]
+    +SQLALCHEMY_DATABASE_URI(self: Any) -> str
+    #_set_default_emails_from(self: Any) -> Self
+    +emails_enabled(self: Any) -> bool
+    #_check_default_secret(self: Any, var_name: str, value: str | None) -> None
+    #_enforce_non_default_secrets(self: Any) -> Self
   }
 }
 

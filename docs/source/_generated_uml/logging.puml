@@ -3,31 +3,31 @@ skinparam classAttributeIconSize 0
 
 package "logging" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC setup_logging(config: LogConfig | None = None, test_handler: logging.Handler | None = None) -> None
-    Visibility.PUBLIC get_logger(name: str) -> logging.Logger
+    +setup_logging(config: LogConfig | None = None, test_handler: logging.Handler | None = None) -> None
+    +get_logger(name: str) -> logging.Logger
   }
   class LogLevel {
-    Visibility.PUBLIC DEBUG: Any
-    Visibility.PUBLIC INFO: Any
-    Visibility.PUBLIC WARNING: Any
-    Visibility.PUBLIC ERROR: Any
-    Visibility.PUBLIC CRITICAL: Any
+    +DEBUG: Any
+    +INFO: Any
+    +WARNING: Any
+    +ERROR: Any
+    +CRITICAL: Any
   }
   class LogFormat {
-    Visibility.PUBLIC TEXT: Any
-    Visibility.PUBLIC JSON: Any
+    +TEXT: Any
+    +JSON: Any
   }
   class LogConfig {
-    Visibility.PUBLIC level: LogLevel
-    Visibility.PUBLIC format: LogFormat
-    Visibility.PUBLIC file: str | None
-    Visibility.PUBLIC rotation: bool
-    Visibility.PUBLIC rotation_size: int
-    Visibility.PUBLIC rotation_backups: int
-    Visibility.PUBLICfrom_env(cls: Any) -> LogConfig
+    +level: LogLevel
+    +format: LogFormat
+    +file: str | None
+    +rotation: bool
+    +rotation_size: int
+    +rotation_backups: int
+    +from_env(cls: Any) -> LogConfig
   }
   class JsonFormatter {
-    Visibility.PUBLICformat(record: logging.LogRecord) -> str
+    +format(self: Any, record: logging.LogRecord) -> str
   }
   class LoggingMiddleware {
   }

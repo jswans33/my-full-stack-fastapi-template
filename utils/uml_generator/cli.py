@@ -1,19 +1,22 @@
+"""Command-line interface for UML generator."""
+
 import argparse
+import logging
 from pathlib import Path
 
-from .config import Configuration, create_config_from_args, configure_logging
+from .config.loader import load_config
+from .factories import DefaultGeneratorFactory, DefaultParserFactory
 from .filesystem import DefaultFileSystem
-from .factories import DefaultParserFactory, DefaultGeneratorFactory
 from .service import UmlGeneratorService
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args(args=None) -> argparse.Namespace:
     """Parse command line arguments."""
     # Get the script directory for default paths
     script_dir = Path(__file__).resolve().parent
     project_root = script_dir.parent
     default_output_dir = project_root.parent / "docs" / "source" / "_generated_uml"
-    
+
     parser = argparse.ArgumentParser(
         description="Generate UML class diagrams from source code.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -40,28 +43,28 @@ Examples:
 For more information, see the README.md file.
         """,
     )
-    
+
     # Create a mutually exclusive group for input sources
     input_group = parser.add_mutually_exclusive_group(required=True)
-    
+
     input_group.add_argument(
         "-f",
         "--file",
         help="Process a single source file",
     )
-    
+
     input_group.add_argument(
         "-d",
         "--directory",
         help="Process a directory containing source files",
     )
-    
+
     input_group.add_argument(
         "--app-dir",
         action="store_true",
         help="Process the app directory (default location)",
     )
-    
+
     # Output options
     parser.add_argument(
         "-o",
@@ -69,14 +72,14 @@ For more information, see the README.md file.
         default=str(default_output_dir),
         help="Output directory for UML files",
     )
-    
+
     parser.add_argument(
         "--format",
         choices=["plantuml"],
         default="plantuml",
         help="Output format for UML diagrams",
     )
-    
+
     # Processing options
     parser.add_argument(
         "--subdirs",
@@ -84,31 +87,31 @@ For more information, see the README.md file.
         default=["models", "services"],
         help="List of subdirectories to process (only with --directory or --app-dir)",
     )
-    
+
     parser.add_argument(
         "--recursive",
         action="store_true",
         help="Recursively process directories",
     )
-    
+
     parser.add_argument(
         "--list-only",
         action="store_true",
         help="Only list files without generating UML diagrams (for troubleshooting)",
     )
-    
+
     parser.add_argument(
         "--show-imports",
         action="store_true",
         help="Show imports in the UML diagrams",
     )
-    
+
     parser.add_argument(
         "--generate-report",
         action="store_true",
         help="Generate a report of files processed",
     )
-    
+
     # Verbosity options
     verbosity_group = parser.add_mutually_exclusive_group()
     verbosity_group.add_argument(
@@ -117,39 +120,91 @@ For more information, see the README.md file.
         action="store_true",
         help="Enable verbose output",
     )
-    
+
     verbosity_group.add_argument(
         "-q",
         "--quiet",
         action="store_true",
         help="Suppress all output except errors",
     )
-    
+
     verbosity_group.add_argument(
         "--debug",
         action="store_true",
         help="Enable debug logging",
     )
-    
-    return parser.parse_args()
+
+    # Pass the args parameter to parse_args
+    return parser.parse_args(args)
+
+
+def configure_logging(args: argparse.Namespace) -> logging.Logger:
+    """Configure logging based on command line arguments."""
+    logger = logging.getLogger("uml_generator")
+
+    if args.debug:
+        level = logging.DEBUG
+    elif args.verbose:
+        level = logging.INFO
+    elif args.quiet:
+        level = logging.ERROR
+    else:
+        level = logging.WARNING
+
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    )
+
+    return logger
 
 
 def main() -> None:
     """Main entry point for the UML generator."""
     # Parse command-line arguments
     args = parse_args()
-    
+
     # Configure logging
     logger = configure_logging(args)
-    
-    # Create configuration
-    config = create_config_from_args(args)
-    
+
+    # Convert args to dict for config
+    args_dict = {
+        "paths": {
+            "output_dir": args.output,
+        },
+        "generator": {
+            "format": args.format,
+        },
+        "parser": {
+            "show_imports": args.show_imports,
+            "patterns": ["*.py"],
+            "exclude_dirs": ["__pycache__", "*.egg-info"],
+        },
+        "logging": {
+            "level": "debug"
+            if args.debug
+            else "info"
+            if args.verbose
+            else "error"
+            if args.quiet
+            else "warning",
+        },
+    }
+
+    # Load configuration
+    config = load_config(args_dict)
+
     # Create dependencies
     file_system = DefaultFileSystem()
     parser_factory = DefaultParserFactory(file_system)
-    generator_factory = DefaultGeneratorFactory(file_system, config.plantuml_settings)
-    
+    generator_factory = DefaultGeneratorFactory(
+        file_system,
+        {
+            "plantuml_settings": config.generator.plantuml_settings,
+            "format": config.generator.format,
+        },
+    )
+
     # Create and run the service
     service = UmlGeneratorService(
         config=config,
@@ -158,7 +213,7 @@ def main() -> None:
         generator_factory=generator_factory,
         logger=logger,
     )
-    
+
     service.run()
 
 

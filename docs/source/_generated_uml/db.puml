@@ -3,7 +3,7 @@ skinparam classAttributeIconSize 0
 
 package "db" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC init_db(session: Session) -> None
+    +init_db(session: Session) -> None
   }
 }
 

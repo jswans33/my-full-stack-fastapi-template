@@ -27,6 +27,10 @@ patterns = ["*.py"]
 exclude_dirs = ["__pycache__", "*.egg-info", "build", "dist"]
 # Whether to show imports in diagrams
 show_imports = false
+# Only list files without generating diagrams
+list_only = false
+# Process directories recursively
+recursive = false
 
 [logging]
 # Logging level (debug, info, warning, error, critical)

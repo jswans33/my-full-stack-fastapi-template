@@ -3,7 +3,7 @@ skinparam classAttributeIconSize 0
 
 package "test_test_pre_start" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC test_init_successful_connection() -> None
+    +test_init_successful_connection() -> None
   }
 }
 

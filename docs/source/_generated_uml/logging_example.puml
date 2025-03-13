@@ -1,0 +1,14 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "logging_example" {
+  class Functions <<(F,orange)>> {
+    +async log_example() -> Any
+    +async log_performance() -> Any
+    +async log_exception() -> Any
+    +async log_request_context(request: Request) -> Any
+  }
+}
+
+' Relationships
+@enduml

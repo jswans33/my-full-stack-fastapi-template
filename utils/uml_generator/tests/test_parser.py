@@ -17,15 +17,26 @@ class MockFileSystem(FileSystem):
 
     def __init__(self, files: dict[str, str]):
         self.files = files
+        self.written_files = {}
 
     def read_file(self, path: Path) -> str:
         return self.files.get(str(path), "")
 
     def write_file(self, path: Path, content: str) -> None:
-        self.files[str(path)] = content
+        self.written_files[str(path)] = content
 
     def ensure_directory(self, path: Path) -> None:
         pass
+
+    def find_files(self, directory: Path, pattern: str) -> list[Path]:
+        """Mock finding files matching pattern."""
+        files = []
+        for path in self.files.keys():
+            if path.startswith(str(directory)) and path.endswith(
+                pattern.replace("*", ""),
+            ):
+                files.append(Path(path))
+        return files
 
 
 @pytest.fixture
@@ -45,6 +56,7 @@ def test_parse_simple_class(parser):
                 return str(arg)
     """)
 
+    parser.file_system.files["test.py"] = code
     model = parser.parse_file(Path("test.py"))
     assert len(model.classes) == 1
 
@@ -77,6 +89,7 @@ def test_parse_inheritance(parser):
             pass
     """)
 
+    parser.file_system.files["test.py"] = code
     model = parser.parse_file(Path("test.py"))
     assert len(model.classes) == 2
 
@@ -88,15 +101,24 @@ def test_parse_inheritance(parser):
 def test_parse_relationships(parser):
     """Test parsing class relationships."""
     code = textwrap.dedent("""
-        class User:
-            pass
-            
-        class Post:
-            author: User
-            comments: List[Comment]
-            tags: Optional[List[Tag]]
-    """)
+from typing import List, Optional
 
+class User:
+        pass
+
+class Comment:
+        pass
+
+class Tag:
+        pass
+
+class Post:
+        author: User
+        comments: List[Comment]
+        tags: Optional[List[Tag]]
+""")
+
+    parser.file_system.files["test.py"] = code
     model = parser.parse_file(Path("test.py"))
     post = next(c for c in model.classes if c.name == "Post")
 
@@ -126,6 +148,7 @@ def test_parse_visibility(parser):
                 pass
     """)
 
+    parser.file_system.files["test.py"] = code
     model = parser.parse_file(Path("test.py"))
     cls = model.classes[0]
 
@@ -151,6 +174,7 @@ def test_parse_imports(parser):
         from .models import User as UserModel
     """)
 
+    parser.file_system.files["test.py"] = code
     model = parser.parse_file(Path("test.py"))
     imports = {(imp.module, imp.name): imp.alias for imp in model.imports}
 
@@ -172,6 +196,7 @@ def test_parse_module_functions(parser):
             pass
     """)
 
+    parser.file_system.files["test.py"] = code
     model = parser.parse_file(Path("test.py"))
     assert len(model.functions) == 2
 
@@ -185,7 +210,7 @@ def test_parse_module_functions(parser):
     assert simple.parameters[0].type_annotation == "int"
 
     # Check async function with *args and **kwargs
-    async_func = funcs["async_function"]
+    async_func = funcs["async async_function"]
     assert async_func.return_type == "None"
     params = {p.name: p for p in async_func.parameters}
     assert "y" in params

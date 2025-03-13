@@ -1,3 +1,5 @@
+"""Generator for PlantUML diagrams."""
+
 import logging
 from pathlib import Path
 from typing import Any
@@ -64,9 +66,9 @@ class PlantUmlGenerator(DiagramGenerator):
         if file_model.functions:
             uml_lines.append("  class Functions <<(F,orange)>> {")
             for function in file_model.functions:
-                visibility = function.visibility
+                visibility = function.visibility.value
                 signature = function.signature
-                uml_lines.append(f"    {visibility} {signature}")
+                uml_lines.append(f"    {visibility}{signature}")
             uml_lines.append("  }")
 
         # Add classes to the package
@@ -76,12 +78,12 @@ class PlantUmlGenerator(DiagramGenerator):
             # Handle attributes
             for attr in class_model.attributes:
                 uml_lines.append(
-                    f"    {attr.visibility} {attr.name}: {attr.type_annotation}",
+                    f"    {attr.visibility.value}{attr.name}: {attr.type_annotation}",
                 )
 
             # Handle methods
             for method in class_model.methods:
-                uml_lines.append(f"    {method.visibility}{method.signature}")
+                uml_lines.append(f"    {method.visibility.value}{method.signature}")
 
             uml_lines.append("  }")
 

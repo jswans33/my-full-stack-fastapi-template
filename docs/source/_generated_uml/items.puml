@@ -3,11 +3,11 @@ skinparam classAttributeIconSize 0
 
 package "items" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC read_items(session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100) -> Any
-    Visibility.PUBLIC read_item(session: SessionDep, current_user: CurrentUser, id: uuid.UUID) -> Any
-    Visibility.PUBLIC create_item() -> Any
-    Visibility.PUBLIC update_item() -> Any
-    Visibility.PUBLIC delete_item(session: SessionDep, current_user: CurrentUser, id: uuid.UUID) -> Message
+    +read_items(session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100) -> Any
+    +read_item(session: SessionDep, current_user: CurrentUser, id: uuid.UUID) -> Any
+    +create_item() -> Any
+    +update_item() -> Any
+    +delete_item(session: SessionDep, current_user: CurrentUser, id: uuid.UUID) -> Message
   }
 }
 

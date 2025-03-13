@@ -3,11 +3,11 @@ skinparam classAttributeIconSize 0
 
 package "crud" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC create_user() -> User
-    Visibility.PUBLIC update_user() -> Any
-    Visibility.PUBLIC get_user_by_email() -> User | None
-    Visibility.PUBLIC authenticate() -> User | None
-    Visibility.PUBLIC create_item() -> Item
+    +create_user() -> User
+    +update_user() -> Any
+    +get_user_by_email() -> User | None
+    +authenticate() -> User | None
+    +create_item() -> Item
   }
 }
 

@@ -3,8 +3,8 @@ skinparam classAttributeIconSize 0
 
 package "e2412789c190_initialize_models" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC upgrade() -> Any
-    Visibility.PUBLIC downgrade() -> Any
+    +upgrade() -> Any
+    +downgrade() -> Any
   }
 }
 

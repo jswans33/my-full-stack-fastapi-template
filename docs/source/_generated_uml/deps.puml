@@ -3,9 +3,9 @@ skinparam classAttributeIconSize 0
 
 package "deps" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC get_db() -> Generator[Session, None, None]
-    Visibility.PUBLIC get_current_user(session: SessionDep, token: TokenDep) -> User
-    Visibility.PUBLIC get_current_active_superuser(current_user: CurrentUser) -> User
+    +get_db() -> Generator[Session, None, None]
+    +get_current_user(session: SessionDep, token: TokenDep) -> User
+    +get_current_active_superuser(current_user: CurrentUser) -> User
   }
 }
 

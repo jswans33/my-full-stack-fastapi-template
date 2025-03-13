@@ -48,14 +48,30 @@ Directory Structure
 __init__.py
 cli.py
 config.py
+config/__init__.py
+config/defaults.toml
+config/loader.py
 entry_point.py
 factories.py
 filesystem.py
-generator/plantuml-generator.py
+generator/__init__.py
+generator/plantuml_generator.py
 interfaces.py
 models.py
+models/__init__.py
+models/models.py
 parsers/python_parser.py
+pytest.ini
+README.md
+requirements-dev.txt
 service.py
+tests/__init__.py
+tests/conftest.py
+tests/test_cli.py
+tests/test_config.py
+tests/test_generator.py
+tests/test_integration.py
+tests/test_parser.py
 
 ================================================================
 Files
@@ -64,19 +80,72 @@ Files
 ================
 File: __init__.py
 ================
-"""UML Generator package for creating UML diagrams from source code."""
+"""UML Generator Package.
+
+A tool for automatically generating UML class diagrams from Python source code.
+This package provides functionality to analyze Python files and generate
+PlantUML diagrams representing the class structure, relationships, and module
+organization of your codebase.
+
+Key Components:
+- CLI: Command-line interface for running the generator
+- Parser: Python AST parser for code analysis
+- Generator: PlantUML diagram generation
+- Models: Data models representing code structure
+- Service: Core orchestration logic
+
+Example Usage:
+    ```bash
+    python -m uml_generator -d path/to/code --recursive
+    ```
+
+For more information, see the README.md file.
+"""
 
 __version__ = "0.1.0"
+__author__ = "Your Name"
+__license__ = "MIT"
+
+from .cli import main
+from .models import (
+    AttributeModel,
+    ClassModel,
+    FileModel,
+    FunctionModel,
+    ImportModel,
+    MethodModel,
+    Parameter,
+    RelationshipModel,
+    Visibility,
+)
+from .service import UmlGeneratorService
+
+__all__ = [
+    "main",
+    "UmlGeneratorService",
+    "AttributeModel",
+    "ClassModel",
+    "FileModel",
+    "FunctionModel",
+    "ImportModel",
+    "MethodModel",
+    "Parameter",
+    "RelationshipModel",
+    "Visibility",
+]
 
 ================
 File: cli.py
 ================
+"""Command-line interface for UML generator."""
+
 import argparse
+import logging
 from pathlib import Path
 
-from .config import Configuration, create_config_from_args, configure_logging
+from .config.loader import load_config
+from .factories import DefaultGeneratorFactory, DefaultParserFactory
 from .filesystem import DefaultFileSystem
-from .factories import DefaultParserFactory, DefaultGeneratorFactory
 from .service import UmlGeneratorService
 
 
@@ -86,7 +155,7 @@ def parse_args() -> argparse.Namespace:
     script_dir = Path(__file__).resolve().parent
     project_root = script_dir.parent
     default_output_dir = project_root.parent / "docs" / "source" / "_generated_uml"
-    
+
     parser = argparse.ArgumentParser(
         description="Generate UML class diagrams from source code.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
@@ -113,28 +182,28 @@ Examples:
 For more information, see the README.md file.
         """,
     )
-    
+
     # Create a mutually exclusive group for input sources
     input_group = parser.add_mutually_exclusive_group(required=True)
-    
+
     input_group.add_argument(
         "-f",
         "--file",
         help="Process a single source file",
     )
-    
+
     input_group.add_argument(
         "-d",
         "--directory",
         help="Process a directory containing source files",
     )
-    
+
     input_group.add_argument(
         "--app-dir",
         action="store_true",
         help="Process the app directory (default location)",
     )
-    
+
     # Output options
     parser.add_argument(
         "-o",
@@ -142,14 +211,14 @@ For more information, see the README.md file.
         default=str(default_output_dir),
         help="Output directory for UML files",
     )
-    
+
     parser.add_argument(
         "--format",
         choices=["plantuml"],
         default="plantuml",
         help="Output format for UML diagrams",
     )
-    
+
     # Processing options
     parser.add_argument(
         "--subdirs",
@@ -157,31 +226,31 @@ For more information, see the README.md file.
         default=["models", "services"],
         help="List of subdirectories to process (only with --directory or --app-dir)",
     )
-    
+
     parser.add_argument(
         "--recursive",
         action="store_true",
         help="Recursively process directories",
     )
-    
+
     parser.add_argument(
         "--list-only",
         action="store_true",
         help="Only list files without generating UML diagrams (for troubleshooting)",
     )
-    
+
     parser.add_argument(
         "--show-imports",
         action="store_true",
         help="Show imports in the UML diagrams",
     )
-    
+
     parser.add_argument(
         "--generate-report",
         action="store_true",
         help="Generate a report of files processed",
     )
-    
+
     # Verbosity options
     verbosity_group = parser.add_mutually_exclusive_group()
     verbosity_group.add_argument(
@@ -190,39 +259,90 @@ For more information, see the README.md file.
         action="store_true",
         help="Enable verbose output",
     )
-    
+
     verbosity_group.add_argument(
         "-q",
         "--quiet",
         action="store_true",
         help="Suppress all output except errors",
     )
-    
+
     verbosity_group.add_argument(
         "--debug",
         action="store_true",
         help="Enable debug logging",
     )
-    
+
     return parser.parse_args()
+
+
+def configure_logging(args: argparse.Namespace) -> logging.Logger:
+    """Configure logging based on command line arguments."""
+    logger = logging.getLogger("uml_generator")
+
+    if args.debug:
+        level = logging.DEBUG
+    elif args.verbose:
+        level = logging.INFO
+    elif args.quiet:
+        level = logging.ERROR
+    else:
+        level = logging.WARNING
+
+    logging.basicConfig(
+        level=level,
+        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
+    )
+
+    return logger
 
 
 def main() -> None:
     """Main entry point for the UML generator."""
     # Parse command-line arguments
     args = parse_args()
-    
+
     # Configure logging
     logger = configure_logging(args)
-    
-    # Create configuration
-    config = create_config_from_args(args)
-    
+
+    # Convert args to dict for config
+    args_dict = {
+        "paths": {
+            "output_dir": args.output,
+        },
+        "generator": {
+            "format": args.format,
+        },
+        "parser": {
+            "show_imports": args.show_imports,
+            "patterns": ["*.py"],
+            "exclude_dirs": ["__pycache__", "*.egg-info"],
+        },
+        "logging": {
+            "level": "debug"
+            if args.debug
+            else "info"
+            if args.verbose
+            else "error"
+            if args.quiet
+            else "warning",
+        },
+    }
+
+    # Load configuration
+    config = load_config(args_dict)
+
     # Create dependencies
     file_system = DefaultFileSystem()
     parser_factory = DefaultParserFactory(file_system)
-    generator_factory = DefaultGeneratorFactory(file_system, config.plantuml_settings)
-    
+    generator_factory = DefaultGeneratorFactory(
+        file_system,
+        {
+            "plantuml_settings": config.generator.plantuml_settings,
+            "format": config.generator.format,
+        },
+    )
+
     # Create and run the service
     service = UmlGeneratorService(
         config=config,
@@ -231,7 +351,7 @@ def main() -> None:
         generator_factory=generator_factory,
         logger=logger,
     )
-    
+
     service.run()
 
 
@@ -353,6 +473,233 @@ def configure_logging(args) -> logging.Logger:
     return logger
 
 ================
+File: config/__init__.py
+================
+"""Configuration module for UML Generator."""
+
+from .loader import Config, ConfigLoader, load_config
+
+__all__ = ["Config", "ConfigLoader", "load_config"]
+
+================
+File: config/defaults.toml
+================
+# Default configuration for UML Generator
+
+[paths]
+# Default output directory for generated UML files
+output_dir = "docs/source/_generated_uml"
+
+[generator]
+# Default output format
+format = "plantuml"
+
+# PlantUML settings
+[generator.plantuml]
+start = "@startuml"
+end = "@enduml"
+settings = [
+    "skinparam classAttributeIconSize 0",
+    "skinparam monochrome false",
+    "skinparam shadowing false",
+    "skinparam handwritten false",
+    "skinparam linetype ortho",
+]
+
+[parser]
+# File patterns to process
+patterns = ["*.py"]
+# Directories to exclude
+exclude_dirs = ["__pycache__", "*.egg-info", "build", "dist"]
+# Whether to show imports in diagrams
+show_imports = false
+
+[logging]
+# Logging level (debug, info, warning, error, critical)
+level = "info"
+# Log file path (optional)
+file = ""
+
+================
+File: config/loader.py
+================
+"""Configuration loader for UML Generator.
+
+This module handles loading and merging configuration from multiple sources:
+1. Command line arguments (highest priority)
+2. Environment variables (UML_GENERATOR_*)
+3. User config file (~/.config/uml-generator/config.toml)
+4. Project config file (.uml-generator.toml)
+5. Default config file (lowest priority)
+"""
+
+import os
+from dataclasses import dataclass, field
+from pathlib import Path
+from typing import Any
+
+import tomli
+
+
+@dataclass
+class GeneratorConfig:
+    """PlantUML generator configuration."""
+
+    format: str = "plantuml"
+    plantuml_start: str = "@startuml"
+    plantuml_end: str = "@enduml"
+    plantuml_settings: list[str] = field(
+        default_factory=lambda: [
+            "skinparam classAttributeIconSize 0",
+        ]
+    )
+
+
+@dataclass
+class ParserConfig:
+    """Parser configuration."""
+
+    patterns: list[str] = field(default_factory=lambda: ["*.py"])
+    exclude_dirs: list[str] = field(
+        default_factory=lambda: [
+            "__pycache__",
+            "*.egg-info",
+            "build",
+            "dist",
+        ]
+    )
+    show_imports: bool = False
+
+
+@dataclass
+class LoggingConfig:
+    """Logging configuration."""
+
+    level: str = "info"
+    file: str | None = None
+
+
+@dataclass
+class Config:
+    """Complete UML generator configuration."""
+
+    output_dir: Path = Path("docs/source/_generated_uml")
+    generator: GeneratorConfig = field(default_factory=GeneratorConfig)
+    parser: ParserConfig = field(default_factory=ParserConfig)
+    logging: LoggingConfig = field(default_factory=LoggingConfig)
+
+
+class ConfigLoader:
+    """Configuration loader handling multiple sources."""
+
+    def __init__(self):
+        self.config = Config()
+        self._load_defaults()
+
+    def _load_defaults(self) -> None:
+        """Load default configuration."""
+        default_config = Path(__file__).parent / "defaults.toml"
+        if default_config.exists():
+            self._load_toml(default_config)
+
+    def _load_toml(self, path: Path) -> None:
+        """Load configuration from TOML file."""
+        try:
+            with open(path, "rb") as f:
+                data = tomli.load(f)
+                self._update_config(data)
+        except Exception as e:
+            print(f"Warning: Failed to load config from {path}: {e}")
+
+    def _load_env_vars(self) -> None:
+        """Load configuration from environment variables."""
+        prefix = "UML_GENERATOR_"
+        env_map = {
+            "OUTPUT_DIR": ("output_dir", str),
+            "FORMAT": ("generator.format", str),
+            "SHOW_IMPORTS": ("parser.show_imports", bool),
+            "LOG_LEVEL": ("logging.level", str),
+            "LOG_FILE": ("logging.file", str),
+        }
+
+        for env_key, (config_key, type_) in env_map.items():
+            full_key = prefix + env_key
+            if full_key in os.environ:
+                value = os.environ[full_key]
+                if type_ == bool:
+                    value = value.lower() in ("true", "1", "yes")
+                self._set_nested_value(config_key.split("."), value)
+
+    def _set_nested_value(self, keys: list[str], value: Any) -> None:
+        """Set a nested configuration value."""
+        target = self.config
+        for key in keys[:-1]:
+            target = getattr(target, key)
+        setattr(target, keys[-1], value)
+
+    def _update_config(self, data: dict[str, Any]) -> None:
+        """Update configuration from dictionary."""
+        if "paths" in data:
+            if "output_dir" in data["paths"]:
+                self.config.output_dir = Path(data["paths"]["output_dir"])
+
+        if "generator" in data:
+            gen_data = data["generator"]
+            if "format" in gen_data:
+                self.config.generator.format = gen_data["format"]
+            if "plantuml" in gen_data:
+                plantuml = gen_data["plantuml"]
+                if "start" in plantuml:
+                    self.config.generator.plantuml_start = plantuml["start"]
+                if "end" in plantuml:
+                    self.config.generator.plantuml_end = plantuml["end"]
+                if "settings" in plantuml:
+                    self.config.generator.plantuml_settings = plantuml["settings"]
+
+        if "parser" in data:
+            parser_data = data["parser"]
+            if "patterns" in parser_data:
+                self.config.parser.patterns = parser_data["patterns"]
+            if "exclude_dirs" in parser_data:
+                self.config.parser.exclude_dirs = parser_data["exclude_dirs"]
+            if "show_imports" in parser_data:
+                self.config.parser.show_imports = parser_data["show_imports"]
+
+        if "logging" in data:
+            log_data = data["logging"]
+            if "level" in log_data:
+                self.config.logging.level = log_data["level"]
+            if "file" in log_data:
+                self.config.logging.file = log_data["file"]
+
+    def load(self, cli_args: dict[str, Any] | None = None) -> Config:
+        """Load configuration from all sources."""
+        # Load project config if exists
+        project_config = Path(".uml-generator.toml")
+        if project_config.exists():
+            self._load_toml(project_config)
+
+        # Load user config if exists
+        user_config = Path.home() / ".config" / "uml-generator" / "config.toml"
+        if user_config.exists():
+            self._load_toml(user_config)
+
+        # Load environment variables
+        self._load_env_vars()
+
+        # Apply CLI arguments (highest priority)
+        if cli_args:
+            self._update_config(cli_args)
+
+        return self.config
+
+
+def load_config(cli_args: dict[str, Any] | None = None) -> Config:
+    """Load configuration from all sources."""
+    loader = ConfigLoader()
+    return loader.load(cli_args)
+
+================
 File: entry_point.py
 ================
 from .cli import main
@@ -363,55 +710,65 @@ if __name__ == "__main__":
 ================
 File: factories.py
 ================
-from typing import Dict, Any
 import logging
+from typing import Any
 
-from .interfaces import FileSystem, FileParser, DiagramGenerator
-from .interfaces import ParserFactory, GeneratorFactory
+from .generator.plantuml_generator import PlantUmlGenerator
+from .interfaces import (
+    DiagramGenerator,
+    FileParser,
+    FileSystem,
+    GeneratorFactory,
+    ParserFactory,
+)
 from .parsers.python_parser import PythonAstParser
-from .generators.plantuml_generator import PlantUmlGenerator
 
 
 class DefaultParserFactory(ParserFactory):
     """Default implementation of ParserFactory."""
-    
+
     def __init__(self, file_system: FileSystem):
         self.file_system = file_system
         self.logger = logging.getLogger(__name__)
         self._parsers = {}
-    
+
     def create_parser(self, file_extension: str) -> FileParser:
         """Create parser for given file extension."""
         if file_extension not in self._parsers:
             if file_extension == ".py":
                 self._parsers[file_extension] = PythonAstParser(self.file_system)
             else:
-                self.logger.warning(f"No parser available for extension: {file_extension}")
+                self.logger.warning(
+                    f"No parser available for extension: {file_extension}"
+                )
                 raise ValueError(f"Unsupported file extension: {file_extension}")
-        
+
         return self._parsers[file_extension]
 
 
 class DefaultGeneratorFactory(GeneratorFactory):
     """Default implementation of GeneratorFactory."""
-    
-    def __init__(self, file_system: FileSystem, settings: Dict[str, Any] = None):
+
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] = None):
         self.file_system = file_system
         self.settings = settings or {}
         self.logger = logging.getLogger(__name__)
         self._generators = {}
-    
+
     def create_generator(self, output_format: str) -> DiagramGenerator:
         """Create generator for given output format."""
         if output_format not in self._generators:
             if output_format == "plantuml":
                 self._generators[output_format] = PlantUmlGenerator(
-                    self.file_system, self.settings
+                    self.file_system,
+                    self.settings,
                 )
             else:
-                self.logger.warning(f"No generator available for format: {output_format}")
+                self.logger.warning(
+                    f"No generator available for format: {output_format}"
+                )
                 raise ValueError(f"Unsupported output format: {output_format}")
-        
+
         return self._generators[output_format]
 
 ================
@@ -446,67 +803,83 @@ class DefaultFileSystem(FileSystem):
         return list(directory.glob(pattern))
 
 ================
-File: generator/plantuml-generator.py
+File: generator/__init__.py
 ================
-from typing import Dict, Any, List, Set
-from pathlib import Path
-import logging
+"""Generator module for UML diagram generation.
 
-from ..interfaces import FileSystem, DiagramGenerator
+This module provides generators for converting parsed code models into various
+UML diagram formats. Currently supports PlantUML output format.
+"""
+
+from .plantuml_generator import PlantUmlGenerator
+
+__all__ = ["PlantUmlGenerator"]
+
+================
+File: generator/plantuml_generator.py
+================
+import logging
+from pathlib import Path
+from typing import Any
+
+from ..interfaces import DiagramGenerator, FileSystem
 from ..models import FileModel
 
 
 class PlantUmlGenerator(DiagramGenerator):
     """Generator for PlantUML diagrams."""
-    
+
     def __init__(
         self,
         file_system: FileSystem,
-        settings: Dict[str, Any] = None
+        settings: dict[str, Any] | None = None,
     ):
         self.file_system = file_system
         self.settings = settings or {}
         self.logger = logging.getLogger(__name__)
-        
+
         # Configure PlantUML settings
-        self.plantuml_start = self.settings.get('PLANTUML_START', "@startuml")
-        self.plantuml_end = self.settings.get('PLANTUML_END', "@enduml")
-        self.plantuml_settings = self.settings.get('PLANTUML_SETTINGS', [
-            "skinparam classAttributeIconSize 0",
-        ])
-        self.show_imports = self.settings.get('show_imports', False)
-    
+        self.plantuml_start = self.settings.get("PLANTUML_START", "@startuml")
+        self.plantuml_end = self.settings.get("PLANTUML_END", "@enduml")
+        self.plantuml_settings = self.settings.get(
+            "PLANTUML_SETTINGS",
+            [
+                "skinparam classAttributeIconSize 0",
+            ],
+        )
+        self.show_imports = self.settings.get("show_imports", False)
+
     def get_output_extension(self) -> str:
         """Return output file extension for this generator."""
         return ".puml"
-    
+
     def generate_diagram(self, file_model: FileModel, output_path: Path) -> None:
         """Generate a PlantUML diagram from a FileModel."""
         self.logger.info(f"Generating UML diagram for {file_model.filename}")
-        
+
         uml_content = self._generate_plantuml(file_model)
-        
+
         # Ensure output directory exists
         self.file_system.ensure_directory(output_path.parent)
-        
+
         # Write PlantUML content to file
         self.file_system.write_file(output_path, uml_content)
-        
+
         self.logger.info(
             f"Generated UML diagram at {output_path}",
             extra={
-                'class_count': len(file_model.classes),
-                'function_count': len(file_model.functions),
-            }
+                "class_count": len(file_model.classes),
+                "function_count": len(file_model.functions),
+            },
         )
-    
+
     def _generate_plantuml(self, file_model: FileModel) -> str:
         """Generate PlantUML code from a FileModel."""
         uml_lines = [self.plantuml_start, *self.plantuml_settings]
-        
+
         # Create a package for the file
         uml_lines.append(f'\npackage "{file_model.filename}" {{')
-        
+
         # Add functions to the package if any
         if file_model.functions:
             uml_lines.append("  class Functions <<(F,orange)>> {")
@@ -515,30 +888,32 @@ class PlantUmlGenerator(DiagramGenerator):
                 signature = function.signature
                 uml_lines.append(f"    {visibility} {signature}")
             uml_lines.append("  }")
-        
+
         # Add classes to the package
         for class_model in file_model.classes:
             uml_lines.append(f"  class {class_model.name} {{")
-            
+
             # Handle attributes
             for attr in class_model.attributes:
-                uml_lines.append(f"    {attr.visibility} {attr.name}: {attr.type_annotation}")
-            
+                uml_lines.append(
+                    f"    {attr.visibility} {attr.name}: {attr.type_annotation}",
+                )
+
             # Handle methods
             for method in class_model.methods:
                 uml_lines.append(f"    {method.visibility}{method.signature}")
-            
+
             uml_lines.append("  }")
-        
+
         # Close the package
         uml_lines.append("}")
-        
+
         # Add imports section if show_imports is True
         if self.show_imports:
             uml_lines.append("\n' Imports")
             for class_model in file_model.classes:
                 qualified_name = f'"{file_model.filename}".{class_model.name}'
-                
+
                 # Add import relationships
                 for imp in file_model.imports:
                     # Skip built-ins and standard library modules
@@ -555,27 +930,28 @@ class PlantUmlGenerator(DiagramGenerator):
                             uml_lines.append(
                                 f"note right of {qualified_name}: imports function/type {imp.name} from {imp.module}",
                             )
-        
+
         # Add relationships
         uml_lines.append("\n' Relationships")
         for class_model in file_model.classes:
             qualified_name = f'"{file_model.filename}".{class_model.name}'
-            
+
             # Add inheritance lines
-            for base in class_model.bases:
-                uml_lines.append(f"{base} <|-- {qualified_name}")
-            
+            uml_lines.extend(
+                f"{base} <|-- {qualified_name}" for base in class_model.bases
+            )
+
             # Add other relationships
             for rel in class_model.relationships:
                 uml_lines.append(f"{rel.source} {rel.type} {rel.target}")
-        
+
         uml_lines.append(self.plantuml_end)
         return "\n".join(uml_lines)
-    
-    def generate_index(self, output_dir: Path, diagrams: List[Path]) -> None:
+
+    def generate_index(self, output_dir: Path, diagrams: list[Path]) -> None:
         """Generate an index.rst file for the generated UML diagrams."""
         output_path = output_dir / "index.rst"
-        
+
         content = [
             "UML Class Diagrams",
             "==================",
@@ -584,18 +960,20 @@ class PlantUmlGenerator(DiagramGenerator):
             "   :maxdepth: 1",
             "",
         ]
-        
+
         for diagram_path in sorted(diagrams):
             name = diagram_path.stem
-            content.extend([
-                f"{name}",
-                f"{'-' * len(name)}",
-                "",
-                f".. uml:: {diagram_path.name}",
-                "   :align: center",
-                "",
-            ])
-        
+            content.extend(
+                [
+                    f"{name}",
+                    f"{'-' * len(name)}",
+                    "",
+                    f".. uml:: {diagram_path.name}",
+                    "   :align: center",
+                    "",
+                ],
+            )
+
         self.file_system.write_file(output_path, "\n".join(content))
         self.logger.info(f"Generated UML index at {output_path}")
 
@@ -770,101 +1148,253 @@ class FileModel:
         return self.path.stem
 
 ================
+File: models/__init__.py
+================
+"""Domain models for UML generation."""
+
+from .models import (
+    AttributeModel,
+    ClassModel,
+    FileModel,
+    FunctionModel,
+    ImportModel,
+    MethodModel,
+    Parameter,
+    RelationshipModel,
+    Visibility,
+)
+
+__all__ = [
+    "AttributeModel",
+    "ClassModel",
+    "FileModel",
+    "FunctionModel",
+    "ImportModel",
+    "MethodModel",
+    "Parameter",
+    "RelationshipModel",
+    "Visibility",
+]
+
+================
+File: models/models.py
+================
+"""Domain models for UML generation."""
+
+from dataclasses import dataclass, field
+from enum import Enum
+from pathlib import Path
+
+
+class Visibility(Enum):
+    """Visibility levels for attributes and methods."""
+
+    PUBLIC = "+"
+    PRIVATE = "-"
+    PROTECTED = "#"
+
+
+@dataclass
+class Parameter:
+    """Function/method parameter representation."""
+
+    name: str
+    type_annotation: str
+    default_value: str | None = None
+
+
+@dataclass
+class AttributeModel:
+    """Class attribute representation."""
+
+    name: str
+    type_annotation: str
+    visibility: Visibility = Visibility.PUBLIC
+
+
+@dataclass
+class MethodModel:
+    """Method representation with signature information."""
+
+    name: str
+    parameters: list[Parameter]
+    return_type: str
+    visibility: Visibility = Visibility.PUBLIC
+
+    @property
+    def signature(self) -> str:
+        """Generate method signature string."""
+        params = [
+            f"{param.name}: {param.type_annotation}"
+            + (f" = {param.default_value}" if param.default_value else "")
+            for param in self.parameters
+        ]
+        return f"{self.name}({', '.join(params)}) -> {self.return_type}"
+
+
+@dataclass
+class RelationshipModel:
+    """Relationship between classes."""
+
+    source: str
+    target: str
+    type: str  # -->: association, *-->: composition, etc.
+
+
+@dataclass
+class ImportModel:
+    """Import statement representation."""
+
+    module: str
+    name: str
+    alias: str | None = None
+
+
+@dataclass
+class ClassModel:
+    """Class representation with methods, attributes and relationships."""
+
+    name: str
+    filename: str
+    bases: list[str] = field(default_factory=list)
+    methods: list[MethodModel] = field(default_factory=list)
+    attributes: list[AttributeModel] = field(default_factory=list)
+    relationships: list[RelationshipModel] = field(default_factory=list)
+    imports: list[ImportModel] = field(default_factory=list)
+
+
+@dataclass
+class FunctionModel:
+    """Standalone function representation."""
+
+    name: str
+    parameters: list[Parameter]
+    return_type: str
+    visibility: Visibility = Visibility.PUBLIC
+
+    @property
+    def signature(self) -> str:
+        """Generate function signature string."""
+        params = [
+            f"{param.name}: {param.type_annotation}"
+            + (f" = {param.default_value}" if param.default_value else "")
+            for param in self.parameters
+        ]
+        return f"{self.name}({', '.join(params)}) -> {self.return_type}"
+
+
+@dataclass
+class FileModel:
+    """File representation containing classes and functions."""
+
+    path: Path
+    classes: list[ClassModel] = field(default_factory=list)
+    functions: list[FunctionModel] = field(default_factory=list)
+    imports: list[ImportModel] = field(default_factory=list)
+
+    @property
+    def filename(self) -> str:
+        """Get filename without extension."""
+        return self.path.stem
+
+================
 File: parsers/python_parser.py
 ================
 import ast
-from typing import List, Set, Tuple, Optional, Dict, Any
-from pathlib import Path
 import logging
+from pathlib import Path
 
-from ..interfaces import FileSystem, FileParser
+from ..interfaces import FileParser, FileSystem
 from ..models import (
-    FileModel, ClassModel, FunctionModel, Method,
-    Attribute, Parameter, Relationship, Import
+    AttributeModel,
+    ClassModel,
+    FileModel,
+    FunctionModel,
+    ImportModel,
+    MethodModel,
+    Parameter,
+    RelationshipModel,
+    Visibility,
 )
 
 
 class PythonAstParser(FileParser):
     """Parser for Python files using the ast module."""
-    
+
     def __init__(self, file_system: FileSystem):
         self.file_system = file_system
         self.logger = logging.getLogger(__name__)
-    
-    def get_supported_extensions(self) -> Set[str]:
+
+    def get_supported_extensions(self) -> set[str]:
         """Return set of supported file extensions."""
         return {".py"}
-    
+
     def parse_file(self, file_path: Path) -> FileModel:
         """Parse Python file using AST and return a FileModel."""
         self.logger.info(f"Parsing file: {file_path.name}")
-        
+
         content = self.file_system.read_file(file_path)
         tree = ast.parse(content, filename=str(file_path))
-        
+
         imports = self._parse_imports(tree)
         class_names = {
             node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)
         }
-        
+
         # Parse classes
         classes = []
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
                 classes.append(self._parse_class(node, class_names))
-        
-        # Parse standalone functions
+
+        # Parse standalone functions (only those at module level)
         functions = []
-        for node in ast.walk(tree):
-            if (
-                isinstance(node, ast.FunctionDef)
-                and not hasattr(node, "parent")
-                and not any(
-                    isinstance(parent, ast.ClassDef)
-                    for parent in ast.iter_child_nodes(tree)
-                    if hasattr(node, "parent_node") and node.parent_node == parent
-                )
-            ):
+        for node in tree.body:
+            if isinstance(node, ast.FunctionDef):
                 functions.append(self._parse_function(node))
-        
+
         return FileModel(
             path=file_path,
             classes=classes,
             functions=functions,
-            imports=imports
+            imports=imports,
         )
-    
-    def _parse_imports(self, tree: ast.AST) -> List[Import]:
+
+    def _parse_imports(self, tree: ast.AST) -> list[ImportModel]:
         """Parse imports from an AST tree."""
         imports = []
-        
+
         for node in ast.walk(tree):
             # Handle 'import module' statements
             if isinstance(node, ast.Import):
                 for name in node.names:
-                    imports.append(Import(
-                        module=name.name,
-                        name=name.name.split('.')[-1],
-                        alias=name.asname
-                    ))
-            
+                    imports.append(
+                        ImportModel(
+                            module=name.name,
+                            name=name.name.split(".")[-1],
+                            alias=name.asname,
+                        ),
+                    )
+
             # Handle 'from module import name' statements
             elif isinstance(node, ast.ImportFrom):
                 module = node.module or ""
                 for name in node.names:
-                    imports.append(Import(
-                        module=f"{module}.{name.name}",
-                        name=name.name,
-                        alias=name.asname
-                    ))
-        
+                    imports.append(
+                        ImportModel(
+                            module=f"{module}.{name.name}",
+                            name=name.name,
+                            alias=name.asname,
+                        ),
+                    )
+
         return imports
-    
-    def _get_annotation(self, node: Optional[ast.AST]) -> str:
+
+    def _get_annotation(self, node: ast.AST | None) -> str:
         """Extract type annotation from AST node."""
         if node is None:
             return "Any"
-        
+
         if isinstance(node, ast.Name):
             return node.id
         if isinstance(node, ast.Constant):
@@ -873,81 +1403,91 @@ class PythonAstParser(FileParser):
             return ast.unparse(node)
         if isinstance(node, ast.BinOp):
             return ast.unparse(node)
-        
+
         return ast.unparse(node)
-    
-    def _parse_parameters(self, args: ast.arguments, is_method: bool = False) -> List[Parameter]:
+
+    def _parse_parameters(
+        self,
+        args: ast.arguments,
+        is_method: bool = False,
+    ) -> list[Parameter]:
         """Parse function parameters from AST arguments."""
         parameters = []
-        
+
         # Skip 'self' parameter for instance methods
         arg_start = 1 if is_method and args.args and args.args[0].arg == "self" else 0
         args_to_process = args.args[arg_start:]
-        
+
         # Process parameters
         for arg in args_to_process:
             param_type = self._get_annotation(arg.annotation)
-            parameters.append(Parameter(
-                name=arg.arg,
-                type_annotation=param_type
-            ))
-        
+            parameters.append(
+                Parameter(
+                    name=arg.arg,
+                    type_annotation=param_type,
+                ),
+            )
+
         # Handle default values
         defaults = [None] * (len(args_to_process) - len(args.defaults)) + args.defaults
         for i, default in enumerate(defaults):
             if default:
                 parameters[i].default_value = ast.unparse(default)
-        
+
         # Handle *args
         if args.vararg:
             vararg_type = self._get_annotation(args.vararg.annotation)
-            parameters.append(Parameter(
-                name=f"*{args.vararg.arg}",
-                type_annotation=vararg_type
-            ))
-        
+            parameters.append(
+                Parameter(
+                    name=f"*{args.vararg.arg}",
+                    type_annotation=vararg_type,
+                ),
+            )
+
         # Handle **kwargs
         if args.kwarg:
             kwarg_type = self._get_annotation(args.kwarg.annotation)
-            parameters.append(Parameter(
-                name=f"**{args.kwarg.arg}",
-                type_annotation=kwarg_type
-            ))
-        
+            parameters.append(
+                Parameter(
+                    name=f"**{args.kwarg.arg}",
+                    type_annotation=kwarg_type,
+                ),
+            )
+
         return parameters
-    
-    def _get_method_visibility(self, method_name: str) -> str:
+
+    def _get_method_visibility(self, method_name: str) -> Visibility:
         """Determine method visibility based on name."""
         if method_name.startswith("__") and method_name.endswith("__"):
-            return ""  # Special methods remain as is
+            return Visibility.PUBLIC  # Special methods are public
         if method_name.startswith("__"):
-            return "-"  # Private methods
+            return Visibility.PRIVATE  # Private methods
         if method_name.startswith("_"):
-            return "#"  # Protected methods
-        return "+"  # Public methods
-    
+            return Visibility.PROTECTED  # Protected methods
+        return Visibility.PUBLIC  # Public methods
+
     def _parse_function(self, node: ast.FunctionDef) -> FunctionModel:
         """Parse a function definition from AST."""
         name = node.name
         parameters = self._parse_parameters(node.args)
         return_type = self._get_annotation(node.returns)
         visibility = self._get_method_visibility(name)
-        
+
         return FunctionModel(
             name=name,
             parameters=parameters,
             return_type=return_type,
-            visibility=visibility
+            visibility=visibility,
         )
-    
+
     def _find_class_relationships(
         self,
         annotation: ast.AST,
-        known_classes: Set[str],
-    ) -> List[Tuple[str, str]]:
+        known_classes: set[str],
+    ) -> list[tuple[str, str]]:
         """Find relationships to other classes in type annotations."""
         relationships = []
-        
+
         if isinstance(annotation, ast.Name) and annotation.id in known_classes:
             relationships.append(("-->", annotation.id))  # Basic association
         elif isinstance(annotation, ast.Subscript):
@@ -968,76 +1508,413 @@ class PythonAstParser(FileParser):
                 ):
                     if annotation.slice.id in known_classes:
                         relationships.append(("-->", annotation.slice.id))
-        
+
         return relationships
-    
-    def _parse_class(self, node: ast.ClassDef, known_classes: Set[str]) -> ClassModel:
+
+    def _parse_class(self, node: ast.ClassDef, known_classes: set[str]) -> ClassModel:
         """Parse a class definition from AST."""
         class_name = node.name
         bases = [base.id for base in node.bases if isinstance(base, ast.Name)]
         methods = []
         attributes = []
         relationships = []
-        
+
         for class_body_item in node.body:
             # Class methods
             if isinstance(class_body_item, ast.FunctionDef):
                 method_name = class_body_item.name
-                method_params = self._parse_parameters(class_body_item.args, is_method=True)
+                method_params = self._parse_parameters(
+                    class_body_item.args,
+                    is_method=True,
+                )
                 return_type = self._get_annotation(class_body_item.returns)
                 visibility = self._get_method_visibility(method_name)
-                
-                methods.append(Method(
-                    name=method_name,
-                    parameters=method_params,
-                    return_type=return_type,
-                    visibility=visibility
-                ))
-            
+
+                methods.append(
+                    MethodModel(
+                        name=method_name,
+                        parameters=method_params,
+                        return_type=return_type,
+                        visibility=visibility,
+                    ),
+                )
+
             # Class attributes (simple assignments like "x = 10")
             elif isinstance(class_body_item, ast.Assign):
                 for target in class_body_item.targets:
                     if isinstance(target, ast.Name):
                         attr_name = target.id
-                        visibility = "-" if attr_name.startswith("_") else "+"
-                        attributes.append(Attribute(
-                            name=attr_name,
-                            type_annotation="Any",
-                            visibility=visibility
-                        ))
-            
+                        visibility = (
+                            Visibility.PRIVATE
+                            if attr_name.startswith("_")
+                            else Visibility.PUBLIC
+                        )
+                        attributes.append(
+                            AttributeModel(
+                                name=attr_name,
+                                type_annotation="Any",
+                                visibility=visibility,
+                            ),
+                        )
+
             # Attributes with type annotations
             elif isinstance(class_body_item, ast.AnnAssign):
                 if isinstance(class_body_item.target, ast.Name):
                     attr_name = class_body_item.target.id
                     attr_type = self._get_annotation(class_body_item.annotation)
-                    visibility = "-" if attr_name.startswith("_") else "+"
-                    attributes.append(Attribute(
-                        name=attr_name,
-                        type_annotation=attr_type,
-                        visibility=visibility
-                    ))
-                    
+                    visibility = (
+                        Visibility.PRIVATE
+                        if attr_name.startswith("_")
+                        else Visibility.PUBLIC
+                    )
+                    attributes.append(
+                        AttributeModel(
+                            name=attr_name,
+                            type_annotation=attr_type,
+                            visibility=visibility,
+                        ),
+                    )
+
                     # Check for relationships in type annotations
                     new_relationships = self._find_class_relationships(
                         class_body_item.annotation,
                         known_classes,
                     )
                     for rel_type, target in new_relationships:
-                        relationships.append(Relationship(
-                            source=class_name,
-                            target=target,
-                            type=rel_type
-                        ))
-        
+                        relationships.append(
+                            RelationshipModel(
+                                source=class_name,
+                                target=target,
+                                type=rel_type,
+                            ),
+                        )
+
         return ClassModel(
             name=class_name,
             filename=node.name,
             bases=bases,
             methods=methods,
             attributes=attributes,
-            relationships=relationships
+            relationships=relationships,
         )
+
+================
+File: pytest.ini
+================
+[pytest]
+testpaths = tests
+python_files = test_*.py
+python_classes = Test*
+python_functions = test_*
+
+markers =
+    unit: Unit tests
+    integration: Integration tests
+    cli: Command line interface tests
+    parser: Parser tests
+    generator: Generator tests
+
+addopts = 
+    --verbose
+    --strict-markers
+    --cov=uml_generator
+    --cov-report=term-missing
+    --cov-report=html
+
+================
+File: README.md
+================
+# UML Generator
+
+A Python-based tool for automatically generating UML class diagrams from Python source code. This tool analyzes Python files and generates PlantUML diagrams representing the class structure, relationships, and module organization of your codebase.
+
+## Features
+
+- Generates UML class diagrams from Python source code
+- Supports recursive directory processing
+- Detects class relationships (inheritance, composition, associations)
+- Handles module-level functions
+- Supports visibility modifiers (public, private, protected)
+- Generates comprehensive documentation index
+- Configurable output formats (currently supports PlantUML)
+
+## Requirements
+
+- Python 3.8+
+- PlantUML (for rendering diagrams)
+
+## Installation
+
+1. Ensure you have Python 3.8 or higher installed
+2. Install PlantUML (required for rendering diagrams)
+3. The tool is part of the project utilities and doesn't require separate installation
+
+## Usage
+
+### Basic Usage
+
+Process a single file:
+```bash
+python utils/run_uml_generator.py -f path/to/file.py
+```
+
+Process a directory:
+```bash
+python utils/run_uml_generator.py -d path/to/directory
+```
+
+Process a directory recursively:
+```bash
+python utils/run_uml_generator.py -d path/to/directory --recursive
+```
+
+### Advanced Options
+
+- `--output PATH` or `-o PATH`: Specify output directory (default: docs/source/_generated_uml)
+- `--format FORMAT`: Specify output format (default: plantuml)
+- `--verbose` or `-v`: Enable verbose output
+- `--quiet` or `-q`: Suppress all output except errors
+- `--debug`: Enable debug logging
+- `--show-imports`: Include import relationships in diagrams
+- `--list-only`: List files without generating diagrams (for troubleshooting)
+- `--subdirs`: Specify subdirectories to process (e.g., "models services")
+
+### Examples
+
+Generate diagrams for the backend app:
+```bash
+python utils/run_uml_generator.py -d backend/app --recursive
+```
+
+Generate diagrams with import relationships:
+```bash
+python utils/run_uml_generator.py -d backend/app --recursive --show-imports
+```
+
+Process specific subdirectories:
+```bash
+python utils/run_uml_generator.py -d backend/app --subdirs "models services" --recursive
+```
+
+## Output Structure
+
+The tool generates:
+- PlantUML (.puml) files for each processed Python file
+- An index.rst file for documentation integration
+- Organized directory structure matching input
+
+Output location: `docs/source/_generated_uml/` (configurable)
+
+## Configuration
+
+The tool supports configuration through multiple sources, with the following precedence (highest to lowest):
+1. Command-line arguments
+2. Environment variables
+3. User config file (~/.config/uml-generator/config.toml)
+4. Project config file (.uml-generator.toml)
+5. Default configuration
+
+### Configuration File
+
+Create a `.uml-generator.toml` file in your project directory:
+
+```toml
+[paths]
+output_dir = "docs/uml"
+
+[generator]
+format = "plantuml"
+
+[generator.plantuml]
+settings = [
+    "skinparam classAttributeIconSize 0",
+    "skinparam monochrome true",
+    "skinparam shadowing false"
+]
+
+[parser]
+patterns = ["*.py"]
+exclude_dirs = ["__pycache__", "*.egg-info"]
+show_imports = true
+
+[logging]
+level = "info"
+file = "uml-generator.log"
+```
+
+### Environment Variables
+
+The following environment variables are supported:
+
+- `UML_GENERATOR_OUTPUT_DIR`: Output directory for UML files
+- `UML_GENERATOR_FORMAT`: Output format (e.g., "plantuml")
+- `UML_GENERATOR_SHOW_IMPORTS`: Show import relationships (true/false)
+- `UML_GENERATOR_LOG_LEVEL`: Logging level (debug/info/warning/error)
+- `UML_GENERATOR_LOG_FILE`: Log file path
+
+Example:
+```bash
+export UML_GENERATOR_OUTPUT_DIR="custom/output"
+export UML_GENERATOR_SHOW_IMPORTS=true
+python utils/run_uml_generator.py -d src
+```
+
+## Development
+
+### Setup Development Environment
+
+1. Clone the repository
+2. Create and activate a virtual environment:
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # Linux/macOS
+   .venv\Scripts\activate     # Windows
+   ```
+3. Install development dependencies:
+   ```bash
+   pip install -r requirements-dev.txt
+   ```
+4. Install pre-commit hooks:
+   ```bash
+   pre-commit install
+   ```
+
+### Project Structure
+
+```
+uml_generator/
+├── README.md
+├── __init__.py           # Package initialization
+├── cli.py               # Command-line interface
+├── config/              # Configuration management
+│   ├── __init__.py
+│   ├── defaults.toml    # Default settings
+│   └── loader.py        # Config loader
+├── models/              # Data models
+│   ├── __init__.py
+│   └── models.py
+├── parsers/             # Code parsers
+│   ├── __init__.py
+│   └── python_parser.py
+├── generators/          # Diagram generators
+│   ├── __init__.py
+│   └── plantuml_generator.py
+├── factories.py         # Factory classes
+├── filesystem.py        # File operations
+├── interfaces.py        # Abstract interfaces
+├── service.py          # Core service logic
+└── tests/              # Test suite
+    ├── __init__.py
+    ├── conftest.py     # Test fixtures
+    ├── test_cli.py     # CLI tests
+    ├── test_config.py  # Config tests
+    ├── test_generator.py # Generator tests
+    ├── test_integration.py # Integration tests
+    └── test_parser.py  # Parser tests
+```
+
+### Running Tests
+
+Run the complete test suite:
+```bash
+pytest
+```
+
+Run specific test categories:
+```bash
+pytest tests/test_parser.py  # Parser tests only
+pytest -m unit              # Unit tests only
+pytest -m integration       # Integration tests only
+```
+
+Generate coverage report:
+```bash
+pytest --cov=uml_generator --cov-report=html
+```
+
+### Code Quality
+
+The project uses several tools to maintain code quality:
+
+1. **Type Checking**:
+   ```bash
+   mypy uml_generator
+   ```
+
+2. **Linting**:
+   ```bash
+   ruff check uml_generator
+   ```
+
+3. **Code Formatting**:
+   ```bash
+   black uml_generator
+   ```
+
+### Adding New Features
+
+1. Parser Enhancements:
+   - Add support for new relationship types
+   - Enhance type annotation parsing
+   - Support additional Python features
+
+2. Generator Enhancements:
+   - Add support for new output formats
+   - Customize diagram styling
+   - Add new visualization options
+
+3. Configuration:
+   - Add new configuration options
+   - Add custom templates
+   - Enhance environment variable support
+
+### Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Add tests for new features
+4. Ensure all tests pass and code quality checks succeed
+5. Update documentation
+6. Submit a pull request
+
+## Future Improvements
+
+- Support for additional output formats (e.g., Mermaid, DOT)
+- Enhanced relationship detection
+- Custom annotation support
+- Integration with documentation tools
+- Additional parser features
+- Performance optimizations
+- CI/CD pipeline
+
+================
+File: requirements-dev.txt
+================
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+pytest-asyncio>=0.21.0
+
+# Configuration
+tomli>=2.0.0
+
+# Type checking
+mypy>=1.0.0
+types-setuptools>=67.0.0
+
+# Linting
+ruff>=0.0.270
+black>=23.3.0
+
+# Documentation
+sphinx>=6.0.0
+sphinx-rtd-theme>=1.2.0
+sphinx-autodoc-typehints>=1.23.0
+plantuml>=0.3.0
+
+# Development tools
+pre-commit>=3.3.0
 
 ================
 File: service.py
@@ -1197,6 +2074,1025 @@ class UmlGeneratorService:
             generator.generate_index(self.config.output_dir, diagrams)
         
         self.logger.info(f"UML generation completed - processed {total_processed} files")
+
+================
+File: tests/__init__.py
+================
+"""Test suite for UML generator."""
+
+================
+File: tests/conftest.py
+================
+"""Shared test fixtures and configuration."""
+
+from pathlib import Path
+
+import pytest
+
+from ..interfaces import FileSystem
+
+
+class MockFileSystem(FileSystem):
+    """Mock file system for testing."""
+
+    def __init__(self, files: dict[str, str] | None = None):
+        self.files = files or {}
+        self.written_files = {}
+        self.file_patterns: dict[str, list[str]] = {}
+
+    def find_files(self, directory: Path, pattern: str) -> list[Path]:
+        """Mock finding files matching pattern."""
+        key = str(directory)
+        if key not in self.file_patterns:
+            # Return files in the mocked directory
+            return [
+                Path(f)
+                for f in self.files.keys()
+                if f.startswith(key) and f.endswith(pattern.replace("*", ""))
+            ]
+        return [Path(f) for f in self.file_patterns[key]]
+
+    def read_file(self, path: Path) -> str:
+        return self.files.get(str(path), "")
+
+    def write_file(self, path: Path, content: str) -> None:
+        self.written_files[str(path)] = content
+
+    def ensure_directory(self, path: Path) -> None:
+        pass
+
+
+@pytest.fixture
+def mock_fs():
+    """Create empty mock filesystem."""
+    return MockFileSystem()
+
+
+@pytest.fixture
+def sample_code():
+    """Return sample Python code for testing."""
+    return """
+    from typing import List, Optional
+
+    class BaseModel:
+        id: int
+        created_at: str
+
+        def save(self) -> None:
+            pass
+
+    class User(BaseModel):
+        name: str
+        email: str
+        _password: str
+
+        def __init__(self, name: str, email: str):
+            self.name = name
+            self.email = email
+
+    class Post:
+        title: str
+        content: str
+        author: User
+        comments: List['Comment']
+
+        def __init__(self, title: str, content: str, author: User):
+            self.title = title
+            self.content = content
+            self.author = author
+
+    class Comment:
+        text: str
+        author: User
+        post: Post
+    """
+
+================
+File: tests/test_cli.py
+================
+"""Tests for command line interface."""
+
+import pytest
+
+from ..cli import parse_args
+
+
+def test_file_argument():
+    """Test parsing file argument."""
+    args = parse_args(["-f", "test.py"])
+    assert args.file == "test.py"
+    assert not args.directory
+    assert not args.app_dir
+
+
+def test_directory_argument():
+    """Test parsing directory argument."""
+    args = parse_args(["-d", "test_dir"])
+    assert args.directory == "test_dir"
+    assert not args.file
+    assert not args.app_dir
+
+
+def test_app_dir_argument():
+    """Test parsing app_dir argument."""
+    args = parse_args(["--app-dir"])
+    assert args.app_dir
+    assert not args.file
+    assert not args.directory
+
+
+def test_recursive_flag():
+    """Test parsing recursive flag."""
+    args = parse_args(["-d", "test_dir", "--recursive"])
+    assert args.recursive
+    assert args.directory == "test_dir"
+
+
+def test_output_directory():
+    """Test parsing output directory."""
+    args = parse_args(["-d", "test_dir", "-o", "output_dir"])
+    assert args.output == "output_dir"
+
+
+def test_format_option():
+    """Test parsing format option."""
+    args = parse_args(["-d", "test_dir", "--format", "plantuml"])
+    assert args.format == "plantuml"
+
+
+def test_subdirs_option():
+    """Test parsing subdirs option."""
+    args = parse_args(["-d", "test_dir", "--subdirs", "models", "services"])
+    assert args.subdirs == ["models", "services"]
+
+
+def test_verbosity_options():
+    """Test parsing verbosity options."""
+    args = parse_args(["-d", "test_dir", "-v"])
+    assert args.verbose
+    assert not args.quiet
+    assert not args.debug
+
+    args = parse_args(["-d", "test_dir", "-q"])
+    assert args.quiet
+    assert not args.verbose
+    assert not args.debug
+
+    args = parse_args(["-d", "test_dir", "--debug"])
+    assert args.debug
+    assert not args.verbose
+    assert not args.quiet
+
+
+def test_mutually_exclusive_inputs():
+    """Test mutually exclusive input arguments."""
+    with pytest.raises(SystemExit):
+        parse_args(["-f", "test.py", "-d", "test_dir"])
+
+    with pytest.raises(SystemExit):
+        parse_args(["-f", "test.py", "--app-dir"])
+
+    with pytest.raises(SystemExit):
+        parse_args(["-d", "test_dir", "--app-dir"])
+
+
+def test_mutually_exclusive_verbosity():
+    """Test mutually exclusive verbosity arguments."""
+    with pytest.raises(SystemExit):
+        parse_args(["-d", "test_dir", "-v", "-q"])
+
+    with pytest.raises(SystemExit):
+        parse_args(["-d", "test_dir", "-v", "--debug"])
+
+    with pytest.raises(SystemExit):
+        parse_args(["-d", "test_dir", "-q", "--debug"])
+
+================
+File: tests/test_config.py
+================
+"""Tests for configuration loading."""
+
+import os
+import tempfile
+from pathlib import Path
+
+import pytest
+
+from ..config.loader import Config, ConfigLoader, load_config
+
+
+@pytest.fixture
+def temp_config_file():
+    """Create a temporary config file."""
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".toml", delete=False) as f:
+        f.write("""
+[paths]
+output_dir = "custom/output"
+
+[generator]
+format = "plantuml"
+
+[generator.plantuml]
+settings = [
+    "skinparam monochrome true",
+    "skinparam shadowing false"
+]
+
+[parser]
+show_imports = true
+patterns = ["*.py", "*.pyi"]
+""")
+        f.flush()
+        yield Path(f.name)
+        os.unlink(f.name)
+
+
+def test_default_config():
+    """Test default configuration values."""
+    config = Config()
+    assert config.output_dir == Path("docs/source/_generated_uml")
+    assert config.generator.format == "plantuml"
+    assert not config.parser.show_imports
+    assert config.logging.level == "info"
+
+
+def test_load_toml_config(temp_config_file):
+    """Test loading configuration from TOML file."""
+    loader = ConfigLoader()
+    loader._load_toml(temp_config_file)
+    config = loader.config
+
+    assert config.output_dir == Path("custom/output")
+    assert config.generator.format == "plantuml"
+    assert config.parser.show_imports is True
+    assert "*.pyi" in config.parser.patterns
+
+
+def test_load_env_vars():
+    """Test loading configuration from environment variables."""
+    os.environ["UML_GENERATOR_OUTPUT_DIR"] = "env/output"
+    os.environ["UML_GENERATOR_SHOW_IMPORTS"] = "true"
+    os.environ["UML_GENERATOR_LOG_LEVEL"] = "debug"
+
+    try:
+        config = load_config()
+        assert config.output_dir == Path("env/output")
+        assert config.parser.show_imports is True
+        assert config.logging.level == "debug"
+    finally:
+        # Clean up environment
+        del os.environ["UML_GENERATOR_OUTPUT_DIR"]
+        del os.environ["UML_GENERATOR_SHOW_IMPORTS"]
+        del os.environ["UML_GENERATOR_LOG_LEVEL"]
+
+
+def test_cli_args_override():
+    """Test CLI arguments override other sources."""
+    os.environ["UML_GENERATOR_OUTPUT_DIR"] = "env/output"
+
+    cli_args = {
+        "paths": {"output_dir": "cli/output"},
+        "parser": {"show_imports": True},
+    }
+
+    try:
+        config = load_config(cli_args)
+        assert config.output_dir == Path("cli/output")  # CLI args take precedence
+        assert config.parser.show_imports is True
+    finally:
+        del os.environ["UML_GENERATOR_OUTPUT_DIR"]
+
+
+def test_config_precedence(temp_config_file):
+    """Test configuration source precedence."""
+    # Set up environment variables
+    os.environ["UML_GENERATOR_OUTPUT_DIR"] = "env/output"
+    os.environ["UML_GENERATOR_FORMAT"] = "env_format"
+
+    # Set up CLI arguments
+    cli_args = {
+        "paths": {"output_dir": "cli/output"},
+    }
+
+    try:
+        # Create loader and load config file
+        loader = ConfigLoader()
+        loader._load_toml(temp_config_file)
+
+        # Load environment variables and CLI args
+        config = loader.load(cli_args)
+
+        # CLI args should take precedence over env vars and file
+        assert config.output_dir == Path("cli/output")
+
+        # Env vars should take precedence over file
+        assert config.generator.format == "env_format"
+
+        # File values should be loaded
+        assert config.parser.show_imports is True
+        assert "*.pyi" in config.parser.patterns
+    finally:
+        del os.environ["UML_GENERATOR_OUTPUT_DIR"]
+        del os.environ["UML_GENERATOR_FORMAT"]
+
+
+def test_invalid_config_file():
+    """Test handling of invalid configuration file."""
+    with tempfile.NamedTemporaryFile(mode="w", suffix=".toml", delete=False) as f:
+        f.write("invalid toml content")
+        f.flush()
+
+        loader = ConfigLoader()
+        loader._load_toml(Path(f.name))
+
+        # Should fall back to defaults
+        assert loader.config.output_dir == Path("docs/source/_generated_uml")
+        assert loader.config.generator.format == "plantuml"
+
+        os.unlink(f.name)
+
+
+def test_missing_config_file():
+    """Test handling of missing configuration file."""
+    loader = ConfigLoader()
+    loader._load_toml(Path("nonexistent.toml"))
+
+    # Should use defaults
+    assert loader.config.output_dir == Path("docs/source/_generated_uml")
+    assert loader.config.generator.format == "plantuml"
+
+
+def test_boolean_env_vars():
+    """Test parsing of boolean environment variables."""
+    test_values = [
+        ("true", True),
+        ("True", True),
+        ("1", True),
+        ("yes", True),
+        ("false", False),
+        ("False", False),
+        ("0", False),
+        ("no", False),
+    ]
+
+    for value, expected in test_values:
+        os.environ["UML_GENERATOR_SHOW_IMPORTS"] = value
+        try:
+            config = load_config()
+            assert config.parser.show_imports is expected
+        finally:
+            del os.environ["UML_GENERATOR_SHOW_IMPORTS"]
+
+================
+File: tests/test_generator.py
+================
+"""Tests for PlantUML diagram generator."""
+
+from pathlib import Path
+
+import pytest
+
+from ..generator.plantuml_generator import PlantUmlGenerator
+from ..interfaces import FileSystem
+from ..models import (
+    AttributeModel,
+    ClassModel,
+    FileModel,
+    MethodModel,
+    Parameter,
+    RelationshipModel,
+    Visibility,
+)
+
+
+class MockFileSystem(FileSystem):
+    """Mock file system for testing."""
+
+    def __init__(self):
+        self.files = {}
+
+    def read_file(self, path: Path) -> str:
+        return self.files.get(str(path), "")
+
+    def write_file(self, path: Path, content: str) -> None:
+        self.files[str(path)] = content
+
+    def ensure_directory(self, path: Path) -> None:
+        pass
+
+
+@pytest.fixture
+def generator():
+    """Create generator instance with mock filesystem."""
+    return PlantUmlGenerator(MockFileSystem())
+
+
+def test_generate_simple_class(generator):
+    """Test generating diagram for a simple class."""
+    model = FileModel(
+        path=Path("test.py"),
+        classes=[
+            ClassModel(
+                name="SimpleClass",
+                filename="test",
+                attributes=[
+                    AttributeModel(
+                        name="x",
+                        type_annotation="int",
+                        visibility=Visibility.PUBLIC,
+                    ),
+                ],
+                methods=[
+                    MethodModel(
+                        name="method",
+                        parameters=[
+                            Parameter(name="self", type_annotation="SimpleClass"),
+                            Parameter(name="arg", type_annotation="str"),
+                        ],
+                        return_type="None",
+                        visibility=Visibility.PUBLIC,
+                    ),
+                ],
+            ),
+        ],
+    )
+
+    output_path = Path("test.puml")
+    generator.generate_diagram(model, output_path)
+
+    content = generator.file_system.files[str(output_path)]
+    assert "@startuml" in content
+    assert "class SimpleClass" in content
+    assert "+ x: int" in content
+    assert "+ method(arg: str) -> None" in content
+    assert "@enduml" in content
+
+
+def test_generate_inheritance(generator):
+    """Test generating diagram with inheritance."""
+    model = FileModel(
+        path=Path("test.py"),
+        classes=[
+            ClassModel(name="Base", filename="test"),
+            ClassModel(
+                name="Child",
+                filename="test",
+                bases=["Base"],
+            ),
+        ],
+    )
+
+    output_path = Path("test.puml")
+    generator.generate_diagram(model, output_path)
+
+    content = generator.file_system.files[str(output_path)]
+    assert "Base <|-- " in content
+
+
+def test_generate_relationships(generator):
+    """Test generating diagram with relationships."""
+    model = FileModel(
+        path=Path("test.py"),
+        classes=[
+            ClassModel(
+                name="User",
+                filename="test",
+                relationships=[
+                    RelationshipModel(
+                        source="User",
+                        target="Post",
+                        type="*-->",
+                    ),
+                ],
+            ),
+        ],
+    )
+
+    output_path = Path("test.puml")
+    generator.generate_diagram(model, output_path)
+
+    content = generator.file_system.files[str(output_path)]
+    assert "User *--> Post" in content
+
+
+def test_generate_visibility(generator):
+    """Test generating diagram with different visibility modifiers."""
+    model = FileModel(
+        path=Path("test.py"),
+        classes=[
+            ClassModel(
+                name="TestClass",
+                filename="test",
+                attributes=[
+                    AttributeModel(
+                        name="public_attr",
+                        type_annotation="int",
+                        visibility=Visibility.PUBLIC,
+                    ),
+                    AttributeModel(
+                        name="private_attr",
+                        type_annotation="str",
+                        visibility=Visibility.PRIVATE,
+                    ),
+                    AttributeModel(
+                        name="protected_attr",
+                        type_annotation="bool",
+                        visibility=Visibility.PROTECTED,
+                    ),
+                ],
+                methods=[
+                    MethodModel(
+                        name="public_method",
+                        parameters=[
+                            Parameter(name="self", type_annotation="TestClass")
+                        ],
+                        return_type="None",
+                        visibility=Visibility.PUBLIC,
+                    ),
+                    MethodModel(
+                        name="private_method",
+                        parameters=[
+                            Parameter(name="self", type_annotation="TestClass")
+                        ],
+                        return_type="None",
+                        visibility=Visibility.PRIVATE,
+                    ),
+                ],
+            ),
+        ],
+    )
+
+    output_path = Path("test.puml")
+    generator.generate_diagram(model, output_path)
+
+    content = generator.file_system.files[str(output_path)]
+    assert "+ public_attr: int" in content
+    assert "- private_attr: str" in content
+    assert "# protected_attr: bool" in content
+    assert "+ public_method()" in content
+    assert "- private_method()" in content
+
+
+def test_generate_index(generator):
+    """Test generating index file."""
+    diagrams = [
+        Path("test1.puml"),
+        Path("test2.puml"),
+        Path("test3.puml"),
+    ]
+    output_dir = Path("output")
+
+    generator.generate_index(output_dir, diagrams)
+
+    content = generator.file_system.files[str(output_dir / "index.rst")]
+    assert "UML Class Diagrams" in content
+    assert ".. toctree::" in content
+    for diagram in diagrams:
+        assert f".. uml:: {diagram.name}" in content
+
+
+def test_plantuml_settings(generator):
+    """Test custom PlantUML settings."""
+    custom_settings = {
+        "PLANTUML_START": "@startuml custom",
+        "PLANTUML_END": "@enduml custom",
+        "PLANTUML_SETTINGS": [
+            "skinparam classAttributeIconSize 0",
+            "skinparam monochrome true",
+        ],
+    }
+
+    generator = PlantUmlGenerator(MockFileSystem(), custom_settings)
+    model = FileModel(
+        path=Path("test.py"),
+        classes=[ClassModel(name="Test", filename="test")],
+    )
+
+    output_path = Path("test.puml")
+    generator.generate_diagram(model, output_path)
+
+    content = generator.file_system.files[str(output_path)]
+    assert "@startuml custom" in content
+    assert "skinparam monochrome true" in content
+    assert "@enduml custom" in content
+
+================
+File: tests/test_integration.py
+================
+"""Integration tests for UML generator."""
+
+import textwrap
+from pathlib import Path
+
+import pytest
+
+from ..config import Configuration, create_config_from_args
+from ..factories import DefaultGeneratorFactory, DefaultParserFactory
+from ..interfaces import FileSystem
+from ..service import UmlGeneratorService
+
+
+class MockFileSystem(FileSystem):
+    """Mock file system for testing."""
+
+    def __init__(self, files: dict[str, str]):
+        self.files = files
+        self.written_files = {}
+
+    def read_file(self, path: Path) -> str:
+        return self.files.get(str(path), "")
+
+    def write_file(self, path: Path, content: str) -> None:
+        self.written_files[str(path)] = content
+
+    def ensure_directory(self, path: Path) -> None:
+        pass
+
+
+@pytest.fixture
+def mock_fs():
+    """Create mock filesystem with test files."""
+    files = {
+        "test.py": textwrap.dedent("""
+            from typing import List, Optional
+            
+            class User:
+                name: str
+                email: str
+                
+                def __init__(self, name: str, email: str):
+                    self.name = name
+                    self.email = email
+            
+            class Post:
+                title: str
+                content: str
+                author: User
+                comments: List['Comment']
+                
+                def __init__(self, title: str, content: str, author: User):
+                    self.title = title
+                    self.content = content
+                    self.author = author
+            
+            class Comment:
+                text: str
+                author: User
+                post: Post
+        """),
+        "models/base.py": textwrap.dedent("""
+            class BaseModel:
+                id: int
+                created_at: str
+                
+                def save(self) -> None:
+                    pass
+        """),
+        "models/user.py": textwrap.dedent("""
+            from .base import BaseModel
+            
+            class User(BaseModel):
+                name: str
+                email: str
+                _password: str
+        """),
+    }
+    return MockFileSystem(files)
+
+
+@pytest.fixture
+def service(mock_fs):
+    """Create UML generator service with mock filesystem."""
+    config = Configuration(
+        input_path=Path("test.py"),
+        output_dir=Path("output"),
+        format="plantuml",
+        recursive=False,
+        list_only=False,
+        show_imports=True,
+        generate_report=True,
+        verbose=True,
+    )
+
+    parser_factory = DefaultParserFactory(mock_fs)
+    generator_factory = DefaultGeneratorFactory(mock_fs)
+
+    return UmlGeneratorService(
+        config=config,
+        file_system=mock_fs,
+        parser_factory=parser_factory,
+        generator_factory=generator_factory,
+    )
+
+
+def test_process_single_file(service):
+    """Test processing a single Python file."""
+    service.config.input_path = Path("test.py")
+    service.run()
+
+    # Check output files
+    assert "output/test.puml" in service.file_system.written_files
+    content = service.file_system.written_files["output/test.puml"]
+
+    # Verify diagram content
+    assert "class User" in content
+    assert "class Post" in content
+    assert "class Comment" in content
+    assert "Post *--> Comment" in content
+    assert "Post --> User" in content
+    assert "Comment --> User" in content
+
+
+def test_process_directory(service):
+    """Test processing a directory of Python files."""
+    service.config.input_path = Path("models")
+    service.run()
+
+    # Check output files
+    assert "output/base.puml" in service.file_system.written_files
+    assert "output/user.puml" in service.file_system.written_files
+
+    # Verify base model diagram
+    base_content = service.file_system.written_files["output/base.puml"]
+    assert "class BaseModel" in base_content
+    assert "+ id: int" in base_content
+    assert "+ save()" in base_content
+
+    # Verify user model diagram
+    user_content = service.file_system.written_files["output/user.puml"]
+    assert "class User" in user_content
+    assert "BaseModel <|-- User" in user_content
+    assert "+ name: str" in user_content
+    assert "- _password: str" in user_content
+
+
+def test_recursive_processing(service):
+    """Test recursive directory processing."""
+    service.config.input_path = Path(".")
+    service.config.recursive = True
+    service.run()
+
+    # Check that all files were processed
+    assert "output/test.puml" in service.file_system.written_files
+    assert "output/base.puml" in service.file_system.written_files
+    assert "output/user.puml" in service.file_system.written_files
+
+
+def test_list_only_mode(service):
+    """Test list-only mode (no diagram generation)."""
+    service.config.list_only = True
+    service.run()
+
+    # Verify no diagrams were generated
+    assert not service.file_system.written_files
+
+
+def test_show_imports(service):
+    """Test import relationship generation."""
+    service.config.show_imports = True
+    service.run()
+
+    content = service.file_system.written_files["output/test.puml"]
+    assert "note right of" in content
+    assert "imports List from typing" in content
+    assert "imports Optional from typing" in content
+
+
+def test_error_handling(service):
+    """Test error handling for invalid files."""
+    service.file_system.files["invalid.py"] = "invalid python code {"
+    service.config.input_path = Path("invalid.py")
+
+    with pytest.raises(Exception):
+        service.run()
+
+
+def test_config_from_args():
+    """Test configuration creation from command line args."""
+    args = type(
+        "Args",
+        (),
+        {
+            "file": "test.py",
+            "directory": None,
+            "app_dir": False,
+            "output": "output",
+            "format": "plantuml",
+            "recursive": True,
+            "list_only": False,
+            "show_imports": True,
+            "generate_report": True,
+            "verbose": True,
+            "quiet": False,
+            "debug": False,
+        },
+    )()
+
+    config = create_config_from_args(args)
+    assert config.input_path == Path("test.py")
+    assert config.output_dir == Path("output")
+    assert config.format == "plantuml"
+    assert config.recursive is True
+    assert config.show_imports is True
+
+================
+File: tests/test_parser.py
+================
+"""Tests for Python AST parser."""
+
+import textwrap
+from pathlib import Path
+
+import pytest
+
+from ..interfaces import FileSystem
+from ..models import (
+    Visibility,
+)
+from ..parsers.python_parser import PythonAstParser
+
+
+class MockFileSystem(FileSystem):
+    """Mock file system for testing."""
+
+    def __init__(self, files: dict[str, str]):
+        self.files = files
+
+    def read_file(self, path: Path) -> str:
+        return self.files.get(str(path), "")
+
+    def write_file(self, path: Path, content: str) -> None:
+        self.files[str(path)] = content
+
+    def ensure_directory(self, path: Path) -> None:
+        pass
+
+
+@pytest.fixture
+def parser():
+    """Create parser instance with mock filesystem."""
+    return PythonAstParser(MockFileSystem({}))
+
+
+def test_parse_simple_class(parser):
+    """Test parsing a simple class definition."""
+    code = textwrap.dedent("""
+        class SimpleClass:
+            x: int
+            y: str = "test"
+            
+            def method(self, arg: int) -> str:
+                return str(arg)
+    """)
+
+    model = parser.parse_file(Path("test.py"))
+    assert len(model.classes) == 1
+
+    cls = model.classes[0]
+    assert cls.name == "SimpleClass"
+    assert len(cls.attributes) == 2
+    assert len(cls.methods) == 1
+
+    # Check attributes
+    attrs = {attr.name: attr for attr in cls.attributes}
+    assert attrs["x"].type_annotation == "int"
+    assert attrs["y"].type_annotation == "str"
+
+    # Check method
+    method = cls.methods[0]
+    assert method.name == "method"
+    assert method.return_type == "str"
+    assert len(method.parameters) == 2  # self + arg
+    assert method.parameters[1].name == "arg"
+    assert method.parameters[1].type_annotation == "int"
+
+
+def test_parse_inheritance(parser):
+    """Test parsing class inheritance."""
+    code = textwrap.dedent("""
+        class Base:
+            pass
+            
+        class Child(Base):
+            pass
+    """)
+
+    model = parser.parse_file(Path("test.py"))
+    assert len(model.classes) == 2
+
+    child = next(c for c in model.classes if c.name == "Child")
+    assert len(child.bases) == 1
+    assert child.bases[0] == "Base"
+
+
+def test_parse_relationships(parser):
+    """Test parsing class relationships."""
+    code = textwrap.dedent("""
+        class User:
+            pass
+            
+        class Post:
+            author: User
+            comments: List[Comment]
+            tags: Optional[List[Tag]]
+    """)
+
+    model = parser.parse_file(Path("test.py"))
+    post = next(c for c in model.classes if c.name == "Post")
+
+    # Check relationships
+    rels = {(r.source, r.target): r.type for r in post.relationships}
+    assert ("Post", "User") in rels
+    assert rels[("Post", "User")] == "-->"
+    assert ("Post", "Comment") in rels
+    assert rels[("Post", "Comment")] == "*-->"
+
+
+def test_parse_visibility(parser):
+    """Test parsing member visibility."""
+    code = textwrap.dedent("""
+        class TestClass:
+            public_attr: int
+            _protected_attr: str
+            __private_attr: bool
+            
+            def public_method(self):
+                pass
+                
+            def _protected_method(self):
+                pass
+                
+            def __private_method(self):
+                pass
+    """)
+
+    model = parser.parse_file(Path("test.py"))
+    cls = model.classes[0]
+
+    # Check attribute visibility
+    attrs = {attr.name: attr.visibility for attr in cls.attributes}
+    assert attrs["public_attr"] == Visibility.PUBLIC
+    assert attrs["_protected_attr"] == Visibility.PROTECTED
+    assert attrs["__private_attr"] == Visibility.PRIVATE
+
+    # Check method visibility
+    methods = {method.name: method.visibility for method in cls.methods}
+    assert methods["public_method"] == Visibility.PUBLIC
+    assert methods["_protected_method"] == Visibility.PROTECTED
+    assert methods["__private_method"] == Visibility.PRIVATE
+
+
+def test_parse_imports(parser):
+    """Test parsing import statements."""
+    code = textwrap.dedent("""
+        import os
+        import sys as system
+        from typing import List, Optional
+        from .models import User as UserModel
+    """)
+
+    model = parser.parse_file(Path("test.py"))
+    imports = {(imp.module, imp.name): imp.alias for imp in model.imports}
+
+    assert ("os", "os") in imports
+    assert imports[("sys", "sys")] == "system"
+    assert ("typing.List", "List") in imports
+    assert ("typing.Optional", "Optional") in imports
+    assert (".models.User", "User") in imports
+    assert imports[(".models.User", "User")] == "UserModel"
+
+
+def test_parse_module_functions(parser):
+    """Test parsing module-level functions."""
+    code = textwrap.dedent("""
+        def simple_function(x: int) -> str:
+            return str(x)
+            
+        async def async_function(y: str, *args: int, **kwargs: dict) -> None:
+            pass
+    """)
+
+    model = parser.parse_file(Path("test.py"))
+    assert len(model.functions) == 2
+
+    funcs = {f.name: f for f in model.functions}
+
+    # Check simple function
+    simple = funcs["simple_function"]
+    assert simple.return_type == "str"
+    assert len(simple.parameters) == 1
+    assert simple.parameters[0].name == "x"
+    assert simple.parameters[0].type_annotation == "int"
+
+    # Check async function with *args and **kwargs
+    async_func = funcs["async_function"]
+    assert async_func.return_type == "None"
+    params = {p.name: p for p in async_func.parameters}
+    assert "y" in params
+    assert "*args" in params
+    assert "**kwargs" in params
+    assert params["*args"].type_annotation == "int"
+    assert params["**kwargs"].type_annotation == "dict"
 
 
 

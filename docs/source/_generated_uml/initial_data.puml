@@ -3,8 +3,8 @@ skinparam classAttributeIconSize 0
 
 package "initial_data" {
   class Functions <<(F,orange)>> {
-    Visibility.PUBLIC init() -> None
-    Visibility.PUBLIC main() -> None
+    +init() -> None
+    +main() -> None
   }
 }
 

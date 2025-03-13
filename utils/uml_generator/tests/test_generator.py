@@ -32,6 +32,16 @@ class MockFileSystem(FileSystem):
     def ensure_directory(self, path: Path) -> None:
         pass
 
+    def find_files(self, directory: Path, pattern: str) -> list[Path]:
+        """Mock finding files matching pattern."""
+        files = []
+        for path in self.files.keys():
+            if path.startswith(str(directory)) and path.endswith(
+                pattern.replace("*", ""),
+            ):
+                files.append(Path(path))
+        return files
+
 
 @pytest.fixture
 def generator():
@@ -75,8 +85,8 @@ def test_generate_simple_class(generator):
     content = generator.file_system.files[str(output_path)]
     assert "@startuml" in content
     assert "class SimpleClass" in content
-    assert "+ x: int" in content
-    assert "+ method(arg: str) -> None" in content
+    assert "+x: int" in content  # No space after + in the actual output
+    assert "+method(self: SimpleClass, arg: str) -> None" in content
     assert "@enduml" in content
 
 
@@ -156,7 +166,7 @@ def test_generate_visibility(generator):
                     MethodModel(
                         name="public_method",
                         parameters=[
-                            Parameter(name="self", type_annotation="TestClass")
+                            Parameter(name="self", type_annotation="TestClass"),
                         ],
                         return_type="None",
                         visibility=Visibility.PUBLIC,
@@ -164,7 +174,7 @@ def test_generate_visibility(generator):
                     MethodModel(
                         name="private_method",
                         parameters=[
-                            Parameter(name="self", type_annotation="TestClass")
+                            Parameter(name="self", type_annotation="TestClass"),
                         ],
                         return_type="None",
                         visibility=Visibility.PRIVATE,
@@ -178,11 +188,11 @@ def test_generate_visibility(generator):
     generator.generate_diagram(model, output_path)
 
     content = generator.file_system.files[str(output_path)]
-    assert "+ public_attr: int" in content
-    assert "- private_attr: str" in content
-    assert "# protected_attr: bool" in content
-    assert "+ public_method()" in content
-    assert "- private_method()" in content
+    assert "+public_attr: int" in content
+    assert "-private_attr: str" in content
+    assert "#protected_attr: bool" in content
+    assert "+public_method" in content
+    assert "-private_method" in content
 
 
 def test_generate_index(generator):

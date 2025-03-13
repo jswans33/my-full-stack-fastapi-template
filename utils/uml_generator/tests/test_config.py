@@ -31,8 +31,18 @@ show_imports = true
 patterns = ["*.py", "*.pyi"]
 """)
         f.flush()
-        yield Path(f.name)
-        os.unlink(f.name)
+        f.close()  # Explicitly close the file to avoid Windows file locking issues
+        path = Path(f.name)
+        yield path
+        try:
+            import time
+
+            time.sleep(0.1)  # Small delay to ensure file is released
+            os.unlink(f.name)
+        except PermissionError:
+            # On Windows, sometimes we can't delete the file immediately
+            # This is acceptable for tests
+            pass
 
 
 def test_default_config():
@@ -64,7 +74,10 @@ def test_load_env_vars():
 
     try:
         config = load_config()
-        assert config.output_dir == Path("env/output")
+        # Use os.path.normpath to handle path separators consistently
+        assert os.path.normpath(str(config.output_dir)) == os.path.normpath(
+            "env/output"
+        )
         assert config.parser.show_imports is True
         assert config.logging.level == "debug"
     finally:
@@ -129,15 +142,23 @@ def test_invalid_config_file():
     with tempfile.NamedTemporaryFile(mode="w", suffix=".toml", delete=False) as f:
         f.write("invalid toml content")
         f.flush()
+        f.close()  # Explicitly close the file
 
         loader = ConfigLoader()
         loader._load_toml(Path(f.name))
 
         # Should fall back to defaults
-        assert loader.config.output_dir == Path("docs/source/_generated_uml")
+        assert str(loader.config.output_dir) == str(Path("docs/source/_generated_uml"))
         assert loader.config.generator.format == "plantuml"
 
-        os.unlink(f.name)
+        try:
+            import time
+
+            time.sleep(0.1)  # Small delay to ensure file is released
+            os.unlink(f.name)
+        except PermissionError:
+            # On Windows, sometimes we can't delete the file immediately
+            pass
 
 
 def test_missing_config_file():

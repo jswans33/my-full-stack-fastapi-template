@@ -26,7 +26,7 @@ class GeneratorConfig:
     plantuml_settings: list[str] = field(
         default_factory=lambda: [
             "skinparam classAttributeIconSize 0",
-        ]
+        ],
     )
 
 
@@ -41,9 +41,11 @@ class ParserConfig:
             "*.egg-info",
             "build",
             "dist",
-        ]
+        ],
     )
     show_imports: bool = False
+    list_only: bool = False
+    recursive: bool = False
 
 
 @dataclass
@@ -93,6 +95,8 @@ class ConfigLoader:
             "OUTPUT_DIR": ("output_dir", str),
             "FORMAT": ("generator.format", str),
             "SHOW_IMPORTS": ("parser.show_imports", bool),
+            "LIST_ONLY": ("parser.list_only", bool),
+            "RECURSIVE": ("parser.recursive", bool),
             "LOG_LEVEL": ("logging.level", str),
             "LOG_FILE": ("logging.file", str),
         }
@@ -139,6 +143,10 @@ class ConfigLoader:
                 self.config.parser.exclude_dirs = parser_data["exclude_dirs"]
             if "show_imports" in parser_data:
                 self.config.parser.show_imports = parser_data["show_imports"]
+            if "list_only" in parser_data:
+                self.config.parser.list_only = parser_data["list_only"]
+            if "recursive" in parser_data:
+                self.config.parser.recursive = parser_data["recursive"]
 
         if "logging" in data:
             log_data = data["logging"]

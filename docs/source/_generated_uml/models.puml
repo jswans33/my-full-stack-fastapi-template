@@ -3,79 +3,79 @@ skinparam classAttributeIconSize 0
 
 package "models" {
   class UserBase {
-    Visibility.PUBLIC email: EmailStr
-    Visibility.PUBLIC is_active: bool
-    Visibility.PUBLIC is_superuser: bool
-    Visibility.PUBLIC full_name: str | None
+    +email: EmailStr
+    +is_active: bool
+    +is_superuser: bool
+    +full_name: str | None
   }
   class UserCreate {
-    Visibility.PUBLIC password: str
+    +password: str
   }
   class UserRegister {
-    Visibility.PUBLIC email: EmailStr
-    Visibility.PUBLIC password: str
-    Visibility.PUBLIC full_name: str | None
+    +email: EmailStr
+    +password: str
+    +full_name: str | None
   }
   class UserUpdate {
-    Visibility.PUBLIC email: EmailStr | None
-    Visibility.PUBLIC password: str | None
+    +email: EmailStr | None
+    +password: str | None
   }
   class UserUpdateMe {
-    Visibility.PUBLIC full_name: str | None
-    Visibility.PUBLIC email: EmailStr | None
+    +full_name: str | None
+    +email: EmailStr | None
   }
   class UpdatePassword {
-    Visibility.PUBLIC current_password: str
-    Visibility.PUBLIC new_password: str
+    +current_password: str
+    +new_password: str
   }
   class User {
-    Visibility.PUBLIC id: uuid.UUID
-    Visibility.PUBLIC hashed_password: str
-    Visibility.PUBLIC items: list['Item']
+    +id: uuid.UUID
+    +hashed_password: str
+    +items: list['Item']
   }
   class UserPublic {
-    Visibility.PUBLIC id: uuid.UUID
+    +id: uuid.UUID
   }
   class UsersPublic {
-    Visibility.PUBLIC data: list[UserPublic]
-    Visibility.PUBLIC count: int
+    +data: list[UserPublic]
+    +count: int
   }
   class ItemBase {
-    Visibility.PUBLIC title: str
-    Visibility.PUBLIC description: str | None
+    +title: str
+    +description: str | None
   }
   class ItemCreate {
   }
   class ItemUpdate {
-    Visibility.PUBLIC title: str | None
+    +title: str | None
   }
   class Item {
-    Visibility.PUBLIC id: uuid.UUID
-    Visibility.PUBLIC title: str
-    Visibility.PUBLIC owner_id: uuid.UUID
-    Visibility.PUBLIC owner: User | None
+    +id: uuid.UUID
+    +title: str
+    +owner_id: uuid.UUID
+    +owner: User | None
   }
   class ItemPublic {
-    Visibility.PUBLIC id: uuid.UUID
-    Visibility.PUBLIC owner_id: uuid.UUID
+    +id: uuid.UUID
+    +owner_id: uuid.UUID
   }
   class ItemsPublic {
-    Visibility.PUBLIC data: list[ItemPublic]
-    Visibility.PUBLIC count: int
+    +data: list[ItemPublic]
+    +count: int
   }
   class Message {
-    Visibility.PUBLIC message: str
+    +message: str
   }
   class Token {
-    Visibility.PUBLIC access_token: str
-    Visibility.PUBLIC token_type: str
+    +access_token: str
+    +token_type: str
   }
   class TokenPayload {
-    Visibility.PUBLIC sub: str | None
+    +sub: str | None
   }
   class NewPassword {
-    Visibility.PUBLIC token: str
-    Visibility.PUBLIC new_password: str
+    +token: str
+    +new_password: str
   }
 }
 
