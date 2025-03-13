@@ -207,21 +207,6 @@ class UmlPathResolver:
         self.logger.info(f"Source dir: {self.source_dir}")
         self.logger.info(f"Generated dir: {self.generated_dir}")
 
-    @staticmethod
-    def configure_plantuml_search_paths():
-        docs_dir = Path(__file__).parent
-        generated_dir = docs_dir / "_generated_uml"
-        path_resolver = UmlPathResolver(docs_dir, generated_dir)
-
-        plantuml_search_path = path_resolver.get_search_paths()
-        logging.info(f"Using path resolver search paths: {plantuml_search_path}")
-
-        return plantuml_search_path
-
-    plantuml_include_path = configure_plantuml_search_paths()
-
-    plantuml_include_path = configure_plantuml_search_paths()
-
     def get_sphinx_path(self, file_path: Path) -> str:
         abs_file_path = file_path.resolve()
         rel_path = abs_file_path.relative_to(self.source_dir)
@@ -405,7 +390,6 @@ path_resolver = UmlPathResolver(docs_dir, generated_dir)
 
 # Configure PlantUML search paths based on path resolver
 plantuml_search_path = path_resolver.get_search_paths()
-logging.info(f"Using path resolver search paths: {plantuml_search_path}")
 
 # This is the critical config that tells Sphinx where to find the .puml files
 plantuml_include_path = plantuml_search_path

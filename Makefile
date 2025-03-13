@@ -1,4 +1,4 @@
-.PHONY: help up down build test clean clean-py migrate generate-client lint format render-diagrams render-diagrams-png view-diagrams docs
+.PHONY: help up down build test clean clean-py migrate generate-client lint format render-diagrams render-diagrams-png view-diagrams docs sequence-docs
 
 # Default target
 help:
@@ -16,6 +16,7 @@ help:
 	@echo "  make lint            - Run linters on backend and frontend code"
 	@echo "  make format          - Format code in backend and frontend"
 	@echo "  make docs            - Build Sphinx documentation"
+	@echo "  make sequence-docs   - Generate sequence diagrams and build documentation"
 
 
 # Start the development environment
@@ -125,3 +126,9 @@ docs-full:
 
 uml:
 	python backend/scripts/utils/generate_uml.py --app-dir --recursive --show-imports --output docs/source/_generated_uml
+
+# Generate sequence diagrams and build documentation
+sequence-docs:
+	python -m utils.run_uml_generator
+	cd docs && make html
+	@echo "Documentation built with sequence diagrams. Open docs/build/html/index.html to view."
