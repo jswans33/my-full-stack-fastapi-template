@@ -3,10 +3,10 @@ skinparam classAttributeIconSize 0
 
 package "conftest" {
   class Functions <<(F,orange)>> {
-    + db() -> Generator[Session, None, None]
-    + client() -> Generator[TestClient, None, None]
-    + superuser_token_headers(client: TestClient) -> dict[str, str]
-    + normal_user_token_headers(client: TestClient, db: Session) -> dict[str, str]
+    Visibility.PUBLIC db() -> Generator[Session, None, None]
+    Visibility.PUBLIC client() -> Generator[TestClient, None, None]
+    Visibility.PUBLIC superuser_token_headers(client: TestClient) -> dict[str, str]
+    Visibility.PUBLIC normal_user_token_headers(client: TestClient, db: Session) -> dict[str, str]
   }
 }
 

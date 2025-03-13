@@ -1,0 +1,22 @@
+# Testing
+pytest>=7.0.0
+pytest-cov>=4.0.0
+pytest-mock>=3.10.0
+pytest-asyncio>=0.21.0
+
+# Type checking
+mypy>=1.0.0
+types-setuptools>=67.0.0
+
+# Linting
+ruff>=0.0.270
+black>=23.3.0
+
+# Documentation
+sphinx>=6.0.0
+sphinx-rtd-theme>=1.2.0
+sphinx-autodoc-typehints>=1.23.0
+plantuml>=0.3.0
+
+# Development tools
+pre-commit>=3.3.0

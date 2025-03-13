@@ -3,7 +3,7 @@ skinparam classAttributeIconSize 0
 
 package "main" {
   class Functions <<(F,orange)>> {
-    + custom_generate_unique_id(route: APIRoute) -> str
+    Visibility.PUBLIC custom_generate_unique_id(route: APIRoute) -> str
   }
 }
 

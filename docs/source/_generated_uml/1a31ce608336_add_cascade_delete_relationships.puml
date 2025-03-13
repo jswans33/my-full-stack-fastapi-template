@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "1a31ce608336_add_cascade_delete_relationships" {
+  class Functions <<(F,orange)>> {
+    Visibility.PUBLIC upgrade() -> Any
+    Visibility.PUBLIC downgrade() -> Any
+  }
+}
+
+' Relationships
+@enduml

@@ -13,191 +13,191 @@ UML Class Diagrams
 9c0a54914c78_add_max_length_for_string_varchar_
 -----------------------------------------------
 
-.. uml:: /_generated_uml/9c0a54914c78_add_max_length_for_string_varchar_.puml
+.. uml:: 9c0a54914c78_add_max_length_for_string_varchar_.puml
    :align: center
 
 backend_pre_start
 -----------------
 
-.. uml:: /_generated_uml/backend_pre_start.puml
+.. uml:: backend_pre_start.puml
    :align: center
 
 config
 ------
 
-.. uml:: /_generated_uml/config.puml
+.. uml:: config.puml
    :align: center
 
 conftest
 --------
 
-.. uml:: /_generated_uml/conftest.puml
+.. uml:: conftest.puml
    :align: center
 
 crud
 ----
 
-.. uml:: /_generated_uml/crud.puml
+.. uml:: crud.puml
    :align: center
 
 d98dd8ec85a3_edit_replace_id_integers_in_all_models_
 ----------------------------------------------------
 
-.. uml:: /_generated_uml/d98dd8ec85a3_edit_replace_id_integers_in_all_models_.puml
+.. uml:: d98dd8ec85a3_edit_replace_id_integers_in_all_models_.puml
    :align: center
 
 db
 --
 
-.. uml:: /_generated_uml/db.puml
+.. uml:: db.puml
    :align: center
 
 deps
 ----
 
-.. uml:: /_generated_uml/deps.puml
+.. uml:: deps.puml
    :align: center
 
 e2412789c190_initialize_models
 ------------------------------
 
-.. uml:: /_generated_uml/e2412789c190_initialize_models.puml
+.. uml:: e2412789c190_initialize_models.puml
    :align: center
 
 env
 ---
 
-.. uml:: /_generated_uml/env.puml
+.. uml:: env.puml
    :align: center
 
 initial_data
 ------------
 
-.. uml:: /_generated_uml/initial_data.puml
+.. uml:: initial_data.puml
    :align: center
 
 item
 ----
 
-.. uml:: /_generated_uml/item.puml
+.. uml:: item.puml
    :align: center
 
 items
 -----
 
-.. uml:: /_generated_uml/items.puml
+.. uml:: items.puml
    :align: center
 
 logging
 -------
 
-.. uml:: /_generated_uml/logging.puml
+.. uml:: logging.puml
    :align: center
 
 login
 -----
 
-.. uml:: /_generated_uml/login.puml
+.. uml:: login.puml
    :align: center
 
 main
 ----
 
-.. uml:: /_generated_uml/main.puml
+.. uml:: main.puml
    :align: center
 
 models
 ------
 
-.. uml:: /_generated_uml/models.puml
+.. uml:: models.puml
    :align: center
 
 private
 -------
 
-.. uml:: /_generated_uml/private.puml
+.. uml:: private.puml
    :align: center
 
 run_logging_example
 -------------------
 
-.. uml:: /_generated_uml/run_logging_example.puml
+.. uml:: run_logging_example.puml
    :align: center
 
 security
 --------
 
-.. uml:: /_generated_uml/security.puml
+.. uml:: security.puml
    :align: center
 
 test_backend_pre_start
 ----------------------
 
-.. uml:: /_generated_uml/test_backend_pre_start.puml
+.. uml:: test_backend_pre_start.puml
    :align: center
 
 test_items
 ----------
 
-.. uml:: /_generated_uml/test_items.puml
+.. uml:: test_items.puml
    :align: center
 
 test_logging
 ------------
 
-.. uml:: /_generated_uml/test_logging.puml
+.. uml:: test_logging.puml
    :align: center
 
 test_login
 ----------
 
-.. uml:: /_generated_uml/test_login.puml
+.. uml:: test_login.puml
    :align: center
 
 test_private
 ------------
 
-.. uml:: /_generated_uml/test_private.puml
+.. uml:: test_private.puml
    :align: center
 
 test_test_pre_start
 -------------------
 
-.. uml:: /_generated_uml/test_test_pre_start.puml
+.. uml:: test_test_pre_start.puml
    :align: center
 
 test_user
 ---------
 
-.. uml:: /_generated_uml/test_user.puml
+.. uml:: test_user.puml
    :align: center
 
 test_users
 ----------
 
-.. uml:: /_generated_uml/test_users.puml
+.. uml:: test_users.puml
    :align: center
 
 tests_pre_start
 ---------------
 
-.. uml:: /_generated_uml/tests_pre_start.puml
+.. uml:: tests_pre_start.puml
    :align: center
 
 user
 ----
 
-.. uml:: /_generated_uml/user.puml
+.. uml:: user.puml
    :align: center
 
 users
 -----
 
-.. uml:: /_generated_uml/users.puml
+.. uml:: users.puml
    :align: center
 
 utils
 -----
 
-.. uml:: /_generated_uml/utils.puml
+.. uml:: utils.puml
    :align: center

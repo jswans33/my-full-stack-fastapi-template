@@ -3,13 +3,13 @@ skinparam classAttributeIconSize 0
 
 package "private" {
   class Functions <<(F,orange)>> {
-    + create_user(user_in: PrivateUserCreate, session: SessionDep) -> Any
+    Visibility.PUBLIC create_user(user_in: PrivateUserCreate, session: SessionDep) -> Any
   }
   class PrivateUserCreate {
-    + email: str
-    + password: str
-    + full_name: str
-    + is_verified: bool
+    Visibility.PUBLIC email: str
+    Visibility.PUBLIC password: str
+    Visibility.PUBLIC full_name: str
+    Visibility.PUBLIC is_verified: bool
   }
 }
 

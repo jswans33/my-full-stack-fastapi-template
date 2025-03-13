@@ -3,7 +3,7 @@ skinparam classAttributeIconSize 0
 
 package "test_private" {
   class Functions <<(F,orange)>> {
-    + test_create_user(client: TestClient, db: Session) -> None
+    Visibility.PUBLIC test_create_user(client: TestClient, db: Session) -> None
   }
 }
 

@@ -3,7 +3,7 @@ skinparam classAttributeIconSize 0
 
 package "item" {
   class Functions <<(F,orange)>> {
-    + create_random_item(db: Session) -> Item
+    Visibility.PUBLIC create_random_item(db: Session) -> Item
   }
 }
 

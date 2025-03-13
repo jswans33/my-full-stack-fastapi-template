@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "d98dd8ec85a3_edit_replace_id_integers_in_all_models_" {
+  class Functions <<(F,orange)>> {
+    Visibility.PUBLIC upgrade() -> Any
+    Visibility.PUBLIC downgrade() -> Any
+  }
+}
+
+' Relationships
+@enduml

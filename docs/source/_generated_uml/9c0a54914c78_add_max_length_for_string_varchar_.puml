@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "9c0a54914c78_add_max_length_for_string_varchar_" {
+  class Functions <<(F,orange)>> {
+    Visibility.PUBLIC upgrade() -> Any
+    Visibility.PUBLIC downgrade() -> Any
+  }
+}
+
+' Relationships
+@enduml

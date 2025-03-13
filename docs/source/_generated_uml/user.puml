@@ -3,9 +3,9 @@ skinparam classAttributeIconSize 0
 
 package "user" {
   class Functions <<(F,orange)>> {
-    + user_authentication_headers() -> dict[str, str]
-    + create_random_user(db: Session) -> User
-    + authentication_token_from_email() -> dict[str, str]
+    Visibility.PUBLIC user_authentication_headers() -> dict[str, str]
+    Visibility.PUBLIC create_random_user(db: Session) -> User
+    Visibility.PUBLIC authentication_token_from_email() -> dict[str, str]
   }
 }
 

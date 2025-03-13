@@ -1,0 +1,35 @@
+# Default configuration for UML Generator
+
+[paths]
+# Default output directory for generated UML files
+output_dir = "docs/source/_generated_uml"
+
+[generator]
+# Default output format
+format = "plantuml"
+
+# PlantUML settings
+[generator.plantuml]
+start = "@startuml"
+end = "@enduml"
+settings = [
+    "skinparam classAttributeIconSize 0",
+    "skinparam monochrome false",
+    "skinparam shadowing false",
+    "skinparam handwritten false",
+    "skinparam linetype ortho",
+]
+
+[parser]
+# File patterns to process
+patterns = ["*.py"]
+# Directories to exclude
+exclude_dirs = ["__pycache__", "*.egg-info", "build", "dist"]
+# Whether to show imports in diagrams
+show_imports = false
+
+[logging]
+# Logging level (debug, info, warning, error, critical)
+level = "info"
+# Log file path (optional)
+file = ""

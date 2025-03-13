@@ -2,25 +2,15 @@
 skinparam classAttributeIconSize 0
 
 package "test_logging" {
-  class Functions <<(F,orange)>> {
-    + test_get_logger(monkeypatch: Any) -> Any
-    + test_logger_propagation(monkeypatch: Any) -> Any
-    + test_log_level_configuration(monkeypatch: Any) -> Any
-    + test_log_format_text(monkeypatch: Any) -> Any
-    + test_log_format_json(monkeypatch: Any) -> Any
-    + test_structured_logging(monkeypatch: Any) -> Any
-    + test_logging_middleware(monkeypatch: Any) -> Any
-    + test_exception_logging(monkeypatch: Any) -> Any
-  }
   class TestLogging {
-    +test_get_logger(monkeypatch: Any) -> Any
-    +test_logger_propagation(monkeypatch: Any) -> Any
-    +test_log_level_configuration(monkeypatch: Any) -> Any
-    +test_log_format_text(monkeypatch: Any) -> Any
-    +test_log_format_json(monkeypatch: Any) -> Any
-    +test_structured_logging(monkeypatch: Any) -> Any
-    +test_logging_middleware(monkeypatch: Any) -> Any
-    +test_exception_logging(monkeypatch: Any) -> Any
+    Visibility.PUBLICtest_get_logger(monkeypatch: Any) -> Any
+    Visibility.PUBLICtest_logger_propagation(monkeypatch: Any) -> Any
+    Visibility.PUBLICtest_log_level_configuration(monkeypatch: Any) -> Any
+    Visibility.PUBLICtest_log_format_text(monkeypatch: Any) -> Any
+    Visibility.PUBLICtest_log_format_json(monkeypatch: Any) -> Any
+    Visibility.PUBLICtest_structured_logging(monkeypatch: Any) -> Any
+    Visibility.PUBLICtest_logging_middleware(monkeypatch: Any) -> Any
+    Visibility.PUBLICtest_exception_logging(monkeypatch: Any) -> Any
   }
 }
 
