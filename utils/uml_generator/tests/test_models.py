@@ -1,14 +1,15 @@
 from pathlib import Path
 
-from models import (
-    Attribute,
+from ..models.models import (
+    AttributeModel,
     ClassModel,
     FileModel,
     FunctionModel,
-    Import,
-    Method,
+    ImportModel,
+    MethodModel,
     Parameter,
-    Relationship,
+    RelationshipModel,
+    Visibility,
 )
 
 
@@ -21,33 +22,33 @@ def test_parameter():
 
     # Test with default value
     param_with_default = Parameter(
-        name="test",
-        type_annotation="str",
-        default_value="'default'",
+        name="test", type_annotation="str", default_value="'default'"
     )
     assert param_with_default.default_value == "'default'"
 
 
 def test_attribute():
     # Test required fields
-    attr = Attribute(name="test", type_annotation="str")
+    attr = AttributeModel(name="test", type_annotation="str")
     assert attr.name == "test"
     assert attr.type_annotation == "str"
-    assert attr.visibility == "+"  # Default visibility
+    assert attr.visibility == Visibility.PUBLIC  # Default visibility
 
     # Test with custom visibility
-    private_attr = Attribute(name="test", type_annotation="str", visibility="-")
-    assert private_attr.visibility == "-"
+    private_attr = AttributeModel(
+        name="test", type_annotation="str", visibility=Visibility.PRIVATE
+    )
+    assert private_attr.visibility == Visibility.PRIVATE
 
 
 def test_method_signature():
     # Test without parameters
-    method = Method(name="test", parameters=[], return_type="None")
+    method = MethodModel(name="test", parameters=[], return_type="None")
     assert method.signature == "test() -> None"
 
     # Test with single parameter
     param = Parameter(name="arg", type_annotation="str")
-    method = Method(name="test", parameters=[param], return_type="str")
+    method = MethodModel(name="test", parameters=[param], return_type="str")
     assert method.signature == "test(arg: str) -> str"
 
     # Test with multiple parameters and default value
@@ -55,21 +56,21 @@ def test_method_signature():
         Parameter(name="arg1", type_annotation="str"),
         Parameter(name="arg2", type_annotation="int", default_value="0"),
     ]
-    method = Method(name="test", parameters=params, return_type="tuple")
+    method = MethodModel(name="test", parameters=params, return_type="tuple")
     assert method.signature == "test(arg1: str, arg2: int = 0) -> tuple"
 
     # Test visibility
-    private_method = Method(
+    private_method = MethodModel(
         name="test",
         parameters=[],
         return_type="None",
-        visibility="-",
+        visibility=Visibility.PRIVATE,
     )
-    assert private_method.visibility == "-"
+    assert private_method.visibility == Visibility.PRIVATE
 
 
 def test_relationship():
-    rel = Relationship(source="ClassA", target="ClassB", type="-->")
+    rel = RelationshipModel(source="ClassA", target="ClassB", type="-->")
     assert rel.source == "ClassA"
     assert rel.target == "ClassB"
     assert rel.type == "-->"
@@ -77,13 +78,13 @@ def test_relationship():
 
 def test_import():
     # Test required fields
-    imp = Import(module="module", name="name")
+    imp = ImportModel(module="module", name="name")
     assert imp.module == "module"
     assert imp.name == "name"
     assert imp.alias is None
 
     # Test with alias
-    aliased_import = Import(module="module", name="name", alias="alias")
+    aliased_import = ImportModel(module="module", name="name", alias="alias")
     assert aliased_import.alias == "alias"
 
 
@@ -99,10 +100,14 @@ def test_class_model():
     assert cls.imports == []
 
     # Test with all fields
-    method = Method(name="test", parameters=[], return_type="None")
-    attr = Attribute(name="attr", type_annotation="str")
-    rel = Relationship(source="TestClass", target="OtherClass", type="-->")
-    imp = Import(module="module", name="name")
+    method = MethodModel(
+        name="test", parameters=[], return_type="None", visibility=Visibility.PUBLIC
+    )
+    attr = AttributeModel(
+        name="attr", type_annotation="str", visibility=Visibility.PUBLIC
+    )
+    rel = RelationshipModel(source="TestClass", target="OtherClass", type="-->")
+    imp = ImportModel(module="module", name="name")
 
     cls = ClassModel(
         name="TestClass",
@@ -152,7 +157,7 @@ def test_file_model():
     # Test with all fields
     cls = ClassModel(name="TestClass", filename="test.py")
     func = FunctionModel(name="test", parameters=[], return_type="None")
-    imp = Import(module="module", name="name")
+    imp = ImportModel(module="module", name="name")
 
     file_model = FileModel(
         path=path,

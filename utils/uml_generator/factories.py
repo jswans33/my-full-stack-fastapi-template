@@ -9,7 +9,7 @@ from .interfaces import (
     GeneratorFactory,
     ParserFactory,
 )
-from .parsers.python_parser import PythonAstParser
+from .parsers.python import PythonAstParser
 
 
 class DefaultParserFactory(ParserFactory):
@@ -27,7 +27,7 @@ class DefaultParserFactory(ParserFactory):
                 self._parsers[file_extension] = PythonAstParser(self.file_system)
             else:
                 self.logger.warning(
-                    f"No parser available for extension: {file_extension}"
+                    f"No parser available for extension: {file_extension}",
                 )
                 raise ValueError(f"Unsupported file extension: {file_extension}")
 
@@ -37,7 +37,7 @@ class DefaultParserFactory(ParserFactory):
 class DefaultGeneratorFactory(GeneratorFactory):
     """Default implementation of GeneratorFactory."""
 
-    def __init__(self, file_system: FileSystem, settings: dict[str, Any] = None):
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] | None = None):
         self.file_system = file_system
         self.settings = settings or {}
         self.logger = logging.getLogger(__name__)
@@ -53,7 +53,7 @@ class DefaultGeneratorFactory(GeneratorFactory):
                 )
             else:
                 self.logger.warning(
-                    f"No generator available for format: {output_format}"
+                    f"No generator available for format: {output_format}",
                 )
                 raise ValueError(f"Unsupported output format: {output_format}")
 

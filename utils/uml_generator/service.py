@@ -63,7 +63,15 @@ class UmlGeneratorService:
 
             # Generate the UML diagram
             output_extension = generator.get_output_extension()
-            output_path = self.config.output_dir / f"{file_path.stem}{output_extension}"
+            # Preserve directory structure in output
+            relative_path = file_path.relative_to(self.config.source_dir)
+            output_path = (
+                self.config.output_dir
+                / relative_path.parent
+                / f"{file_path.stem}{output_extension}"
+            )
+            # Ensure output directory exists
+            self.file_system.ensure_directory(output_path.parent)
             generator.generate_diagram(file_model, output_path)
 
             self.logger.info(

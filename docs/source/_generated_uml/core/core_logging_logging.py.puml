@@ -7,15 +7,15 @@ package "logging" {
     +get_logger(name: str) -> logging.Logger
   }
   class LogLevel {
-    +DEBUG: Any
-    +INFO: Any
-    +WARNING: Any
-    +ERROR: Any
-    +CRITICAL: Any
+    +DEBUG: str
+    +INFO: str
+    +WARNING: str
+    +ERROR: str
+    +CRITICAL: str
   }
   class LogFormat {
-    +TEXT: Any
-    +JSON: Any
+    +TEXT: str
+    +JSON: str
   }
   class LogConfig {
     +level: LogLevel
@@ -24,12 +24,13 @@ package "logging" {
     +rotation: bool
     +rotation_size: int
     +rotation_backups: int
-    +from_env(cls: Any) -> LogConfig
+    +@classmethod from_env(cls: Any) -> LogConfig
   }
   class JsonFormatter {
     +format(self: Any, record: logging.LogRecord) -> str
   }
   class LoggingMiddleware {
+    +async dispatch(self: Any, request: Request, call_next: RequestResponseEndpoint) -> Response
   }
 }
 
@@ -41,5 +42,6 @@ Enum <|-- "logging".LogFormat
 BaseModel <|-- "logging".LogConfig
 LogConfig --> LogLevel
 LogConfig --> LogFormat
+logging.Formatter <|-- "logging".JsonFormatter
 BaseHTTPMiddleware <|-- "logging".LoggingMiddleware
 @enduml

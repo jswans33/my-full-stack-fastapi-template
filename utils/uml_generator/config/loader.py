@@ -60,6 +60,7 @@ class LoggingConfig:
 class Config:
     """Complete UML generator configuration."""
 
+    source_dir: Path = Path(".")
     output_dir: Path = Path("docs/source/_generated_uml")
     generator: GeneratorConfig = field(default_factory=GeneratorConfig)
     parser: ParserConfig = field(default_factory=ParserConfig)
@@ -119,6 +120,8 @@ class ConfigLoader:
     def _update_config(self, data: dict[str, Any]) -> None:
         """Update configuration from dictionary."""
         if "paths" in data:
+            if "source_dir" in data["paths"]:
+                self.config.source_dir = Path(data["paths"]["source_dir"])
             if "output_dir" in data["paths"]:
                 self.config.output_dir = Path(data["paths"]["output_dir"])
 

@@ -1,209 +1,265 @@
-UML Class Diagrams
-==================
+UML Diagrams
+============
 
-.. toctree::
-   :maxdepth: 1
+This documentation provides UML class diagrams for the project's components.
 
-1a31ce608336_add_cascade_delete_relationships
----------------------------------------------
+.. contents:: Table of Contents
+   :depth: 2
 
-.. uml:: _generated_uml/_generated_uml/1a31ce608336_add_cascade_delete_relationships.puml
-   :align: center
 
-9c0a54914c78_add_max_length_for_string_varchar_
------------------------------------------------
 
-.. uml:: _generated_uml/9c0a54914c78_add_max_length_for_string_varchar_.puml
-   :align: center
-
-backend_pre_start
------------------
-
-.. uml:: _generated_uml/backend_pre_start.puml
-   :align: center
-
-config
-------
-
-.. uml:: _generated_uml/config.puml
-   :align: center
-
-conftest
---------
-
-.. uml:: _generated_uml/conftest.puml
-   :align: center
-
-crud
-----
-
-.. uml:: _generated_uml/crud.puml
-   :align: center
-
-d98dd8ec85a3_edit_replace_id_integers_in_all_models_
-----------------------------------------------------
-
-.. uml:: _generated_uml/d98dd8ec85a3_edit_replace_id_integers_in_all_models_.puml
-   :align: center
-
-db
---
-
-.. uml:: _generated_uml/db.puml
-   :align: center
-
-deps
-----
-
-.. uml:: _generated_uml/deps.puml
-   :align: center
-
-e2412789c190_initialize_models
-------------------------------
-
-.. uml:: _generated_uml/e2412789c190_initialize_models.puml
-   :align: center
-
-env
+Api
 ---
 
-.. uml:: _generated_uml/env.puml
-   :align: center
 
-initial_data
-------------
+Api Deps.Py
+~~~~~~~~~~~
 
-.. uml:: _generated_uml/initial_data.puml
-   :align: center
+.. uml:: ..\api\api_deps.py.puml
 
-item
+
+Api Routes Items.Py
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\api\api_routes_items.py.puml
+
+
+Api Routes Login.Py
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\api\api_routes_login.py.puml
+
+
+Api Routes Private.Py
+~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\api\api_routes_private.py.puml
+
+
+Api Routes Users.Py
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\api\api_routes_users.py.puml
+
+
+Api Routes Utils.Py
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\api\api_routes_utils.py.puml
+
+
+
+Core
 ----
 
-.. uml:: _generated_uml/item.puml
-   :align: center
 
-items
------
+Core Config.Py
+~~~~~~~~~~~~~~
 
-.. uml:: _generated_uml/items.puml
-   :align: center
+.. uml:: ..\core\core_config.py.puml
 
-logging
--------
 
-.. uml:: _generated_uml/logging.puml
-   :align: center
+Core Db.Py
+~~~~~~~~~~
 
-logging_example
----------------
+.. uml:: ..\core\core_db.py.puml
 
-.. uml:: _generated_uml/logging_example.puml
-   :align: center
 
-login
------
+Core Logging Logging.Py
+~~~~~~~~~~~~~~~~~~~~~~~
 
-.. uml:: _generated_uml/login.puml
-   :align: center
+.. uml:: ..\core\core_logging_logging.py.puml
 
-main
-----
 
-.. uml:: _generated_uml/main.puml
-   :align: center
+Core Security.Py
+~~~~~~~~~~~~~~~~
 
-models
-------
+.. uml:: ..\core\core_security.py.puml
 
-.. uml:: _generated_uml/models.puml
-   :align: center
 
-private
--------
 
-.. uml:: _generated_uml/private.puml
-   :align: center
-
-run_logging_example
--------------------
-
-.. uml:: _generated_uml/run_logging_example.puml
-   :align: center
-
-security
+Examples
 --------
 
-.. uml:: _generated_uml/security.puml
-   :align: center
 
-test_backend_pre_start
-----------------------
+Examples Logging Example.Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. uml:: _generated_uml/test_backend_pre_start.puml
-   :align: center
+.. uml:: ..\examples\examples_logging_example.py.puml
 
-test_items
-----------
 
-.. uml:: _generated_uml/test_items.puml
-   :align: center
+Examples Run Logging Example.Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-test_logging
+.. uml:: ..\examples\examples_run_logging_example.py.puml
+
+
+
+Models
+------
+
+
+ Models.Py
+~~~~~~~~~~
+
+.. uml:: ..\models\_models.py.puml
+
+
+Alembic Versions E2412789C190 Initialize Models.Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\models\alembic_versions_e2412789c190_initialize_models.py.puml
+
+
+
+Root Modules
 ------------
 
-.. uml:: _generated_uml/test_logging.puml
-   :align: center
 
-test_login
-----------
+All
+~~~
 
-.. uml:: _generated_uml/test_login.puml
-   :align: center
+.. uml:: ..\all.puml
 
-test_private
-------------
 
-.. uml:: _generated_uml/test_private.puml
-   :align: center
 
-test_test_pre_start
--------------------
-
-.. uml:: _generated_uml/test_test_pre_start.puml
-   :align: center
-
-test_user
----------
-
-.. uml:: _generated_uml/test_user.puml
-   :align: center
-
-test_users
-----------
-
-.. uml:: _generated_uml/test_users.puml
-   :align: center
-
-tests_pre_start
----------------
-
-.. uml:: _generated_uml/tests_pre_start.puml
-   :align: center
-
-user
-----
-
-.. uml:: _generated_uml/user.puml
-   :align: center
-
-users
+Tests
 -----
 
-.. uml:: _generated_uml/users.puml
-   :align: center
 
-utils
+ Conftest.Py
+~~~~~~~~~~~~
+
+.. uml:: ..\tests\_conftest.py.puml
+
+
+Api Routes Test Items.Py
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\api_routes_test_items.py.puml
+
+
+Api Routes Test Login.Py
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\api_routes_test_login.py.puml
+
+
+Api Routes Test Private.Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\api_routes_test_private.py.puml
+
+
+Api Routes Test Users.Py
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\api_routes_test_users.py.puml
+
+
+Core Test Logging.Py
+~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\core_test_logging.py.puml
+
+
+Crud Test User.Py
+~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\crud_test_user.py.puml
+
+
+Scripts Test Backend Pre Start.Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\scripts_test_backend_pre_start.py.puml
+
+
+Scripts Test Test Pre Start.Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\scripts_test_test_pre_start.py.puml
+
+
+Utils Item.Py
+~~~~~~~~~~~~~
+
+.. uml:: ..\tests\utils_item.py.puml
+
+
+Utils User.Py
+~~~~~~~~~~~~~
+
+.. uml:: ..\tests\utils_user.py.puml
+
+
+Utils Utils.Py
+~~~~~~~~~~~~~~
+
+.. uml:: ..\tests\utils_utils.py.puml
+
+
+
+Utils
 -----
 
-.. uml:: _generated_uml/utils.puml
-   :align: center
+
+ Backend Pre Start.Py
+~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\utils\_backend_pre_start.py.puml
+
+
+ Crud.Py
+~~~~~~~~
+
+.. uml:: ..\utils\_crud.py.puml
+
+
+ Initial Data.Py
+~~~~~~~~~~~~~~~~
+
+.. uml:: ..\utils\_initial_data.py.puml
+
+
+ Main.Py
+~~~~~~~~
+
+.. uml:: ..\utils\_main.py.puml
+
+
+ Tests Pre Start.Py
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\utils\_tests_pre_start.py.puml
+
+
+ Utils.Py
+~~~~~~~~~
+
+.. uml:: ..\utils\_utils.py.puml
+
+
+Alembic Env.Py
+~~~~~~~~~~~~~~
+
+.. uml:: ..\utils\alembic_env.py.puml
+
+
+Alembic Versions 1A31Ce608336 Add Cascade Delete Relationships.Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\utils\alembic_versions_1a31ce608336_add_cascade_delete_relationships.py.puml
+
+
+Alembic Versions 9C0A54914C78 Add Max Length For String Varchar .Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\utils\alembic_versions_9c0a54914c78_add_max_length_for_string_varchar_.py.puml
+
+
+Alembic Versions D98Dd8Ec85A3 Edit Replace Id Integers In All Models .Py
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: ..\utils\alembic_versions_d98dd8ec85a3_edit_replace_id_integers_in_all_models_.py.puml
+

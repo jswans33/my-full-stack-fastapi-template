@@ -32,22 +32,24 @@ from .models import (
     FunctionModel,
     ImportModel,
     MethodModel,
-    Parameter,
+    ParameterModel,
     RelationshipModel,
     Visibility,
 )
+from .path_resolver import UmlPathResolver
 from .service import UmlGeneratorService
 
 __all__ = [
     "main",
     "UmlGeneratorService",
+    "UmlPathResolver",
     "AttributeModel",
     "ClassModel",
     "FileModel",
     "FunctionModel",
     "ImportModel",
     "MethodModel",
-    "Parameter",
+    "ParameterModel",
     "RelationshipModel",
     "Visibility",
 ]

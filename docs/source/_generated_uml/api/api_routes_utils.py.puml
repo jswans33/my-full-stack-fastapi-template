@@ -1,0 +1,12 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "utils" {
+  class Functions <<(F,orange)>> {
+    +test_email(email_to: EmailStr) -> Message
+    +async health_check() -> bool
+  }
+}
+
+' Relationships
+@enduml

@@ -1,11 +1,13 @@
 """Generator for PlantUML diagrams."""
 
 import logging
+import os
 from pathlib import Path
 from typing import Any
 
 from ..interfaces import DiagramGenerator, FileSystem
 from ..models import FileModel
+from ..path_resolver import UmlPathResolver
 
 
 class PlantUmlGenerator(DiagramGenerator):
@@ -134,27 +136,81 @@ class PlantUmlGenerator(DiagramGenerator):
         """Generate an index.rst file for the generated UML diagrams."""
         output_path = output_dir / "index.rst"
 
+        # Create path resolver
+        source_dir = output_dir.parent  # docs/source
+        path_resolver = UmlPathResolver(source_dir, output_dir)
+
+        # Find all .puml files in _generated_uml directory
+        puml_files = []
+        for diagram in sorted(diagrams):
+            if diagram.suffix == ".puml":
+                # Use path resolver to get path for index.rst
+                path = path_resolver.get_plantuml_generator_path(diagram)
+                print(f"\nProcessing file: {diagram}")
+                print(f"Path resolver returned: {path}")
+                puml_files.append(path)
+
+        # Group by directories
+        modules = {}
+        for path in puml_files:
+            # Get module name from path
+            module = os.path.dirname(path).replace(os.sep, "/") or "root"
+            # Don't add _generated_uml prefix since:
+            # 1. Files are already in that directory
+            # 2. Sphinx search path points to that directory
+            # 3. Paths in index.rst should be relative to search path
+            if module not in modules:
+                modules[module] = []
+            modules[module].append(path)
+            print(f"Writing to index.rst: .. uml:: {path}")
+
+        # Generate content with proper RST syntax
         content = [
-            "UML Class Diagrams",
-            "==================",
+            "UML Diagrams",
+            "============",  # Make underline match title length
             "",
-            ".. toctree::",
-            "   :maxdepth: 1",
+            "This documentation provides UML class diagrams for the project's components.",
             "",
+            ".. contents:: Table of Contents",
+            "   :depth: 2",
+            "",
+            "",  # Extra blank line before first section
         ]
 
-        for diagram_path in sorted(diagrams):
-            name = diagram_path.stem
+        # Write modules in sorted order
+        for module, files in sorted(modules.items()):
+            module_title = module.replace("_", " ").replace("/", " - ").title()
+            if module == "root":
+                module_title = "Root Modules"
+
             content.extend(
                 [
-                    f"{name}",
-                    f"{'-' * len(name)}",
+                    "",  # Extra blank line before section
+                    module_title,
+                    "-" * len(module_title),  # Matching underline
                     "",
-                    f".. uml:: {diagram_path.name}",
-                    "   :align: center",
-                    "",
+                    "",  # Extra blank line after section title
                 ],
             )
+
+            for file_path in sorted(files):
+                name = os.path.splitext(os.path.basename(file_path))[0]
+                title = name.replace("_", " ").title()
+
+                content.extend(
+                    [
+                        title,
+                        "~" * len(title),  # Matching underline
+                        "",
+                        ".. uml:: "
+                        + os.path.relpath(
+                            file_path,
+                            "_generated_uml",
+                        ),  # Make path relative to search path
+                        "",  # Required blank line after directive
+                        "",  # Extra blank line between diagrams
+                    ],
+                )
 
         self.file_system.write_file(output_path, "\n".join(content))
         self.logger.info(f"Generated UML index at {output_path}")

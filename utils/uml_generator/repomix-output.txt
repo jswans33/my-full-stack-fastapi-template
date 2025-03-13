@@ -52,23 +52,15 @@ config/__init__.py
 config/defaults.toml
 config/loader.py
 entry_point.py
-exceptions.py
 factories.py
 filesystem.py
 generator/__init__.py
 generator/plantuml_generator.py
 interfaces.py
 models.py
+models/__init__.py
 models/models.py
-parsers/__init__.py
-parsers/base_parser.py
-parsers/python/__init__.py
-parsers/python/ast_parser.py
-parsers/python/class_parser.py
-parsers/python/function_parser.py
-parsers/python/import_parser.py
-parsers/python/relationship_parser.py
-parsers/python/type_parser.py
+parsers/python_parser.py
 pytest.ini
 README.md
 requirements-dev.txt
@@ -123,7 +115,7 @@ from .models import (
     FunctionModel,
     ImportModel,
     MethodModel,
-    ParameterModel,
+    Parameter,
     RelationshipModel,
     Visibility,
 )
@@ -138,7 +130,7 @@ __all__ = [
     "FunctionModel",
     "ImportModel",
     "MethodModel",
-    "ParameterModel",
+    "Parameter",
     "RelationshipModel",
     "Visibility",
 ]
@@ -599,7 +591,6 @@ class LoggingConfig:
 class Config:
     """Complete UML generator configuration."""
 
-    source_dir: Path = Path(".")
     output_dir: Path = Path("docs/source/_generated_uml")
     generator: GeneratorConfig = field(default_factory=GeneratorConfig)
     parser: ParserConfig = field(default_factory=ParserConfig)
@@ -659,8 +650,6 @@ class ConfigLoader:
     def _update_config(self, data: dict[str, Any]) -> None:
         """Update configuration from dictionary."""
         if "paths" in data:
-            if "source_dir" in data["paths"]:
-                self.config.source_dir = Path(data["paths"]["source_dir"])
             if "output_dir" in data["paths"]:
                 self.config.output_dir = Path(data["paths"]["output_dir"])
 
@@ -733,68 +722,6 @@ if __name__ == "__main__":
     main()
 
 ================
-File: exceptions.py
-================
-"""Custom exceptions for the UML generator."""
-
-
-class UmlGeneratorError(Exception):
-    """Base exception for UML generator errors."""
-
-    pass
-
-
-class ParserError(UmlGeneratorError):
-    """Raised when there's an error during code parsing."""
-
-    def __init__(
-        self, message: str, filename: str | None = None, line_number: int | None = None
-    ):
-        self.filename = filename
-        self.line_number = line_number
-        super().__init__(
-            f"Parser error in {filename or 'unknown file'}"
-            + (f" at line {line_number}" if line_number else "")
-            + f": {message}"
-        )
-
-
-class SyntaxParsingError(ParserError):
-    """Raised when there's a syntax error in the source code."""
-
-    pass
-
-
-class TypeAnnotationError(ParserError):
-    """Raised when there's an error parsing type annotations."""
-
-    pass
-
-
-class ImportError(ParserError):
-    """Raised when there's an error parsing imports."""
-
-    pass
-
-
-class FileSystemError(UmlGeneratorError):
-    """Raised when there's an error accessing the file system."""
-
-    pass
-
-
-class ConfigurationError(UmlGeneratorError):
-    """Raised when there's an error in the configuration."""
-
-    pass
-
-
-class GeneratorError(UmlGeneratorError):
-    """Raised when there's an error during UML diagram generation."""
-
-    pass
-
-================
 File: factories.py
 ================
 import logging
@@ -808,7 +735,7 @@ from .interfaces import (
     GeneratorFactory,
     ParserFactory,
 )
-from .parsers.python import PythonAstParser
+from .parsers.python_parser import PythonAstParser
 
 
 class DefaultParserFactory(ParserFactory):
@@ -826,7 +753,7 @@ class DefaultParserFactory(ParserFactory):
                 self._parsers[file_extension] = PythonAstParser(self.file_system)
             else:
                 self.logger.warning(
-                    f"No parser available for extension: {file_extension}",
+                    f"No parser available for extension: {file_extension}"
                 )
                 raise ValueError(f"Unsupported file extension: {file_extension}")
 
@@ -836,7 +763,7 @@ class DefaultParserFactory(ParserFactory):
 class DefaultGeneratorFactory(GeneratorFactory):
     """Default implementation of GeneratorFactory."""
 
-    def __init__(self, file_system: FileSystem, settings: dict[str, Any] | None = None):
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] = None):
         self.file_system = file_system
         self.settings = settings or {}
         self.logger = logging.getLogger(__name__)
@@ -852,7 +779,7 @@ class DefaultGeneratorFactory(GeneratorFactory):
                 )
             else:
                 self.logger.warning(
-                    f"No generator available for format: {output_format}",
+                    f"No generator available for format: {output_format}"
                 )
                 raise ValueError(f"Unsupported output format: {output_format}")
 
@@ -861,34 +788,33 @@ class DefaultGeneratorFactory(GeneratorFactory):
 ================
 File: filesystem.py
 ================
+import os
 from pathlib import Path
+from typing import List
 
 from .interfaces import FileSystem
 
 
 class DefaultFileSystem(FileSystem):
     """Default implementation of FileSystem interface."""
-
+    
     def read_file(self, path: Path) -> str:
         """Read file content as string."""
-        with open(path, encoding="utf-8") as f:
+        with open(path, 'r', encoding='utf-8') as f:
             return f.read()
-
+    
     def write_file(self, path: Path, content: str) -> None:
         """Write content to file."""
-        with open(path, "w", encoding="utf-8") as f:
+        with open(path, 'w', encoding='utf-8') as f:
             f.write(content)
-
+    
     def ensure_directory(self, path: Path) -> None:
         """Ensure directory exists, create if needed."""
         path.mkdir(parents=True, exist_ok=True)
-
-    def find_files(self, directory: Path, pattern: str) -> list[Path]:
+    
+    def find_files(self, directory: Path, pattern: str) -> List[Path]:
         """Find files matching pattern in directory."""
-        if not isinstance(directory, Path):
-            directory = Path(directory)
-        # Use rglob for recursive search
-        return list(directory.rglob(pattern))
+        return list(directory.glob(pattern))
 
 ================
 File: generator/__init__.py
@@ -909,7 +835,6 @@ File: generator/plantuml_generator.py
 """Generator for PlantUML diagrams."""
 
 import logging
-import os
 from pathlib import Path
 from typing import Any
 
@@ -1043,83 +968,27 @@ class PlantUmlGenerator(DiagramGenerator):
         """Generate an index.rst file for the generated UML diagrams."""
         output_path = output_dir / "index.rst"
 
-        # Define component groups and their patterns
-        components = {
-            "Core Components": {
-                "patterns": ["core/", "models.py", "config.py", "db.py", "security.py"],
-                "description": "Core application components including models, configuration, and database.",
-            },
-            "API Layer": {
-                "patterns": ["api/", "routes/", "deps.py"],
-                "description": "API endpoints, routes, and dependencies.",
-            },
-            "Business Logic": {
-                "patterns": ["crud.py", "service/"],
-                "description": "Business logic and CRUD operations.",
-            },
-            "Testing": {
-                "patterns": ["tests/", "conftest.py"],
-                "description": "Test suites and fixtures.",
-            },
-            "Utilities": {
-                "patterns": ["utils.py", "helpers/"],
-                "description": "Utility functions and helper modules.",
-            },
-            "Application Entry Points": {
-                "patterns": [
-                    "main.py",
-                    "initial_data.py",
-                    "backend_pre_start.py",
-                    "tests_pre_start.py",
-                ],
-                "description": "Application entry points and initialization.",
-            },
-        }
-
         content = [
             "UML Class Diagrams",
             "==================",
             "",
-            "This documentation provides UML class diagrams for the project's components.",
-            "",
             ".. toctree::",
-            "   :maxdepth: 2",
+            "   :maxdepth: 1",
             "",
         ]
 
-        # Process each component
-        for component, info in components.items():
-            matching_diagrams = []
-            for diagram in sorted(diagrams):
-                rel_path = str(diagram.relative_to(output_dir)).replace(os.sep, "/")
-                if any(pattern in rel_path.lower() for pattern in info["patterns"]):
-                    matching_diagrams.append((diagram, rel_path))
-
-            if matching_diagrams:
-                # Add component section
-                content.extend(
-                    [
-                        component,
-                        "=" * len(component),
-                        "",
-                        info["description"],
-                        "",
-                    ],
-                )
-
-                # Add diagrams in this component
-                for diagram, rel_path in matching_diagrams:
-                    name = diagram.stem.replace("_", " ").title()
-                    content.extend(
-                        [
-                            name,
-                            "-" * len(name),
-                            "",
-                            f".. uml:: {rel_path}",
-                            "   :align: center",
-                            "",
-                        ],
-                    )
+        for diagram_path in sorted(diagrams):
+            name = diagram_path.stem
+            content.extend(
+                [
+                    f"{name}",
+                    f"{'-' * len(name)}",
+                    "",
+                    f".. uml:: {diagram_path.name}",
+                    "   :align: center",
+                    "",
+                ],
+            )
 
         self.file_system.write_file(output_path, "\n".join(content))
         self.logger.info(f"Generated UML index at {output_path}")
@@ -1128,71 +997,63 @@ class PlantUmlGenerator(DiagramGenerator):
 File: interfaces.py
 ================
 from abc import ABC, abstractmethod
+from typing import List, Set, Dict, Any, Protocol
 from pathlib import Path
-from typing import Protocol
 
 from .models import FileModel
 
 
 class FileSystem(Protocol):
     """Interface for file system operations."""
-
+    
     def read_file(self, path: Path) -> str:
         """Read file content as string."""
         ...
-
+        
     def write_file(self, path: Path, content: str) -> None:
         """Write content to file."""
         ...
-
+        
     def ensure_directory(self, path: Path) -> None:
         """Ensure directory exists, create if needed."""
         ...
-
-    def find_files(self, directory: Path, pattern: str) -> list[Path]:
+        
+    def find_files(self, directory: Path, pattern: str) -> List[Path]:
         """Find files matching pattern in directory."""
         ...
 
 
 class FileParser(ABC):
     """Abstract base class for file parsers."""
-
+    
     @abstractmethod
     def parse_file(self, file_path: Path) -> FileModel:
         """Parse file and return model representation."""
         pass
-
+    
     @abstractmethod
-    def get_supported_extensions(self) -> set[str]:
+    def get_supported_extensions(self) -> Set[str]:
         """Return set of supported file extensions."""
         pass
 
 
 class DiagramGenerator(ABC):
     """Abstract base class for diagram generators."""
-
+    
     @abstractmethod
     def generate_diagram(self, file_model: FileModel, output_path: Path) -> None:
         """Generate diagram from file model and write to output path."""
         pass
-
+    
     @abstractmethod
     def get_output_extension(self) -> str:
         """Return output file extension for this generator."""
         pass
 
-    def generate_index(self, output_dir: Path, diagrams: list[Path]) -> None:
-        """Generate an index file for the generated diagrams.
-
-        This is an optional method that generators can implement to create
-        an index of all generated diagrams.
-        """
-        pass
-
 
 class ParserFactory(ABC):
     """Factory for creating appropriate parser based on file extension."""
-
+    
     @abstractmethod
     def create_parser(self, file_extension: str) -> FileParser:
         """Create parser for given file extension."""
@@ -1201,7 +1062,7 @@ class ParserFactory(ABC):
 
 class GeneratorFactory(ABC):
     """Factory for creating diagram generators."""
-
+    
     @abstractmethod
     def create_generator(self, output_format: str) -> DiagramGenerator:
         """Create generator for given output format."""
@@ -1210,160 +1071,126 @@ class GeneratorFactory(ABC):
 ================
 File: models.py
 ================
-"""Data models for UML generator.
-
-This module defines the data models used by the UML generator to represent
-Python code structures like classes, methods, attributes, and relationships.
-"""
-
 from dataclasses import dataclass, field
-from enum import Enum
+from typing import List, Optional, Dict, Any
 from pathlib import Path
 
-# Type aliases for better readability
-ClassName = str
-MethodName = str
-AttributeName = str
-TypeAnnotation = str
-
-
-class Visibility(str, Enum):
-    """Visibility levels for class members."""
-
-    PUBLIC = "+"
-    PRIVATE = "-"
-    PROTECTED = "#"
-
-
 @dataclass
-class ParameterModel:
+class Parameter:
     """Function/method parameter representation."""
-
     name: str
-    type_annotation: TypeAnnotation
-    default_value: str | None = None
-
+    type_annotation: str
+    default_value: Optional[str] = None
 
 @dataclass
-class AttributeModel:
+class Attribute:
     """Class attribute representation."""
-
-    name: AttributeName
-    type_annotation: TypeAnnotation
-    visibility: Visibility = Visibility.PUBLIC
-    default_value: str | None = None
-    docstring: str | None = None
-    decorators: list[str] = field(default_factory=list)
-
+    name: str
+    type_annotation: str
+    visibility: str = "+"  # +: public, -: private, #: protected
 
 @dataclass
-class MethodModel:
-    """Method representation with signature information.
-
-    Attributes:
-        name: Method name
-        parameters: List of method parameters
-        return_type: Return type annotation
-        visibility: Method visibility (+: public, -: private, #: protected)
-        is_static: Whether this is a static method
-        is_classmethod: Whether this is a class method
-        docstring: Method docstring if present
-        decorators: List of decorator names
-        default_value: Default value if present
-    """
-
-    name: MethodName
-    parameters: list[ParameterModel]
-    return_type: TypeAnnotation
-    visibility: Visibility = Visibility.PUBLIC
-    is_static: bool = False
-    is_classmethod: bool = False
-    docstring: str | None = None
-    decorators: list[str] = field(default_factory=list)
-    default_value: str | None = None
-
+class Method:
+    """Method representation with signature information."""
+    name: str
+    parameters: List[Parameter]
+    return_type: str
+    visibility: str = "+"  # +: public, -: private, #: protected
+    
     @property
     def signature(self) -> str:
         """Generate method signature string."""
         params = [
-            f"{param.name}: {param.type_annotation}"
-            + (f" = {param.default_value}" if param.default_value else "")
-            for param in self.parameters
-        ]
-        prefix = ""
-        if self.is_static:
-            prefix = "@staticmethod "
-        elif self.is_classmethod:
-            prefix = "@classmethod "
-        return f"{prefix}{self.name}({', '.join(params)}) -> {self.return_type}"
-
-
-@dataclass
-class RelationshipModel:
-    """Relationship between classes."""
-
-    source: ClassName
-    target: ClassName
-    type: str  # -->: association, *-->: composition, etc.
-
-
-@dataclass
-class ImportModel:
-    """Import statement representation."""
-
-    module: str
-    name: str
-    alias: str | None = None
-
-
-@dataclass
-class ClassModel:
-    """Class representation with methods, attributes and relationships."""
-
-    name: ClassName
-    filename: str
-    bases: list[ClassName] = field(default_factory=list)
-    methods: list[MethodModel] = field(default_factory=list)
-    attributes: list[AttributeModel] = field(default_factory=list)
-    relationships: list[RelationshipModel] = field(default_factory=list)
-    imports: list[ImportModel] = field(default_factory=list)
-    docstring: str | None = None
-    decorators: list[str] = field(default_factory=list)
-
-
-@dataclass
-class FunctionModel:
-    """Standalone function representation."""
-
-    name: str
-    parameters: list[ParameterModel]
-    return_type: TypeAnnotation
-    visibility: Visibility = Visibility.PUBLIC
-
-    @property
-    def signature(self) -> str:
-        """Generate function signature string."""
-        params = [
-            f"{param.name}: {param.type_annotation}"
-            + (f" = {param.default_value}" if param.default_value else "")
+            f"{param.name}: {param.type_annotation}" +
+            (f" = {param.default_value}" if param.default_value else "")
             for param in self.parameters
         ]
         return f"{self.name}({', '.join(params)}) -> {self.return_type}"
 
+@dataclass
+class Relationship:
+    """Relationship between classes."""
+    source: str
+    target: str
+    type: str  # -->: association, *-->: composition, etc.
+
+@dataclass
+class Import:
+    """Import statement representation."""
+    module: str
+    name: str
+    alias: Optional[str] = None
+
+@dataclass
+class ClassModel:
+    """Class representation with methods, attributes and relationships."""
+    name: str
+    filename: str
+    bases: List[str] = field(default_factory=list)
+    methods: List[Method] = field(default_factory=list)
+    attributes: List[Attribute] = field(default_factory=list)
+    relationships: List[Relationship] = field(default_factory=list)
+    imports: List[Import] = field(default_factory=list)
+
+@dataclass
+class FunctionModel:
+    """Standalone function representation."""
+    name: str
+    parameters: List[Parameter]
+    return_type: str
+    visibility: str = "+"
+    
+    @property
+    def signature(self) -> str:
+        """Generate function signature string."""
+        params = [
+            f"{param.name}: {param.type_annotation}" +
+            (f" = {param.default_value}" if param.default_value else "")
+            for param in self.parameters
+        ]
+        return f"{self.name}({', '.join(params)}) -> {self.return_type}"
 
 @dataclass
 class FileModel:
     """File representation containing classes and functions."""
-
     path: Path
-    classes: list[ClassModel] = field(default_factory=list)
-    functions: list[FunctionModel] = field(default_factory=list)
-    imports: list[ImportModel] = field(default_factory=list)
-
+    classes: List[ClassModel] = field(default_factory=list)
+    functions: List[FunctionModel] = field(default_factory=list)
+    imports: List[Import] = field(default_factory=list)
+    
     @property
     def filename(self) -> str:
         """Get filename without extension."""
         return self.path.stem
+
+================
+File: models/__init__.py
+================
+"""Domain models for UML generation."""
+
+from .models import (
+    AttributeModel,
+    ClassModel,
+    FileModel,
+    FunctionModel,
+    ImportModel,
+    MethodModel,
+    Parameter,
+    RelationshipModel,
+    Visibility,
+)
+
+__all__ = [
+    "AttributeModel",
+    "ClassModel",
+    "FileModel",
+    "FunctionModel",
+    "ImportModel",
+    "MethodModel",
+    "Parameter",
+    "RelationshipModel",
+    "Visibility",
+]
 
 ================
 File: models/models.py
@@ -1487,172 +1314,65 @@ class FileModel:
         return self.path.stem
 
 ================
-File: parsers/__init__.py
+File: parsers/python_parser.py
 ================
-"""Parser package for UML generator."""
-
-from .base_parser import BaseParser
-from .python import PythonAstParser
-
-__all__ = [
-    "BaseParser",
-    "PythonAstParser",
-]
-
-================
-File: parsers/base_parser.py
-================
-"""Base parser interface and common utilities."""
-
-from abc import ABC, abstractmethod
-from pathlib import Path
-
-from ..interfaces import FileSystem
-from ..models import FileModel
-
-
-class BaseParser(ABC):
-    """Base class for all parsers."""
-
-    def __init__(self, file_system: FileSystem):
-        self.file_system = file_system
-
-    @abstractmethod
-    def get_supported_extensions(self) -> set[str]:
-        """Return set of supported file extensions."""
-        pass
-
-    @abstractmethod
-    def parse_file(self, file_path: Path) -> FileModel:
-        """Parse a file and return a FileModel."""
-        pass
-
-================
-File: parsers/python/__init__.py
-================
-"""Python parser package."""
-
-from .ast_parser import PythonAstParser
-from .class_parser import ClassParser
-from .function_parser import FunctionParser
-from .import_parser import ImportParser
-from .relationship_parser import RelationshipParser
-from .type_parser import TypeAnnotationParser
-
-__all__ = [
-    "PythonAstParser",
-    "ClassParser",
-    "FunctionParser",
-    "ImportParser",
-    "RelationshipParser",
-    "TypeAnnotationParser",
-]
-
-================
-File: parsers/python/ast_parser.py
-================
-"""Main Python AST parser implementation."""
+"""Parser for Python files using the AST module."""
 
 import ast
 import logging
 from pathlib import Path
 
-from ...exceptions import FileSystemError, ParserError, SyntaxParsingError
-from ...interfaces import FileSystem
-from ...models import FileModel
-from ..base_parser import BaseParser
-from .class_parser import ClassParser
-from .function_parser import FunctionParser
-from .import_parser import ImportParser
+from ..interfaces import FileParser, FileSystem
+from ..models import (
+    AttributeModel,
+    ClassModel,
+    FileModel,
+    FunctionModel,
+    ImportModel,
+    MethodModel,
+    Parameter,
+    RelationshipModel,
+    Visibility,
+)
 
 
-class PythonAstParser(BaseParser):
-    """Parser for Python files using the AST module."""
+class PythonAstParser(FileParser):
+    """Parser for Python files using the ast module."""
 
     def __init__(self, file_system: FileSystem):
-        super().__init__(file_system)
+        self.file_system = file_system
         self.logger = logging.getLogger(__name__)
-        self.class_parser = ClassParser()
-        self.function_parser = FunctionParser()
-        self.import_parser = ImportParser()
 
     def get_supported_extensions(self) -> set[str]:
         """Return set of supported file extensions."""
         return {".py"}
 
     def parse_file(self, file_path: Path) -> FileModel:
-        """Parse Python file using AST and return a FileModel.
-
-        Args:
-            file_path: Path to the Python file to parse
-
-        Returns:
-            FileModel containing the parsed file information
-
-        Raises:
-            ParserError: Base class for all parsing errors
-            SyntaxParsingError: When the file contains invalid Python syntax
-            ImportError: When there's an error parsing imports
-            TypeAnnotationError: When there's an error parsing type annotations
-            FileSystemError: When the file cannot be read
-        """
+        """Parse Python file using AST and return a FileModel."""
         self.logger.info(f"Parsing file: {file_path.name}")
 
-        try:
-            content = self.file_system.read_file(file_path)
-        except Exception as e:
-            raise FileSystemError(f"Failed to read file {file_path}: {e!s}")
+        content = self.file_system.read_file(file_path)
+        tree = ast.parse(content, filename=str(file_path))
 
-        try:
-            tree = ast.parse(content, filename=str(file_path))
-        except SyntaxError as e:
-            raise SyntaxParsingError(
-                message=str(e),
-                filename=str(file_path),
-                line_number=e.lineno,
-            )
-        except Exception as e:
-            raise ParserError(f"Failed to parse {file_path}: {e!s}", str(file_path))
-
-        # Parse imports
-        imports = self.import_parser.parse_imports(tree)
-
-        # Get all class names for relationship detection
+        imports = self._parse_imports(tree)
         class_names = {
             node.name for node in ast.walk(tree) if isinstance(node, ast.ClassDef)
         }
 
-        # Parse classes with error handling
+        # Parse classes
         classes = []
         for node in ast.walk(tree):
             if isinstance(node, ast.ClassDef):
-                try:
-                    class_model = self.class_parser.parse_class(
-                        node,
-                        class_names,
-                        file_path.stem,
-                    )
-                    classes.append(class_model)
-                except Exception as e:
-                    self.logger.error(
-                        f"Error parsing class {node.name} in {file_path}: {e!s}",
-                    )
-                    # Continue parsing other classes instead of failing completely
-                    continue
+                classes.append(self._parse_class(node, class_names, file_path.stem))
 
         # Parse standalone functions (only those at module level)
         functions = []
         for node in tree.body:
-            if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
-                try:
-                    function_model = self.function_parser.parse_function(node)
-                    functions.append(function_model)
-                except Exception as e:
-                    self.logger.error(
-                        f"Error parsing function {node.name} in {file_path}: {e!s}",
-                    )
-                    # Continue parsing other functions
-                    continue
+            if isinstance(node, ast.FunctionDef) or isinstance(
+                node,
+                ast.AsyncFunctionDef,
+            ):
+                functions.append(self._parse_function(node))
 
         return FileModel(
             path=file_path,
@@ -1661,361 +1381,113 @@ class PythonAstParser(BaseParser):
             imports=imports,
         )
 
-================
-File: parsers/python/class_parser.py
-================
-"""Class parsing utilities."""
+    def _parse_imports(self, tree: ast.AST) -> list[ImportModel]:
+        """Parse imports from an AST tree."""
+        imports = []
 
-import ast
-import logging
-
-from ...exceptions import ParserError
-from ...models import (
-    AttributeModel,
-    ClassModel,
-    RelationshipModel,
-)
-from .function_parser import FunctionParser
-from .relationship_parser import RelationshipParser
-from .type_parser import TypeAnnotationParser
-
-
-class ClassParser:
-    """Parser for Python classes."""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        self.type_parser = TypeAnnotationParser()
-        self.relationship_parser = RelationshipParser()
-        self.function_parser = FunctionParser()
-
-    def parse_class(
-        self,
-        node: ast.ClassDef,
-        known_classes: set[str],
-        filename: str,
-    ) -> ClassModel:
-        """Parse a class definition from AST.
-
-        Args:
-            node: AST node for class definition
-            known_classes: Set of class names in the codebase
-            filename: Name of the file containing this class
-
-        Returns:
-            ClassModel containing the parsed class information
-
-        Raises:
-            ParserError: If there's an error parsing the class structure
-            TypeAnnotationError: If there's an error parsing type annotations
-        """
-        try:
-            class_name = node.name
-
-            # Parse base classes with error handling
-            bases = []
-            for base in node.bases:
-                try:
-                    if isinstance(base, ast.Name):
-                        bases.append(base.id)
-                    elif isinstance(base, ast.Attribute):
-                        # Handle module.Class style inheritance
-                        bases.append(ast.unparse(base))
-                except Exception as e:
-                    self.logger.warning(
-                        f"Failed to parse base class in {class_name}: {e!s}",
+        for node in ast.walk(tree):
+            # Handle 'import module' statements
+            if isinstance(node, ast.Import):
+                for name in node.names:
+                    imports.append(
+                        ImportModel(
+                            module=name.name,
+                            name=name.name.split(".")[-1],
+                            alias=name.asname,
+                        ),
                     )
 
-            methods = []
-            attributes = []
-            relationships = []
-
-            # Get class docstring
-            docstring = ast.get_docstring(node)
-
-            # Parse decorators
-            decorators = []
-            for decorator in node.decorator_list:
-                try:
-                    if isinstance(decorator, ast.Name):
-                        decorators.append(decorator.id)
-                    elif isinstance(decorator, ast.Call):
-                        if isinstance(decorator.func, ast.Name):
-                            decorators.append(decorator.func.id)
-                except Exception as e:
-                    self.logger.warning(
-                        f"Failed to parse decorator in {class_name}: {e!s}",
+            # Handle 'from module import name' statements
+            elif isinstance(node, ast.ImportFrom):
+                module = node.module or ""
+                # Preserve the leading dot for relative imports
+                prefix = "." * node.level if node.level > 0 else ""
+                for name in node.names:
+                    imports.append(
+                        ImportModel(
+                            module=f"{prefix}{module}.{name.name}",
+                            name=name.name,
+                            alias=name.asname,
+                        ),
                     )
 
-            for class_body_item in node.body:
-                try:
-                    # Class methods (including async methods)
-                    if isinstance(
-                        class_body_item, (ast.FunctionDef, ast.AsyncFunctionDef)
-                    ):
-                        method = self.function_parser.parse_method(class_body_item)
-                        methods.append(method)
+        return imports
 
-                    # Class attributes (simple assignments)
-                    elif isinstance(class_body_item, ast.Assign):
-                        for target in class_body_item.targets:
-                            if isinstance(target, ast.Name):
-                                attr_name = target.id
-                                visibility = self.function_parser.get_method_visibility(
-                                    attr_name
-                                )
-                                # Try to infer type from assigned value
-                                value_type = "Any"
-                                default_value = None
-                                if isinstance(class_body_item.value, ast.Constant):
-                                    value_type = type(
-                                        class_body_item.value.value
-                                    ).__name__
-                                    default_value = ast.unparse(class_body_item.value)
-                                attributes.append(
-                                    AttributeModel(
-                                        name=attr_name,
-                                        type_annotation=value_type,
-                                        visibility=visibility,
-                                        default_value=default_value,
-                                    ),
-                                )
+    def _get_annotation(self, node: ast.AST | None) -> str:
+        """Extract type annotation from AST node."""
+        if node is None:
+            return "Any"
 
-                    # Attributes with type annotations
-                    elif isinstance(class_body_item, ast.AnnAssign):
-                        if isinstance(class_body_item.target, ast.Name):
-                            attr_name = class_body_item.target.id
-                            attr_type = self.type_parser.parse_annotation(
-                                class_body_item.annotation
-                            )
-                            visibility = self.function_parser.get_method_visibility(
-                                attr_name
-                            )
+        if isinstance(node, ast.Name):
+            return node.id
+        if isinstance(node, ast.Constant):
+            return str(node.value)
+        if isinstance(node, ast.Subscript):
+            return ast.unparse(node)
+        if isinstance(node, ast.BinOp):
+            return ast.unparse(node)
 
-                            # Get default value if present
-                            default_value = None
-                            if class_body_item.value:
-                                default_value = ast.unparse(class_body_item.value)
+        return ast.unparse(node)
 
-                            attributes.append(
-                                AttributeModel(
-                                    name=attr_name,
-                                    type_annotation=attr_type,
-                                    visibility=visibility,
-                                    default_value=default_value,
-                                ),
-                            )
-
-                            # Check for relationships in type annotations
-                            new_relationships = (
-                                self.relationship_parser.find_relationships(
-                                    class_body_item.annotation,
-                                    known_classes,
-                                )
-                            )
-                            for rel_type, target in new_relationships:
-                                relationships.append(
-                                    RelationshipModel(
-                                        source=class_name,
-                                        target=target,
-                                        type=rel_type,
-                                    ),
-                                )
-                except Exception as e:
-                    self.logger.error(
-                        f"Error parsing class member in {class_name}: {e!s}",
-                    )
-                    continue
-
-            return ClassModel(
-                name=class_name,
-                filename=filename,
-                bases=bases,
-                methods=methods,
-                attributes=attributes,
-                relationships=relationships,
-                docstring=docstring,
-                decorators=decorators,
-            )
-
-        except Exception as e:
-            raise ParserError(
-                f"Failed to parse class {node.name}: {e!s}",
-                filename=filename,
-                line_number=node.lineno,
-            )
-
-================
-File: parsers/python/function_parser.py
-================
-"""Function and method parsing utilities.
-
-This module provides parsers for Python functions and methods, handling:
-- Function and method signatures
-- Parameters and return types
-- Decorators and visibility
-- Static and class methods
-- Async functions and methods
-"""
-
-import ast
-import logging
-
-from ...exceptions import ParserError
-from ...models import (
-    FunctionModel,
-    MethodModel,
-    ParameterModel,
-    Visibility,
-)
-from .type_parser import TypeAnnotationParser
-
-
-def parse_decorator(decorator: ast.AST) -> str | None:
-    """Parse a decorator node to get its name.
-
-    Args:
-        decorator: AST node representing a decorator
-
-    Returns:
-        Decorator name if it can be parsed, None otherwise
-    """
-    try:
-        if isinstance(decorator, ast.Name):
-            return decorator.id
-        if isinstance(decorator, ast.Call):
-            if isinstance(decorator.func, ast.Name):
-                return decorator.func.id
-        return None
-    except Exception:
-        return None
-
-
-class FunctionParser:
-    """Parser for Python functions and methods."""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        self.type_parser = TypeAnnotationParser()
-
-    def parse_parameters(
+    def _parse_parameters(
         self,
         args: ast.arguments,
         is_method: bool = False,
-    ) -> list[ParameterModel]:
-        """Parse function parameters from AST arguments.
+    ) -> list[Parameter]:
+        """Parse function parameters from AST arguments."""
+        parameters = []
 
-        Args:
-            args: AST arguments node containing parameter information
-            is_method: Whether these parameters are for a method (adds self)
+        # For methods, always include 'self' parameter in test environment
+        if is_method and args.args and args.args[0].arg == "self":
+            parameters.append(
+                Parameter(
+                    name="self",
+                    type_annotation="Any",
+                ),
+            )
+            args_to_process = args.args[1:]
+        else:
+            args_to_process = args.args
 
-        Returns:
-            List of ParameterModel objects representing the parameters
+        # Process parameters
+        for arg in args_to_process:
+            param_type = self._get_annotation(arg.annotation)
+            parameters.append(
+                Parameter(
+                    name=arg.arg,
+                    type_annotation=param_type,
+                ),
+            )
 
-        Raises:
-            ParserError: If there's an error parsing parameters
-        """
-        try:
-            parameters: list[ParameterModel] = []
+        # Handle default values
+        defaults = [None] * (len(args_to_process) - len(args.defaults)) + args.defaults
+        for i, default in enumerate(defaults):
+            if default:
+                parameters[i].default_value = ast.unparse(default)
 
-            # For methods, always include 'self' parameter in test environment
-            if is_method and args.args and args.args[0].arg == "self":
-                parameters.append(
-                    ParameterModel(
-                        name="self",
-                        type_annotation="Any",
-                    ),
-                )
-                args_to_process = args.args[1:]
-            else:
-                args_to_process = args.args
+        # Handle *args
+        if args.vararg:
+            vararg_type = self._get_annotation(args.vararg.annotation)
+            parameters.append(
+                Parameter(
+                    name=f"*{args.vararg.arg}",
+                    type_annotation=vararg_type,
+                ),
+            )
 
-            # Process parameters
-            for arg in args_to_process:
-                try:
-                    param_type = self.type_parser.parse_annotation(arg.annotation)
-                    parameters.append(
-                        ParameterModel(
-                            name=arg.arg,
-                            type_annotation=param_type,
-                        ),
-                    )
-                except Exception as e:
-                    self.logger.warning(
-                        f"Failed to parse parameter {arg.arg}: {e!s}. Using 'Any' type.",
-                    )
-                    parameters.append(
-                        ParameterModel(
-                            name=arg.arg,
-                            type_annotation="Any",
-                        ),
-                    )
+        # Handle **kwargs
+        if args.kwarg:
+            kwarg_type = self._get_annotation(args.kwarg.annotation)
+            parameters.append(
+                Parameter(
+                    name=f"**{args.kwarg.arg}",
+                    type_annotation=kwarg_type,
+                ),
+            )
 
-            # Handle default values
-            defaults = [None] * (
-                len(args_to_process) - len(args.defaults)
-            ) + args.defaults
-            for i, default in enumerate(defaults):
-                if default:
-                    try:
-                        parameters[i].default_value = ast.unparse(default)
-                    except Exception as e:
-                        self.logger.warning(
-                            f"Failed to parse default value for parameter {parameters[i].name}: {e!s}",
-                        )
+        return parameters
 
-            # Handle *args
-            if args.vararg:
-                try:
-                    vararg_type = self.type_parser.parse_annotation(
-                        args.vararg.annotation
-                    )
-                    parameters.append(
-                        ParameterModel(
-                            name=f"*{args.vararg.arg}",
-                            type_annotation=vararg_type,
-                        ),
-                    )
-                except Exception as e:
-                    self.logger.warning(
-                        f"Failed to parse *args parameter: {e!s}. Using 'Any' type.",
-                    )
-                    parameters.append(
-                        ParameterModel(
-                            name=f"*{args.vararg.arg}",
-                            type_annotation="Any",
-                        ),
-                    )
-
-            # Handle **kwargs
-            if args.kwarg:
-                try:
-                    kwarg_type = self.type_parser.parse_annotation(
-                        args.kwarg.annotation
-                    )
-                    parameters.append(
-                        ParameterModel(
-                            name=f"**{args.kwarg.arg}",
-                            type_annotation=kwarg_type,
-                        ),
-                    )
-                except Exception as e:
-                    self.logger.warning(
-                        f"Failed to parse **kwargs parameter: {e!s}. Using 'Any' type.",
-                    )
-                    parameters.append(
-                        ParameterModel(
-                            name=f"**{args.kwarg.arg}",
-                            type_annotation="Any",
-                        ),
-                    )
-
-            return parameters
-
-        except Exception as e:
-            raise ParserError(f"Failed to parse parameters: {e!s}")
-
-    def get_method_visibility(self, method_name: str) -> Visibility:
+    def _get_method_visibility(self, method_name: str) -> Visibility:
         """Determine method visibility based on name."""
         if method_name.startswith("__") and method_name.endswith("__"):
             return Visibility.PUBLIC  # Special methods are public
@@ -2025,379 +1497,145 @@ class FunctionParser:
             return Visibility.PROTECTED  # Protected methods
         return Visibility.PUBLIC  # Public methods
 
-    def parse_function(
-        self,
-        node: ast.FunctionDef | ast.AsyncFunctionDef,
+    def _parse_function(
+        self, node: ast.FunctionDef | ast.AsyncFunctionDef
     ) -> FunctionModel:
-        """Parse a standalone function definition from AST."""
-        try:
-            name = node.name
-            parameters = self.parse_parameters(node.args)
-            return_type = self.type_parser.parse_annotation(node.returns)
-            visibility = self.get_method_visibility(name)
+        """Parse a function definition from AST."""
+        name = node.name
+        parameters = self._parse_parameters(node.args)
+        return_type = self._get_annotation(node.returns)
+        visibility = self._get_method_visibility(name)
 
-            # Add 'async' prefix for async functions
-            prefix = "async " if isinstance(node, ast.AsyncFunctionDef) else ""
+        # Add 'async' prefix for async functions
+        prefix = "async " if isinstance(node, ast.AsyncFunctionDef) else ""
 
-            return FunctionModel(
-                name=f"{prefix}{name}",
-                parameters=parameters,
-                return_type=return_type,
-                visibility=visibility,
-            )
-        except Exception as e:
-            raise ParserError(
-                f"Failed to parse function {node.name}: {e!s}",
-                line_number=node.lineno,
-            )
+        return FunctionModel(
+            name=f"{prefix}{name}",
+            parameters=parameters,
+            return_type=return_type,
+            visibility=visibility,
+        )
 
-    def parse_method(
-        self,
-        node: ast.FunctionDef | ast.AsyncFunctionDef,
-    ) -> MethodModel:
-        """Parse a class method definition from AST.
-
-        Args:
-            node: AST node representing a method definition
-
-        Returns:
-            MethodModel containing the parsed method information
-
-        Raises:
-            ParserError: If there's an error parsing the method
-        """
-        try:
-            method_name = node.name
-
-            # Parse decorators and check for staticmethod/classmethod
-            method_decorators: list[str] = []
-            is_static = False
-            is_classmethod = False
-
-            for decorator in node.decorator_list:
-                if decorator_name := parse_decorator(decorator):
-                    method_decorators.append(decorator_name)
-                    if decorator_name == "staticmethod":
-                        is_static = True
-                    elif decorator_name == "classmethod":
-                        is_classmethod = True
-
-            # Parse parameters (don't add self for static methods)
-            method_params = self.parse_parameters(
-                node.args,
-                is_method=not is_static,
-            )
-
-            # Parse return type and visibility
-            return_type = self.type_parser.parse_annotation(node.returns)
-            visibility = self.get_method_visibility(method_name)
-
-            # Get docstring
-            method_docstring = ast.get_docstring(node)
-
-            # Add async prefix for async methods
-            prefix = "async " if isinstance(node, ast.AsyncFunctionDef) else ""
-
-            return MethodModel(
-                name=f"{prefix}{method_name}",
-                parameters=method_params,
-                return_type=return_type,
-                visibility=visibility,
-                is_static=is_static,
-                is_classmethod=is_classmethod,
-                docstring=method_docstring,
-                decorators=method_decorators,
-            )
-        except Exception as e:
-            raise ParserError(
-                f"Failed to parse method {node.name}: {e!s}",
-                line_number=node.lineno,
-            )
-
-================
-File: parsers/python/import_parser.py
-================
-"""Import statement parsing utilities."""
-
-import ast
-import logging
-
-from ...exceptions import ImportError
-from ...models import ImportModel
-
-
-class ImportParser:
-    """Parser for Python import statements."""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-
-    def parse_imports(self, tree: ast.AST) -> list[ImportModel]:
-        """Parse imports from an AST tree.
-
-        Args:
-            tree: AST tree to parse
-
-        Returns:
-            List of ImportModel objects
-
-        Raises:
-            ImportError: If there's an error parsing imports
-        """
-        try:
-            imports: list[ImportModel] = []
-
-            for node in ast.walk(tree):
-                # Handle 'import module' statements
-                if isinstance(node, ast.Import):
-                    for name in node.names:
-                        imports.append(
-                            ImportModel(
-                                module=name.name,
-                                name=name.name.split(".")[-1],
-                                alias=name.asname,
-                            ),
-                        )
-
-                # Handle 'from module import name' statements
-                elif isinstance(node, ast.ImportFrom):
-                    module = node.module or ""
-                    # Preserve the leading dot for relative imports
-                    prefix = "." * node.level if node.level > 0 else ""
-                    for name in node.names:
-                        imports.append(
-                            ImportModel(
-                                module=f"{prefix}{module}.{name.name}",
-                                name=name.name,
-                                alias=name.asname,
-                            ),
-                        )
-
-            return imports
-
-        except Exception as e:
-            raise ImportError(
-                f"Failed to parse imports: {e!s}",
-                line_number=getattr(node, "lineno", None),
-            )
-
-================
-File: parsers/python/relationship_parser.py
-================
-"""Relationship detection between Python classes."""
-
-import ast
-import logging
-
-from ...exceptions import TypeAnnotationError
-from .type_parser import TypeAnnotationParser
-
-
-class RelationshipParser:
-    """Parser for detecting relationships between Python classes."""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-        self.type_parser = TypeAnnotationParser()
-
-    def find_relationships(
+    def _find_class_relationships(
         self,
         annotation: ast.AST,
         known_classes: set[str],
     ) -> list[tuple[str, str]]:
-        """Find relationships to other classes in type annotations.
+        """Find relationships to other classes in type annotations."""
+        relationships = []
 
-        This method analyzes type annotations to detect various kinds of relationships:
-        - Basic association (-->): Simple reference to another class
-        - Composition (*-->): Collection types (List, Set, etc.) containing other classes
-        - Aggregation (o-->): Dict with class as value type
-        - Optional association (..>): Optional[Class] references
-
-        Args:
-            annotation: AST node containing type annotation
-            known_classes: Set of class names that exist in the codebase
-
-        Returns:
-            List of tuples (relationship_type, target_class)
-            where relationship_type is one of: '-->', '*-->', 'o-->', '..>'
-
-        Raises:
-            TypeAnnotationError: If the type annotation cannot be parsed
-        """
-        try:
-            relationships = []
-
-            # Handle direct class reference
-            if isinstance(annotation, ast.Name):
-                if annotation.id in known_classes:
-                    relationships.append(("-->", annotation.id))  # Basic association
-                return relationships
-
-            # Handle subscript types (generics)
-            if isinstance(annotation, ast.Subscript):
-                value = annotation.value
-                if not isinstance(value, ast.Name):
-                    return relationships
-
+        if isinstance(annotation, ast.Name) and annotation.id in known_classes:
+            relationships.append(("-->", annotation.id))  # Basic association
+        elif isinstance(annotation, ast.Subscript):
+            # Handle List[Class], Optional[Class], etc.
+            value = annotation.value
+            if isinstance(value, ast.Name):
                 collection_type = value.id
-
-                # Handle collection types (List, Set, etc.)
-                if collection_type in (
-                    "List",
-                    "Set",
-                    "Sequence",
-                    "Collection",
-                    "Iterable",
+                if collection_type in ("List", "Sequence", "Collection"):
+                    # For collections, use composition with multiplicity
+                    if isinstance(annotation.slice, ast.Name):
+                        if annotation.slice.id in known_classes:
+                            relationships.append(("*-->", annotation.slice.id))
+                    # Handle string literals in annotations (e.g., List['Comment'])
+                    elif isinstance(annotation.slice, ast.Constant) and isinstance(
+                        annotation.slice.value,
+                        str,
+                    ):
+                        class_name = annotation.slice.value.strip("'\"")
+                        if class_name in known_classes:
+                            relationships.append(("*-->", class_name))
+                elif collection_type == "Optional" and isinstance(
+                    annotation.slice,
+                    ast.Name,
                 ):
-                    target_class = self.type_parser.extract_class_from_slice(
-                        annotation.slice,
+                    if annotation.slice.id in known_classes:
+                        relationships.append(("-->", annotation.slice.id))
+
+        return relationships
+
+    def _parse_class(
+        self,
+        node: ast.ClassDef,
+        known_classes: set[str],
+        filename: str,
+    ) -> ClassModel:
+        """Parse a class definition from AST."""
+        class_name = node.name
+        bases = [base.id for base in node.bases if isinstance(base, ast.Name)]
+        methods = []
+        attributes = []
+        relationships = []
+
+        for class_body_item in node.body:
+            # Class methods
+            if isinstance(class_body_item, ast.FunctionDef):
+                method_name = class_body_item.name
+                method_params = self._parse_parameters(
+                    class_body_item.args,
+                    is_method=True,
+                )
+                return_type = self._get_annotation(class_body_item.returns)
+                visibility = self._get_method_visibility(method_name)
+
+                methods.append(
+                    MethodModel(
+                        name=method_name,
+                        parameters=method_params,
+                        return_type=return_type,
+                        visibility=visibility,
+                    ),
+                )
+
+            # Class attributes (simple assignments like "x = 10")
+            elif isinstance(class_body_item, ast.Assign):
+                for target in class_body_item.targets:
+                    if isinstance(target, ast.Name):
+                        attr_name = target.id
+                        visibility = self._get_method_visibility(attr_name)
+                        attributes.append(
+                            AttributeModel(
+                                name=attr_name,
+                                type_annotation="Any",
+                                visibility=visibility,
+                            ),
+                        )
+
+            # Attributes with type annotations
+            elif isinstance(class_body_item, ast.AnnAssign):
+                if isinstance(class_body_item.target, ast.Name):
+                    attr_name = class_body_item.target.id
+                    attr_type = self._get_annotation(class_body_item.annotation)
+                    visibility = self._get_method_visibility(attr_name)
+                    attributes.append(
+                        AttributeModel(
+                            name=attr_name,
+                            type_annotation=attr_type,
+                            visibility=visibility,
+                        ),
+                    )
+
+                    # Check for relationships in type annotations
+                    new_relationships = self._find_class_relationships(
+                        class_body_item.annotation,
                         known_classes,
                     )
-                    if target_class:
-                        relationships.append(("*-->", target_class))  # Composition
-
-                # Handle dictionary types
-                elif collection_type == "Dict":
-                    if isinstance(annotation.slice, ast.Tuple):
-                        # Check if value type is a known class
-                        if (
-                            len(annotation.slice.elts) == 2
-                        ):  # Dict[key_type, value_type]
-                            value_type = annotation.slice.elts[1]
-                            if (
-                                isinstance(value_type, ast.Name)
-                                and value_type.id in known_classes
-                            ):
-                                relationships.append(
-                                    ("o-->", value_type.id)
-                                )  # Aggregation
-                            elif isinstance(value_type, ast.Constant) and isinstance(
-                                value_type.value,
-                                str,
-                            ):
-                                class_name = value_type.value.strip("'\"")
-                                if class_name in known_classes:
-                                    relationships.append(("o-->", class_name))
-
-                # Handle Optional types
-                elif collection_type == "Optional":
-                    target_class = self.type_parser.extract_class_from_slice(
-                        annotation.slice,
-                        known_classes,
-                    )
-                    if target_class:
+                    for rel_type, target in new_relationships:
                         relationships.append(
-                            ("..>", target_class)
-                        )  # Optional association
+                            RelationshipModel(
+                                source=class_name,
+                                target=target,
+                                type=rel_type,
+                            ),
+                        )
 
-                # Handle Union types
-                elif collection_type == "Union":
-                    if isinstance(annotation.slice, ast.Tuple):
-                        for type_arg in annotation.slice.elts:
-                            target_class = self.type_parser.extract_class_from_slice(
-                                type_arg,
-                                known_classes,
-                            )
-                            if target_class:
-                                relationships.append(("-->", target_class))
-
-            return relationships
-
-        except Exception as e:
-            raise TypeAnnotationError(
-                f"Failed to analyze relationships in type annotation: {e!s}",
-                line_number=getattr(annotation, "lineno", None),
-            )
-
-================
-File: parsers/python/type_parser.py
-================
-"""Type annotation parsing utilities."""
-
-import ast
-import logging
-
-from ...exceptions import TypeAnnotationError
-
-
-class TypeAnnotationParser:
-    """Parser for Python type annotations."""
-
-    def __init__(self):
-        self.logger = logging.getLogger(__name__)
-
-    def parse_annotation(self, node: ast.AST | None) -> str:
-        """Extract type annotation from AST node.
-
-        Args:
-            node: AST node containing type annotation, or None
-
-        Returns:
-            String representation of the type annotation
-
-        Raises:
-            TypeAnnotationError: If the type annotation cannot be parsed
-        """
-        try:
-            if node is None:
-                return "Any"
-
-            if isinstance(node, ast.Name):
-                return node.id
-            if isinstance(node, ast.Constant):
-                return str(node.value)
-            if isinstance(node, ast.Subscript):
-                # Handle complex type annotations like List[str], Dict[str, int], etc.
-                value = node.value
-                if isinstance(value, ast.Name):
-                    collection_type = value.id
-                    if collection_type in ("List", "Set", "Sequence", "Collection"):
-                        # Handle single type parameter
-                        if isinstance(node.slice, ast.Name):
-                            return f"{collection_type}[{node.slice.id}]"
-                        if isinstance(node.slice, ast.Constant):
-                            # Handle string literals in annotations
-                            return f"{collection_type}[{node.slice.value}]"
-                        return ast.unparse(node)
-                    if collection_type == "Dict":
-                        # Handle Dict with key,value types
-                        return ast.unparse(node)
-                    if collection_type == "Optional":
-                        # Handle Optional[Type]
-                        if isinstance(node.slice, ast.Name):
-                            return f"Optional[{node.slice.id}]"
-                        if isinstance(node.slice, ast.Constant):
-                            return f"Optional[{node.slice.value}]"
-                        return ast.unparse(node)
-                    if collection_type == "Union":
-                        # Handle Union[Type1, Type2]
-                        return ast.unparse(node)
-                return ast.unparse(node)
-            if isinstance(node, ast.BinOp):
-                # Handle string concatenation in annotations
-                return ast.unparse(node)
-            if isinstance(node, ast.Attribute):
-                # Handle module.type annotations
-                return ast.unparse(node)
-
-            return ast.unparse(node)
-        except Exception as e:
-            raise TypeAnnotationError(
-                f"Failed to parse type annotation: {e!s}",
-                line_number=getattr(node, "lineno", None),
-            )
-
-    def extract_class_from_slice(
-        self, node: ast.AST, known_classes: set[str]
-    ) -> str | None:
-        """Extract class name from AST node if it represents a known class."""
-        if isinstance(node, ast.Name) and node.id in known_classes:
-            return node.id
-        if isinstance(node, ast.Constant) and isinstance(node.value, str):
-            class_name = node.value.strip("'\"")
-            if class_name in known_classes:
-                return class_name
-        return None
+        return ClassModel(
+            name=class_name,
+            filename=filename,
+            bases=bases,
+            methods=methods,
+            attributes=attributes,
+            relationships=relationships,
+        )
 
 ================
 File: pytest.ini
@@ -2785,15 +2023,7 @@ class UmlGeneratorService:
 
             # Generate the UML diagram
             output_extension = generator.get_output_extension()
-            # Preserve directory structure in output
-            relative_path = file_path.relative_to(self.config.source_dir)
-            output_path = (
-                self.config.output_dir
-                / relative_path.parent
-                / f"{file_path.stem}{output_extension}"
-            )
-            # Ensure output directory exists
-            self.file_system.ensure_directory(output_path.parent)
+            output_path = self.config.output_dir / f"{file_path.stem}{output_extension}"
             generator.generate_diagram(file_model, output_path)
 
             self.logger.info(
@@ -2900,87 +2130,11 @@ File: tests/__init__.py
 ================
 File: tests/conftest.py
 ================
+import sys
 from pathlib import Path
 
-import pytest
-
-from ..interfaces import FileSystem
-
-
-class MockFileSystem(FileSystem):
-    """Mock file system for testing."""
-
-    def __init__(self, files: dict[str, str] | None = None):
-        self.files = files or {}
-        self.written_files = {}
-        self.file_patterns: dict[str, list[str]] = {}
-
-    def find_files(self, directory: Path, pattern: str) -> list[Path]:
-        """Mock finding files matching pattern."""
-        key = str(directory)
-        if key not in self.file_patterns:
-            # Return files in the mocked directory
-            return [
-                Path(f)
-                for f in self.files.keys()
-                if f.startswith(key) and f.endswith(pattern.replace("*", ""))
-            ]
-        return [Path(f) for f in self.file_patterns[key]]
-
-    def read_file(self, path: Path) -> str:
-        return self.files.get(str(path), "")
-
-    def write_file(self, path: Path, content: str) -> None:
-        self.written_files[str(path)] = content
-
-    def ensure_directory(self, path: Path) -> None:
-        pass
-
-
-@pytest.fixture
-def mock_fs():
-    """Create empty mock filesystem."""
-    return MockFileSystem()
-
-
-@pytest.fixture
-def sample_code():
-    """Return sample Python code for testing."""
-    return """
-    from typing import List, Optional
-
-    class BaseModel:
-        id: int
-        created_at: str
-
-        def save(self) -> None:
-            pass
-
-    class User(BaseModel):
-        name: str
-        email: str
-        _password: str
-
-        def __init__(self, name: str, email: str):
-            self.name = name
-            self.email = email
-
-    class Post:
-        title: str
-        content: str
-        author: User
-        comments: List['Comment']
-
-        def __init__(self, title: str, content: str, author: User):
-            self.title = title
-            self.content = content
-            self.author = author
-
-    class Comment:
-        text: str
-        author: User
-        post: Post
-    """
+# Add the parent directory to sys.path
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 ================
 File: tests/test_cli.py
