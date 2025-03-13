@@ -129,6 +129,95 @@ Plantuml Generator
 
 
 
+Sequence
+--------
+
+
+Authcontroller Login
+~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/AuthController_login.puml
+
+
+Usercontroller Create User
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/UserController_create_user.puml
+
+
+Admin Create User
+~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/admin_create_user.puml
+
+
+Auth Flow
+~~~~~~~~~
+
+.. uml:: sequence/auth_flow.puml
+
+
+Authentication Flow
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/authentication_flow.puml
+
+
+Create User
+~~~~~~~~~~~
+
+.. uml:: sequence/create_user.puml
+
+
+Enhanced Create User
+~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/enhanced_create_user.puml
+
+
+Password Recovery Request
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/password_recovery_request.puml
+
+
+Password Reset
+~~~~~~~~~~~~~~
+
+.. uml:: sequence/password_reset.puml
+
+
+Token Verification
+~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/token_verification.puml
+
+
+User Change Password
+~~~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/user_change_password.puml
+
+
+User Delete Account
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/user_delete_account.puml
+
+
+User Signup
+~~~~~~~~~~~
+
+.. uml:: sequence/user_signup.puml
+
+
+User Update Profile
+~~~~~~~~~~~~~~~~~~~
+
+.. uml:: sequence/user_update_profile.puml
+
+
+
 Tests
 -----
 

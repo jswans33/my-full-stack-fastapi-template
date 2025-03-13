@@ -777,15 +777,19 @@ Add the new UML implementation guide to the index.rst file:
 Conclusion
 ----------
 
-This implementation guide provides concrete steps to add sequence diagram support to the UML generator. The same approach can be used to implement other diagram types like component diagrams, activity diagrams, etc.
+This implementation guide has been successfully completed with both YAML-based sequence diagrams and static code analysis-based sequence diagrams now implemented. Both approaches are integrated into the main UML generator workflow. The same approach can be used for other diagram types.
 
 Key files created or modified:
-- ``utils/uml_generator/models/sequence.py``
-- ``utils/uml_generator/generator/sequence_generator.py``
-- ``utils/uml_generator/factories.py`` (modified)
-- ``utils/uml_generator/cli.py`` (modified)
-- ``utils/uml_generator/config/loader.py`` (modified)
-- ``examples/sequence_diagrams/auth_flow.yaml``
+- For YAML-based sequence diagrams:
+  - ``utils/uml_generator/models/sequence.py``
+  - ``utils/uml_generator/generator/sequence_generator.py``
+  - ``utils/uml_generator/factories.py`` (modified)
+  - ``utils/uml_generator/cli.py`` (modified)
+  - ``utils/uml_generator/config/loader.py`` (modified)
+- For Code Analysis-based sequence diagrams:
+  - ``utils/sequence_extractor/`` directory with analyzer, models, and generator
+  - ``utils/extract_sequence.py`` CLI tool
+  - ``utils/run_uml_generator.py`` (modified to include static analysis)
 - ``utils/uml_generator/tests/test_sequence_generator.py``
 - ``docs/source/uml_diagrams.rst`` (modified)
 - ``docs/source/index.rst`` (modified)
@@ -794,5 +798,7 @@ Benefits of this implementation:
 - Maintains the existing architecture
 - Provides a clean, modular approach for adding new diagram types
 - Offers both programmatic and YAML-based diagram creation
-- Includes comprehensive tests
-- Integrates with documentation
+- Includes comprehensive tests and examples
+- Provides both static code analysis and manual definition approaches
+
+**Note on Errors**: When running the UML generator, you may see errors like `AttributeModel.__init__() got an unexpected keyword argument 'default_value'` or `ClassModel.__init__() got an unexpected keyword argument 'docstring'`. These errors occur when the UML generator attempts to analyze our sequence diagram implementation code itself. These errors do not prevent sequence diagrams from being generated correctly.

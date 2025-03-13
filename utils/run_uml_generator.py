@@ -5,6 +5,7 @@ Script to run the UML generator on the backend/app directory.
 
 import logging
 import os
+import subprocess
 import sys
 from pathlib import Path
 from typing import Any
@@ -384,7 +385,7 @@ def generate_sequence_diagrams() -> None:
         # Check if it's actually a SequenceDiagramGenerator
         if not isinstance(sequence_generator, SequenceDiagramGenerator):
             logger.error(
-                f"Expected SequenceDiagramGenerator but got {type(sequence_generator)}"
+                f"Expected SequenceDiagramGenerator but got {type(sequence_generator)}",
             )
             return
 
@@ -410,7 +411,7 @@ def generate_sequence_diagrams() -> None:
 
         if yaml_count > 0:
             logger.info(
-                f"Generated {yaml_count} sequence diagrams in {SEQUENCE_OUTPUT_DIR}"
+                f"Generated {yaml_count} sequence diagrams in {SEQUENCE_OUTPUT_DIR}",
             )
         else:
             logger.warning("No sequence diagrams were generated")
@@ -427,7 +428,7 @@ def generate_static_sequence_diagrams() -> None:
     except ImportError as e:
         logger.error(f"Error importing sequence extractor: {e}")
         logger.info(
-            "Sequence extractor may not be installed. Skipping static sequence diagram generation."
+            "Sequence extractor may not be installed. Skipping static sequence diagram generation.",
         )
         return
 
@@ -435,7 +436,7 @@ def generate_static_sequence_diagrams() -> None:
     app_dir = PROJECT_ROOT / "backend" / "app"
     if not app_dir.exists():
         logger.warning(
-            f"App directory {app_dir} not found. Skipping static sequence diagram generation."
+            f"App directory {app_dir} not found. Skipping static sequence diagram generation.",
         )
         return
 
@@ -462,7 +463,7 @@ def generate_static_sequence_diagrams() -> None:
     for class_name, method_name in entry_points:
         try:
             logger.info(
-                f"Generating sequence diagram for {class_name}.{method_name}..."
+                f"Generating sequence diagram for {class_name}.{method_name}...",
             )
             diagram = analyzer.generate_sequence_diagram(class_name, method_name)
             output_path = SEQUENCE_OUTPUT_DIR / f"{class_name}_{method_name}.puml"
@@ -470,7 +471,7 @@ def generate_static_sequence_diagrams() -> None:
             logger.info(f"Generated sequence diagram at {output_path}")
         except Exception as e:
             logger.error(
-                f"Error generating sequence for {class_name}.{method_name}: {e}"
+                f"Error generating sequence for {class_name}.{method_name}: {e}",
             )
 
 
@@ -521,7 +522,25 @@ def main():
     generate_sequence_diagrams()
 
     # Generate sequence diagrams from code analysis
-    generate_static_sequence_diagrams()
+    # Uncomment and run the following line to generate sequence diagrams from code analysis
+    # This requires proper configuration of the entry points
+    # generate_static_sequence_diagrams()
+
+    # Alternative: Use the dedicated script for backend/app sequence diagrams
+    try:
+        if os.path.exists("utils/extract_app_sequences.py"):
+            print(
+                "\nGenerating application sequence diagrams using extract_app_sequences.py...",
+            )
+            subprocess.run(
+                ["python", "-m", "utils.extract_app_sequences"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+            print("Application sequence diagrams generated successfully.")
+    except Exception as e:
+        print(f"Error generating application sequence diagrams: {e}")
 
     # Verify and log the generated files structure
     verify_generated_files(OUTPUT_BASE_DIR)

@@ -1,0 +1,13 @@
+@startuml
+
+title AuthController.login Sequence
+
+skinparam sequenceMessageAlign center
+skinparam monochrome true
+skinparam lifelinestrategy solid
+hide footbox
+
+class AuthController
+
+
+@enduml

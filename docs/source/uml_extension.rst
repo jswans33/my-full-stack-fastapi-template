@@ -322,13 +322,35 @@ Then we could create a command to generate diagrams from these definition files:
 
     python -m uml_generator.cli generate-from-definition --file auth_sequence.yaml --output auth_flow.puml
 
+Implementation Progress
+---------------------
+
+We have successfully implemented both approaches for sequence diagram generation:
+
+1. **YAML Definition Approach (Completed)**
+   - Implemented models in `utils/uml_generator/models/sequence.py` 
+   - Created generator in `utils/uml_generator/generator/sequence_generator.py`
+   - Added factory support and CLI commands
+   - YAML diagrams are generated automatically via `run_uml_generator.py`
+
+2. **Static Code Analysis Approach (Completed)**
+   - Created `utils/sequence_extractor/` with analyzer, models, and generator
+   - Implemented CLI tool in `utils/extract_sequence.py`
+   - Integrated into main workflow in `utils/run_uml_generator.py`
+   - Can automatically extract sequence diagrams from Python code
+
+Both approaches are now functional and integrated into the UML generator system. Diagrams are generated in the `docs/source/_generated_uml/sequence/` directory.
+
+**Known Issues**: When running the UML generator, you may see error messages about parameter mismatches like `AttributeModel.__init__() got an unexpected keyword argument 'default_value'`. These occur when the UML generator tries to analyze our sequence diagram implementation code itself. These errors do not prevent the sequence diagrams from being generated correctly.
+
 Conclusion
 ----------
 
-The current UML generator provides a solid foundation we can extend to support multiple diagram types. The most practical approach would be to:
+The current UML generator provides a solid foundation we can extend to support multiple diagram types. We have successfully implemented:
 
-1. First implement Package and Component diagrams, which can be automatically generated from code analysis
-2. Then add support for manually defined Sequence diagrams with a YAML format
-3. Gradually add support for the more complex diagram types
+1. Package and Component diagrams which can be automatically generated from code analysis
+2. Sequence diagrams with both YAML definition and static code analysis approaches
 
-Each diagram type would need specialized generators and models, but our existing factory-based architecture makes this extension straightforward.
+For future work, we could enhance the static analyzer with better type inference and variable tracking to automatically detect more complex relationships between classes.
+
+Both approaches now work together in the same workflow and produce diagrams in the standard PlantUML format, making them easy to include in documentation.

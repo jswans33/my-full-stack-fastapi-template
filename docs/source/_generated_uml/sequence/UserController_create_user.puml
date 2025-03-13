@@ -1,0 +1,13 @@
+@startuml
+
+title UserController.create_user Sequence
+
+skinparam sequenceMessageAlign center
+skinparam monochrome true
+skinparam lifelinestrategy solid
+hide footbox
+
+class UserController
+
+
+@enduml

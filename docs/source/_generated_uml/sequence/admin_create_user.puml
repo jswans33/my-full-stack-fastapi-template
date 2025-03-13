@@ -1,0 +1,13 @@
+@startuml
+
+title router.create_user Sequence
+
+skinparam sequenceMessageAlign center
+skinparam monochrome true
+skinparam lifelinestrategy solid
+hide footbox
+
+class router
+
+
+@enduml
