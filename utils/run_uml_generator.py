@@ -323,10 +323,7 @@ def main():
 
     for root, dirs, files in os.walk(output_dir):
         rel_path = Path(root).relative_to(output_dir)
-        if str(rel_path) == ".":
-            level = 0
-        else:
-            level = len(rel_path.parts)
+        level = 0 if str(rel_path) == "." else len(rel_path.parts)
 
         indent = "  " * level
 
@@ -364,8 +361,8 @@ def fix_index_path_separators(index_path):
             if fixed_path.startswith("../"):
                 fixed_path = fixed_path[3:]  # Remove the "../" prefix
 
-            line = f"{prefix}.. uml:: {fixed_path}"
-            modified_lines.append(line)
+            modified_line = f"{prefix}.. uml:: {fixed_path}"
+            modified_lines.append(modified_line)
         else:
             modified_lines.append(line)
 
