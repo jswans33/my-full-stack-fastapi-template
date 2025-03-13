@@ -1,0 +1,20 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "users" {
+  class Functions <<(F,orange)>> {
+    + read_users(session: SessionDep, skip: int = 0, limit: int = 100) -> Any
+    + create_user() -> Any
+    + update_user_me() -> Any
+    + update_password_me() -> Any
+    + read_user_me(current_user: CurrentUser) -> Any
+    + delete_user_me(session: SessionDep, current_user: CurrentUser) -> Any
+    + register_user(session: SessionDep, user_in: UserRegister) -> Any
+    + read_user_by_id(user_id: uuid.UUID, session: SessionDep, current_user: CurrentUser) -> Any
+    + update_user() -> Any
+    + delete_user(session: SessionDep, current_user: CurrentUser, user_id: uuid.UUID) -> Message
+  }
+}
+
+' Relationships
+@enduml

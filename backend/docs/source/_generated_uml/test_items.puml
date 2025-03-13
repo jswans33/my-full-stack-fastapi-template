@@ -1,0 +1,21 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "test_items" {
+  class Functions <<(F,orange)>> {
+    + test_create_item(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_read_item(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_read_item_not_found(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_read_item_not_enough_permissions(client: TestClient, normal_user_token_headers: dict[str, str], db: Session) -> None
+    + test_read_items(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_update_item(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_update_item_not_found(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_update_item_not_enough_permissions(client: TestClient, normal_user_token_headers: dict[str, str], db: Session) -> None
+    + test_delete_item(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_delete_item_not_found(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_delete_item_not_enough_permissions(client: TestClient, normal_user_token_headers: dict[str, str], db: Session) -> None
+  }
+}
+
+' Relationships
+@enduml

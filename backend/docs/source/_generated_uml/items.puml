@@ -1,0 +1,15 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "items" {
+  class Functions <<(F,orange)>> {
+    + read_items(session: SessionDep, current_user: CurrentUser, skip: int = 0, limit: int = 100) -> Any
+    + read_item(session: SessionDep, current_user: CurrentUser, id: uuid.UUID) -> Any
+    + create_item() -> Any
+    + update_item() -> Any
+    + delete_item(session: SessionDep, current_user: CurrentUser, id: uuid.UUID) -> Message
+  }
+}
+
+' Relationships
+@enduml

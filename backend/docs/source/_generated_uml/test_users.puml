@@ -1,0 +1,35 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "test_users" {
+  class Functions <<(F,orange)>> {
+    + test_get_users_superuser_me(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_get_users_normal_user_me(client: TestClient, normal_user_token_headers: dict[str, str]) -> None
+    + test_create_user_new_email(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_get_existing_user(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_get_existing_user_current_user(client: TestClient, db: Session) -> None
+    + test_get_existing_user_permissions_error(client: TestClient, normal_user_token_headers: dict[str, str]) -> None
+    + test_create_user_existing_username(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_create_user_by_normal_user(client: TestClient, normal_user_token_headers: dict[str, str]) -> None
+    + test_retrieve_users(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_update_user_me(client: TestClient, normal_user_token_headers: dict[str, str], db: Session) -> None
+    + test_update_password_me(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_update_password_me_incorrect_password(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_update_user_me_email_exists(client: TestClient, normal_user_token_headers: dict[str, str], db: Session) -> None
+    + test_update_password_me_same_password_error(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_register_user(client: TestClient, db: Session) -> None
+    + test_register_user_already_exists_error(client: TestClient) -> None
+    + test_update_user(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_update_user_not_exists(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_update_user_email_exists(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_delete_user_me(client: TestClient, db: Session) -> None
+    + test_delete_user_me_as_superuser(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_delete_user_super_user(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_delete_user_not_found(client: TestClient, superuser_token_headers: dict[str, str]) -> None
+    + test_delete_user_current_super_user_error(client: TestClient, superuser_token_headers: dict[str, str], db: Session) -> None
+    + test_delete_user_without_privileges(client: TestClient, normal_user_token_headers: dict[str, str], db: Session) -> None
+  }
+}
+
+' Relationships
+@enduml

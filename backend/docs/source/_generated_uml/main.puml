@@ -1,0 +1,11 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "main" {
+  class Functions <<(F,orange)>> {
+    + custom_generate_unique_id(route: APIRoute) -> str
+  }
+}
+
+' Relationships
+@enduml

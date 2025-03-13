@@ -1,0 +1,58 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "config" {
+  class Functions <<(F,orange)>> {
+    + parse_cors(v: Any) -> list[str] | str
+    + all_cors_origins() -> list[str]
+    + SQLALCHEMY_DATABASE_URI() -> str
+    - _set_default_emails_from() -> Self
+    + emails_enabled() -> bool
+    - _check_default_secret(var_name: str, value: str | None) -> None
+    - _enforce_non_default_secrets() -> Self
+  }
+  class Settings {
+    + model_config: Any
+    + API_V1_STR: str
+    + SECRET_KEY: str
+    + ACCESS_TOKEN_EXPIRE_MINUTES: int
+    + FRONTEND_HOST: str
+    + ENVIRONMENT: Literal['local', 'staging', 'production']
+    + BACKEND_CORS_ORIGINS: Annotated[list[AnyUrl] | str, BeforeValidator(parse_cors)]
+    + PROJECT_NAME: str
+    + SENTRY_DSN: HttpUrl | None
+    + POSTGRES_SERVER: str
+    + POSTGRES_PORT: int
+    + POSTGRES_USER: str
+    + POSTGRES_PASSWORD: str
+    + POSTGRES_DB: str
+    + SMTP_TLS: bool
+    + SMTP_SSL: bool
+    + SMTP_PORT: int
+    + SMTP_HOST: str | None
+    + SMTP_USER: str | None
+    + SMTP_PASSWORD: str | None
+    + EMAILS_FROM_EMAIL: EmailStr | None
+    + EMAILS_FROM_NAME: EmailStr | None
+    + EMAIL_RESET_TOKEN_EXPIRE_HOURS: int
+    + EMAIL_TEST_USER: EmailStr
+    + FIRST_SUPERUSER: EmailStr
+    + FIRST_SUPERUSER_PASSWORD: str
+    + LOG_LEVEL: str
+    + LOG_FORMAT: str
+    + LOG_FILE: str | None
+    + LOG_ROTATION: bool
+    + LOG_ROTATION_SIZE: int
+    + LOG_ROTATION_BACKUPS: int
+    +all_cors_origins() -> list[str]
+    +SQLALCHEMY_DATABASE_URI() -> str
+    #set_default_emails_from() -> Self
+    +emails_enabled() -> bool
+    #check_default_secret(var_name: str, value: str | None) -> None
+    #enforce_non_default_secrets() -> Self
+  }
+}
+
+' Relationships
+BaseSettings <|-- "config".Settings
+@enduml

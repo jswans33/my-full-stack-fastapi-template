@@ -1,0 +1,13 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "utils" {
+  class Functions <<(F,orange)>> {
+    + random_lower_string() -> str
+    + random_email() -> str
+    + get_superuser_token_headers(client: TestClient) -> dict[str, str]
+  }
+}
+
+' Relationships
+@enduml

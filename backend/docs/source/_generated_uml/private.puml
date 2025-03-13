@@ -1,0 +1,18 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "private" {
+  class Functions <<(F,orange)>> {
+    + create_user(user_in: PrivateUserCreate, session: SessionDep) -> Any
+  }
+  class PrivateUserCreate {
+    + email: str
+    + password: str
+    + full_name: str
+    + is_verified: bool
+  }
+}
+
+' Relationships
+BaseModel <|-- "private".PrivateUserCreate
+@enduml

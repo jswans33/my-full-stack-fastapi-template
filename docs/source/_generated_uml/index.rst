@@ -7,7 +7,7 @@ UML Class Diagrams
 1a31ce608336_add_cascade_delete_relationships
 ---------------------------------------------
 
-.. uml:: /_generated_uml/1a31ce608336_add_cascade_delete_relationships.puml
+.. uml:: 1a31ce608336_add_cascade_delete_relationships.puml
    :align: center
 
 9c0a54914c78_add_max_length_for_string_varchar_
