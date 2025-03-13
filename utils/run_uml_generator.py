@@ -7,18 +7,45 @@ import logging
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 from utils.uml_generator.config.loader import load_config
 from utils.uml_generator.factories import DefaultGeneratorFactory, DefaultParserFactory
 from utils.uml_generator.filesystem import DefaultFileSystem
-from utils.uml_generator.service import UmlGeneratorService
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 # Add the parent directory to the Python path
-sys.path.append(str(Path(__file__).parent.parent))
+PROJECT_ROOT = Path(__file__).parent.parent
+sys.path.append(str(PROJECT_ROOT))
+
+# Constants
+OUTPUT_BASE_DIR = Path("docs/source/_generated_uml")
+DEFAULT_PLANTUML_SETTINGS = [
+    "skinparam classAttributeIconSize 0",
+    "skinparam packageStyle folder",
+    "skinparam monochrome true",
+    "skinparam shadowing false",
+    "left to right direction",
+    "skinparam linetype ortho",
+    "skinparam groupInheritance 3",
+    "skinparam class {",
+    "   BackgroundColor White",
+    "   ArrowColor Black",
+    "   BorderColor Black",
+    "}",
+    "hide empty members",
+]
+
+UML_GENERATOR_PLANTUML_SETTINGS = [
+    "skinparam classAttributeIconSize 0",
+    "skinparam monochrome true",
+    "skinparam shadowing false",
+    "left to right direction",
+    "hide empty members",
+]
 
 
 def get_component_path(file_path: Path, base_dir: Path) -> str | None:
@@ -36,45 +63,30 @@ def get_component_path(file_path: Path, base_dir: Path) -> str | None:
         "examples": "examples",
     }
 
-    for key, value in component_map.items():
-        if key in str(file_path) or key in parts:
-            return value
-    return None
+    return next(
+        (
+            value
+            for key, value in component_map.items()
+            if key in str(file_path) or key in parts
+        ),
+        None,
+    )
 
 
-def process_directory(directory: Path, base_dir: Path) -> None:
-    """Process a specific directory and generate UML diagrams."""
-    if not directory.exists():
-        logger.error(f"Directory {directory} does not exist.")
-        return
-
-    # Create configuration with directory-specific settings
-    dir_config = load_config(
+def create_standard_config(base_dir: Path) -> Any:
+    """Create a standard configuration for UML generation."""
+    return load_config(
         {
             "paths": {
                 "source_dir": str(base_dir),
-                "output_dir": "docs/source/_generated_uml",  # Base output directory
+                "output_dir": str(OUTPUT_BASE_DIR),
             },
             "generator": {
                 "format": "plantuml",
                 "plantuml_settings": {
                     "PLANTUML_START": "@startuml",
                     "PLANTUML_END": "@enduml",
-                    "PLANTUML_SETTINGS": [
-                        "skinparam classAttributeIconSize 0",
-                        "skinparam packageStyle folder",
-                        "skinparam monochrome true",
-                        "skinparam shadowing false",
-                        "left to right direction",
-                        "skinparam linetype ortho",
-                        "skinparam groupInheritance 3",
-                        "skinparam class {",
-                        "   BackgroundColor White",
-                        "   ArrowColor Black",
-                        "   BorderColor Black",
-                        "}",
-                        "hide empty members",
-                    ],
+                    "PLANTUML_SETTINGS": DEFAULT_PLANTUML_SETTINGS,
                 },
             },
             "parser": {
@@ -93,24 +105,56 @@ def process_directory(directory: Path, base_dir: Path) -> None:
         },
     )
 
-    # Create dependencies
+
+def create_uml_generator_config(project_root: Path) -> Any:
+    """Create a configuration specific for the UML generator package."""
+    return load_config(
+        {
+            "paths": {
+                "source_dir": str(project_root),
+                "output_dir": str(OUTPUT_BASE_DIR),
+            },
+            "generator": {
+                "format": "plantuml",
+                "plantuml_settings": {
+                    "PLANTUML_START": "@startuml",
+                    "PLANTUML_END": "@enduml",
+                    "PLANTUML_SETTINGS": UML_GENERATOR_PLANTUML_SETTINGS,
+                },
+            },
+            "parser": {
+                "patterns": ["*.py"],  # Include all Python files
+                "show_imports": True,
+                "recursive": True,
+                "exclude_dirs": ["__pycache__", "*.egg-info"],
+            },
+            "logging": {"level": "info"},
+        },
+    )
+
+
+def create_service_components(config: Any) -> tuple:
+    """Create and return service components based on configuration."""
     file_system = DefaultFileSystem()
     parser_factory = DefaultParserFactory(file_system)
     generator_factory = DefaultGeneratorFactory(
         file_system,
         {
-            "format": dir_config.generator.format,
-            "plantuml_settings": dir_config.generator.plantuml_settings,
+            "format": config.generator.format,
+            "plantuml_settings": config.generator.plantuml_settings,
         },
     )
+    return file_system, parser_factory, generator_factory
 
-    # Create and run service
-    service = UmlGeneratorService(
-        config=dir_config,
-        file_system=file_system,
-        generator_factory=generator_factory,
-        parser_factory=parser_factory,
-    )
+
+def process_directory(directory: Path, base_dir: Path) -> None:
+    """Process a specific directory and generate UML diagrams."""
+    if not directory.exists():
+        logger.error(f"Directory {directory} does not exist.")
+        return
+
+    config = create_standard_config(base_dir)
+    file_system, parser_factory, generator_factory = create_service_components(config)
 
     logger.info(f"Generating UML diagrams for {directory}...")
 
@@ -120,38 +164,41 @@ def process_directory(directory: Path, base_dir: Path) -> None:
         for file in files:
             if file.endswith(".py") and not file.startswith("_"):
                 file_path = root_path / file
-                component = get_component_path(file_path, base_dir)
-
-                # Get clean component path without duplicates
-                rel_path = file_path.relative_to(base_dir)
-                parts = list(rel_path.parts)
-
-                # Remove duplicate directory names (e.g., api/api/routes -> api/routes)
-                clean_parts = []
-                for part in parts:
-                    if not clean_parts or part != clean_parts[-1]:
-                        clean_parts.append(part)
-
-                # Process the file
-                file_model = parser_factory.create_parser(".py").parse_file(file_path)
-                if file_model.classes or file_model.functions:
-                    # Put all diagrams in one file
-                    output_dir = Path("docs/source/_generated_uml")
-                    file_system.ensure_directory(output_dir)
-                    output_path = output_dir / "all.puml"
-                    generator = generator_factory.create_generator("plantuml")
-                    generator.generate_diagram(file_model, output_path)
+                process_python_file(
+                    file_path,
+                    base_dir,
+                    file_system,
+                    parser_factory,
+                    generator_factory,
+                )
 
 
-def main():
-    """Run the UML generator on the backend/app directory structure."""
-    # Define project root directory
-    project_root = Path(__file__).parent.parent
+def process_python_file(
+    file_path: Path,
+    base_dir: Path,
+    file_system: DefaultFileSystem,
+    parser_factory: DefaultParserFactory,
+    generator_factory: DefaultGeneratorFactory,
+) -> None:
+    """Process a single Python file and generate UML diagram if it contains classes or functions."""
+    # Process the file
+    file_model = parser_factory.create_parser(".py").parse_file(file_path)
+    if file_model.classes or file_model.functions:
+        # Put all diagrams in one file
+        file_system.ensure_directory(OUTPUT_BASE_DIR)
+        output_path = OUTPUT_BASE_DIR / "all.puml"
+        generator = generator_factory.create_generator("plantuml")
+        generator.generate_diagram(file_model, output_path)
+
+
+def get_directories_to_process() -> dict:
+    """Get directories that need to be processed for UML generation."""
+    project_root = PROJECT_ROOT
 
     app_dir = project_root / "backend" / "app"
     if not app_dir.exists():
         logger.error(f"Directory {app_dir} does not exist.")
-        return 1
+        return {}
 
     # Process core components first
     core_dirs = [
@@ -172,118 +219,99 @@ def main():
     # Add uml_generator directory for special handling
     uml_generator_dir = utils_dir / "uml_generator"
 
-    # Process each group with appropriate settings
-    for directory in [d for d in core_dirs if d and d.exists()]:
-        process_directory(directory, app_dir)
+    return {
+        "core": {
+            "dirs": [d for d in core_dirs if d and d.exists()],
+            "base_dir": app_dir,
+        },
+        "api": {"dirs": [d for d in api_dirs if d and d.exists()], "base_dir": app_dir},
+        "tests": {"dirs": test_dirs, "base_dir": app_dir},
+        "utils": {
+            "dirs": [utils_dir] if utils_dir.exists() else [],
+            "base_dir": project_root,
+        },
+        "uml_generator": {
+            "dirs": [uml_generator_dir] if uml_generator_dir.exists() else [],
+            "base_dir": project_root,
+        },
+    }
 
-    for directory in [d for d in api_dirs if d and d.exists()]:
-        process_directory(directory, app_dir)
 
-    # Process tests with different exclude rules
-    for directory in test_dirs:
-        process_directory(directory, app_dir)
+def process_uml_generator_files(uml_generator_dir: Path, project_root: Path) -> None:
+    """Process UML generator files with specific handling."""
+    if not uml_generator_dir.exists():
+        return
 
-    # Process utils directory with same settings
-    if utils_dir.exists():
-        process_directory(utils_dir, project_root)
+    uml_gen_config = create_uml_generator_config(project_root)
+    file_system, parser_factory, generator_factory = create_service_components(
+        uml_gen_config,
+    )
 
-    # Process UML generator directory with modified settings to include all Python files
-    if uml_generator_dir.exists():
-        # Create UML generator-specific config
-        uml_gen_config = load_config(
-            {
-                "paths": {
-                    "source_dir": str(project_root),
-                    "output_dir": "docs/source/_generated_uml",
-                },
-                "generator": {
-                    "format": "plantuml",
-                    "plantuml_settings": {
-                        "PLANTUML_START": "@startuml",
-                        "PLANTUML_END": "@enduml",
-                        "PLANTUML_SETTINGS": [
-                            "skinparam classAttributeIconSize 0",
-                            "skinparam monochrome true",
-                            "skinparam shadowing false",
-                            "left to right direction",
-                            "hide empty members",
-                        ],
-                    },
-                },
-                "parser": {
-                    "patterns": ["*.py"],  # Include all Python files
-                    "show_imports": True,
-                    "recursive": True,
-                    "exclude_dirs": ["__pycache__", "*.egg-info"],
-                },
-                "logging": {"level": "info"},
-            },
-        )
+    logger.info(
+        f"Generating UML diagrams for {uml_generator_dir} (with special handling)...",
+    )
 
-        # Create special service for UML generator
-        file_system = DefaultFileSystem()
-        parser_factory = DefaultParserFactory(file_system)
-        generator_factory = DefaultGeneratorFactory(
-            file_system,
-            {
-                "format": uml_gen_config.generator.format,
-                "plantuml_settings": uml_gen_config.generator.plantuml_settings,
-            },
-        )
+    # Create a dedicated UML diagram for the UML generator package itself
+    for root, _, files in os.walk(uml_generator_dir):
+        root_path = Path(root)
+        for file in files:
+            if file.endswith(".py"):  # Include all .py files
+                file_path = root_path / file
+                process_uml_generator_file(
+                    file_path,
+                    uml_generator_dir,
+                    file_system,
+                    parser_factory,
+                    generator_factory,
+                )
 
-        logger.info(
-            f"Generating UML diagrams for {uml_generator_dir} (with special handling)...",
-        )
-        # Create a dedicated UML diagram for the UML generator package itself
-        for root, _, files in os.walk(uml_generator_dir):
-            root_path = Path(root)
-            for file in files:
-                if file.endswith(".py"):  # Include all .py files
-                    file_path = root_path / file
 
-                    # Process the file
-                    try:
-                        file_model = parser_factory.create_parser(".py").parse_file(
-                            file_path,
-                        )
-                        if file_model.classes or file_model.functions:
-                            # Output to a dedicated folder
-                            output_dir = Path(
-                                "docs/source/_generated_uml/uml_generator",
-                            )
-                            file_system.ensure_directory(output_dir)
+def process_uml_generator_file(
+    file_path: Path,
+    uml_generator_dir: Path,
+    file_system: DefaultFileSystem,
+    parser_factory: DefaultParserFactory,
+    generator_factory: DefaultGeneratorFactory,
+) -> None:
+    """Process a single UML generator file with special handling."""
+    try:
+        file_model = parser_factory.create_parser(".py").parse_file(file_path)
+        if not (file_model.classes or file_model.functions):
+            return
 
-                            # Create component-specific folders
-                            rel_path = file_path.relative_to(uml_generator_dir)
-                            if len(rel_path.parts) > 1:  # It's in a subdirectory
-                                # For deeper nesting, create subdirectories for all parts except the filename
-                                if len(rel_path.parts) > 2:
-                                    sub_dir_parts = rel_path.parts[:-1]
-                                    sub_output_dir = output_dir.joinpath(*sub_dir_parts)
-                                else:
-                                    # For single level of nesting, use the first part
-                                    sub_output_dir = output_dir / rel_path.parts[0]
+        # Output to a dedicated folder
+        output_dir = OUTPUT_BASE_DIR / "uml_generator"
+        file_system.ensure_directory(output_dir)
 
-                                file_system.ensure_directory(sub_output_dir)
-                                output_path = sub_output_dir / f"{file_path.stem}.puml"
-                            else:
-                                output_path = output_dir / f"{file_path.stem}.puml"
-                            generator = generator_factory.create_generator("plantuml")
-                            generator.generate_diagram(file_model, output_path)
-                    except Exception as e:
-                        logger.exception(f"Error processing {file_path}: {e}")
-                        print(f"Error processing {file_path}: {e}")
+        # Create component-specific folders
+        rel_path = file_path.relative_to(uml_generator_dir)
+        if len(rel_path.parts) > 1:  # It's in a subdirectory
+            # For deeper nesting, create subdirectories for all parts except the filename
+            if len(rel_path.parts) > 2:
+                sub_dir_parts = rel_path.parts[:-1]
+                sub_output_dir = output_dir.joinpath(*sub_dir_parts)
+            else:
+                # For single level of nesting, use the first part
+                sub_output_dir = output_dir / rel_path.parts[0]
 
-    # Generate index file with all diagrams
-    output_dir = Path("docs/source/_generated_uml")
+            file_system.ensure_directory(sub_output_dir)
+            output_path = sub_output_dir / f"{file_path.stem}.puml"
+        else:
+            output_path = output_dir / f"{file_path.stem}.puml"
+
+        generator = generator_factory.create_generator("plantuml")
+        generator.generate_diagram(file_model, output_path)
+    except Exception as e:
+        logger.exception(f"Error processing {file_path}: {e}")
+
+
+def generate_and_fix_index() -> None:
+    """Generate index file for all diagrams and fix path separators."""
+    output_dir = OUTPUT_BASE_DIR
     file_system = DefaultFileSystem()
 
     # Use recursive search to find all PUML files
-    diagrams = []
-    for root, _, files in os.walk(output_dir):
-        for file in files:
-            if file.endswith(".puml"):
-                diagrams.append(Path(root) / file)
+    diagrams = find_all_puml_diagrams(output_dir)
 
     # Create generator with same settings as used for diagrams
     generator_factory = DefaultGeneratorFactory(
@@ -293,21 +321,7 @@ def main():
             "plantuml_settings": {
                 "PLANTUML_START": "@startuml",
                 "PLANTUML_END": "@enduml",
-                "PLANTUML_SETTINGS": [
-                    "skinparam classAttributeIconSize 0",
-                    "skinparam packageStyle folder",
-                    "skinparam monochrome true",
-                    "skinparam shadowing false",
-                    "left to right direction",
-                    "skinparam linetype ortho",
-                    "skinparam groupInheritance 3",
-                    "skinparam class {",
-                    "   BackgroundColor White",
-                    "   ArrowColor Black",
-                    "   BorderColor Black",
-                    "}",
-                    "hide empty members",
-                ],
+                "PLANTUML_SETTINGS": DEFAULT_PLANTUML_SETTINGS,
             },
         },
     )
@@ -318,6 +332,18 @@ def main():
 
     # Fix path separators in index.rst for cross-platform compatibility
     fix_index_path_separators(output_dir / "index.rst")
+
+
+def find_all_puml_diagrams(output_dir: Path) -> list:
+    """Find all PUML diagrams recursively in the output directory."""
+    diagrams = []
+    for root, _, files in os.walk(output_dir):
+        diagrams.extend(Path(root) / file for file in files if file.endswith(".puml"))
+    return diagrams
+
+
+def verify_generated_files(output_dir: Path) -> None:
+    """Verify and log the generated files structure."""
     logger.info("\nVerifying generated files structure:")
     logger.info("===================================")
 
@@ -336,6 +362,33 @@ def main():
             if file.endswith(".puml"):
                 logger.info(f"{indent}- {file}")
     logger.info("\nUML diagrams generated in docs/source/_generated_uml/")
+
+
+def main():
+    """Run the UML generator on the backend/app directory structure."""
+    # Get all directories to process
+    directories = get_directories_to_process()
+    if not directories:
+        return 1
+
+    # Process regular directories
+    for category, category_info in directories.items():
+        if category != "uml_generator":  # Special handling for UML generator
+            for directory in category_info["dirs"]:
+                process_directory(directory, category_info["base_dir"])
+
+    # Special processing for UML generator files
+    if directories.get("uml_generator", {}).get("dirs"):
+        uml_generator_dir = directories["uml_generator"]["dirs"][0]
+        process_uml_generator_files(uml_generator_dir, PROJECT_ROOT)
+
+    # Generate index file with all diagrams
+    generate_and_fix_index()
+
+    # Verify and log the generated files structure
+    verify_generated_files(OUTPUT_BASE_DIR)
+
+    logger.info("\nUML diagrams generated successfully.")
 
     return 0
 
