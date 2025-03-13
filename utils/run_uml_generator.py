@@ -212,8 +212,12 @@ def main():
     generator = generator_factory.create_generator("plantuml")
     generator.generate_index(output_dir, sorted(diagrams))
 
-    # List all generated files
+    # Fix path separators in index.rst for cross-platform compatibility
+    fix_index_path_separators(output_dir / "index.rst")
+
     output_dir = Path("docs/source/_generated_uml")
+
+    # List all generated files
     print("\nVerifying generated files structure:")
     print("===================================")
     for root, dirs, files in os.walk(output_dir):
@@ -235,6 +239,35 @@ def main():
 
     print("\nUML diagrams generated in docs/source/_generated_uml/")
     return 0
+
+
+def fix_index_path_separators(index_path):
+    """Fix path separators in index.rst to use forward slashes for cross-platform compatibility."""
+    if not index_path.exists():
+        print(f"Warning: Index file not found at {index_path}")
+        return
+
+    content = index_path.read_text()
+
+    # Fix path references in the uml directive paths
+    modified_lines = []
+    for line in content.splitlines():
+        if ".. uml:: " in line:
+            # Extract the path part
+            prefix, path = line.split(".. uml:: ", 1)
+            # Replace backslashes with forward slashes
+            fixed_path = path.replace("\\", "/")
+
+            # Remove any "../" prefix - we want paths to be relative to the current directory
+            if fixed_path.startswith("../"):
+                fixed_path = fixed_path[3:]  # Remove the "../" prefix
+
+            modified_lines.append(f"{prefix}.. uml:: {fixed_path}")
+        else:
+            modified_lines.append(line)
+
+    index_path.write_text("\n".join(modified_lines))
+    print(f"Fixed path separators in {index_path.name}")
 
 
 if __name__ == "__main__":

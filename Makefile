@@ -35,7 +35,8 @@ build:
 	docker compose build
 
 # Run all tests
-test: test-backend test-frontend
+test: 
+	test-backend test-frontend
 
 # Run backend tests
 test-backend:

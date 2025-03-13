@@ -424,3 +424,6 @@ path_resolver = UmlPathResolver(docs_dir, generated_dir)
 # Configure PlantUML search paths based on path resolver
 plantuml_search_path = path_resolver.get_search_paths()
 print(f"Using path resolver search paths: {plantuml_search_path}")
+
+# This is the critical config that tells Sphinx where to find the .puml files
+plantuml_include_path = plantuml_search_path

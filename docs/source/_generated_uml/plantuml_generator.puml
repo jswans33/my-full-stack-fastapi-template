@@ -1,0 +1,32 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+package "plantuml_generator" {
+  class Functions <<(F,orange)>> {
+    - __init__(file_system: FileSystem, settings: dict[str, Any] | None = None) -> Any
+    + get_output_extension() -> str
+    + generate_diagram(file_model: FileModel, output_path: Path) -> None
+    - _generate_plantuml(file_model: FileModel) -> str
+    + generate_index(output_dir: Path, diagrams: list[Path]) -> None
+  }
+  class PlantUmlGenerator {
+    -init__(file_system: FileSystem, settings: dict[str, Any] | None = None) -> Any
+    +get_output_extension() -> str
+    +generate_diagram(file_model: FileModel, output_path: Path) -> None
+    #generate_plantuml(file_model: FileModel) -> str
+    +generate_index(output_dir: Path, diagrams: list[Path]) -> None
+  }
+}
+
+' Imports
+note right of "plantuml_generator".PlantUmlGenerator: imports function/type logging from logging
+note right of "plantuml_generator".PlantUmlGenerator: imports function/type os from os
+note right of "plantuml_generator".PlantUmlGenerator: imports class Path from pathlib.Path
+note right of "plantuml_generator".PlantUmlGenerator: imports class DiagramGenerator from interfaces.DiagramGenerator
+note right of "plantuml_generator".PlantUmlGenerator: imports class FileSystem from interfaces.FileSystem
+note right of "plantuml_generator".PlantUmlGenerator: imports class FileModel from models.FileModel
+note right of "plantuml_generator".PlantUmlGenerator: imports class UmlPathResolver from path_resolver.UmlPathResolver
+
+' Relationships
+DiagramGenerator <|-- "plantuml_generator".PlantUmlGenerator
+@enduml
