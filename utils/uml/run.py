@@ -112,71 +112,110 @@ def get_source_paths(
     source_path_obj = Path(source_path)
     paths = []
 
-    if source_path_obj.is_file():
-        # Single file
-        paths.append(source_path_obj)
-    elif source_path_obj.is_dir():
-        # Directory
-        if recursive:
-            # Recursively walk the directory
-            for root, dirs, files in os.walk(source_path_obj):
-                # Skip directories matching exclude patterns
-                dirs[:] = [
-                    d for d in dirs if not any(pat in d for pat in exclude_patterns)
-                ]
+    # Helper function to check if a path should be excluded
+    def should_exclude(path: Path) -> bool:
+        return any(pat in str(path) for pat in exclude_patterns)
 
-                # Process Python files
-                for file in files:
-                    if file.endswith(".py"):
-                        file_path = Path(os.path.join(root, file))
-                        # Skip files matching exclude patterns
-                        if any(pat in str(file_path) for pat in exclude_patterns):
-                            continue
+    # Case 1: Single file
+    if source_path_obj.is_file():
+        paths.append(source_path_obj)
+        return paths
+
+    # Case 2: Directory with recursive search
+    if source_path_obj.is_dir() and recursive:
+        for root, dirs, files in os.walk(source_path_obj):
+            # Filter directories in-place to skip excluded ones
+            dirs[:] = [d for d in dirs if not should_exclude(Path(root) / d)]
+
+            # Add Python files that aren't excluded
+            for file in files:
+                if file.endswith(".py"):
+                    file_path = Path(os.path.join(root, file))
+                    if not should_exclude(file_path):
                         paths.append(file_path)
-        else:
-            # Only process files in the top-level directory
-            for file in source_path_obj.glob("*.py"):
-                # Skip files matching exclude patterns
-                if any(pat in str(file) for pat in exclude_patterns):
-                    continue
+        return paths
+
+    # Case 3: Directory without recursion (top-level only)
+    if source_path_obj.is_dir():
+        for file in source_path_obj.glob("*.py"):
+            if not should_exclude(file):
                 paths.append(file)
 
     return paths
 
 
+def generate_specific_diagram(
+    service: UmlService,
+    diagram_type: str,
+    source_paths: list[Path],
+    output_dir: Path,
+) -> list[Path] | None:
+    """Generate a specific type of diagram.
+
+    Args:
+        service: The UML service to use
+        diagram_type: The type of diagram to generate
+        source_paths: The source paths to analyze
+        output_dir: The output directory
+
+    Returns:
+        A list of generated diagram paths, or None if an error occurred
+    """
+    try:
+        type_output_dir = output_dir / diagram_type
+        type_output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Convert Path objects to strings to match the expected type
+        source_paths_str: list[str | Path] = [str(p) for p in source_paths]
+        diagrams = service.generate_diagrams(
+            diagram_type,
+            source_paths_str,
+            type_output_dir,
+        )
+
+        if diagrams:
+            logger.info(
+                f"Generated {len(diagrams)} {diagram_type} diagrams in {type_output_dir}",
+            )
+        return diagrams
+    except DiagramTypeError as e:
+        logger.error(f"Error generating {diagram_type} diagrams: {e}")
+        return None
+
+
 def main() -> int:
     """Run the UML generator."""
-    args = parse_arguments()
-
-    # Configure logging
-    if args.verbose:
-        logging.getLogger().setLevel(logging.DEBUG)
-
-    # Create output directory
-    output_dir = Path(args.output)
-    output_dir.mkdir(parents=True, exist_ok=True)
-
-    # Create service
-    settings = {
-        "include_private": args.include_private,
-        "recursive": args.recursive,
-        "exclude_patterns": args.exclude,
-    }
-    service = create_service(settings)
-
-    # Get source paths
-    source_paths = get_source_paths(
-        args.source,
-        args.recursive,
-        args.exclude,
-    )
-
-    if not source_paths:
-        logger.error(f"No source files found at {args.source}")
-        return 1
-
-    # Generate diagrams
     try:
+        args = parse_arguments()
+
+        # Configure logging
+        if args.verbose:
+            logging.getLogger().setLevel(logging.DEBUG)
+
+        # Create output directory
+        output_dir = Path(args.output)
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Create service
+        settings = {
+            "include_private": args.include_private,
+            "recursive": args.recursive,
+            "exclude_patterns": args.exclude,
+        }
+        service = create_service(settings)
+
+        # Get source paths
+        source_paths = get_source_paths(
+            args.source,
+            args.recursive,
+            args.exclude,
+        )
+
+        if not source_paths:
+            logger.error(f"No source files found at {args.source}")
+            return 1
+
+        # Generate diagrams
         if args.type == "all":
             # Generate all diagram types
             # Convert Path objects to strings to match the expected type
@@ -197,24 +236,10 @@ def main() -> int:
                     )
         else:
             # Generate a specific diagram type
-            try:
-                type_output_dir = output_dir / args.type
-                type_output_dir.mkdir(parents=True, exist_ok=True)
-
-                # Convert Path objects to strings to match the expected type
-                source_paths_str: list[str | Path] = [str(p) for p in source_paths]
-                diagrams = service.generate_diagrams(
-                    args.type,
-                    source_paths_str,
-                    type_output_dir,
-                )
-
-                if diagrams:
-                    logger.info(
-                        f"Generated {len(diagrams)} {args.type} diagrams in {type_output_dir}",
-                    )
-            except DiagramTypeError as e:
-                logger.error(f"Error: {e}")
+            diagrams = generate_specific_diagram(
+                service, args.type, source_paths, output_dir
+            )
+            if diagrams is None:
                 return 1
 
         logger.info(f"UML diagrams generated successfully in {output_dir}")

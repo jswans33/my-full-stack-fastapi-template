@@ -23,7 +23,6 @@
 
 ---
 
-#TODO: fix and upadte in future. 
 
 ## 1. Overall Architecture & Observations
 
