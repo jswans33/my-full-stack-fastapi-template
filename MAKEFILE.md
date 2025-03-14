@@ -57,6 +57,14 @@ make migrate
 - `make frontend-install` - Install frontend dependencies
 - `make create-superuser` - Create a new superuser
 
+### Virtual Environment Commands
+
+- `make setup-utils` - Set up the utils virtual environment
+- `make setup-utils-clean` - Clean and set up the utils virtual environment
+- `make setup-backend` - Set up the backend virtual environment
+- `make utils-venv` - Show commands to activate the utils virtual environment
+- `make backend-venv` - Show commands to activate the backend virtual environment
+
 ## Examples
 
 ### Starting the Development Environment
@@ -102,6 +110,35 @@ make frontend-install
 make backend-dev
 make frontend-dev
 ```
+
+### Working with Virtual Environments
+
+```bash
+# Set up the utils virtual environment
+make setup-utils
+
+# Clean and set up the utils virtual environment
+make setup-utils-clean
+
+# Set up the backend virtual environment
+make setup-backend
+
+# Get commands to activate the utils virtual environment
+make utils-venv
+# Then run the displayed command in your terminal, for example:
+# On Windows CMD: utils\.venv\Scripts\activate
+# On Windows Git Bash: source utils/.venv/Scripts/activate
+# On Unix/Linux/Mac: source utils/.venv/bin/activate
+
+# Get commands to activate the backend virtual environment
+make backend-venv
+# Then run the displayed command in your terminal, for example:
+# On Windows CMD: backend\.venv\Scripts\activate
+# On Windows Git Bash: source backend/.venv/Scripts/activate
+# On Unix/Linux/Mac: source backend/.venv/bin/activate
+```
+
+The utils virtual environment is particularly useful for running utility scripts that need access to the backend code, such as sequence diagram generation and UML tools. The backend virtual environment is used for backend development without Docker.
 
 ## Customizing the Makefile
 

@@ -15,8 +15,15 @@ To set up the virtual environment for utils:
 python utils/setup_venv.py
 ```
 
+To clean up an existing virtual environment and create a fresh one:
+
+```bash
+# From the project root
+python utils/setup_venv.py --clean
+```
+
 This script will:
-1. Create a virtual environment in `utils/.venv/`
+1. Create a virtual environment in `utils/.venv/` (or remove the existing one if --clean is used)
 2. Install UV package manager (a faster alternative to pip)
 3. Install the backend as an editable package using UV
 4. Install any utils-specific dependencies
@@ -25,9 +32,14 @@ This script will:
 
 After setup, you can activate the virtual environment:
 
-**Windows:**
+**Windows CMD:**
 ```
 utils\.venv\Scripts\activate
+```
+
+**Windows Git Bash:**
+```
+source utils/.venv/Scripts/activate
 ```
 
 **Unix/Linux/Mac:**

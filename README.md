@@ -22,11 +22,33 @@
 - 🏭 CI (continuous integration) and CD (continuous deployment) based on GitHub Actions.
 - 📊 PlantUML diagram generation and viewing system.
 
-## PlantUML Diagrams
+## PlantUML Diagrams and Utilities
 
-This project includes a PlantUML diagram viewer system for visualizing architecture and code structure. For detailed instructions, see [utils/puml/README.md](utils/puml/README.md).
+This project includes a PlantUML diagram viewer system for visualizing architecture and code structure. The utils directory has its own virtual environment that can be set up separately from the backend.
 
-Quick start:
+### Utils Virtual Environment
+
+The utils directory has its own virtual environment that installs the backend as an editable package. This allows you to run the utils scripts independently while still having access to all the backend code and dependencies.
+
+```bash
+# Set up the utils virtual environment
+python utils/setup_venv.py
+
+# Or clean and recreate the environment
+python utils/setup_venv.py --clean
+
+# Activate the utils virtual environment
+# On Windows CMD:
+utils\.venv\Scripts\activate
+# On Windows Git Bash:
+source utils/.venv/Scripts/activate
+# On Unix/Linux/Mac:
+source utils/.venv/bin/activate
+```
+
+For more details, see [utils/README.md](utils/README.md).
+
+### PlantUML Quick Start
 
 ```bash
 # 1. Render diagrams

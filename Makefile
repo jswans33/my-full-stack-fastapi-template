@@ -1,4 +1,4 @@
-.PHONY: help up down build test clean clean-py migrate generate-client lint format render-diagrams render-diagrams-png view-diagrams docs sequence-docs
+.PHONY: help up down build test clean clean-py migrate generate-client lint format render-diagrams render-diagrams-png view-diagrams docs sequence-docs setup-utils setup-utils-clean setup-backend utils-venv backend-venv
 
 # Default target
 help:
@@ -17,6 +17,11 @@ help:
 	@echo "  make format          - Format code in backend and frontend"
 	@echo "  make docs            - Build Sphinx documentation"
 	@echo "  make sequence-docs   - Generate sequence diagrams and build documentation"
+	@echo "  make setup-utils     - Set up the utils virtual environment"
+	@echo "  make setup-utils-clean - Clean and set up the utils virtual environment"
+	@echo "  make setup-backend   - Set up the backend virtual environment"
+	@echo "  make utils-venv      - Activate the utils virtual environment"
+	@echo "  make backend-venv    - Activate the backend virtual environment"
 
 
 # Start the development environment
@@ -132,3 +137,31 @@ sequence-docs:
 	python -m utils.run_uml_generator
 	cd docs && make html
 	@echo "Documentation built with sequence diagrams. Open docs/build/html/index.html to view."
+
+# Set up the utils virtual environment
+setup-utils:
+	python utils/setup_venv.py
+
+# Clean and set up the utils virtual environment
+setup-utils-clean:
+	python utils/setup_venv.py --clean
+
+# Set up the backend virtual environment
+setup-backend:
+	cd backend && python -m venv .venv && .\.venv\Scripts\python -m pip install -U pip && .\.venv\Scripts\python -m pip install uv && .\.venv\Scripts\uv pip install -e ".[dev]"
+
+# Activate the utils virtual environment
+utils-venv:
+	@echo "To activate the utils virtual environment, run:"
+	@echo "  On Windows CMD: utils\.venv\Scripts\activate"
+	@echo "  On Windows Git Bash: source utils/.venv/Scripts/activate"
+	@echo "  On Unix/Linux/Mac: source utils/.venv/bin/activate"
+	@echo "You cannot source from a Makefile directly. Please copy and run the command in your terminal."
+
+# Activate the backend virtual environment
+backend-venv:
+	@echo "To activate the backend virtual environment, run:"
+	@echo "  On Windows CMD: backend\.venv\Scripts\activate"
+	@echo "  On Windows Git Bash: source backend/.venv/Scripts/activate"
+	@echo "  On Unix/Linux/Mac: source backend/.venv/bin/activate"
+	@echo "You cannot source from a Makefile directly. Please copy and run the command in your terminal."
