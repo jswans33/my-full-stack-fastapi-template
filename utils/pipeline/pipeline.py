@@ -70,7 +70,7 @@ class Pipeline:
 
                 # Initial document info
                 stages_data["setup"] = {"path": input_path, "type": doc_type}
-                progress.display_stage_output("Setup", stages_data["setup"])
+                progress.display_success(f"Processing {os.path.basename(input_path)}")
 
                 # 1. Analyze document structure
                 analyze_task = progress.add_task("Step 1: Analyzing document structure")
@@ -80,9 +80,7 @@ class Pipeline:
                 stages_data["analyze"] = analysis_result
                 progress.update(analyze_task, advance=1)
                 progress.update(overall_task, advance=1)
-                progress.display_stage_output(
-                    "Analysis", analysis_result, show_details=True
-                )
+                progress.display_success("Document structure analyzed")
 
                 # 2. Clean and normalize content
                 clean_task = progress.add_task(
@@ -92,7 +90,7 @@ class Pipeline:
                 stages_data["clean"] = cleaned_data
                 progress.update(clean_task, advance=1)
                 progress.update(overall_task, advance=1)
-                progress.display_stage_output("Cleaning", cleaned_data)
+                progress.display_success("Content cleaned and normalized")
 
                 # 3. Extract structured data
                 extract_task = progress.add_task("Step 3: Extracting structured data")
@@ -100,9 +98,7 @@ class Pipeline:
                 stages_data["extract"] = extracted_data
                 progress.update(extract_task, advance=1)
                 progress.update(overall_task, advance=1)
-                progress.display_stage_output(
-                    "Extraction", extracted_data, show_details=True
-                )
+                progress.display_success("Data extracted")
 
                 # 4. Validate extracted data
                 validate_task = progress.add_task("Step 4: Validating extracted data")
@@ -112,7 +108,7 @@ class Pipeline:
                 stages_data["validate"] = validated_data
                 progress.update(validate_task, advance=1)
                 progress.update(overall_task, advance=1)
-                progress.display_stage_output("Validation", validated_data)
+                progress.display_success("Data validated")
 
                 # 5. Format output
                 format_task = progress.add_task("Step 5: Formatting output")
@@ -121,9 +117,7 @@ class Pipeline:
                 stages_data["format"] = output_data
                 progress.update(format_task, advance=1)
                 progress.update(overall_task, advance=1)
-                progress.display_stage_output(
-                    "Formatting", output_data, show_details=True
-                )
+                progress.display_success("Output formatted")
 
                 # 6. Verify output structure
                 verify_task = progress.add_task("Step 6: Verifying output structure")
@@ -131,8 +125,13 @@ class Pipeline:
                 progress.update(verify_task, advance=1)
                 progress.update(overall_task, advance=1)
 
-                # Show final summary
-                progress.display_summary(stages_data)
+                # Show concise summary
+                summary = {
+                    "sections": len(output_data.get("content", [])),
+                    "tables": len(output_data.get("tables", [])),
+                    "validation": output_data.get("validation", {}),
+                }
+                progress.display_summary(summary)
                 progress.display_success("Pipeline processing completed successfully")
                 return output_data
 

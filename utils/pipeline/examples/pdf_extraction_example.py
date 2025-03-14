@@ -16,18 +16,20 @@ def main():
         # Get the current directory
         current_dir = Path(__file__).parent.parent
 
+        # TODO: Setup a runner for PDF extraction picking files and running the pipeline
+
         # Set up paths
-        input_file = current_dir / "data" / "tests" / "pdf" / "sample.pdf"
+        input_file = (
+            current_dir
+            / "data"
+            / "input"
+            / "Quotation 79520-4 - Rocky Vista HS 100%CD (25-03-12).pdf"
+        )
         output_dir = current_dir / "data" / "output"
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        # Display initial setup
-        setup_info = {
-            "input": str(input_file),
-            "output": str(output_dir),
-            "formats": ["JSON", "Markdown"],
-        }
-        progress.display_stage_output("Setup", setup_info, show_details=True)
+        # Display minimal setup info
+        progress.display_success(f"Processing {input_file.name}")
 
         # Initialize pipeline with configuration
         config = {
@@ -51,8 +53,7 @@ def main():
         # Save JSON output
         json_output = output_dir / "sample_output.json"
         pipeline.save_output(output_data, str(json_output))
-        progress.display_stage_output("JSON Output", output_data, show_details=True)
-        progress.display_success(f"JSON output saved to: {json_output}")
+        progress.display_success(f"JSON output saved to: {json_output.name}")
 
         # Process the PDF with Markdown output
         progress.display_success("Starting Markdown output processing")
@@ -62,13 +63,7 @@ def main():
         # Save Markdown output
         md_output = output_dir / "sample_output.md"
         pipeline.save_output(output_data, str(md_output))
-        if isinstance(output_data.get("content"), str):
-            progress.display_stage_output(
-                "Markdown Output",
-                {"content": output_data["content"]},
-                show_details=True,
-            )
-        progress.display_success(f"Markdown output saved to: {md_output}")
+        progress.display_success(f"Markdown output saved to: {md_output.name}")
 
         # Display final summary
         progress.display_summary(

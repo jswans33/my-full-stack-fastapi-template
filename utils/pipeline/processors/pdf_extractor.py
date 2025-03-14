@@ -151,8 +151,13 @@ class PDFExtractor:
                     # Start new section
                     current_section = {"title": line, "content": ""}
                 else:
-                    # Add to current section content
-                    current_section["content"] += line + "\n"
+                    # Add to current section content with size limit and no terminal output
+                    if (
+                        len(current_section["content"]) < 100
+                    ):  # Further reduce content size
+                        current_section["content"] += (
+                            line[:100] + "...\n" if len(line) > 100 else line + "\n"
+                        )
 
         # Add the last section
         if current_section["content"]:

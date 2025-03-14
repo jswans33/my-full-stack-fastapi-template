@@ -64,31 +64,31 @@ class PipelineProgress:
         """Create a tree view of nested data."""
         tree = Tree(f"[bold blue]{title}")
 
-        def add_nodes(parent, content, depth=0, max_depth=3):
+        def add_nodes(parent, content, depth=0, max_depth=2):
             if depth >= max_depth:
                 return
 
             if isinstance(content, dict):
                 for key, value in content.items():
+                    # Skip content display
+                    if key == "content":
+                        parent.add(f"[cyan]{key}: [dim](content hidden)")
+                        continue
+
                     if isinstance(value, (dict, list)):
                         branch = parent.add(f"[cyan]{key}")
                         add_nodes(branch, value, depth + 1, max_depth)
                     else:
                         # Truncate long values
                         str_value = str(value)
-                        if len(str_value) > 50:
-                            str_value = str_value[:47] + "..."
+                        if len(str_value) > 30:
+                            str_value = str_value[:27] + "..."
                         parent.add(f"[green]{key}: [yellow]{str_value}")
             elif isinstance(content, list):
                 if not content:
                     parent.add("[dim]<empty>")
                 else:
-                    for i, item in enumerate(content[:3]):  # Show only first 3 items
-                        if i == 2 and len(content) > 3:
-                            parent.add(f"[dim]... ({len(content) - 2} more items)")
-                            break
-                        branch = parent.add(f"[cyan]Item {i + 1}")
-                        add_nodes(branch, item, depth + 1, max_depth)
+                    parent.add(f"[dim]{len(content)} items")
 
         add_nodes(tree, data)
         return tree
