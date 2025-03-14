@@ -1,0 +1,81 @@
+@startuml
+
+title core
+
+skinparam ClassAttributeIconSize 0
+skinparam ClassBackgroundColor white
+skinparam ClassBorderColor black
+hide empty members
+skinparam monochrome true
+
+package core {
+  class UMLGeneratorError {
+      - __init__(message: str, cause: Exception | None = None)
+  }
+
+  class ConfigurationError {
+  }
+
+  class ParserError {
+  }
+
+  class GeneratorError {
+  }
+
+  class FileSystemError {
+  }
+
+  class DiagramTypeError {
+  }
+
+  class FileSystem {
+      + read_file(path: str | Path): str
+      + write_file(path: str | Path, content: str)
+      + ensure_directory(path: str | Path)
+      + find_files(directory: str | Path, pattern: str): list[Path]
+  }
+
+  class DefaultFileSystem {
+      + read_file(path: str | Path): str
+      + write_file(path: str | Path, content: str)
+      + ensure_directory(path: str | Path)
+      + find_files(directory: str | Path, pattern: str): list[Path]
+  }
+
+  class DiagramModel {
+      + name(): str
+      + diagram_type(): str
+  }
+
+  class DiagramAnalyzer {
+      + analyze(path: str | Path): DiagramModel
+  }
+
+  class DiagramGenerator {
+      + generate_diagram(model: DiagramModel, output_path: str | Path)
+      + generate_index(output_dir: str | Path, diagrams: list[Path])
+  }
+
+  class DiagramFactory {
+      + create_analyzer(diagram_type: str): DiagramAnalyzer
+      + create_generator(diagram_type: str): DiagramGenerator
+  }
+
+  class UmlService {
+      - __init__(factory: DiagramFactory, settings: dict[str, Any] | None = None)
+      + generate_diagram(diagram_type: str, source_path: str | Path, output_path: str | Path)
+      + generate_diagrams(diagram_type: str, source_paths: list[str | Path], output_dir: str | Path): list[Path]
+      + generate_all_diagrams(source_paths: dict[str, list[str | Path]], output_dir: str | Path): dict[str, list[Path]]
+  }
+
+}
+
+' Relationships
+ConfigurationError --|> UMLGeneratorError
+ParserError --|> UMLGeneratorError
+GeneratorError --|> UMLGeneratorError
+FileSystemError --|> UMLGeneratorError
+DiagramTypeError --|> UMLGeneratorError
+DefaultFileSystem --|> FileSystem
+
+@enduml

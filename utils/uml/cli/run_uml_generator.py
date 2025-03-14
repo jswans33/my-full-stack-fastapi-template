@@ -11,27 +11,24 @@ import subprocess
 import sys
 from pathlib import Path
 
-# Add the parent directory to the Python path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-# Now import the modules
-from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.filesystem import DefaultFileSystem
 from utils.uml.core.service import UmlService
 from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_base_dir, get_output_dir, get_project_root
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
 # Project root directory
-PROJECT_ROOT = Path(__file__).parent.parent
+PROJECT_ROOT = get_project_root()
 
 # Constants
-OUTPUT_BASE_DIR = Path("docs/source/_generated_uml")
-CLASS_OUTPUT_DIR = OUTPUT_BASE_DIR / "class"
-SEQUENCE_OUTPUT_DIR = OUTPUT_BASE_DIR / "sequence"
-ACTIVITY_OUTPUT_DIR = OUTPUT_BASE_DIR / "activity"
-STATE_OUTPUT_DIR = OUTPUT_BASE_DIR / "state"
+OUTPUT_BASE_DIR = get_output_base_dir()
+CLASS_OUTPUT_DIR = get_output_dir("class")
+SEQUENCE_OUTPUT_DIR = get_output_dir("sequence")
+ACTIVITY_OUTPUT_DIR = get_output_dir("activity")
+STATE_OUTPUT_DIR = get_output_dir("state")
 
 
 def get_directories_to_process() -> dict:
@@ -267,7 +264,7 @@ def main() -> int:
     OUTPUT_BASE_DIR.mkdir(parents=True, exist_ok=True)
 
     # Create service
-    file_system = FileSystem()
+    file_system = DefaultFileSystem()
     factory = DefaultDiagramFactory(file_system)
     service = UmlService(factory)
 
@@ -288,12 +285,12 @@ def main() -> int:
 
     # Alternative: Use the dedicated script for backend/app sequence diagrams
     try:
-        if os.path.exists("utils/extract_app_sequences.py"):
+        if os.path.exists("utils/uml/cli/extract_app_sequences.py"):
             logger.info(
                 "Generating application sequence diagrams using extract_app_sequences.py...",
             )
             subprocess.run(
-                ["python", "-m", "utils.extract_app_sequences"],
+                ["python", "-m", "utils.uml.cli.extract_app_sequences"],
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 check=False,

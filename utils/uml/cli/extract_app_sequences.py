@@ -8,10 +8,11 @@ application's key workflows.
 
 import os
 import subprocess
-from pathlib import Path
+
+from utils.uml.utils.paths import get_output_dir
 
 # Ensure output directory exists
-OUTPUT_DIR = Path("docs/source/_generated_uml/sequence")
+OUTPUT_DIR = get_output_dir("sequence")
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Define important entry points for sequence diagrams
@@ -42,7 +43,7 @@ print("=" * 50)
 
 success_count = 0
 for module_name, method_name, output_name in ENTRY_POINTS:
-    output_file = OUTPUT_DIR / f"{output_name}.puml"
+    output_file = os.path.join(OUTPUT_DIR, f"{output_name}.puml")
 
     # For routes modules, we need to specify the full path
     if module_name in ("login", "users", "items", "private", "utils"):
@@ -58,7 +59,7 @@ for module_name, method_name, output_name in ENTRY_POINTS:
     cmd = [
         "python",
         "-m",
-        "utils.extract_sequence",
+        "utils.uml.cli.extract_sequence",
         "--dir",
         "backend/app",
         "--module",
@@ -87,7 +88,7 @@ for module_name, method_name, output_name in ENTRY_POINTS:
             alternative_cmd = [
                 "python",
                 "-m",
-                "utils.extract_sequence",
+                "utils.uml.cli.extract_sequence",
                 "--dir",
                 "backend/app",
                 "--module",
@@ -101,12 +102,15 @@ for module_name, method_name, output_name in ENTRY_POINTS:
 
             print("  Trying alternative approach...")
             alt_result = subprocess.run(
-                alternative_cmd, capture_output=True, text=True, check=False
+                alternative_cmd,
+                capture_output=True,
+                text=True,
+                check=False,
             )
 
             if alt_result.returncode == 0:
                 print(
-                    f"✓ Successfully generated using alternative approach: {output_file}"
+                    f"✓ Successfully generated using alternative approach: {output_file}",
                 )
                 success_count += 1
             else:
@@ -117,16 +121,16 @@ for module_name, method_name, output_name in ENTRY_POINTS:
 
 print("=" * 50)
 print(
-    f"Sequence diagram extraction completed: {success_count}/{len(ENTRY_POINTS)} successful"
+    f"Sequence diagram extraction completed: {success_count}/{len(ENTRY_POINTS)} successful",
 )
 print(f"Diagrams saved to: {OUTPUT_DIR}")
 
 # Remind the user to run the main UML generator to include these in the docs
 print("\nTo include these diagrams in the documentation, run:")
-print("python -m utils.run_uml_generator")
+print("python -m utils.uml.cli.run_uml_generator")
 
 if success_count == 0:
     print(
-        "\nNote: If extraction failed, you may need to modify the extract_sequence.py script"
+        "\nNote: If extraction failed, you may need to modify the extract_sequence.py script",
     )
     print("to better handle the specific structure of your FastAPI application.")

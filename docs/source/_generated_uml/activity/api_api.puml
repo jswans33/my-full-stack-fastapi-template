@@ -1,0 +1,27 @@
+@startuml
+
+title Activity Diagram - api
+
+skinparam ActivityBackgroundColor white
+skinparam ActivityBorderColor black
+skinparam ArrowColor black
+skinparam monochrome true
+
+start
+:Initialize;
+:Process Data;
+:Validate Results;
+:Save Results;
+if (Is Valid?) then (yes)
+else (no)
+endif
+stop
+
+' Transitions
+start --> init
+init --> process
+process --> validate
+validate --> valid
+save --> end
+
+@enduml

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Script to extract class diagrams from Python code.
+Script to extract activity diagrams from Python code.
 """
 
 import argparse
@@ -8,29 +8,23 @@ import logging
 import sys
 from pathlib import Path
 
-# Add the parent directory to the Python path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-# Now import the modules
-from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.filesystem import DefaultFileSystem
 from utils.uml.core.service import UmlService
 from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_dir
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
-# Project root directory
-PROJECT_ROOT = Path(__file__).parent.parent
-
 # Constants
-OUTPUT_BASE_DIR = Path("docs/source/_generated_uml/class")
+OUTPUT_BASE_DIR = get_output_dir("activity")
 
 
 def parse_arguments() -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description="Generate class diagrams from Python code.",
+        description="Generate activity diagrams from Python code.",
     )
 
     parser.add_argument(
@@ -63,13 +57,6 @@ def parse_arguments() -> argparse.Namespace:
     )
 
     parser.add_argument(
-        "--include-private",
-        "-p",
-        action="store_true",
-        help="Include private members in diagrams",
-    )
-
-    parser.add_argument(
         "--verbose",
         "-v",
         action="store_true",
@@ -80,7 +67,7 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def main() -> int:
-    """Run the class diagram generator."""
+    """Run the activity diagram generator."""
     args = parse_arguments()
 
     # Configure logging
@@ -92,34 +79,33 @@ def main() -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Create service
-    file_system = FileSystem()
+    file_system = DefaultFileSystem()
     factory = DefaultDiagramFactory(file_system)
     service = UmlService(factory)
 
-    # Generate class diagrams
+    # Generate activity diagrams
     try:
-        # Run the UML generator with the class diagram type
+        # Run the UML generator with the activity diagram type
         source_path = Path(args.source)
 
         # Create analyzer-specific settings
         settings = {
-            "include_private": args.include_private,
             "recursive": args.recursive,
             "exclude_patterns": args.exclude,
         }
 
         # Generate the diagram
         service.generate_diagram(
-            "class",
+            "activity",
             source_path,
             output_dir / f"{source_path.stem}.puml",
             **settings,
         )
 
-        logger.info(f"Class diagram generated successfully in {output_dir}")
+        logger.info(f"Activity diagram generated successfully in {output_dir}")
         return 0
     except Exception as e:
-        logger.error(f"Error generating class diagram: {e}")
+        logger.error(f"Error generating activity diagram: {e}")
         if args.verbose:
             import traceback
 

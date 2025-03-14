@@ -1,0 +1,44 @@
+@startuml
+
+title State Diagram - api
+
+skinparam StateBackgroundColor white
+skinparam StateBorderColor black
+skinparam ArrowColor black
+skinparam monochrome true
+
+[*] --> start
+state Idle {
+  entry / initialize()
+  exit / cleanup()
+}
+state Processing {
+  entry / startProcess()
+  exit / endProcess()
+  updateProgress()
+}
+state Waiting for Input {
+  entry / displayPrompt()
+}
+state Error {
+  entry / logError()
+  displayError()
+}
+state Composite State {
+  state Substate 1
+  state Substate 2
+  substate1 --> substate2 : next / transition()
+}
+end --> [*]
+
+' Transitions
+idle --> processing : start / beginProcessing()
+processing --> waiting : needInput / pauseProcessing()
+waiting --> processing : inputReceived / resumeProcessing()
+processing --> idle : complete / finishProcessing()
+processing --> error : error / handleError()
+error --> idle : reset / resetSystem()
+idle --> composite : enterComposite
+composite --> idle : exitComposite
+
+@enduml

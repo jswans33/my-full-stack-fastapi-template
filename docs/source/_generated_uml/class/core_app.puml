@@ -1,0 +1,147 @@
+@startuml
+
+title app
+
+skinparam ClassAttributeIconSize 0
+skinparam ClassBackgroundColor white
+skinparam ClassBorderColor black
+hide empty members
+skinparam monochrome true
+
+package app {
+  class UserBase {
+      + email: EmailStr = Field(unique=True, index=True, max_length=255)
+      + is_active: bool = True
+      + is_superuser: bool = False
+      + full_name: str | None = Field(default=None, max_length=255)
+  }
+
+  class UserCreate {
+      + password: str = Field(min_length=8, max_length=40)
+  }
+
+  class UserRegister {
+      + email: EmailStr = Field(max_length=255)
+      + password: str = Field(min_length=8, max_length=40)
+      + full_name: str | None = Field(default=None, max_length=255)
+  }
+
+  class UserUpdate {
+      + email: EmailStr | None = Field(default=None, max_length=255)
+      + password: str | None = Field(default=None, min_length=8, max_length=40)
+  }
+
+  class UserUpdateMe {
+      + full_name: str | None = Field(default=None, max_length=255)
+      + email: EmailStr | None = Field(default=None, max_length=255)
+  }
+
+  class UpdatePassword {
+      + current_password: str = Field(min_length=8, max_length=40)
+      + new_password: str = Field(min_length=8, max_length=40)
+  }
+
+  class User {
+      + id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+      + hashed_password: str
+      + items: list['Item'] = Relationship(back_populates='owner', cascade_delete=True)
+  }
+
+  class UserPublic {
+      + id: uuid.UUID
+  }
+
+  class UsersPublic {
+      + data: list[UserPublic]
+      + count: int
+  }
+
+  class ItemBase {
+      + title: str = Field(min_length=1, max_length=255)
+      + description: str | None = Field(default=None, max_length=255)
+  }
+
+  class ItemCreate {
+  }
+
+  class ItemUpdate {
+      + title: str | None = Field(default=None, min_length=1, max_length=255)
+  }
+
+  class Item {
+      + id: uuid.UUID = Field(default_factory=uuid.uuid4, primary_key=True)
+      + title: str = Field(max_length=255)
+      + owner_id: uuid.UUID = Field(foreign_key='user.id', nullable=False, ondelete='CASCADE')
+      + owner: User | None = Relationship(back_populates='items')
+  }
+
+  class ItemPublic {
+      + id: uuid.UUID
+      + owner_id: uuid.UUID
+  }
+
+  class ItemsPublic {
+      + data: list[ItemPublic]
+      + count: int
+  }
+
+  class Message {
+      + message: str
+  }
+
+  class Token {
+      + access_token: str
+      + token_type: str = 'bearer'
+  }
+
+  class TokenPayload {
+      + sub: str | None = None
+  }
+
+  class NewPassword {
+      + token: str
+      + new_password: str = Field(min_length=8, max_length=40)
+  }
+
+  class EmailData <<dataclass>> {
+      + html_content: str
+      + subject: str
+  }
+
+}
+
+package routes {
+  class PrivateUserCreate {
+      + email: str
+      + password: str
+      + full_name: str
+      + is_verified: bool = False
+  }
+
+}
+
+package core {
+  class TestLogging {
+      + test_get_logger(monkeypatch)
+      + test_logger_propagation(monkeypatch)
+      + test_log_level_configuration(monkeypatch)
+      + test_log_format_text(monkeypatch)
+      + test_log_format_json(monkeypatch)
+      + test_structured_logging(monkeypatch)
+      + test_logging_middleware(monkeypatch)
+      + test_exception_logging(monkeypatch)
+  }
+
+}
+
+' Relationships
+UserCreate --|> UserBase
+UserUpdate --|> UserBase
+User --|> UserBase
+UserPublic --|> UserBase
+ItemCreate --|> ItemBase
+ItemUpdate --|> ItemBase
+Item --|> ItemBase
+ItemPublic --|> ItemBase
+
+@enduml

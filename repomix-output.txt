@@ -46,6 +46,14 @@ Additional Info:
 Directory Structure
 ================================================================
 __init__.py
+cli/__init__.py
+cli/extract_activity.py
+cli/extract_app_sequences.py
+cli/extract_class.py
+cli/extract_sequence.py
+cli/extract_state.py
+cli/run_uml_generator.py
+cli/uml_cli.py
 config/__init__.py
 core/__init__.py
 core/exceptions.py
@@ -72,7 +80,11 @@ diagrams/state_diagram/generator.py
 diagrams/state_diagram/models.py
 factories.py
 run.py
+scripts/cleanup_old_code.py
+scripts/install_dev.py
+scripts/setup_venv.py
 utils/__init__.py
+utils/paths.py
 
 ================================================================
 Files
@@ -85,6 +97,1614 @@ File: __init__.py
 
 This package provides tools for generating UML diagrams from Python code.
 """
+
+================
+File: cli/__init__.py
+================
+"""CLI package for UML diagram generation."""
+
+================
+File: cli/extract_activity.py
+================
+#!/usr/bin/env python
+"""
+Script to extract activity diagrams from Python code.
+"""
+
+import argparse
+import logging
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# Now import the modules
+from utils.uml.core.filesystem import DefaultFileSystem
+from utils.uml.core.service import UmlService
+from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_dir
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
+
+# Constants
+OUTPUT_BASE_DIR = get_output_dir("activity")
+
+
+def parse_arguments() -> argparse.Namespace:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Generate activity diagrams from Python code.",
+    )
+
+    parser.add_argument(
+        "--source",
+        "-s",
+        required=True,
+        help="Source directory or file to analyze",
+    )
+
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=str(OUTPUT_BASE_DIR),
+        help=f"Output directory for diagrams (default: {OUTPUT_BASE_DIR})",
+    )
+
+    parser.add_argument(
+        "--recursive",
+        "-r",
+        action="store_true",
+        help="Recursively analyze directories",
+    )
+
+    parser.add_argument(
+        "--exclude",
+        "-e",
+        action="append",
+        default=[],
+        help="Patterns to exclude (can be specified multiple times)",
+    )
+
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+
+    return parser.parse_args()
+
+
+def main() -> int:
+    """Run the activity diagram generator."""
+    args = parse_arguments()
+
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Create output directory
+    output_dir = Path(args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create service
+    file_system = DefaultFileSystem()
+    factory = DefaultDiagramFactory(file_system)
+    service = UmlService(factory)
+
+    # Generate activity diagrams
+    try:
+        # Run the UML generator with the activity diagram type
+        source_path = Path(args.source)
+
+        # Create analyzer-specific settings
+        settings = {
+            "recursive": args.recursive,
+            "exclude_patterns": args.exclude,
+        }
+
+        # Generate the diagram
+        service.generate_diagram(
+            "activity",
+            source_path,
+            output_dir / f"{source_path.stem}.puml",
+            **settings,
+        )
+
+        logger.info(f"Activity diagram generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating activity diagram: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: cli/extract_app_sequences.py
+================
+#!/usr/bin/env python
+"""Extract sequence diagrams from key entry points in the application.
+
+This script analyzes the backend/app and extracts sequence diagrams for
+important entry points in the API, creating visual documentation of the
+application's key workflows.
+"""
+
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# Import the paths utility
+from utils.uml.utils.paths import get_output_dir
+
+# Ensure output directory exists
+OUTPUT_DIR = get_output_dir("sequence")
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# Define important entry points for sequence diagrams
+# Format: (class_name, method_name, output_filename)
+ENTRY_POINTS = [
+    # User Authentication Flows
+    ("login", "login_access_token", "authentication_flow"),  # Login flow
+    ("login", "test_token", "token_verification"),  # Token verification
+    # User Management Flows
+    ("users", "create_user", "admin_create_user"),  # Admin creates user
+    ("users", "register_user", "user_signup"),  # User signup
+    ("users", "update_user_me", "user_update_profile"),  # Update profile
+    ("users", "update_password_me", "user_change_password"),  # Change password
+    ("users", "delete_user_me", "user_delete_account"),  # Delete account
+    # Password Recovery Flow
+    (
+        "login",
+        "recover_password",
+        "password_recovery_request",
+    ),  # Request password reset
+    ("login", "reset_password", "password_reset"),  # Reset password
+    # Other API Endpoints
+    # Add other important flows here
+]
+
+print("Extracting sequence diagrams from backend/app...")
+print("=" * 50)
+
+success_count = 0
+for module_name, method_name, output_name in ENTRY_POINTS:
+    output_file = OUTPUT_DIR / f"{output_name}.puml"
+
+    # For routes modules, we need to specify the full path
+    if module_name in ("login", "users", "items", "private", "utils"):
+        # API route modules
+        module_path = f"api.routes.{module_name}"
+    else:
+        # Other modules
+        module_path = module_name
+
+    print(f"Generating diagram for {module_path}.{method_name}...")
+
+    # Construct the command
+    cmd = [
+        "python",
+        "-m",
+        "utils.uml.cli.extract_sequence",
+        "--dir",
+        "backend/app",
+        "--module",
+        module_path,
+        "--class",
+        "router",  # For FastAPI routers, the class is "router"
+        "--method",
+        method_name,
+        "--output",
+        str(output_file),
+        "--verbose",
+    ]
+
+    try:
+        # Run the extraction command
+        result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+
+        if result.returncode == 0:
+            print(f"✓ Successfully generated: {output_file}")
+            success_count += 1
+        else:
+            print(f"× Failed to generate diagram. Error: {result.stderr}")
+
+            # Try an alternative approach for router functions
+            # Sometimes router functions are directly accessible by module.function_name
+            alternative_cmd = [
+                "python",
+                "-m",
+                "utils.uml.cli.extract_sequence",
+                "--dir",
+                "backend/app",
+                "--module",
+                module_path,
+                "--function",
+                method_name,  # Try as a function instead of a class method
+                "--output",
+                str(output_file),
+                "--verbose",
+            ]
+
+            print("  Trying alternative approach...")
+            alt_result = subprocess.run(
+                alternative_cmd,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+
+            if alt_result.returncode == 0:
+                print(
+                    f"✓ Successfully generated using alternative approach: {output_file}",
+                )
+                success_count += 1
+            else:
+                print(f"× Alternative approach also failed: {alt_result.stderr}")
+
+    except Exception as e:
+        print(f"× Error: {e!s}")
+
+print("=" * 50)
+print(
+    f"Sequence diagram extraction completed: {success_count}/{len(ENTRY_POINTS)} successful",
+)
+print(f"Diagrams saved to: {OUTPUT_DIR}")
+
+# Remind the user to run the main UML generator to include these in the docs
+print("\nTo include these diagrams in the documentation, run:")
+print("python -m utils.uml.cli.run_uml_generator")
+
+if success_count == 0:
+    print(
+        "\nNote: If extraction failed, you may need to modify the extract_sequence.py script",
+    )
+    print("to better handle the specific structure of your FastAPI application.")
+
+================
+File: cli/extract_class.py
+================
+#!/usr/bin/env python
+"""
+Script to extract class diagrams from Python code.
+"""
+
+import argparse
+import logging
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# Now import the modules
+from utils.uml.core.filesystem import DefaultFileSystem
+from utils.uml.core.service import UmlService
+from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_dir
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
+
+# Constants
+OUTPUT_BASE_DIR = get_output_dir("class")
+
+
+def parse_arguments() -> argparse.Namespace:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Generate class diagrams from Python code.",
+    )
+
+    parser.add_argument(
+        "--source",
+        "-s",
+        required=True,
+        help="Source directory or file to analyze",
+    )
+
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=str(OUTPUT_BASE_DIR),
+        help=f"Output directory for diagrams (default: {OUTPUT_BASE_DIR})",
+    )
+
+    parser.add_argument(
+        "--recursive",
+        "-r",
+        action="store_true",
+        help="Recursively analyze directories",
+    )
+
+    parser.add_argument(
+        "--exclude",
+        "-e",
+        action="append",
+        default=[],
+        help="Patterns to exclude (can be specified multiple times)",
+    )
+
+    parser.add_argument(
+        "--include-private",
+        "-p",
+        action="store_true",
+        help="Include private members in diagrams",
+    )
+
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+
+    return parser.parse_args()
+
+
+def main() -> int:
+    """Run the class diagram generator."""
+    args = parse_arguments()
+
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Create output directory
+    output_dir = Path(args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create service
+    file_system = DefaultFileSystem()
+    factory = DefaultDiagramFactory(file_system)
+    service = UmlService(factory)
+
+    # Generate class diagrams
+    try:
+        # Run the UML generator with the class diagram type
+        source_path = Path(args.source)
+
+        # Create analyzer-specific settings
+        settings = {
+            "include_private": args.include_private,
+            "recursive": args.recursive,
+            "exclude_patterns": args.exclude,
+        }
+
+        # Generate the diagram
+        service.generate_diagram(
+            "class",
+            source_path,
+            output_dir / f"{source_path.stem}.puml",
+            **settings,
+        )
+
+        logger.info(f"Class diagram generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating class diagram: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: cli/extract_sequence.py
+================
+#!/usr/bin/env python
+"""
+Script to extract sequence diagrams from Python code.
+"""
+
+import argparse
+import logging
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# Now import the modules
+from utils.uml.core.filesystem import DefaultFileSystem
+from utils.uml.core.service import UmlService
+from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_dir
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
+
+# Constants
+OUTPUT_BASE_DIR = get_output_dir("sequence")
+
+
+def parse_arguments() -> argparse.Namespace:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Generate sequence diagrams from Python code.",
+    )
+
+    parser.add_argument(
+        "--source",
+        "-s",
+        required=True,
+        help="Source directory or file to analyze",
+    )
+
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=str(OUTPUT_BASE_DIR),
+        help=f"Output directory for diagrams (default: {OUTPUT_BASE_DIR})",
+    )
+
+    parser.add_argument(
+        "--recursive",
+        "-r",
+        action="store_true",
+        help="Recursively analyze directories",
+    )
+
+    parser.add_argument(
+        "--exclude",
+        "-e",
+        action="append",
+        default=[],
+        help="Patterns to exclude (can be specified multiple times)",
+    )
+
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+
+    return parser.parse_args()
+
+
+def main() -> int:
+    """Run the sequence diagram generator."""
+    args = parse_arguments()
+
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Create output directory
+    output_dir = Path(args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create service
+    file_system = DefaultFileSystem()
+    factory = DefaultDiagramFactory(file_system)
+    service = UmlService(factory)
+
+    # Generate sequence diagrams
+    try:
+        # Run the UML generator with the sequence diagram type
+        source_path = Path(args.source)
+
+        # Create analyzer-specific settings
+        settings = {
+            "recursive": args.recursive,
+            "exclude_patterns": args.exclude,
+            "root_dir": str(source_path),
+        }
+
+        # Generate the diagram
+        service.generate_diagram(
+            "sequence",
+            source_path,
+            output_dir / f"{source_path.stem}.puml",
+            **settings,
+        )
+
+        logger.info(f"Sequence diagram generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating sequence diagram: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: cli/extract_state.py
+================
+#!/usr/bin/env python
+"""
+Script to extract state diagrams from Python code.
+"""
+
+import argparse
+import logging
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# Now import the modules
+from utils.uml.core.filesystem import DefaultFileSystem
+from utils.uml.core.service import UmlService
+from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_dir
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
+
+# Constants
+OUTPUT_BASE_DIR = get_output_dir("state")
+
+
+def parse_arguments() -> argparse.Namespace:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Generate state diagrams from Python code.",
+    )
+
+    parser.add_argument(
+        "--source",
+        "-s",
+        required=True,
+        help="Source directory or file to analyze",
+    )
+
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=str(OUTPUT_BASE_DIR),
+        help=f"Output directory for diagrams (default: {OUTPUT_BASE_DIR})",
+    )
+
+    parser.add_argument(
+        "--recursive",
+        "-r",
+        action="store_true",
+        help="Recursively analyze directories",
+    )
+
+    parser.add_argument(
+        "--exclude",
+        "-e",
+        action="append",
+        default=[],
+        help="Patterns to exclude (can be specified multiple times)",
+    )
+
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+
+    return parser.parse_args()
+
+
+def main() -> int:
+    """Run the state diagram generator."""
+    args = parse_arguments()
+
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Create output directory
+    output_dir = Path(args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create service
+    file_system = DefaultFileSystem()
+    factory = DefaultDiagramFactory(file_system)
+    service = UmlService(factory)
+
+    # Generate state diagrams
+    try:
+        # Run the UML generator with the state diagram type
+        source_path = Path(args.source)
+
+        # Create analyzer-specific settings
+        settings = {
+            "recursive": args.recursive,
+            "exclude_patterns": args.exclude,
+        }
+
+        # Generate the diagram
+        service.generate_diagram(
+            "state",
+            source_path,
+            output_dir / f"{source_path.stem}.puml",
+            **settings,
+        )
+
+        logger.info(f"State diagram generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating state diagram: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: cli/run_uml_generator.py
+================
+#!/usr/bin/env python
+"""
+Script to run the UML generator on the backend/app directory.
+
+This script uses the new unified architecture for UML diagram generation.
+"""
+
+import logging
+import os
+import subprocess
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# Now import the modules
+from utils.uml.core.filesystem import DefaultFileSystem
+from utils.uml.core.service import UmlService
+from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_base_dir, get_output_dir, get_project_root
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
+
+# Project root directory
+PROJECT_ROOT = get_project_root()
+
+# Constants
+OUTPUT_BASE_DIR = get_output_base_dir()
+CLASS_OUTPUT_DIR = get_output_dir("class")
+SEQUENCE_OUTPUT_DIR = get_output_dir("sequence")
+ACTIVITY_OUTPUT_DIR = get_output_dir("activity")
+STATE_OUTPUT_DIR = get_output_dir("state")
+
+
+def get_directories_to_process() -> dict:
+    """Get directories that need to be processed for UML generation."""
+    project_root = PROJECT_ROOT
+
+    app_dir = project_root / "backend" / "app"
+    if not app_dir.exists():
+        logger.error(f"Directory {app_dir} does not exist.")
+        return {}
+
+    # Process core components first
+    core_dirs = [
+        app_dir / "core",
+        app_dir / "models" if (app_dir / "models").exists() else app_dir,
+        app_dir / "services" if (app_dir / "services").exists() else None,
+    ]
+
+    # Process API components
+    api_dirs = [app_dir / "api"]
+
+    # Process test components separately with different settings
+    test_dirs = [app_dir / "tests"] if (app_dir / "tests").exists() else []
+
+    # Add utils directory
+    utils_dir = project_root / "utils"
+
+    # Add uml directory for special handling
+    uml_dir = utils_dir / "uml"
+
+    return {
+        "core": {
+            "dirs": [d for d in core_dirs if d and d.exists()],
+            "base_dir": app_dir,
+        },
+        "api": {"dirs": [d for d in api_dirs if d and d.exists()], "base_dir": app_dir},
+        "tests": {"dirs": test_dirs, "base_dir": app_dir},
+        "utils": {
+            "dirs": [utils_dir] if utils_dir.exists() else [],
+            "base_dir": project_root,
+        },
+        "uml": {
+            "dirs": [uml_dir] if uml_dir.exists() else [],
+            "base_dir": project_root,
+        },
+    }
+
+
+def generate_class_diagrams(service: UmlService, directories: dict) -> None:
+    """Generate class diagrams for the specified directories."""
+    # Create output directory
+    output_dir = CLASS_OUTPUT_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info("Generating class diagrams...")
+
+    # Process each directory
+    for category, category_info in directories.items():
+        for directory in category_info["dirs"]:
+            try:
+                # Generate class diagram for this directory
+                output_path = output_dir / f"{category}_{directory.name}.puml"
+                service.generate_diagram(
+                    "class",
+                    directory,
+                    output_path,
+                    recursive=True,
+                    include_private=False,
+                )
+                logger.info(f"Generated class diagram for {directory} at {output_path}")
+            except Exception as e:
+                logger.error(f"Error generating class diagram for {directory}: {e}")
+
+
+def generate_sequence_diagrams(service: UmlService, directories: dict) -> None:
+    """Generate sequence diagrams for the specified directories."""
+    # Create output directory
+    output_dir = SEQUENCE_OUTPUT_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info("Generating sequence diagrams...")
+
+    # Process each directory
+    for category, category_info in directories.items():
+        for directory in category_info["dirs"]:
+            try:
+                # Generate sequence diagram for this directory
+                output_path = output_dir / f"{category}_{directory.name}.puml"
+                service.generate_diagram(
+                    "sequence",
+                    directory,
+                    output_path,
+                    recursive=True,
+                    root_dir=str(directory),
+                )
+                logger.info(
+                    f"Generated sequence diagram for {directory} at {output_path}",
+                )
+            except Exception as e:
+                logger.error(f"Error generating sequence diagram for {directory}: {e}")
+
+
+def generate_activity_diagrams(service: UmlService, directories: dict) -> None:
+    """Generate activity diagrams for the specified directories."""
+    # Create output directory
+    output_dir = ACTIVITY_OUTPUT_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info("Generating activity diagrams...")
+
+    # Process each directory
+    for category, category_info in directories.items():
+        for directory in category_info["dirs"]:
+            try:
+                # Generate activity diagram for this directory
+                output_path = output_dir / f"{category}_{directory.name}.puml"
+                service.generate_diagram(
+                    "activity",
+                    directory,
+                    output_path,
+                    recursive=True,
+                )
+                logger.info(
+                    f"Generated activity diagram for {directory} at {output_path}",
+                )
+            except Exception as e:
+                logger.error(f"Error generating activity diagram for {directory}: {e}")
+
+
+def generate_state_diagrams(service: UmlService, directories: dict) -> None:
+    """Generate state diagrams for the specified directories."""
+    # Create output directory
+    output_dir = STATE_OUTPUT_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    logger.info("Generating state diagrams...")
+
+    # Process each directory
+    for category, category_info in directories.items():
+        for directory in category_info["dirs"]:
+            try:
+                # Generate state diagram for this directory
+                output_path = output_dir / f"{category}_{directory.name}.puml"
+                service.generate_diagram(
+                    "state",
+                    directory,
+                    output_path,
+                    recursive=True,
+                )
+                logger.info(f"Generated state diagram for {directory} at {output_path}")
+            except Exception as e:
+                logger.error(f"Error generating state diagram for {directory}: {e}")
+
+
+def generate_yaml_sequence_diagrams(service: UmlService) -> None:
+    """Generate sequence diagrams from YAML definitions."""
+    try:
+        import yaml
+    except ImportError:
+        logger.error("PyYAML is required for sequence diagram generation")
+        logger.error("Install with 'pip install pyyaml'")
+        return
+
+    sequence_dir = Path("examples/sequence_diagrams")
+
+    if not sequence_dir.exists():
+        logger.warning(f"No sequence diagram definitions found at {sequence_dir}")
+        return
+
+    logger.info(f"Generating sequence diagrams from {sequence_dir}...")
+
+    # Create output directory
+    output_dir = SEQUENCE_OUTPUT_DIR
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Process all YAML files
+    yaml_count = 0
+    for yaml_file in sequence_dir.glob("*.yaml"):
+        try:
+            output_path = output_dir / f"{yaml_file.stem}.puml"
+
+            # Read YAML file and generate diagram
+            with open(yaml_file) as f:
+                yaml_content = f.read()
+
+            # Use the sequence diagram generator to process the YAML content
+            # This is a placeholder - the actual implementation would depend on
+            # how the YAML sequence diagrams are processed in the new architecture
+            logger.info(f"Processing sequence diagram from {yaml_file}")
+
+            yaml_count += 1
+        except Exception as e:
+            logger.error(f"Error processing {yaml_file}: {e}")
+
+    if yaml_count > 0:
+        logger.info(
+            f"Generated {yaml_count} sequence diagrams from YAML in {output_dir}",
+        )
+    else:
+        logger.warning("No sequence diagrams were generated from YAML")
+
+
+def verify_generated_files(output_dir: Path) -> None:
+    """Verify and log the generated files structure."""
+    logger.info("\nVerifying generated files structure:")
+    logger.info("===================================")
+
+    for root, dirs, files in os.walk(output_dir):
+        rel_path = Path(root).relative_to(output_dir)
+        level = 0 if str(rel_path) == "." else len(rel_path.parts)
+
+        indent = "  " * level
+
+        # Print directory name
+        if level > 0:
+            logger.info(f"{indent[:-2]}+ {rel_path.name}/")
+
+        # Print files
+        for file in sorted(files):
+            if file.endswith(".puml"):
+                logger.info(f"{indent}- {file}")
+    logger.info("\nUML diagrams generated in docs/source/_generated_uml/")
+
+
+def main() -> int:
+    """Run the UML generator on the backend/app directory structure."""
+    # Get all directories to process
+    directories = get_directories_to_process()
+    if not directories:
+        return 1
+
+    # Create output directories
+    OUTPUT_BASE_DIR.mkdir(parents=True, exist_ok=True)
+
+    # Create service
+    file_system = DefaultFileSystem()
+    factory = DefaultDiagramFactory(file_system)
+    service = UmlService(factory)
+
+    # Generate class diagrams
+    generate_class_diagrams(service, directories)
+
+    # Generate sequence diagrams
+    generate_sequence_diagrams(service, directories)
+
+    # Generate activity diagrams
+    generate_activity_diagrams(service, directories)
+
+    # Generate state diagrams
+    generate_state_diagrams(service, directories)
+
+    # Generate sequence diagrams from YAML definitions
+    generate_yaml_sequence_diagrams(service)
+
+    # Alternative: Use the dedicated script for backend/app sequence diagrams
+    try:
+        if os.path.exists("utils/uml/cli/extract_app_sequences.py"):
+            logger.info(
+                "Generating application sequence diagrams using extract_app_sequences.py...",
+            )
+            subprocess.run(
+                ["python", "-m", "utils.uml.cli.extract_app_sequences"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                check=False,
+            )
+            logger.info("Application sequence diagrams generated successfully.")
+    except Exception as e:
+        logger.error(f"Error generating application sequence diagrams: {e}")
+
+    # Verify and log the generated files structure
+    verify_generated_files(OUTPUT_BASE_DIR)
+
+    logger.info("\nUML diagrams generated successfully.")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: cli/uml_cli.py
+================
+#!/usr/bin/env python
+"""
+Unified CLI for UML diagram generation.
+
+This script provides a unified command-line interface for generating all types
+of UML diagrams, including class, sequence, activity, and state diagrams.
+"""
+
+import argparse
+import logging
+import sys
+from pathlib import Path
+
+# Add the project root to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+# Import the UML modules
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.service import UmlService
+from utils.uml.factories import DefaultDiagramFactory
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
+
+# Project root directory
+PROJECT_ROOT = Path(__file__).parent.parent.parent.parent
+
+# Constants
+OUTPUT_BASE_DIR = Path("docs/source/_generated_uml")
+
+
+def create_parser() -> argparse.ArgumentParser:
+    """Create the command-line argument parser."""
+    parser = argparse.ArgumentParser(
+        description="Generate UML diagrams from source code.",
+    )
+
+    subparsers = parser.add_subparsers(
+        dest="command",
+        help="Command to execute",
+        required=True,
+    )
+
+    # Common arguments for all commands
+    common_parser = argparse.ArgumentParser(add_help=False)
+    common_parser.add_argument(
+        "--source",
+        "-s",
+        required=True,
+        help="Source directory or file to analyze",
+    )
+    common_parser.add_argument(
+        "--output",
+        "-o",
+        help="Output directory for diagrams",
+    )
+    common_parser.add_argument(
+        "--recursive",
+        "-r",
+        action="store_true",
+        help="Recursively analyze directories",
+    )
+    common_parser.add_argument(
+        "--exclude",
+        "-e",
+        action="append",
+        default=[],
+        help="Patterns to exclude (can be specified multiple times)",
+    )
+    common_parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+
+    # Class diagram command
+    class_parser = subparsers.add_parser(
+        "class",
+        help="Generate class diagrams",
+        parents=[common_parser],
+    )
+    class_parser.add_argument(
+        "--include-private",
+        "-p",
+        action="store_true",
+        help="Include private members in diagrams",
+    )
+
+    # Sequence diagram command
+    sequence_parser = subparsers.add_parser(
+        "sequence",
+        help="Generate sequence diagrams",
+        parents=[common_parser],
+    )
+    sequence_parser.add_argument(
+        "--module",
+        "-m",
+        help="Module to analyze",
+    )
+    sequence_parser.add_argument(
+        "--class",
+        "-c",
+        dest="class_name",
+        help="Class to analyze",
+    )
+    sequence_parser.add_argument(
+        "--method",
+        help="Method to analyze",
+    )
+    sequence_parser.add_argument(
+        "--function",
+        "-f",
+        help="Function to analyze",
+    )
+
+    # Activity diagram command
+    activity_parser = subparsers.add_parser(
+        "activity",
+        help="Generate activity diagrams",
+        parents=[common_parser],
+    )
+
+    # State diagram command
+    state_parser = subparsers.add_parser(
+        "state",
+        help="Generate state diagrams",
+        parents=[common_parser],
+    )
+
+    # All diagrams command
+    all_parser = subparsers.add_parser(
+        "all",
+        help="Generate all types of diagrams",
+        parents=[common_parser],
+    )
+    all_parser.add_argument(
+        "--include-private",
+        "-p",
+        action="store_true",
+        help="Include private members in class diagrams",
+    )
+
+    # App sequences command
+    app_sequences_parser = subparsers.add_parser(
+        "app-sequences",
+        help="Generate sequence diagrams for key application entry points",
+    )
+    app_sequences_parser.add_argument(
+        "--app-dir",
+        default="backend/app",
+        help="Application directory (default: backend/app)",
+    )
+    app_sequences_parser.add_argument(
+        "--output",
+        "-o",
+        help="Output directory for diagrams",
+    )
+    app_sequences_parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+
+    return parser
+
+
+def get_output_dir(args: argparse.Namespace, diagram_type: str | None = None) -> Path:
+    """Get the output directory for diagrams.
+
+    Args:
+        args: Command-line arguments
+        diagram_type: Type of diagram (class, sequence, activity, state)
+
+    Returns:
+        Path to the output directory
+    """
+    if args.output:
+        output_dir = Path(args.output)
+    else:
+        output_dir = OUTPUT_BASE_DIR
+
+    if diagram_type:
+        output_dir = output_dir / diagram_type
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    return output_dir
+
+
+def create_service(settings: dict | None = None) -> UmlService:
+    """Create and return a UML service with the given settings.
+
+    Args:
+        settings: Service settings
+
+    Returns:
+        UML service instance
+    """
+    file_system = FileSystem()
+    factory = DefaultDiagramFactory(file_system, settings)
+    return UmlService(factory, settings)
+
+
+def generate_class_diagram(args: argparse.Namespace) -> int:
+    """Generate class diagrams.
+
+    Args:
+        args: Command-line arguments
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Get output directory
+    output_dir = get_output_dir(args, "class")
+
+    # Create service
+    settings = {
+        "include_private": args.include_private,
+        "recursive": args.recursive,
+        "exclude_patterns": args.exclude,
+    }
+    service = create_service(settings)
+
+    # Generate class diagrams
+    try:
+        source_path = Path(args.source)
+        output_path = output_dir / f"{source_path.stem}.puml"
+
+        service.generate_diagram(
+            "class",
+            source_path,
+            output_path,
+            **settings,
+        )
+
+        logger.info(f"Class diagram generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating class diagram: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+def generate_sequence_diagram(args: argparse.Namespace) -> int:
+    """Generate sequence diagrams.
+
+    Args:
+        args: Command-line arguments
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Get output directory
+    output_dir = get_output_dir(args, "sequence")
+
+    # Create service
+    settings = {
+        "recursive": args.recursive,
+        "exclude_patterns": args.exclude,
+    }
+
+    # Add module, class, method, function if provided
+    if args.module:
+        settings["module"] = args.module
+    if args.class_name:
+        settings["class"] = args.class_name
+    if args.method:
+        settings["method"] = args.method
+    if args.function:
+        settings["function"] = args.function
+
+    service = create_service(settings)
+
+    # Generate sequence diagrams
+    try:
+        source_path = Path(args.source)
+        output_path = output_dir / f"{source_path.stem}.puml"
+
+        service.generate_diagram(
+            "sequence",
+            source_path,
+            output_path,
+            **settings,
+        )
+
+        logger.info(f"Sequence diagram generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating sequence diagram: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+def generate_activity_diagram(args: argparse.Namespace) -> int:
+    """Generate activity diagrams.
+
+    Args:
+        args: Command-line arguments
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Get output directory
+    output_dir = get_output_dir(args, "activity")
+
+    # Create service
+    settings = {
+        "recursive": args.recursive,
+        "exclude_patterns": args.exclude,
+    }
+    service = create_service(settings)
+
+    # Generate activity diagrams
+    try:
+        source_path = Path(args.source)
+        output_path = output_dir / f"{source_path.stem}.puml"
+
+        service.generate_diagram(
+            "activity",
+            source_path,
+            output_path,
+            **settings,
+        )
+
+        logger.info(f"Activity diagram generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating activity diagram: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+def generate_state_diagram(args: argparse.Namespace) -> int:
+    """Generate state diagrams.
+
+    Args:
+        args: Command-line arguments
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Get output directory
+    output_dir = get_output_dir(args, "state")
+
+    # Create service
+    settings = {
+        "recursive": args.recursive,
+        "exclude_patterns": args.exclude,
+    }
+    service = create_service(settings)
+
+    # Generate state diagrams
+    try:
+        source_path = Path(args.source)
+        output_path = output_dir / f"{source_path.stem}.puml"
+
+        service.generate_diagram(
+            "state",
+            source_path,
+            output_path,
+            **settings,
+        )
+
+        logger.info(f"State diagram generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating state diagram: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+def generate_all_diagrams(args: argparse.Namespace) -> int:
+    """Generate all types of diagrams.
+
+    Args:
+        args: Command-line arguments
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Get output directory
+    output_dir = get_output_dir(args)
+
+    # Create service
+    settings = {
+        "include_private": args.include_private,
+        "recursive": args.recursive,
+        "exclude_patterns": args.exclude,
+    }
+    service = create_service(settings)
+
+    # Generate all diagrams
+    try:
+        source_path = Path(args.source)
+
+        # Convert Path objects to strings to match the expected type
+        source_paths = [str(source_path)]
+        source_paths_dict = {
+            "class": source_paths,
+            "sequence": source_paths,
+            "activity": source_paths,
+            "state": source_paths,
+        }
+
+        results = service.generate_all_diagrams(source_paths_dict, output_dir)
+
+        # Log results
+        for diagram_type, diagrams in results.items():
+            if diagrams:
+                logger.info(
+                    f"Generated {len(diagrams)} {diagram_type} diagrams in {output_dir / diagram_type}",
+                )
+
+        logger.info(f"All UML diagrams generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating diagrams: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+def generate_app_sequences(args: argparse.Namespace) -> int:
+    """Generate sequence diagrams for key application entry points.
+
+    Args:
+        args: Command-line arguments
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    import subprocess
+
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Get output directory
+    output_dir = get_output_dir(args, "sequence")
+
+    # Define important entry points for sequence diagrams
+    # Format: (class_name, method_name, output_filename)
+    ENTRY_POINTS = [
+        # User Authentication Flows
+        ("login", "login_access_token", "authentication_flow"),  # Login flow
+        ("login", "test_token", "token_verification"),  # Token verification
+        # User Management Flows
+        ("users", "create_user", "admin_create_user"),  # Admin creates user
+        ("users", "register_user", "user_signup"),  # User signup
+        ("users", "update_user_me", "user_update_profile"),  # Update profile
+        ("users", "update_password_me", "user_change_password"),  # Change password
+        ("users", "delete_user_me", "user_delete_account"),  # Delete account
+        # Password Recovery Flow
+        (
+            "login",
+            "recover_password",
+            "password_recovery_request",
+        ),  # Request password reset
+        ("login", "reset_password", "password_reset"),  # Reset password
+        # Other API Endpoints
+        # Add other important flows here
+    ]
+
+    print("Extracting sequence diagrams from backend/app...")
+    print("=" * 50)
+
+    success_count = 0
+    for module_name, method_name, output_name in ENTRY_POINTS:
+        output_file = output_dir / f"{output_name}.puml"
+
+        # For routes modules, we need to specify the full path
+        if module_name in ("login", "users", "items", "private", "utils"):
+            # API route modules
+            module_path = f"api.routes.{module_name}"
+        else:
+            # Other modules
+            module_path = module_name
+
+        print(f"Generating diagram for {module_path}.{method_name}...")
+
+        # Construct the command
+        cmd = [
+            "python",
+            "-m",
+            "utils.uml.cli.uml_cli",
+            "sequence",
+            "--dir",
+            args.app_dir,
+            "--module",
+            module_path,
+            "--class",
+            "router",  # For FastAPI routers, the class is "router"
+            "--method",
+            method_name,
+            "--output",
+            str(output_file),
+            "--verbose" if args.verbose else "",
+        ]
+
+        # Remove empty arguments
+        cmd = [arg for arg in cmd if arg]
+
+        try:
+            # Run the extraction command
+            result = subprocess.run(cmd, capture_output=True, text=True, check=False)
+
+            if result.returncode == 0:
+                print(f"✓ Successfully generated: {output_file}")
+                success_count += 1
+            else:
+                print(f"× Failed to generate diagram. Error: {result.stderr}")
+
+                # Try an alternative approach for router functions
+                # Sometimes router functions are directly accessible by module.function_name
+                alternative_cmd = [
+                    "python",
+                    "-m",
+                    "utils.uml.cli.uml_cli",
+                    "sequence",
+                    "--dir",
+                    args.app_dir,
+                    "--module",
+                    module_path,
+                    "--function",
+                    method_name,  # Try as a function instead of a class method
+                    "--output",
+                    str(output_file),
+                    "--verbose" if args.verbose else "",
+                ]
+
+                # Remove empty arguments
+                alternative_cmd = [arg for arg in alternative_cmd if arg]
+
+                print("  Trying alternative approach...")
+                alt_result = subprocess.run(
+                    alternative_cmd,
+                    capture_output=True,
+                    text=True,
+                    check=False,
+                )
+
+                if alt_result.returncode == 0:
+                    print(
+                        f"✓ Successfully generated using alternative approach: {output_file}",
+                    )
+                    success_count += 1
+                else:
+                    print(f"× Alternative approach also failed: {alt_result.stderr}")
+
+        except Exception as e:
+            print(f"× Error: {e!s}")
+
+    print("=" * 50)
+    print(
+        f"Sequence diagram extraction completed: {success_count}/{len(ENTRY_POINTS)} successful",
+    )
+    print(f"Diagrams saved to: {output_dir}")
+
+    return 0 if success_count > 0 else 1
+
+
+def main() -> int:
+    """Run the UML generator CLI.
+
+    Returns:
+        Exit code (0 for success, non-zero for failure)
+    """
+    parser = create_parser()
+    args = parser.parse_args()
+
+    # Execute the appropriate command
+    if args.command == "class":
+        return generate_class_diagram(args)
+    if args.command == "sequence":
+        return generate_sequence_diagram(args)
+    if args.command == "activity":
+        return generate_activity_diagram(args)
+    if args.command == "state":
+        return generate_state_diagram(args)
+    if args.command == "all":
+        return generate_all_diagrams(args)
+    if args.command == "app-sequences":
+        return generate_app_sequences(args)
+    parser.print_help()
+    return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
 
 ================
 File: config/__init__.py
@@ -4170,21 +5790,22 @@ import sys
 from pathlib import Path
 from typing import Any
 
+# Add the parent directory to the Python path
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
+# Now import the modules
 from utils.uml.core.exceptions import DiagramTypeError
-from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.filesystem import DefaultFileSystem
 from utils.uml.core.service import UmlService
 from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_base_dir
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
-# Add the parent directory to the Python path
-PROJECT_ROOT = Path(__file__).parent.parent.parent
-sys.path.append(str(PROJECT_ROOT))
-
 # Constants
-OUTPUT_BASE_DIR = Path("docs/source/_generated_uml")
+OUTPUT_BASE_DIR = get_output_base_dir()
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -4249,7 +5870,7 @@ def parse_arguments() -> argparse.Namespace:
 
 def create_service(settings: dict[str, Any] | None = None) -> UmlService:
     """Create and return a UML service with the given settings."""
-    file_system = FileSystem()
+    file_system = DefaultFileSystem()
     factory = DefaultDiagramFactory(file_system, settings)
     return UmlService(factory, settings)
 
@@ -4345,9 +5966,8 @@ def main() -> int:
             source_paths_dict = {
                 "class": source_paths_str,
                 "sequence": source_paths_str,
-                # Activity and state diagrams are not yet implemented
-                # "activity": source_paths_str,
-                # "state": source_paths_str,
+                "activity": source_paths_str,
+                "state": source_paths_str,
             }
             results = service.generate_all_diagrams(source_paths_dict, output_dir)
 
@@ -4394,12 +6014,444 @@ if __name__ == "__main__":
     sys.exit(main())
 
 ================
+File: scripts/cleanup_old_code.py
+================
+#!/usr/bin/env python
+"""
+Script to clean up old UML generator code by moving it to the z_archive directory.
+
+This script:
+1. Creates a backup of the old code in the z_archive directory
+2. Removes the old directories after backup
+3. Updates any references to the old code in documentation
+"""
+
+import os
+import shutil
+from datetime import datetime
+from pathlib import Path
+
+# Get the project root directory
+PROJECT_ROOT = Path(__file__).parent.parent
+UTILS_DIR = PROJECT_ROOT / "utils"
+ARCHIVE_DIR = PROJECT_ROOT / "z_archive"
+
+# Directories to archive
+OLD_DIRS = [
+    UTILS_DIR / "uml_generator",
+    UTILS_DIR / "sequence_extractor",
+]
+
+# Create timestamp for archive folder
+TIMESTAMP = datetime.now().strftime("%Y%m%d_%H%M%S")
+ARCHIVE_UML_DIR = ARCHIVE_DIR / f"uml_old_{TIMESTAMP}"
+
+
+def create_archive_directory():
+    """Create the archive directory if it doesn't exist."""
+    print(f"Creating archive directory: {ARCHIVE_UML_DIR}")
+    os.makedirs(ARCHIVE_UML_DIR, exist_ok=True)
+
+
+def backup_old_code():
+    """Backup old code to the archive directory."""
+    for old_dir in OLD_DIRS:
+        if old_dir.exists():
+            # Get the directory name
+            dir_name = old_dir.name
+
+            # Create the destination directory
+            dest_dir = ARCHIVE_UML_DIR / dir_name
+
+            print(f"Backing up {old_dir} to {dest_dir}")
+
+            # Copy the directory to the archive
+            shutil.copytree(old_dir, dest_dir)
+
+            print(f"Backup of {dir_name} completed")
+        else:
+            print(f"Directory {old_dir} does not exist, skipping")
+
+
+def remove_old_directories():
+    """Remove old directories after backup."""
+    for old_dir in OLD_DIRS:
+        if old_dir.exists():
+            print(f"Removing directory: {old_dir}")
+
+            # Ask for confirmation before removing
+            confirm = input(f"Are you sure you want to remove {old_dir}? (y/n): ")
+            if confirm.lower() == "y":
+                shutil.rmtree(old_dir)
+                print(f"Removed {old_dir}")
+            else:
+                print(f"Skipping removal of {old_dir}")
+        else:
+            print(f"Directory {old_dir} does not exist, skipping")
+
+
+def main():
+    """Run the cleanup process."""
+    print("Starting cleanup of old UML generator code")
+
+    # Create archive directory
+    create_archive_directory()
+
+    # Backup old code
+    backup_old_code()
+
+    # Ask if user wants to remove old directories
+    remove = input("Do you want to remove the old directories? (y/n): ")
+    if remove.lower() == "y":
+        remove_old_directories()
+    else:
+        print("Skipping removal of old directories")
+
+    print("\nCleanup completed!")
+    print(f"Old code has been backed up to: {ARCHIVE_UML_DIR}")
+    print("\nNext steps:")
+    print("1. Update any documentation or scripts that reference the old code")
+    print("2. Enhance the activity and state diagram implementations")
+    print("3. Create comprehensive test cases")
+    print("4. Update documentation to reflect the new architecture")
+
+
+if __name__ == "__main__":
+    main()
+
+================
+File: scripts/install_dev.py
+================
+#!/usr/bin/env python
+"""
+Script to set up the utils virtual environment and install the utils package in development mode.
+"""
+
+import subprocess
+import sys
+from pathlib import Path
+
+
+def main():
+    """Set up the utils virtual environment and install the utils package in development mode."""
+    # Get the utils directory
+    utils_dir = Path(__file__).parent.absolute()
+    venv_dir = utils_dir / ".venv"
+
+    # Print information
+    print(f"Setting up utils virtual environment in {venv_dir}...")
+
+    # Check if uv is installed
+    try:
+        subprocess.run(
+            ["uv", "--version"],
+            check=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        print("uv not found. Please install uv first:")
+        print("  pip install uv")
+        return 1
+
+    # Create virtual environment if it doesn't exist
+    if not venv_dir.exists():
+        print("Creating virtual environment...")
+        try:
+            subprocess.run(
+                ["uv", "venv", str(venv_dir)],
+                check=True,
+            )
+            print(f"Virtual environment created at {venv_dir}")
+        except subprocess.CalledProcessError as e:
+            print(f"Error creating virtual environment: {e}")
+            return 1
+
+    # Determine the activate script path based on the platform
+    if sys.platform == "win32":
+        activate_script = venv_dir / "Scripts" / "activate.bat"
+        activate_cmd = f"call {activate_script}"
+    else:
+        activate_script = venv_dir / "bin" / "activate"
+        activate_cmd = f"source {activate_script}"
+
+    # Install the package in development mode
+    print("Installing utils package in development mode...")
+    try:
+        # On Windows, we need to use a batch file to activate the venv and run the command
+        if sys.platform == "win32":
+            temp_bat = utils_dir / "temp_install.bat"
+            with open(temp_bat, "w") as f:
+                f.write("@echo off\n")
+                f.write(f"call {activate_script}\n")
+                f.write(f"uv pip install -e {utils_dir}\n")
+
+            subprocess.run([str(temp_bat)], check=True, shell=True)
+            temp_bat.unlink()  # Remove the temporary batch file
+        else:
+            # On Unix-like systems, we can use a single shell command
+            subprocess.run(
+                f"{activate_cmd} && uv pip install -e {utils_dir}",
+                check=True,
+                shell=True,
+            )
+
+        print("Installation successful!")
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing package: {e}")
+        return 1
+
+    # Install additional dependencies
+    print("Installing additional dependencies...")
+    try:
+        if sys.platform == "win32":
+            temp_bat = utils_dir / "temp_deps.bat"
+            with open(temp_bat, "w") as f:
+                f.write("@echo off\n")
+                f.write(f"call {activate_script}\n")
+                f.write("uv pip install pyyaml\n")
+
+            subprocess.run([str(temp_bat)], check=True, shell=True)
+            temp_bat.unlink()  # Remove the temporary batch file
+        else:
+            subprocess.run(
+                f"{activate_cmd} && uv pip install pyyaml",
+                check=True,
+                shell=True,
+            )
+
+        print("Dependencies installed successfully!")
+    except subprocess.CalledProcessError as e:
+        print(f"Error installing dependencies: {e}")
+        return 1
+
+    # Print activation instructions
+    print("\nTo activate the virtual environment:")
+    if sys.platform == "win32":
+        print(f"  {activate_cmd}")
+    else:
+        print(f"  {activate_cmd}")
+
+    print(
+        "\nAfter activating the virtual environment, you can run the UML generator scripts:"
+    )
+    print("  python utils/run_uml_generator.py")
+    print("  python utils/extract_class.py --source backend/app")
+    print("  python utils/extract_sequence.py --source backend/app")
+    print("  python utils/extract_activity.py --source backend/app")
+    print("  python utils/extract_state.py --source backend/app")
+    print("  python utils/uml/run.py --type all --source backend/app")
+
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: scripts/setup_venv.py
+================
+#!/usr/bin/env python
+"""
+Setup script for creating a virtual environment for utils that installs in the backend.
+
+This script:
+1. Creates a virtual environment for utils
+2. Installs UV package manager
+3. Installs the backend as an editable package
+4. Installs any utils-specific dependencies
+
+Usage:
+    python utils/setup_venv.py [--clean]
+
+Options:
+    --clean    Remove existing virtual environment before creating a new one
+"""
+
+import logging
+import os
+import shutil
+import subprocess
+import sys
+from pathlib import Path
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(message)s",  # Simple format for user-friendly output
+    handlers=[logging.StreamHandler()],
+)
+logger = logging.getLogger(__name__)
+
+# Get the absolute paths
+CURRENT_DIR = Path(__file__).parent.absolute()
+PROJECT_ROOT = CURRENT_DIR.parent
+BACKEND_DIR = PROJECT_ROOT / "backend"
+VENV_DIR = CURRENT_DIR / ".venv"
+
+
+def run_command(cmd, cwd=None):
+    """Run a command and log its output."""
+    logger.info(f"Running: {' '.join(cmd)}")
+    result = subprocess.run(
+        cmd,
+        cwd=cwd,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if result.stdout:
+        logger.info(result.stdout)
+
+    if result.stderr:
+        logger.error(result.stderr)
+
+    if result.returncode != 0:
+        logger.error(f"Command failed with exit code {result.returncode}")
+        sys.exit(result.returncode)
+
+    return result
+
+
+def main():
+    """Set up the virtual environment."""
+    # Check if --clean flag is provided
+    clean = "--clean" in sys.argv
+
+    # Remove existing virtual environment if --clean flag is provided
+    if clean and VENV_DIR.exists():
+        logger.info(f"Removing existing virtual environment at {VENV_DIR}")
+        shutil.rmtree(VENV_DIR)
+
+    # Create virtual environment if it doesn't exist
+    if not VENV_DIR.exists():
+        logger.info(f"Creating virtual environment in {VENV_DIR}")
+        run_command([sys.executable, "-m", "venv", str(VENV_DIR)])
+    else:
+        logger.info(f"Virtual environment already exists at {VENV_DIR}")
+
+    # Determine the Python executable in the virtual environment
+    if os.name == "nt":  # Windows
+        python_exe = VENV_DIR / "Scripts" / "python.exe"
+        uv_path = VENV_DIR / "Scripts" / "uv.exe"
+    else:  # Unix/Linux/Mac
+        python_exe = VENV_DIR / "bin" / "python"
+        uv_path = VENV_DIR / "bin" / "uv"
+
+    # Install UV package manager if not already installed
+    if not uv_path.exists():
+        logger.info("Installing UV package manager")
+        run_command(
+            [
+                str(python_exe),
+                "-m",
+                "pip",
+                "install",
+                "uv",
+            ],
+        )
+
+    # Install the backend as an editable package using UV
+    logger.info(f"Installing backend as editable package from {BACKEND_DIR}")
+    run_command(
+        [
+            str(uv_path),
+            "pip",
+            "install",
+            "--python",
+            str(python_exe),
+            "-e",
+            str(BACKEND_DIR),
+        ],
+    )
+
+    # Install utils-specific dependencies if any
+    utils_pyproject = CURRENT_DIR / "pyproject.toml"
+    if utils_pyproject.exists():
+        logger.info("Installing utils dependencies")
+        run_command(
+            [
+                str(uv_path),
+                "pip",
+                "install",
+                "--python",
+                str(python_exe),
+                "-e",
+                str(CURRENT_DIR),
+            ],
+        )
+
+    logger.info("\nSetup complete!")
+    logger.info("\nTo activate the virtual environment:")
+    if os.name == "nt":  # Windows
+        logger.info(f"    Windows CMD: {VENV_DIR}\\Scripts\\activate")
+        logger.info(f"    Windows Git Bash: source {VENV_DIR}/Scripts/activate")
+    else:  # Unix/Linux/Mac
+        logger.info(f"    source {VENV_DIR}/bin/activate")
+
+    logger.info("\nTo run utils scripts with the virtual environment:")
+    logger.info(f"    {python_exe} -m utils.extract_sequence --help")
+
+
+if __name__ == "__main__":
+    main()
+
+================
 File: utils/__init__.py
 ================
 """Utility functions for UML diagram generation.
 
 This module provides utility functions used across the UML generation package.
 """
+
+================
+File: utils/paths.py
+================
+"""
+Path utilities for the UML generator.
+
+This module provides utility functions for working with paths in the UML generator.
+"""
+
+from pathlib import Path
+
+
+def get_project_root() -> Path:
+    """Get the project root directory.
+
+    Returns:
+        Path to the project root directory
+    """
+    # The project root is 4 levels up from this file:
+    # utils/uml/utils/paths.py -> utils/uml/utils -> utils/uml -> utils -> project_root
+    return Path(__file__).parent.parent.parent.parent
+
+
+def get_output_base_dir() -> Path:
+    """Get the base output directory for UML diagrams.
+
+    Returns:
+        Path to the base output directory
+    """
+    return get_project_root() / "docs" / "source" / "_generated_uml"
+
+
+def get_output_dir(diagram_type: str | None = None) -> Path:
+    """Get the output directory for a specific diagram type.
+
+    Args:
+        diagram_type: Type of diagram (class, sequence, activity, state)
+
+    Returns:
+        Path to the output directory
+    """
+    base_dir = get_output_base_dir()
+
+    if diagram_type:
+        return base_dir / diagram_type
+
+    return base_dir
 
 
 

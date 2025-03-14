@@ -1,0 +1,13 @@
+@startuml
+
+title tests
+
+skinparam ClassAttributeIconSize 0
+skinparam ClassBackgroundColor white
+skinparam ClassBorderColor black
+hide empty members
+skinparam monochrome true
+
+' Relationships
+
+@enduml

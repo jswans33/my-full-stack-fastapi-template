@@ -1,0 +1,22 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "utils-uml"
+version = "0.1.0"
+description = "UML diagram generation tools"
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    # Add any specific dependencies needed for UML generation
+]
+
+[project.scripts]
+uml-run = "utils.uml.run:main"
+uml-extract-class = "utils.uml.cli.extract_class:main"
+uml-extract-sequence = "utils.uml.cli.extract_sequence:main"
+uml-extract-activity = "utils.uml.cli.extract_activity:main"
+uml-extract-state = "utils.uml.cli.extract_state:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["utils"]

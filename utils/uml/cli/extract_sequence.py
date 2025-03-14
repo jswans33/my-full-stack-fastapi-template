@@ -8,23 +8,17 @@ import logging
 import sys
 from pathlib import Path
 
-# Add the parent directory to the Python path
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
-# Now import the modules
-from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.filesystem import DefaultFileSystem
 from utils.uml.core.service import UmlService
 from utils.uml.factories import DefaultDiagramFactory
+from utils.uml.utils.paths import get_output_dir
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 logger = logging.getLogger(__name__)
 
-# Project root directory
-PROJECT_ROOT = Path(__file__).parent.parent
-
 # Constants
-OUTPUT_BASE_DIR = Path("docs/source/_generated_uml/sequence")
+OUTPUT_BASE_DIR = get_output_dir("sequence")
 
 
 def parse_arguments() -> argparse.Namespace:
@@ -85,7 +79,7 @@ def main() -> int:
     output_dir.mkdir(parents=True, exist_ok=True)
 
     # Create service
-    file_system = FileSystem()
+    file_system = DefaultFileSystem()
     factory = DefaultDiagramFactory(file_system)
     service = UmlService(factory)
 
