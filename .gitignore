@@ -118,3 +118,5 @@ lerna-debug.log*
 .tmp/
 tmp/
 temp/
+utils/.venv/
+backend/.venv/

@@ -1,0 +1,23 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "utils"
+version = "0.1.0"
+description = "Utility scripts for sequence diagram generation and UML tools"
+requires-python = ">=3.10,<4.0"
+dependencies = [
+    # Add any specific dependencies needed only for utils
+    # Most dependencies will come from the backend
+]
+
+[tool.uv]
+# Define development dependencies specific to utils
+dev-dependencies = [
+    # Add any dev dependencies needed only for utils
+]
+
+# Fix for Hatch package discovery
+[tool.hatch.build.targets.wheel]
+packages = ["."]
