@@ -16,13 +16,7 @@ Welcome to the FastAPI Full Stack Template documentation.
    deployment
    development
    diagramming/index
-   diagramming/uml_setup
-   diagramming/uml_diagrams
-   diagramming/uml_structure
-   sequence_diagrams
-   sequence_diagram_usage
-   diagramming/uml_extension
-   diagramming/uml_state_implementation_guide
+   uml/index
 
 Project Structure
 -----------------
@@ -44,12 +38,11 @@ Quick Links
 * :doc:`frontend/index` - Frontend documentation
 * :doc:`deployment` - Deployment guide
 * :doc:`development` - Development guide
-* :doc:`diagramming/uml_setup` - UML Setup and Dependencies
-* :doc:`diagramming/uml_diagrams` - UML Class Diagrams
-* :doc:`diagramming/uml_structure` - UML Diagrams Directory Structure
-* :doc:`diagramming/uml_extension` - UML Diagram Extension Options
-* :doc:`diagramming/uml_state_implementation_guide` - State Diagram Implementation Guide
-* :doc:`diagramming/uml_sequence_implementation_guide` - Sequence Diagram Implementation Guide
+* :doc:`uml/index` - UML Diagram Documentation
+* :doc:`uml/setup` - UML Setup and Dependencies
+* :doc:`uml/diagrams/index` - UML Diagram Types
+* :doc:`uml/architecture/index` - UML Generator Architecture
+* :doc:`uml/implementation/index` - UML Implementation Guides
 
 Indices and tables
 ==================

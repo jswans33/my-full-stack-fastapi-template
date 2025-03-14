@@ -1,8 +1,8 @@
 UML Documentation Reorganization Plan
-===============================
+====================================
 
 Current UML Documentation Structure
----------------------------------
+----------------------------------
 
 The current UML documentation is spread across multiple files with some overlap and potential confusion:
 
@@ -24,7 +24,7 @@ The current UML documentation is spread across multiple files with some overlap 
     └── sequence_diagram_usage.rst         # Sequence diagram usage guide
 
 Proposed Reorganization
----------------------
+----------------------
 
 I propose reorganizing the UML documentation into a clearer hierarchical structure:
 
@@ -63,46 +63,74 @@ Steps to Implement Reorganization
 File Content and Mappings
 -----------------------
 
-### uml/index.rst
+uml/index.rst
+^^^^^^^^^^^^^
+
 A new overview page that introduces UML diagram generation in the project.
 
-### uml/setup.rst
+uml/setup.rst
+^^^^^^^^^^^^^
+
 Move content from the existing uml_setup.rst.
 
-### uml/diagrams/index.rst
+uml/diagrams/index.rst
+^^^^^^^^^^^^^^^^^^^^^
+
 Create an overview page that introduces the different diagram types.
 
-### uml/diagrams/class_diagrams.rst
+uml/diagrams/class_diagrams.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Move content from uml_diagrams.rst.
 
-### uml/diagrams/sequence_diagrams.rst
+uml/diagrams/sequence_diagrams.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Combine content from sequence_diagrams.rst and sequence_diagram_usage.rst.
 
-### uml/diagrams/activity_diagrams.rst
+uml/diagrams/activity_diagrams.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 New file with examples of activity diagrams.
 
-### uml/diagrams/state_diagrams.rst
+uml/diagrams/state_diagrams.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 New file with examples of state diagrams.
 
-### uml/architecture/index.rst
+uml/architecture/index.rst
+^^^^^^^^^^^^^^^^^^^^^^^^
+
 Overview of the UML generator architecture.
 
-### uml/architecture/modular_structure.rst
+uml/architecture/modular_structure.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Use content from uml_modular_structure_updated.rst.
 
-### uml/architecture/outputs.rst
+uml/architecture/outputs.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Use content from uml_diagram_outputs.rst.
 
-### uml/implementation/index.rst
+uml/implementation/index.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Overview of implementation guides for adding diagram types.
 
-### uml/implementation/sequence_diagrams.rst
+uml/implementation/sequence_diagrams.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Move content from uml_sequence_implementation_guide.rst.
 
-### uml/implementation/activity_diagrams.rst
+uml/implementation/activity_diagrams.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Move content from uml_activity_implementation_guide.rst.
 
-### uml/implementation/state_diagrams.rst
+uml/implementation/state_diagrams.rst
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 Combine content from uml_state_implementation_guide.rst and uml_state_implementation_diff.rst.
 
 Main Index Updates

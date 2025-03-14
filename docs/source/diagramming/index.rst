@@ -3,19 +3,11 @@ UML Diagramming Documentation
 
 This section contains documentation related to UML diagrams in the project.
 
-.. toctree::
-   :maxdepth: 2
-   :caption: UML Documentation:
+.. note::
+   The UML documentation has been reorganized. Please see the new :doc:`/uml/index` section for the updated documentation.
 
-   uml_setup
-   uml_diagrams
-   uml_structure
-   uml_extension
-   uml_state_implementation_guide
-   uml_state_implementation_diff
-   uml_sequence_implementation_guide
-   uml_activity_implementation_guide
-   uml_modular_structure
-   uml_modular_structure_updated
-   uml_diagram_outputs
+.. toctree::
+   :maxdepth: 1
+   :caption: UML Documentation Plan:
+
    uml_documentation_plan
