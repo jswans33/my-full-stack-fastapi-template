@@ -1,10 +1,10 @@
 UML State Diagram Usage
-=====================
+=======================
 
 This section details how to use the state diagram extraction tools, including the command-line interface, integration with the main UML generator, and state decorators for explicit state machine definitions.
 
 Command-Line Interface
--------------------
+---------------------
 
 The state diagram extractor provides a command-line interface for generating state diagrams from Python code. The CLI tool is implemented in ``utils/extract_state.py``:
 
@@ -82,7 +82,7 @@ The state diagram extractor provides a command-line interface for generating sta
         exit(main())
 
 Using the CLI Tool
----------------
+-----------------
 
 To use the CLI tool, run:
 
@@ -99,7 +99,7 @@ This will:
 4. Save the diagram to `./docs/source/_generated_uml/state/Document_state.puml`
 
 Integration with Main UML Generator
---------------------------------
+----------------------------------
 
 The state diagram extractor is integrated with the main UML generator in ``utils/run_uml_generator.py``:
 
@@ -168,7 +168,7 @@ This integration allows state diagrams to be generated automatically when runnin
     python -m utils.run_uml_generator
 
 State Decorators
--------------
+---------------
 
 To help annotate state patterns in code, the implementation includes state and transition decorators in ``utils/state_decorators.py``:
 
@@ -270,7 +270,7 @@ To help annotate state patterns in code, the implementation includes state and t
         return decorator
 
 Using State Decorators
--------------------
+---------------------
 
 Here's an example of how to use the state decorators to define a state machine:
 
@@ -350,7 +350,7 @@ Here's an example of how to use the state decorators to define a state machine:
 The state analyzer can extract this explicit state machine definition and generate a state diagram from it.
 
 Updating Documentation
--------------------
+---------------------
 
 To include state diagrams in the documentation, update the UML diagrams documentation:
 
@@ -360,7 +360,7 @@ To include state diagrams in the documentation, update the UML diagrams document
     --------------
     
     Document Lifecycle
-    ~~~~~~~~~~~~~~~~
+    ~~~~~~~~~~~~~~~~~
     
     .. uml:: ../_generated_uml/state/Document_state.puml
     
@@ -369,75 +369,79 @@ To include state diagrams in the documentation, update the UML diagrams document
     
     .. uml:: ../_generated_uml/state/Order_state.puml
 
+.. note::
+   You may need to run the UML generator to create the diagram files before they can be included in the documentation.
+   If the files don't exist, you'll see warnings during the documentation build process.
+
 This will include the generated state diagrams in the documentation.
 
 Complete Usage Example
--------------------
+---------------------
 
 Here's a complete example of how to use the state diagram extractor:
 
 1. **Define a class with state pattern**:
 
-   ```python
-   class Order:
-       def __init__(self):
-           self.state = "new"
-           self.items = []
-           self.customer = None
-       
-       def add_item(self, item):
-           if self.state == "new":
-               self.items.append(item)
-               return True
-           return False
-       
-       def submit(self):
-           if self.state == "new" and self.items and self.customer:
-               self.state = "submitted"
-               return True
-           return False
-       
-       def process(self):
-           if self.state == "submitted":
-               # Process the order
-               self.state = "processing"
-               return True
-           return False
-       
-       def ship(self):
-           if self.state == "processing":
-               # Ship the order
-               self.state = "shipped"
-               return True
-           return False
-       
-       def deliver(self):
-           if self.state == "shipped":
-               # Mark as delivered
-               self.state = "delivered"
-               return True
-           return False
-       
-       def cancel(self):
-           if self.state in ["new", "submitted", "processing"]:
-               self.state = "cancelled"
-               return True
-           return False
-   ```
+   .. code-block:: python
+
+       class Order:
+           def __init__(self):
+               self.state = "new"
+               self.items = []
+               self.customer = None
+           
+           def add_item(self, item):
+               if self.state == "new":
+                   self.items.append(item)
+                   return True
+               return False
+           
+           def submit(self):
+               if self.state == "new" and self.items and self.customer:
+                   self.state = "submitted"
+                   return True
+               return False
+           
+           def process(self):
+               if self.state == "submitted":
+                   # Process the order
+                   self.state = "processing"
+                   return True
+               return False
+           
+           def ship(self):
+               if self.state == "processing":
+                   # Ship the order
+                   self.state = "shipped"
+                   return True
+               return False
+           
+           def deliver(self):
+               if self.state == "shipped":
+                   # Mark as delivered
+                   self.state = "delivered"
+                   return True
+               return False
+           
+           def cancel(self):
+               if self.state in ["new", "submitted", "processing"]:
+                   self.state = "cancelled"
+                   return True
+               return False
 
 2. **Extract the state diagram**:
 
-   ```bash
-   python -m utils.extract_state --source ./path/to/order.py --output ./docs/source/_generated_uml/state --class Order
-   ```
+   .. code-block:: bash
+
+       python -m utils.extract_state --source ./path/to/order.py --output ./docs/source/_generated_uml/state --class Order
 
 3. **Include in documentation**:
 
-   ```rst
-   Order Processing
-   ~~~~~~~~~~~~~~~
-   
-   .. uml:: ../_generated_uml/state/Order_state.puml
-   ```
+   .. code-block:: rst
+
+       Order Processing
+       ~~~~~~~~~~~~~~~
+       
+       .. uml:: ../_generated_uml/state/Order_state.puml
 
 This will generate a state diagram showing the Order class's state machine, with states like "new", "submitted", "processing", "shipped", "delivered", and "cancelled", and transitions between them.
