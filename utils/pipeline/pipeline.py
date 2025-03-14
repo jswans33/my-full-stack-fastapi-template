@@ -1,12 +1,7 @@
-import logging
 import os
 from typing import Any, Dict, Optional
 
-# Setup logging
-logging.basicConfig(
-    level=logging.INFO, format="%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-)
-logger = logging.getLogger(__name__)
+from utils.pipeline.utils.logging import get_logger
 
 
 class Pipeline:
@@ -29,7 +24,7 @@ class Pipeline:
             config: Configuration dictionary with pipeline settings
         """
         self.config = config or {}
-        self.logger = logger
+        self.logger = get_logger(__name__)
 
         # Initialize strategy selector
         self.strategy_selector = StrategySelector(self.config)
@@ -164,7 +159,7 @@ class StrategySelector:
 
     def __init__(self, config: Dict[str, Any]):
         self.config = config
-        self.logger = logging.getLogger(__name__ + ".StrategySelector")
+        self.logger = get_logger(__name__ + ".StrategySelector")
 
     def get_strategies(self, doc_type: str) -> "StrategySet":
         """Get the set of strategies for a document type."""
@@ -267,6 +262,8 @@ class MockStrategy:
     """A mock strategy for testing or when real strategies are not available."""
 
     def analyze(self, input_path):
+        if not os.path.exists(input_path):
+            raise FileNotFoundError(f"File not found: {input_path}")
         return {"mock_analysis": True, "path": input_path}
 
     def clean(self, data):

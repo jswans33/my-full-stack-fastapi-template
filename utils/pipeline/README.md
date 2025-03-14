@@ -230,15 +230,57 @@ Sample test data files are located in the `data/tests/` directory, organized by 
 
 #### Test Coverage
 
-The test runner generates a coverage report showing which parts of the codebase are covered by tests:
+The project uses pytest-cov for test coverage reporting and is configured to maintain a minimum coverage threshold of 80%. Coverage settings are defined in pyproject.toml:
 
-```bash
-# Run tests with coverage reporting
-python run_tests.py
+```toml
+[tool.coverage.run]
+source = ["."]
+omit = ["tests/*", "**/__init__.py", "**/__pycache__/*"]
 
-# View detailed HTML coverage report
-# This will be generated in the coverage_html/ directory
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "def __repr__",
+    "raise NotImplementedError",
+    "if __name__ == .__main__.:",
+    "pass",
+    "raise ImportError",
+]
+show_missing = true
+fail_under = 80
 ```
+
+To set up and run test coverage:
+
+1. Install development dependencies (includes pytest-cov):
+```bash
+cd utils/pipeline
+uv pip install -e ".[dev]"
+```
+
+2. Run tests with coverage reporting:
+```bash
+# Basic coverage report
+python -m pytest --cov=.
+
+# Detailed coverage report showing missing lines
+python -m pytest --cov=. --cov-report=term-missing
+
+# Generate HTML coverage report
+python -m pytest --cov=. --cov-report=html
+
+# Run specific test file with coverage
+python -m pytest tests/test_pipeline.py --cov=.
+```
+
+3. View coverage reports:
+- Terminal report: Shows coverage percentage and optionally missing lines
+- HTML report: Open coverage_html/index.html in your browser for a detailed interactive report
+
+4. Coverage enforcement:
+- Tests will fail if coverage drops below 80%
+- Use `# pragma: no cover` to exclude specific lines that shouldn't be counted
+- Edit fail_under in pyproject.toml to adjust the minimum coverage threshold
 
 #### Test Configuration
 

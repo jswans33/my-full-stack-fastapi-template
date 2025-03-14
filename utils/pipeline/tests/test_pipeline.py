@@ -9,7 +9,13 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from pipeline import Pipeline, PipelineError
+from pipeline import (
+    MockStrategy,
+    Pipeline,
+    PipelineError,
+    StrategySelector,
+    StrategySet,
+)
 
 
 # Basic initialization tests
@@ -83,8 +89,8 @@ def test_pipeline_error_handling():
 
 
 # Integration test with file system
-def test_pipeline_save_output(temp_dir):
-    """Test that the pipeline can save output to a file."""
+def test_pipeline_save_output_yaml(temp_dir):
+    """Test that the pipeline can save output to a YAML file."""
     pipeline = Pipeline()
 
     # Create a sample output
@@ -97,20 +103,141 @@ def test_pipeline_save_output(temp_dir):
         },
     }
 
-    # Save the output to a YAML file
-    output_path = os.path.join(temp_dir, "output.yaml")
+    # Test both .yaml and .yml extensions
+    for ext in [".yaml", ".yml"]:
+        output_path = os.path.join(temp_dir, f"output{ext}")
+        pipeline.save_output(output_data, output_path)
+
+        # Verify that the file was created
+        assert os.path.exists(output_path)
+
+        # Verify the content of the file
+        import yaml
+
+        with open(output_path, "r") as f:
+            loaded_data = yaml.safe_load(f)
+
+        assert loaded_data == output_data
+
+
+def test_pipeline_save_output_json(temp_dir):
+    """Test that the pipeline can save output to a JSON file."""
+    pipeline = Pipeline()
+
+    # Create a sample output
+    output_data = {
+        "title": "Test Document",
+        "content": "This is a test document.",
+        "metadata": {
+            "author": "Test Author",
+            "date": "2025-03-14",
+        },
+    }
+
+    # Save the output to a JSON file
+    output_path = os.path.join(temp_dir, "output.json")
     pipeline.save_output(output_data, output_path)
 
     # Verify that the file was created
     assert os.path.exists(output_path)
 
     # Verify the content of the file
+    import json
+
+    with open(output_path, "r") as f:
+        loaded_data = json.load(f)
+
+    assert loaded_data == output_data
+
+
+def test_pipeline_save_output_default_yaml(temp_dir):
+    """Test that the pipeline defaults to YAML for unknown extensions."""
+    pipeline = Pipeline()
+
+    # Create a sample output
+    output_data = {
+        "title": "Test Document",
+        "content": "This is a test document.",
+    }
+
+    # Save with unknown extension
+    output_path = os.path.join(temp_dir, "output.unknown")
+    pipeline.save_output(output_data, output_path)
+
+    # Verify that the file was created
+    assert os.path.exists(output_path)
+
+    # Verify the content is YAML
     import yaml
 
     with open(output_path, "r") as f:
         loaded_data = yaml.safe_load(f)
 
     assert loaded_data == output_data
+
+
+def test_strategy_selector_import_paths():
+    """Test strategy selector's import paths for different document types."""
+    selector = StrategySelector({})
+
+    # Test each document type
+    for doc_type in ["pdf", "excel", "word", "generic"]:
+        strategy_set = selector.get_strategies(doc_type)
+        assert isinstance(strategy_set, StrategySet)
+        assert hasattr(strategy_set, "analyzer")
+        assert hasattr(strategy_set, "cleaner")
+        assert hasattr(strategy_set, "extractor")
+        assert hasattr(strategy_set, "validator")
+        assert hasattr(strategy_set, "formatter")
+
+
+def test_strategy_selector_import_error():
+    """Test strategy selector's fallback to mock strategies on import error."""
+    selector = StrategySelector({})
+
+    # Test with a non-existent strategy type
+    strategy_set = selector.get_strategies("nonexistent")
+
+    # Verify that mock strategies are used
+    assert isinstance(strategy_set.analyzer, MockStrategy)
+    assert isinstance(strategy_set.cleaner, MockStrategy)
+    assert isinstance(strategy_set.extractor, MockStrategy)
+    assert isinstance(strategy_set.validator, MockStrategy)
+    assert isinstance(strategy_set.formatter, MockStrategy)
+
+
+def test_mock_strategy_methods(tmp_path):
+    """Test all methods of the MockStrategy class."""
+    strategy = MockStrategy()
+
+    # Create a test file
+    test_file = tmp_path / "test.txt"
+    test_file.write_text("test content")
+
+    # Test analyze method
+    result = strategy.analyze(str(test_file))
+    assert result == {"mock_analysis": True, "path": str(test_file)}
+
+    # Test analyze with non-existent file
+    with pytest.raises(FileNotFoundError):
+        strategy.analyze("nonexistent/file.txt")
+
+    # Test clean method
+    data = {"test": "data"}
+    result = strategy.clean(data)
+    assert result == {"mock_cleaned": True, "data": data}
+
+    # Test extract method
+    result = strategy.extract(data)
+    assert result == {"mock_extracted": True, "data": data}
+
+    # Test validate method
+    result = strategy.validate(data)
+    assert result == {"mock_validated": True, "data": data}
+
+    # Test format method
+    result = strategy.format(data)
+    assert result == {"mock_formatted": True, "data": data}
 
 
 # Property-based testing for document type detection

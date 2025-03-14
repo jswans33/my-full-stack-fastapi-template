@@ -10,6 +10,7 @@ requires-python = ">=3.8"
 dependencies = [
     "pyyaml",
     "typing-extensions",
+    "pydantic>=2.0.0",
 ]
 
 [project.optional-dependencies]
@@ -108,7 +109,13 @@ addopts = "--strict-markers -v"
 
 [tool.coverage.run]
 source = ["."]
-omit = ["tests/*", "**/__init__.py", "**/__pycache__/*"]
+omit = [
+    "tests/*",
+    "**/__init__.py",
+    "**/__pycache__/*",
+    "run_tests.py",
+    "setup_pytest_env.py"
+]
 
 [tool.coverage.report]
 exclude_lines = [
@@ -120,4 +127,4 @@ exclude_lines = [
     "raise ImportError",
 ]
 show_missing = true
-fail_under = 80
+fail_under = 90  # Increased since we're now at a good coverage level
