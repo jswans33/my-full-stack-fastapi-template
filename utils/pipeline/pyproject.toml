@@ -1,130 +1,44 @@
+[project]
+name = "pipeline"
+version = "0.1.0"
+description = "Document processing pipeline"
+authors = [
+    {name = "Your Name", email = "your.email@example.com"},
+]
+dependencies = [
+    "pyyaml>=6.0.1",
+    "rich>=13.7.0",
+    "pypdf>=4.0.1",
+    "python-docx>=1.1.0",
+    "PyMuPDF>=1.23.8",  # fitz
+    "camelot-py[cv]>=0.11.0",  # table extraction
+    "opencv-python-headless>=4.9.0.80",  # for camelot
+    "ghostscript>=0.7",  # for camelot
+]
+requires-python = ">=3.9"
+
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[project]
-name = "pipeline"
-version = "0.1.0"
-description = "A modular pipeline-based tool for document extraction and analysis"
-requires-python = ">=3.8"
-dependencies = [
-    "pyyaml",
-    "typing-extensions",
-    "pydantic>=2.0.0",
-]
-
-[project.optional-dependencies]
-dev = [
-    "pytest>=7.4.0",
-    "pytest-cov>=4.1.0",
-    "pytest-mock>=3.11.1",
-    "pytest-xdist>=3.3.1",
-    "pytest-sugar>=0.9.7",
-    "mypy",
-    "ruff",
-]
-analysis = [
-    # NLP and text analysis
-    "nltk>=3.8.1",          # Natural language processing toolkit
-    "spacy>=3.6.1",         # Advanced NLP
-    "scikit-learn>=1.3.0",  # Machine learning for text analysis
-    
-    # Data visualization
-    "matplotlib>=3.7.2",    # Plotting and visualization
-    "seaborn>=0.12.2",      # Statistical data visualization
-    
-    # Structure analysis
-    "beautifulsoup4>=4.12.2", # HTML/XML parsing
-    "lxml>=4.9.3",          # XML/HTML processing
-]
-word = [
-    # Core Word processing
-    "python-docx>=1.0.0",   # Read and write .docx files
-    "docx2txt>=0.8",        # Simple .docx to text extraction
-    "docx2python>=2.0.1",   # Extract content and structure from .docx
-    
-    # Convert .docx to HTML while preserving structure
-    "mammoth>=1.6.0",
-    
-    # For older .doc files
-    "pywin32>=306",         # Windows only, for COM automation with Word
-]
-excel = [
-    # Core Excel processing
-    "pandas>=2.0.0",        # Powerful data analysis with DataFrame support
-    "openpyxl>=3.1.2",      # Modern Excel (.xlsx) file reading/writing
-    "xlrd>=2.0.1",          # Legacy Excel (.xls) file reading
-    "xlsxwriter>=3.1.0",    # Excel writing with formatting options
-    "pyxlsb>=1.0.10",       # Support for binary Excel (.xlsb) files
-    "xlwings>=0.30.10",     # Excel automation (Windows/macOS)
-]
-pdf = [
-    # Text extraction
-    "PyPDF2>=3.0.0",        # Basic PDF text extraction and manipulation
-    "pdfminer.six>=20221105", # More advanced PDF text extraction
-    "pymupdf>=1.22.5",      # Fast and comprehensive PDF processing (wrapper for MuPDF)
-    "pdfplumber>=0.10.2",   # PDF text extraction with layout analysis
-    
-    # OCR capabilities
-    "pdf2image>=1.16.3",    # Convert PDF to images
-    "pytesseract>=0.3.10",  # OCR engine wrapper
-    "pillow>=10.0.0",       # Image processing for OCR
-    
-    # Table extraction
-    "camelot-py>=0.11.0",   # PDF table extraction (requires ghostscript)
-    "tabula-py>=2.7.0",     # PDF table extraction (requires Java)
-]
-all = [
-    "pandas>=2.0.0",
-    "openpyxl>=3.1.2",
-    "PyPDF2>=3.0.0",
-    "pymupdf>=1.22.5",
-    "python-docx>=1.0.0",
-    "docx2python>=2.0.1",
-    "pillow>=10.0.0",
-]
-
-[tool.mypy]
-python_version = "3.8"
-warn_return_any = true
-warn_unused_configs = true
-disallow_untyped_defs = true
-disallow_incomplete_defs = true
-
 [tool.ruff]
 line-length = 88
-target-version = "py38"
+target-version = "py39"
 
-[tool.pytest.ini_options]
-testpaths = ["tests"]
-python_files = "test_*.py"
-python_classes = "Test*"
-python_functions = "test_*"
-markers = [
-    "unit: marks tests as unit tests",
-    "integration: marks tests as integration tests",
-    "slow: marks tests as slow (skipped by default)",
+[tool.ruff.lint]
+select = [
+    "E",  # pycodestyle errors
+    "W",  # pycodestyle warnings
+    "F",  # pyflakes
+    "I",  # isort
+    "B",  # flake8-bugbear
 ]
-addopts = "--strict-markers -v"
-
-[tool.coverage.run]
-source = ["."]
-omit = [
-    "tests/*",
-    "**/__init__.py",
-    "**/__pycache__/*",
-    "run_tests.py",
-    "setup_pytest_env.py"
+ignore = [
+    "E501",  # line too long, handled by formatter
 ]
 
-[tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "def __repr__",
-    "raise NotImplementedError",
-    "if __name__ == .__main__.:",
-    "pass",
-    "raise ImportError",
-]
-show_missing = true
-fail_under = 90  # Increased since we're now at a good coverage level
+[tool.ruff.format]
+quote-style = "double"
+indent-style = "space"
+skip-magic-trailing-comma = false
+line-ending = "auto"

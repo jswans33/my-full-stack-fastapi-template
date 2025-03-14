@@ -7,7 +7,7 @@ This module handles loading, validating, and merging configuration settings usin
 import os
 from enum import Enum
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Union
 
 import yaml
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -34,13 +34,23 @@ class ValidationLevel(str, Enum):
     CUSTOM = "custom"
 
 
+class ComponentConfig(BaseModel):
+    """Configuration for individual document processing components."""
+
+    analyzer: str
+    cleaner: str
+    extractor: str
+    validator: str
+    formatter: str
+
+
 class StrategyConfig(BaseModel):
     """Configuration for document processing strategies."""
 
-    pdf: str = "strategies.pdf"
-    excel: str = "strategies.excel"
-    word: str = "strategies.word"
-    text: str = "strategies.text"
+    pdf: Union[str, ComponentConfig] = "strategies.pdf"
+    excel: Union[str, ComponentConfig] = "strategies.excel"
+    word: Union[str, ComponentConfig] = "strategies.word"
+    text: Union[str, ComponentConfig] = "strategies.text"
 
 
 class PipelineConfig(BaseModel):
@@ -100,9 +110,18 @@ class PipelineConfig(BaseModel):
     @model_validator(mode="after")
     def validate_strategy_paths(self) -> "PipelineConfig":
         """Validate strategy paths are not empty."""
-        for strategy_type, path in self.strategies.model_dump().items():
-            if not isinstance(path, str) or not path.strip():
-                raise ValueError(f"Invalid strategy path for {strategy_type}: {path}")
+        for strategy_type, strategy in self.strategies.model_dump().items():
+            if isinstance(strategy, str):
+                if not strategy.strip():
+                    raise ValueError(
+                        f"Invalid strategy path for {strategy_type}: {strategy}"
+                    )
+            elif isinstance(strategy, dict):
+                for component, path in strategy.items():
+                    if not isinstance(path, str) or not path.strip():
+                        raise ValueError(
+                            f"Invalid {component} path for {strategy_type}: {path}"
+                        )
         return self
 
 

@@ -1,7 +1,17 @@
+"""
+Main pipeline orchestrator module.
+
+This module provides the core pipeline functionality for document processing.
+"""
+
+import importlib
 import os
 from typing import Any, Dict, Optional
 
+from utils.pipeline.processors.formatters.factory import FormatterFactory, OutputFormat
 from utils.pipeline.utils.logging import get_logger
+from utils.pipeline.utils.progress import PipelineProgress
+from utils.pipeline.verify.factory import VerifierFactory, VerifierType
 
 
 class Pipeline:
@@ -14,6 +24,7 @@ class Pipeline:
     3. Extract structured data
     4. Validate extracted data
     5. Format output
+    6. Verify output structure
     """
 
     def __init__(self, config: Optional[Dict[str, Any]] = None):
@@ -42,40 +53,94 @@ class Pipeline:
             Processed output data as a dictionary
         """
         self.logger.info("Starting pipeline processing for: %s", input_path)
+        progress = PipelineProgress()
 
         try:
-            # Determine document type and select appropriate strategies
-            doc_type = self._detect_document_type(input_path)
-            self.logger.info("Detected document type: %s", doc_type)
+            with progress:
+                progress.start()
+                overall_task = progress.add_task("Processing document", total=6)
 
-            strategies = self.strategy_selector.get_strategies(doc_type)
+                # Determine document type and select appropriate strategies
+                doc_type = self._detect_document_type(input_path)
+                self.logger.info("Detected document type: %s", doc_type)
+                strategies = self.strategy_selector.get_strategies(doc_type)
 
-            # 1. Analyze document structure
-            self.logger.info("Step 1: Analyzing document structure")
-            analysis_result = self._analyze_document(input_path, strategies.analyzer)
+                # Track stage outputs
+                stages_data = {}
 
-            # 2. Clean and normalize content
-            self.logger.info("Step 2: Cleaning and normalizing content")
-            cleaned_data = self._clean_content(analysis_result, strategies.cleaner)
+                # Initial document info
+                stages_data["setup"] = {"path": input_path, "type": doc_type}
+                progress.display_stage_output("Setup", stages_data["setup"])
 
-            # 3. Extract structured data
-            self.logger.info("Step 3: Extracting structured data")
-            extracted_data = self._extract_data(cleaned_data, strategies.extractor)
+                # 1. Analyze document structure
+                analyze_task = progress.add_task("Step 1: Analyzing document structure")
+                analysis_result = self._analyze_document(
+                    input_path, strategies.analyzer
+                )
+                stages_data["analyze"] = analysis_result
+                progress.update(analyze_task, advance=1)
+                progress.update(overall_task, advance=1)
+                progress.display_stage_output(
+                    "Analysis", analysis_result, show_details=True
+                )
 
-            # 4. Validate extracted data
-            self.logger.info("Step 4: Validating extracted data")
-            validated_data = self._validate_data(extracted_data, strategies.validator)
+                # 2. Clean and normalize content
+                clean_task = progress.add_task(
+                    "Step 2: Cleaning and normalizing content"
+                )
+                cleaned_data = self._clean_content(analysis_result, strategies.cleaner)
+                stages_data["clean"] = cleaned_data
+                progress.update(clean_task, advance=1)
+                progress.update(overall_task, advance=1)
+                progress.display_stage_output("Cleaning", cleaned_data)
 
-            # 5. Format output
-            self.logger.info("Step 5: Formatting output")
-            output_data = self._format_output(validated_data, strategies.formatter)
+                # 3. Extract structured data
+                extract_task = progress.add_task("Step 3: Extracting structured data")
+                extracted_data = self._extract_data(cleaned_data, strategies.extractor)
+                stages_data["extract"] = extracted_data
+                progress.update(extract_task, advance=1)
+                progress.update(overall_task, advance=1)
+                progress.display_stage_output(
+                    "Extraction", extracted_data, show_details=True
+                )
 
-            self.logger.info("Pipeline processing completed successfully")
-            return output_data
+                # 4. Validate extracted data
+                validate_task = progress.add_task("Step 4: Validating extracted data")
+                validated_data = self._validate_data(
+                    extracted_data, strategies.validator
+                )
+                stages_data["validate"] = validated_data
+                progress.update(validate_task, advance=1)
+                progress.update(overall_task, advance=1)
+                progress.display_stage_output("Validation", validated_data)
+
+                # 5. Format output
+                format_task = progress.add_task("Step 5: Formatting output")
+                output_format = self._get_output_format()
+                output_data = self._format_output(validated_data, output_format)
+                stages_data["format"] = output_data
+                progress.update(format_task, advance=1)
+                progress.update(overall_task, advance=1)
+                progress.display_stage_output(
+                    "Formatting", output_data, show_details=True
+                )
+
+                # 6. Verify output structure
+                verify_task = progress.add_task("Step 6: Verifying output structure")
+                self._verify_output_structure(output_data, output_format)
+                progress.update(verify_task, advance=1)
+                progress.update(overall_task, advance=1)
+
+                # Show final summary
+                progress.display_summary(stages_data)
+                progress.display_success("Pipeline processing completed successfully")
+                return output_data
 
         except Exception as e:
-            self.logger.error("Pipeline processing failed: %s", str(e), exc_info=True)
-            raise PipelineError(f"Pipeline processing failed: {str(e)}") from e
+            error_msg = f"Pipeline processing failed: {str(e)}"
+            self.logger.error(error_msg, exc_info=True)
+            progress.display_error(error_msg)
+            raise PipelineError(error_msg) from e
 
     def _detect_document_type(self, input_path: str) -> str:
         """Detect the document type based on file extension or content analysis."""
@@ -115,10 +180,62 @@ class Pipeline:
         return validator.validate(extracted_data)
 
     def _format_output(
-        self, validated_data: Dict[str, Any], formatter
+        self, validated_data: Dict[str, Any], output_format: OutputFormat
     ) -> Dict[str, Any]:
-        """Format validated data for output."""
+        """Format validated data using the specified formatter."""
+        formatter = FormatterFactory.create_formatter(output_format)
         return formatter.format(validated_data)
+
+    def _verify_output_structure(
+        self, output_data: Dict[str, Any], output_format: OutputFormat
+    ) -> None:
+        """
+        Verify the structure of formatted output.
+
+        Args:
+            output_data: Formatted output data to verify
+            output_format: Format type of the output
+
+        Raises:
+            PipelineError: If verification fails
+        """
+        # Map output format to verifier type
+        verifier_map = {
+            OutputFormat.JSON: VerifierType.JSON_TREE,
+            OutputFormat.MARKDOWN: VerifierType.MARKDOWN,
+        }
+
+        verifier_type = verifier_map.get(output_format)
+        if not verifier_type:
+            self.logger.warning(f"No verifier available for format: {output_format}")
+            return
+
+        try:
+            verifier = VerifierFactory.create_verifier(verifier_type)
+            is_valid, errors, warnings = verifier.verify(output_data)
+
+            # Log warnings
+            for warning in warnings:
+                self.logger.warning(f"Structure warning: {warning}")
+
+            # Raise error if validation failed
+            if not is_valid:
+                error_msg = "\n".join(errors)
+                raise PipelineError(
+                    f"Output structure verification failed:\n{error_msg}"
+                )
+
+        except ValueError as e:
+            self.logger.warning(f"Verification skipped: {str(e)}")
+
+    def _get_output_format(self) -> OutputFormat:
+        """Get output format from config or use default."""
+        format_name = self.config.get("output_format", "json").upper()
+        try:
+            return OutputFormat[format_name]
+        except KeyError:
+            self.logger.warning(f"Unsupported output format: {format_name}, using JSON")
+            return OutputFormat.JSON
 
     def save_output(self, output_data: Dict[str, Any], output_path: str) -> None:
         """Save the output data to a file."""
@@ -127,31 +244,25 @@ class Pipeline:
         # Ensure directory exists
         os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
 
-        # Determine output format based on file extension
-        _, ext = os.path.splitext(output_path)
+        # Get formatter based on file extension
+        output_format = self._get_format_from_path(output_path)
+        formatter = FormatterFactory.create_formatter(output_format)
+
+        # Format and write the data
+        formatter.write(output_data, output_path)
+
+    def _get_format_from_path(self, path: str) -> OutputFormat:
+        """Determine output format from file extension."""
+        _, ext = os.path.splitext(path)
         ext = ext.lower()
 
-        if ext == ".yaml" or ext == ".yml":
-            self._save_yaml(output_data, output_path)
-        elif ext == ".json":
-            self._save_json(output_data, output_path)
-        else:
-            # Default to YAML
-            self._save_yaml(output_data, output_path)
+        format_map = {
+            ".json": OutputFormat.JSON,
+            ".md": OutputFormat.MARKDOWN,
+            ".markdown": OutputFormat.MARKDOWN,
+        }
 
-    def _save_yaml(self, data: Dict[str, Any], path: str) -> None:
-        """Save data as YAML."""
-        import yaml
-
-        with open(path, "w") as f:
-            yaml.dump(data, f, default_flow_style=False)
-
-    def _save_json(self, data: Dict[str, Any], path: str) -> None:
-        """Save data as JSON."""
-        import json
-
-        with open(path, "w") as f:
-            json.dump(data, f, indent=2)
+        return format_map.get(ext, OutputFormat.JSON)
 
 
 class StrategySelector:
@@ -165,75 +276,36 @@ class StrategySelector:
         """Get the set of strategies for a document type."""
         self.logger.info("Selecting strategies for document type: %s", doc_type)
 
-        # Import strategies dynamically based on document type
         try:
-            # This would be replaced with actual dynamic imports in a real implementation
-            if doc_type == "pdf":
-                from strategies.pdf import (
-                    PDFAnalyzer,
-                    PDFCleaner,
-                    PDFExtractor,
-                    PDFFormatter,
-                    PDFValidator,
-                )
+            # Get strategy paths from config
+            strategy_paths = self.config.get("strategies", {})
+            if not strategy_paths:
+                raise ImportError("No strategy paths configured")
 
-                return StrategySet(
-                    analyzer=PDFAnalyzer(),
-                    cleaner=PDFCleaner(),
-                    extractor=PDFExtractor(),
-                    validator=PDFValidator(),
-                    formatter=PDFFormatter(),
-                )
-            elif doc_type == "excel":
-                from strategies.excel import (
-                    ExcelAnalyzer,
-                    ExcelCleaner,
-                    ExcelExtractor,
-                    ExcelFormatter,
-                    ExcelValidator,
-                )
+            # Get the strategy paths for this document type
+            doc_strategies = strategy_paths.get(doc_type)
+            if not doc_strategies:
+                raise ImportError(f"No strategy paths configured for {doc_type}")
 
-                return StrategySet(
-                    analyzer=ExcelAnalyzer(),
-                    cleaner=ExcelCleaner(),
-                    extractor=ExcelExtractor(),
-                    validator=ExcelValidator(),
-                    formatter=ExcelFormatter(),
-                )
-            elif doc_type == "word":
-                from strategies.word import (
-                    WordAnalyzer,
-                    WordCleaner,
-                    WordExtractor,
-                    WordFormatter,
-                    WordValidator,
-                )
+            # If the strategy is a string, use it as a legacy format
+            if isinstance(doc_strategies, str):
+                return self._get_legacy_strategies(doc_strategies)
 
-                return StrategySet(
-                    analyzer=WordAnalyzer(),
-                    cleaner=WordCleaner(),
-                    extractor=WordExtractor(),
-                    validator=WordValidator(),
-                    formatter=WordFormatter(),
-                )
-            else:
-                # Default to generic strategies
-                from strategies.generic import (
-                    GenericAnalyzer,
-                    GenericCleaner,
-                    GenericExtractor,
-                    GenericFormatter,
-                    GenericValidator,
-                )
+            # Import each strategy component
+            analyzer = self._import_strategy(doc_strategies.get("analyzer"))
+            cleaner = self._import_strategy(doc_strategies.get("cleaner"))
+            extractor = self._import_strategy(doc_strategies.get("extractor"))
+            validator = self._import_strategy(doc_strategies.get("validator"))
 
-                return StrategySet(
-                    analyzer=GenericAnalyzer(),
-                    cleaner=GenericCleaner(),
-                    extractor=GenericExtractor(),
-                    validator=GenericValidator(),
-                    formatter=GenericFormatter(),
-                )
-        except ImportError as e:
+            return StrategySet(
+                analyzer=analyzer,
+                cleaner=cleaner,
+                extractor=extractor,
+                validator=validator,
+                formatter=None,  # Formatter now handled by factory
+            )
+
+        except (ImportError, AttributeError) as e:
             self.logger.error(
                 "Failed to import strategies for %s: %s", doc_type, str(e)
             )
@@ -243,7 +315,44 @@ class StrategySelector:
                 cleaner=MockStrategy(),
                 extractor=MockStrategy(),
                 validator=MockStrategy(),
-                formatter=MockStrategy(),
+                formatter=None,
+            )
+
+    def _import_strategy(self, strategy_path: Optional[str]) -> Any:
+        """Import a strategy class and create an instance."""
+        if not strategy_path:
+            return MockStrategy()
+
+        try:
+            module_path, class_name = strategy_path.rsplit(".", 1)
+            module = importlib.import_module(module_path)
+            strategy_class = getattr(module, class_name)
+            return strategy_class()
+        except (ImportError, AttributeError) as e:
+            self.logger.error(f"Failed to import strategy {strategy_path}: {str(e)}")
+            return MockStrategy()
+
+    def _get_legacy_strategies(self, strategy_path: str) -> "StrategySet":
+        """Handle legacy format where all strategies come from one module."""
+        try:
+            module_path = strategy_path
+            module = importlib.import_module(module_path)
+
+            return StrategySet(
+                analyzer=module.Analyzer(),
+                cleaner=module.Cleaner(),
+                extractor=module.Extractor(),
+                validator=module.Validator(),
+                formatter=None,
+            )
+        except (ImportError, AttributeError) as e:
+            self.logger.error(f"Failed to import legacy strategies: {str(e)}")
+            return StrategySet(
+                analyzer=MockStrategy(),
+                cleaner=MockStrategy(),
+                extractor=MockStrategy(),
+                validator=MockStrategy(),
+                formatter=None,
             )
 
 
@@ -274,9 +383,6 @@ class MockStrategy:
 
     def validate(self, data):
         return {"mock_validated": True, "data": data}
-
-    def format(self, data):
-        return {"mock_formatted": True, "data": data}
 
 
 class PipelineError(Exception):

@@ -1,0 +1,15 @@
+input_dir: data/tests/pdf
+output_dir: data/output
+output_format: yaml
+log_level: INFO
+validation_level: basic
+strategies:
+  pdf:
+    analyzer: utils.pipeline.analyzer.pdf.PDFAnalyzer
+    cleaner: utils.pipeline.cleaner.pdf.PDFCleaner
+    extractor: utils.pipeline.processors.pdf_extractor.PDFExtractor
+    validator: utils.pipeline.processors.pdf_validator.PDFValidator
+    formatter: utils.pipeline.processors.pdf_formatter.PDFFormatter
+  excel: strategies.excel
+  word: strategies.word
+  text: strategies.text
