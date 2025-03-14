@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 """
-Script to extract sequence diagrams from Python code.
+Script to extract state diagrams from Python code.
 """
 
 import argparse
@@ -24,13 +24,13 @@ logger = logging.getLogger(__name__)
 PROJECT_ROOT = Path(__file__).parent.parent
 
 # Constants
-OUTPUT_BASE_DIR = Path("docs/source/_generated_uml/sequence")
+OUTPUT_BASE_DIR = Path("docs/source/_generated_uml/state")
 
 
 def parse_arguments() -> argparse.Namespace:
     """Parse command line arguments."""
     parser = argparse.ArgumentParser(
-        description="Generate sequence diagrams from Python code.",
+        description="Generate state diagrams from Python code.",
     )
 
     parser.add_argument(
@@ -73,7 +73,7 @@ def parse_arguments() -> argparse.Namespace:
 
 
 def main() -> int:
-    """Run the sequence diagram generator."""
+    """Run the state diagram generator."""
     args = parse_arguments()
 
     # Configure logging
@@ -89,30 +89,29 @@ def main() -> int:
     factory = DefaultDiagramFactory(file_system)
     service = UmlService(factory)
 
-    # Generate sequence diagrams
+    # Generate state diagrams
     try:
-        # Run the UML generator with the sequence diagram type
+        # Run the UML generator with the state diagram type
         source_path = Path(args.source)
 
         # Create analyzer-specific settings
         settings = {
             "recursive": args.recursive,
             "exclude_patterns": args.exclude,
-            "root_dir": str(source_path),
         }
 
         # Generate the diagram
         service.generate_diagram(
-            "sequence",
+            "state",
             source_path,
             output_dir / f"{source_path.stem}.puml",
             **settings,
         )
 
-        logger.info(f"Sequence diagram generated successfully in {output_dir}")
+        logger.info(f"State diagram generated successfully in {output_dir}")
         return 0
     except Exception as e:
-        logger.error(f"Error generating sequence diagram: {e}")
+        logger.error(f"Error generating state diagram: {e}")
         if args.verbose:
             import traceback
 

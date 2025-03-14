@@ -9,8 +9,14 @@ from typing import Any
 from utils.uml.core.exceptions import DiagramTypeError
 from utils.uml.core.filesystem import FileSystem
 from utils.uml.core.interfaces import DiagramAnalyzer, DiagramFactory, DiagramGenerator
+from utils.uml.diagrams.activity_diagram.analyzer import ActivityAnalyzer
+from utils.uml.diagrams.activity_diagram.generator import ActivityDiagramGenerator
+from utils.uml.diagrams.class_diagram.analyzer import ClassAnalyzer
+from utils.uml.diagrams.class_diagram.generator import ClassDiagramGenerator
 from utils.uml.diagrams.sequence_diagram.analyzer import SequenceAnalyzer
 from utils.uml.diagrams.sequence_diagram.generator import SequenceDiagramGenerator
+from utils.uml.diagrams.state_diagram.analyzer import StateAnalyzer
+from utils.uml.diagrams.state_diagram.generator import StateDiagramGenerator
 
 
 class DefaultDiagramFactory(DiagramFactory):
@@ -52,11 +58,20 @@ class DefaultDiagramFactory(DiagramFactory):
                 analyzer = SequenceAnalyzer(self.file_system, root_dir)
                 self._analyzers["sequence"] = analyzer
             elif diagram_type == "class":
-                # Class analyzer will be implemented later
-                raise DiagramTypeError("Class diagram analyzer not yet implemented")
+                # Create class analyzer
+                analyzer = ClassAnalyzer(self.file_system)
+                self._analyzers["class"] = analyzer
+            elif diagram_type == "activity":
+                # Create activity analyzer
+                analyzer = ActivityAnalyzer(self.file_system)
+                self._analyzers["activity"] = analyzer
+            elif diagram_type == "state":
+                # Create state analyzer
+                analyzer = StateAnalyzer(self.file_system)
+                self._analyzers["state"] = analyzer
             else:
                 self.logger.error(
-                    f"No analyzer available for diagram type: {diagram_type}"
+                    f"No analyzer available for diagram type: {diagram_type}",
                 )
                 raise DiagramTypeError(f"Unsupported diagram type: {diagram_type}")
 
@@ -83,11 +98,23 @@ class DefaultDiagramFactory(DiagramFactory):
                 generator = SequenceDiagramGenerator(self.file_system, settings)
                 self._generators["sequence"] = generator
             elif diagram_type == "class":
-                # Class generator will be implemented later
-                raise DiagramTypeError("Class diagram generator not yet implemented")
+                # Create class generator
+                settings = {**self.settings.get("class_generator", {}), **kwargs}
+                generator = ClassDiagramGenerator(self.file_system, settings)
+                self._generators["class"] = generator
+            elif diagram_type == "activity":
+                # Create activity generator
+                settings = {**self.settings.get("activity_generator", {}), **kwargs}
+                generator = ActivityDiagramGenerator(self.file_system, settings)
+                self._generators["activity"] = generator
+            elif diagram_type == "state":
+                # Create state generator
+                settings = {**self.settings.get("state_generator", {}), **kwargs}
+                generator = StateDiagramGenerator(self.file_system, settings)
+                self._generators["state"] = generator
             else:
                 self.logger.error(
-                    f"No generator available for diagram type: {diagram_type}"
+                    f"No generator available for diagram type: {diagram_type}",
                 )
                 raise DiagramTypeError(f"Unsupported diagram type: {diagram_type}")
 

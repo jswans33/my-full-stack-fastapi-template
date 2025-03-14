@@ -1,0 +1,4408 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+================================================================
+File Summary
+================================================================
+
+Purpose:
+--------
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+
+File Format:
+------------
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Multiple file entries, each consisting of:
+  a. A separator line (================)
+  b. The file path (File: path/to/file)
+  c. Another separator line
+  d. The full contents of the file
+  e. A blank line
+
+Usage Guidelines:
+-----------------
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+
+Notes:
+------
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+
+Additional Info:
+----------------
+
+================================================================
+Directory Structure
+================================================================
+__init__.py
+config/__init__.py
+core/__init__.py
+core/exceptions.py
+core/filesystem.py
+core/interfaces.py
+core/service.py
+diagrams/__init__.py
+diagrams/activity_diagram/__init__.py
+diagrams/activity_diagram/analyzer.py
+diagrams/activity_diagram/generator.py
+diagrams/activity_diagram/models.py
+diagrams/base.py
+diagrams/class_diagram/__init__.py
+diagrams/class_diagram/analyzer.py
+diagrams/class_diagram/generator.py
+diagrams/class_diagram/models.py
+diagrams/sequence_diagram/__init__.py
+diagrams/sequence_diagram/analyzer.py
+diagrams/sequence_diagram/generator.py
+diagrams/sequence_diagram/models.py
+diagrams/state_diagram/__init__.py
+diagrams/state_diagram/analyzer.py
+diagrams/state_diagram/generator.py
+diagrams/state_diagram/models.py
+factories.py
+run.py
+utils/__init__.py
+
+================================================================
+Files
+================================================================
+
+================
+File: __init__.py
+================
+"""UML diagram generation package.
+
+This package provides tools for generating UML diagrams from Python code.
+"""
+
+================
+File: config/__init__.py
+================
+"""Configuration handling for UML diagram generation.
+
+This module provides functionality for loading and managing configuration for UML generators.
+"""
+
+================
+File: core/__init__.py
+================
+"""Core functionality for UML diagram generation.
+
+This module provides the core interfaces and classes used by all diagram types.
+"""
+
+================
+File: core/exceptions.py
+================
+"""Exception classes for UML diagram generation.
+
+This module defines the exception classes used throughout the UML generation package.
+"""
+
+
+class UMLGeneratorError(Exception):
+    """Base exception for all UML generator errors."""
+
+    def __init__(self, message: str, cause: Exception | None = None):
+        """Initialize a UML generator error.
+
+        Args:
+            message: The error message
+            cause: The exception that caused this error, if any
+        """
+        self.message = message
+        self.cause = cause
+        super().__init__(message)
+
+
+class ConfigurationError(UMLGeneratorError):
+    """Exception raised for configuration errors."""
+
+    pass
+
+
+class ParserError(UMLGeneratorError):
+    """Exception raised when parsing code fails."""
+
+    pass
+
+
+class GeneratorError(UMLGeneratorError):
+    """Exception raised when generating diagrams fails."""
+
+    pass
+
+
+class FileSystemError(UMLGeneratorError):
+    """Exception raised for file system operations errors."""
+
+    pass
+
+
+class DiagramTypeError(UMLGeneratorError):
+    """Exception raised when an unsupported diagram type is requested."""
+
+    pass
+
+================
+File: core/filesystem.py
+================
+"""File system operations for UML diagram generation.
+
+This module provides a default implementation of the FileSystem interface
+for performing file system operations.
+"""
+
+from pathlib import Path
+
+from utils.uml.core.exceptions import FileSystemError
+
+
+class FileSystem:
+    """Interface for file system operations."""
+
+    def read_file(self, path: str | Path) -> str:
+        """Read file content as string.
+
+        Args:
+            path: Path to the file to read
+
+        Returns:
+            The content of the file as a string
+
+        Raises:
+            FileSystemError: If the file cannot be read
+        """
+        ...
+
+    def write_file(self, path: str | Path, content: str) -> None:
+        """Write content to file.
+
+        Args:
+            path: Path to the file to write
+            content: Content to write to the file
+
+        Raises:
+            FileSystemError: If the file cannot be written
+        """
+        ...
+
+    def ensure_directory(self, path: str | Path) -> None:
+        """Ensure directory exists, create if needed.
+
+        Args:
+            path: Path to the directory to ensure exists
+
+        Raises:
+            FileSystemError: If the directory cannot be created
+        """
+        ...
+
+    def find_files(self, directory: str | Path, pattern: str) -> list[Path]:
+        """Find files matching pattern in directory.
+
+        Args:
+            directory: Directory to search in
+            pattern: Glob pattern to match files against
+
+        Returns:
+            A list of paths to files matching the pattern
+
+        Raises:
+            FileSystemError: If the directory cannot be accessed
+        """
+        ...
+
+
+class DefaultFileSystem(FileSystem):
+    """Default implementation of FileSystem interface."""
+
+    def read_file(self, path: str | Path) -> str:
+        """Read file content as string."""
+        try:
+            path = Path(path) if isinstance(path, str) else path
+            with open(path, encoding="utf-8") as f:
+                return f.read()
+        except Exception as e:
+            raise FileSystemError(f"Failed to read file {path}: {e}", cause=e)
+
+    def write_file(self, path: str | Path, content: str) -> None:
+        """Write content to file."""
+        try:
+            path = Path(path) if isinstance(path, str) else path
+            with open(path, "w", encoding="utf-8") as f:
+                f.write(content)
+        except Exception as e:
+            raise FileSystemError(f"Failed to write file {path}: {e}", cause=e)
+
+    def ensure_directory(self, path: str | Path) -> None:
+        """Ensure directory exists, create if needed."""
+        try:
+            path = Path(path) if isinstance(path, str) else path
+            path.mkdir(parents=True, exist_ok=True)
+        except Exception as e:
+            raise FileSystemError(f"Failed to create directory {path}: {e}", cause=e)
+
+    def find_files(self, directory: str | Path, pattern: str) -> list[Path]:
+        """Find files matching pattern in directory."""
+        try:
+            directory = Path(directory) if isinstance(directory, str) else directory
+            # Use rglob for recursive search
+            return list(directory.rglob(pattern))
+        except Exception as e:
+            raise FileSystemError(
+                f"Failed to find files in {directory} with pattern {pattern}: {e}",
+                cause=e,
+            )
+
+================
+File: core/interfaces.py
+================
+"""Interfaces for UML diagram generation.
+
+This module defines the core interfaces for UML diagram generation, including
+models, analyzers, and generators.
+"""
+
+from abc import ABC, abstractmethod
+from pathlib import Path
+
+
+class DiagramModel(ABC):
+    """Base interface for all diagram models.
+
+    A diagram model represents the parsed information that will be used to generate
+    a UML diagram.
+    """
+
+    @property
+    @abstractmethod
+    def name(self) -> str:
+        """Return the name of the diagram."""
+        pass
+
+    @property
+    @abstractmethod
+    def diagram_type(self) -> str:
+        """Return the type of the diagram (class, sequence, etc.)."""
+        pass
+
+
+class DiagramAnalyzer(ABC):
+    """Base interface for all diagram analyzers.
+
+    A diagram analyzer is responsible for analyzing source code and creating a
+    diagram model from it.
+    """
+
+    @abstractmethod
+    def analyze(self, path: str | Path, **kwargs) -> DiagramModel:
+        """Analyze the source code at the given path and return a diagram model.
+
+        Args:
+            path: Path to the source code to analyze
+            **kwargs: Additional analyzer-specific arguments
+
+        Returns:
+            A diagram model containing the analyzed information
+        """
+        pass
+
+
+class DiagramGenerator(ABC):
+    """Base interface for all diagram generators.
+
+    A diagram generator is responsible for generating a UML diagram from a
+    diagram model.
+    """
+
+    @abstractmethod
+    def generate_diagram(
+        self,
+        model: DiagramModel,
+        output_path: str | Path,
+        **kwargs,
+    ) -> None:
+        """Generate a UML diagram from the given model and write it to the output path.
+
+        Args:
+            model: The diagram model to generate a diagram from
+            output_path: The path to write the diagram to
+            **kwargs: Additional generator-specific arguments
+        """
+        pass
+
+    @abstractmethod
+    def generate_index(
+        self,
+        output_dir: str | Path,
+        diagrams: list[Path],
+        **kwargs,
+    ) -> None:
+        """Generate an index file for all diagrams in the output directory.
+
+        Args:
+            output_dir: The directory containing the diagrams
+            diagrams: A list of paths to all diagrams
+            **kwargs: Additional generator-specific arguments
+        """
+        pass
+
+
+class DiagramFactory(ABC):
+    """Base interface for diagram factories.
+
+    A diagram factory is responsible for creating appropriate diagram analyzers and
+    generators based on the diagram type.
+    """
+
+    @abstractmethod
+    def create_analyzer(self, diagram_type: str, **kwargs) -> DiagramAnalyzer:
+        """Create an analyzer for the given diagram type.
+
+        Args:
+            diagram_type: The type of diagram to create an analyzer for
+            **kwargs: Additional factory-specific arguments
+
+        Returns:
+            A diagram analyzer for the given diagram type
+        """
+        pass
+
+    @abstractmethod
+    def create_generator(self, diagram_type: str, **kwargs) -> DiagramGenerator:
+        """Create a generator for the given diagram type.
+
+        Args:
+            diagram_type: The type of diagram to create a generator for
+            **kwargs: Additional factory-specific arguments
+
+        Returns:
+            A diagram generator for the given diagram type
+        """
+        pass
+
+================
+File: core/service.py
+================
+"""Core service for UML diagram generation.
+
+This module provides the core service for UML diagram generation, including
+the main entry point for generating diagrams.
+"""
+
+import logging
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import DiagramTypeError, GeneratorError, ParserError
+from utils.uml.core.interfaces import DiagramFactory
+
+
+class UmlService:
+    """Core service for UML diagram generation."""
+
+    def __init__(
+        self,
+        factory: DiagramFactory,
+        settings: dict[str, Any] | None = None,
+    ):
+        """Initialize the UML service.
+
+        Args:
+            factory: The diagram factory to use
+            settings: Optional settings for the service
+        """
+        self.factory = factory
+        self.settings = settings or {}
+        self.logger = logging.getLogger(__name__)
+
+    def generate_diagram(
+        self,
+        diagram_type: str,
+        source_path: str | Path,
+        output_path: str | Path,
+        **kwargs,
+    ) -> None:
+        """Generate a UML diagram from the given source path.
+
+        Args:
+            diagram_type: The type of diagram to generate (class, sequence, etc.)
+            source_path: The path to the source code or definition file
+            output_path: The path to write the diagram to
+            **kwargs: Additional diagram-specific arguments
+
+        Raises:
+            DiagramTypeError: If the diagram type is not supported
+            ParserError: If the source code cannot be parsed
+            GeneratorError: If the diagram cannot be generated
+        """
+        try:
+            # Create analyzer and generator
+            analyzer = self.factory.create_analyzer(diagram_type, **kwargs)
+            generator = self.factory.create_generator(diagram_type, **kwargs)
+
+            # Analyze the source code
+            model = analyzer.analyze(source_path, **kwargs)
+
+            # Generate the diagram
+            generator.generate_diagram(model, output_path, **kwargs)
+
+            self.logger.info(f"Generated {diagram_type} diagram at {output_path}")
+        except (DiagramTypeError, ParserError, GeneratorError) as e:
+            self.logger.error(f"Failed to generate {diagram_type} diagram: {e}")
+            raise
+        except Exception as e:
+            self.logger.error(
+                f"Unexpected error generating {diagram_type} diagram: {e}"
+            )
+            raise GeneratorError(f"Unexpected error: {e}", cause=e)
+
+    def generate_diagrams(
+        self,
+        diagram_type: str,
+        source_paths: list[str | Path],
+        output_dir: str | Path,
+        **kwargs,
+    ) -> list[Path]:
+        """Generate UML diagrams from the given source paths.
+
+        Args:
+            diagram_type: The type of diagram to generate (class, sequence, etc.)
+            source_paths: The paths to the source code or definition files
+            output_dir: The directory to write the diagrams to
+            **kwargs: Additional diagram-specific arguments
+
+        Returns:
+            A list of paths to the generated diagrams
+
+        Raises:
+            DiagramTypeError: If the diagram type is not supported
+        """
+        output_dir = Path(output_dir) if isinstance(output_dir, str) else output_dir
+        generated_diagrams: list[Path] = []
+
+        # Create analyzer and generator
+        analyzer = self.factory.create_analyzer(diagram_type, **kwargs)
+        generator = self.factory.create_generator(diagram_type, **kwargs)
+
+        # Process each source path
+        for source_path in source_paths:
+            source_path = (
+                Path(source_path) if isinstance(source_path, str) else source_path
+            )
+
+            try:
+                # Determine output path
+                if source_path.is_file():
+                    output_path = output_dir / f"{source_path.stem}.puml"
+                else:
+                    # For directories, use the directory name
+                    output_path = output_dir / f"{source_path.name}.puml"
+
+                # Analyze the source code
+                model = analyzer.analyze(source_path, **kwargs)
+
+                # Generate the diagram
+                generator.generate_diagram(model, output_path, **kwargs)
+
+                generated_diagrams.append(output_path)
+                self.logger.info(f"Generated {diagram_type} diagram at {output_path}")
+            except Exception as e:
+                self.logger.error(f"Error processing {source_path}: {e}")
+                # Continue with other source paths
+
+        # Generate index file
+        if generated_diagrams:
+            try:
+                generator.generate_index(output_dir, generated_diagrams, **kwargs)
+                self.logger.info(f"Generated index file at {output_dir}")
+            except Exception as e:
+                self.logger.error(f"Error generating index file: {e}")
+
+        return generated_diagrams
+
+    def generate_all_diagrams(
+        self,
+        source_paths: dict[str, list[str | Path]],
+        output_dir: str | Path,
+        **kwargs,
+    ) -> dict[str, list[Path]]:
+        """Generate all types of UML diagrams from the given source paths.
+
+        Args:
+            source_paths: A dictionary mapping diagram types to source paths
+            output_dir: The directory to write the diagrams to
+            **kwargs: Additional diagram-specific arguments
+
+        Returns:
+            A dictionary mapping diagram types to lists of generated diagram paths
+        """
+        output_dir = Path(output_dir) if isinstance(output_dir, str) else output_dir
+        results: dict[str, list[Path]] = {}
+
+        for diagram_type, paths in source_paths.items():
+            try:
+                # Create type-specific output directory
+                type_output_dir = output_dir / diagram_type
+                type_output_dir.mkdir(parents=True, exist_ok=True)
+
+                # Generate diagrams for this type
+                diagrams = self.generate_diagrams(
+                    diagram_type,
+                    paths,
+                    type_output_dir,
+                    **kwargs,
+                )
+                results[diagram_type] = diagrams
+            except DiagramTypeError as e:
+                self.logger.error(f"Unsupported diagram type {diagram_type}: {e}")
+            except Exception as e:
+                self.logger.error(f"Error generating {diagram_type} diagrams: {e}")
+
+        return results
+
+================
+File: diagrams/__init__.py
+================
+"""UML diagram implementations.
+
+This package contains implementations for various types of UML diagrams:
+- Class diagrams
+- Sequence diagrams
+- Activity diagrams (planned)
+- State diagrams (planned)
+"""
+
+================
+File: diagrams/activity_diagram/__init__.py
+================
+"""Activity diagram generation.
+
+This module will provide functionality for generating UML activity diagrams (planned).
+"""
+
+================
+File: diagrams/activity_diagram/analyzer.py
+================
+"""Analyzer for extracting activity diagrams from Python code.
+
+This module provides functionality for analyzing Python code and extracting
+activity diagrams from it.
+"""
+
+import logging
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import ParserError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.diagrams.activity_diagram.models import (
+    ActivityDiagram,
+    ActivityModel,
+    DecisionNodeModel,
+    EndNodeModel,
+    StartNodeModel,
+    TransitionModel,
+)
+from utils.uml.diagrams.base import BaseDiagramAnalyzer
+
+
+class ActivityAnalyzer(BaseDiagramAnalyzer):
+    """Analyzer for extracting activity diagrams from Python code."""
+
+    def __init__(self, file_system: FileSystem):
+        """Initialize the activity analyzer.
+
+        Args:
+            file_system: The file system implementation to use
+        """
+        super().__init__(file_system)
+        self.logger = logging.getLogger(__name__)
+
+    def analyze(
+        self,
+        path: str | Path,
+        **kwargs: Any,
+    ) -> ActivityDiagram:
+        """Analyze the source code at the given path and generate an activity diagram.
+
+        This is a placeholder implementation that will be expanded in the future.
+        Currently, it creates a simple example diagram.
+
+        Args:
+            path: Path to the source code to analyze
+            **kwargs: Additional analyzer-specific arguments
+
+        Returns:
+            An activity diagram model
+
+        Raises:
+            ParserError: If the analysis fails
+        """
+        try:
+            # Create a placeholder diagram
+            diagram_name = kwargs.get("name", "Activity Diagram")
+            if isinstance(path, Path):
+                if path.is_file():
+                    diagram_name = f"Activity Diagram - {path.stem}"
+                else:
+                    diagram_name = f"Activity Diagram - {path.name}"
+
+            diagram = ActivityDiagram(diagram_name)
+
+            # This is a placeholder implementation
+            # In a real implementation, we would analyze the code and extract activities
+
+            # Add a simple example diagram
+            self._create_example_diagram(diagram)
+
+            return diagram
+        except Exception as e:
+            raise ParserError(f"Failed to analyze code at {path}: {e}", cause=e)
+
+    def _create_example_diagram(self, diagram: ActivityDiagram) -> None:
+        """Create a simple example diagram.
+
+        Args:
+            diagram: The diagram to populate
+        """
+        # Add start node
+        start = StartNodeModel("start")
+        diagram.add_start_node(start)
+
+        # Add activities
+        init = ActivityModel("init", "Initialize")
+        process = ActivityModel("process", "Process Data")
+        validate = ActivityModel("validate", "Validate Results")
+        save = ActivityModel("save", "Save Results")
+
+        diagram.add_activity(init)
+        diagram.add_activity(process)
+        diagram.add_activity(validate)
+        diagram.add_activity(save)
+
+        # Add decision node
+        decision = DecisionNodeModel("valid", "Is Valid?")
+        diagram.add_decision_node(decision)
+
+        # Add end node
+        end = EndNodeModel("end")
+        diagram.add_end_node(end)
+
+        # Add transitions
+        diagram.add_transition(TransitionModel("start", "init"))
+        diagram.add_transition(TransitionModel("init", "process"))
+        diagram.add_transition(TransitionModel("process", "validate"))
+        diagram.add_transition(TransitionModel("validate", "valid"))
+        diagram.add_transition(TransitionModel("valid", "save", "yes"))
+        diagram.add_transition(TransitionModel("valid", "process", "no", "Retry"))
+        diagram.add_transition(TransitionModel("save", "end"))
+
+================
+File: diagrams/activity_diagram/generator.py
+================
+"""Generator for converting activity diagrams to PlantUML format.
+
+This module provides functionality for generating PlantUML activity diagrams from
+activity diagram models.
+"""
+
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import GeneratorError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.interfaces import DiagramModel
+from utils.uml.diagrams.activity_diagram.models import (
+    ActivityDiagram,
+)
+from utils.uml.diagrams.base import BaseDiagramGenerator
+
+
+class ActivityDiagramGenerator(BaseDiagramGenerator):
+    """Generates PlantUML activity diagrams from activity diagram models."""
+
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] | None = None):
+        """Initialize an activity diagram generator.
+
+        Args:
+            file_system: The file system implementation to use
+            settings: Optional settings for the generator
+        """
+        super().__init__(file_system, settings)
+
+    def generate_diagram(
+        self,
+        model: DiagramModel,
+        output_path: str | Path,
+        **kwargs,
+    ) -> None:
+        """Generate a UML diagram from the given model and write it to the output path.
+
+        Args:
+            model: The diagram model to generate a diagram from
+            output_path: The path to write the diagram to
+            **kwargs: Additional generator-specific arguments
+
+        Raises:
+            GeneratorError: If the diagram cannot be generated
+        """
+        try:
+            # Ensure the model is an ActivityDiagram
+            if not isinstance(model, ActivityDiagram):
+                raise GeneratorError(
+                    f"Expected ActivityDiagram, got {type(model).__name__}",
+                )
+
+            # Generate the PlantUML code
+            plantuml_code = self.generate_plantuml(model, **kwargs)
+
+            # Ensure output directory exists and write the file
+            output_path = (
+                Path(output_path) if isinstance(output_path, str) else output_path
+            )
+            self.file_system.ensure_directory(output_path.parent)
+            self.file_system.write_file(output_path, plantuml_code)
+
+        except Exception as e:
+            raise GeneratorError(
+                f"Failed to generate activity diagram: {e}",
+                cause=e,
+            )
+
+    def generate_plantuml(
+        self,
+        diagram: ActivityDiagram,
+        **kwargs,
+    ) -> str:
+        """Generate PlantUML code from an activity diagram model.
+
+        Args:
+            diagram: The activity diagram model
+            **kwargs: Additional generator-specific arguments
+
+        Returns:
+            The generated PlantUML code
+        """
+        lines = ["@startuml", ""]
+
+        # Add title
+        if diagram.name:
+            lines.append(f"title {diagram.name}")
+            lines.append("")
+
+        # Add global settings
+        use_monochrome = self.settings.get("MONOCHROME", True)
+        settings = [
+            "skinparam ActivityBackgroundColor white",
+            "skinparam ActivityBorderColor black",
+            "skinparam ArrowColor black",
+            "skinparam monochrome true" if use_monochrome else "",
+        ]
+
+        # Filter out empty settings
+        settings = [s for s in settings if s]
+        lines.extend(settings)
+        lines.append("")
+
+        # Add start nodes
+        for start_node in diagram.start_nodes:
+            lines.append("start")
+
+        # Add activities
+        for activity in diagram.activities:
+            activity_name = activity.name or activity.id
+            lines.append(f":{activity_name};")
+
+        # Add decision nodes
+        for decision in diagram.decision_nodes:
+            decision_name = decision.name or decision.id
+            lines.append(f"if ({decision_name}) then (yes)")
+            lines.append("else (no)")
+            lines.append("endif")
+
+        # Add fork nodes
+        for fork in diagram.fork_nodes:
+            fork_name = fork.name or fork.id
+            lines.append("fork")
+            lines.append("fork again")
+            lines.append("end fork")
+
+        # Add end nodes
+        for end_node in diagram.end_nodes:
+            lines.append("stop")
+
+        # Add transitions
+        lines.append("")
+        lines.append("' Transitions")
+
+        # Process transitions
+        for transition in diagram.transitions:
+            source = transition.source_id
+            target = transition.target_id
+            label = f" : {transition.label}" if transition.label else ""
+
+            # For decision nodes, we've already added the if/else structure
+            # So we don't need to add explicit transitions
+            if any(d.id == source for d in diagram.decision_nodes):
+                continue
+
+            lines.append(f"{source} --> {target}{label}")
+
+        # End the diagram
+        lines.append("")
+        lines.append("@enduml")
+
+        return "\n".join(lines)
+
+    def generate_index(
+        self,
+        output_dir: str | Path,
+        diagrams: list[Path],
+        **kwargs,
+    ) -> None:
+        """Generate an index file for all diagrams in the output directory.
+
+        Args:
+            output_dir: The directory containing the diagrams
+            diagrams: A list of paths to all diagrams
+            **kwargs: Additional generator-specific arguments
+
+        Raises:
+            GeneratorError: If the index file cannot be generated
+        """
+        # Filter to only include activity diagrams
+        activity_diagrams = [
+            d
+            for d in diagrams
+            if d.name.endswith(".puml") and self._is_activity_diagram(d)
+        ]
+
+        if not activity_diagrams:
+            return
+
+        try:
+            output_dir = Path(output_dir) if isinstance(output_dir, str) else output_dir
+            index_path = output_dir / "activity_index.rst"
+
+            # Create basic RST index
+            lines = [
+                "Activity Diagrams",
+                "=================",
+                "",
+                ".. toctree::",
+                "   :maxdepth: 1",
+                "",
+            ]
+
+            # Add diagram references
+            for diagram in sorted(activity_diagrams):
+                rel_path = diagram.relative_to(output_dir)
+                # Use forward slashes for cross-platform compatibility
+                lines.append(f"   {str(rel_path).replace('\\', '/')}")
+
+            lines.append("")  # Add trailing newline
+
+            # Write the index file
+            self.file_system.write_file(index_path, "\n".join(lines))
+
+        except Exception as e:
+            raise GeneratorError(
+                f"Failed to generate activity diagram index: {e}",
+                cause=e,
+            )
+
+    def _is_activity_diagram(self, file_path: Path) -> bool:
+        """Check if a file is an activity diagram.
+
+        Args:
+            file_path: The path to the file to check
+
+        Returns:
+            True if the file is an activity diagram, False otherwise
+        """
+        try:
+            content = self.file_system.read_file(file_path)
+            # Simple heuristic: look for activity diagram indicators
+            indicators = [
+                "start",
+                "stop",
+                "if (",
+                "fork",
+                "skinparam ActivityBackgroundColor",
+            ]
+            return any(indicator in content for indicator in indicators)
+        except Exception:
+            return False
+
+================
+File: diagrams/activity_diagram/models.py
+================
+"""Models for activity diagrams.
+
+This module provides models for representing activity diagrams.
+"""
+
+from utils.uml.diagrams.base import BaseDiagramModel
+
+
+class ActivityDiagram(BaseDiagramModel):
+    """Model for an activity diagram."""
+
+    def __init__(self, name: str):
+        """Initialize an activity diagram.
+
+        Args:
+            name: The name of the diagram
+        """
+        super().__init__(name, "activity")
+        self.activities: list[ActivityModel] = []
+        self.transitions: list[TransitionModel] = []
+        self.start_nodes: list[StartNodeModel] = []
+        self.end_nodes: list[EndNodeModel] = []
+        self.decision_nodes: list[DecisionNodeModel] = []
+        self.merge_nodes: list[MergeNodeModel] = []
+        self.fork_nodes: list[ForkNodeModel] = []
+        self.join_nodes: list[JoinNodeModel] = []
+
+    def add_activity(self, activity: "ActivityModel") -> None:
+        """Add an activity to the diagram.
+
+        Args:
+            activity: The activity to add
+        """
+        self.activities.append(activity)
+
+    def add_transition(self, transition: "TransitionModel") -> None:
+        """Add a transition to the diagram.
+
+        Args:
+            transition: The transition to add
+        """
+        self.transitions.append(transition)
+
+    def add_start_node(self, start_node: "StartNodeModel") -> None:
+        """Add a start node to the diagram.
+
+        Args:
+            start_node: The start node to add
+        """
+        self.start_nodes.append(start_node)
+
+    def add_end_node(self, end_node: "EndNodeModel") -> None:
+        """Add an end node to the diagram.
+
+        Args:
+            end_node: The end node to add
+        """
+        self.end_nodes.append(end_node)
+
+    def add_decision_node(self, decision_node: "DecisionNodeModel") -> None:
+        """Add a decision node to the diagram.
+
+        Args:
+            decision_node: The decision node to add
+        """
+        self.decision_nodes.append(decision_node)
+
+    def add_merge_node(self, merge_node: "MergeNodeModel") -> None:
+        """Add a merge node to the diagram.
+
+        Args:
+            merge_node: The merge node to add
+        """
+        self.merge_nodes.append(merge_node)
+
+    def add_fork_node(self, fork_node: "ForkNodeModel") -> None:
+        """Add a fork node to the diagram.
+
+        Args:
+            fork_node: The fork node to add
+        """
+        self.fork_nodes.append(fork_node)
+
+    def add_join_node(self, join_node: "JoinNodeModel") -> None:
+        """Add a join node to the diagram.
+
+        Args:
+            join_node: The join node to add
+        """
+        self.join_nodes.append(join_node)
+
+
+class ActivityNodeModel:
+    """Base model for an activity node."""
+
+    def __init__(self, id: str, name: str | None = None):
+        """Initialize an activity node.
+
+        Args:
+            id: The unique identifier for the node
+            name: The name of the node
+        """
+        self.id = id
+        self.name = name or id
+
+
+class ActivityModel(ActivityNodeModel):
+    """Model for an activity."""
+
+    def __init__(
+        self, id: str, name: str | None = None, description: str | None = None
+    ):
+        """Initialize an activity.
+
+        Args:
+            id: The unique identifier for the activity
+            name: The name of the activity
+            description: The description of the activity
+        """
+        super().__init__(id, name)
+        self.description = description
+
+
+class TransitionModel:
+    """Model for a transition between activity nodes."""
+
+    def __init__(
+        self,
+        source_id: str,
+        target_id: str,
+        guard: str | None = None,
+        label: str | None = None,
+    ):
+        """Initialize a transition.
+
+        Args:
+            source_id: The ID of the source node
+            target_id: The ID of the target node
+            guard: The guard condition for the transition
+            label: The label for the transition
+        """
+        self.source_id = source_id
+        self.target_id = target_id
+        self.guard = guard
+        self.label = label
+
+
+class StartNodeModel(ActivityNodeModel):
+    """Model for a start node."""
+
+    def __init__(self, id: str):
+        """Initialize a start node.
+
+        Args:
+            id: The unique identifier for the node
+        """
+        super().__init__(id, "start")
+
+
+class EndNodeModel(ActivityNodeModel):
+    """Model for an end node."""
+
+    def __init__(self, id: str):
+        """Initialize an end node.
+
+        Args:
+            id: The unique identifier for the node
+        """
+        super().__init__(id, "end")
+
+
+class DecisionNodeModel(ActivityNodeModel):
+    """Model for a decision node."""
+
+    def __init__(self, id: str, name: str | None = None):
+        """Initialize a decision node.
+
+        Args:
+            id: The unique identifier for the node
+            name: The name of the node
+        """
+        super().__init__(id, name or "decision")
+
+
+class MergeNodeModel(ActivityNodeModel):
+    """Model for a merge node."""
+
+    def __init__(self, id: str, name: str | None = None):
+        """Initialize a merge node.
+
+        Args:
+            id: The unique identifier for the node
+            name: The name of the node
+        """
+        super().__init__(id, name or "merge")
+
+
+class ForkNodeModel(ActivityNodeModel):
+    """Model for a fork node."""
+
+    def __init__(self, id: str, name: str | None = None):
+        """Initialize a fork node.
+
+        Args:
+            id: The unique identifier for the node
+            name: The name of the node
+        """
+        super().__init__(id, name or "fork")
+
+
+class JoinNodeModel(ActivityNodeModel):
+    """Model for a join node."""
+
+    def __init__(self, id: str, name: str | None = None):
+        """Initialize a join node.
+
+        Args:
+            id: The unique identifier for the node
+            name: The name of the node
+        """
+        super().__init__(id, name or "join")
+
+================
+File: diagrams/base.py
+================
+"""Base classes for UML diagrams.
+
+This module provides base implementations of the core interfaces for UML diagrams.
+"""
+
+from abc import ABC, abstractmethod
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import GeneratorError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.interfaces import DiagramAnalyzer, DiagramGenerator, DiagramModel
+
+
+class BaseDiagramModel(DiagramModel, ABC):
+    """Base implementation of the DiagramModel interface."""
+
+    def __init__(self, name: str, diagram_type: str):
+        """Initialize a base diagram model.
+
+        Args:
+            name: The name of the diagram
+            diagram_type: The type of the diagram (class, sequence, etc.)
+        """
+        self._name = name
+        self._diagram_type = diagram_type
+
+    @property
+    def name(self) -> str:
+        """Return the name of the diagram."""
+        return self._name
+
+    @property
+    def diagram_type(self) -> str:
+        """Return the type of the diagram."""
+        return self._diagram_type
+
+
+class BaseDiagramAnalyzer(DiagramAnalyzer, ABC):
+    """Base implementation of the DiagramAnalyzer interface."""
+
+    def __init__(self, file_system: FileSystem):
+        """Initialize a base diagram analyzer.
+
+        Args:
+            file_system: The file system implementation to use
+        """
+        self.file_system = file_system
+
+    @abstractmethod
+    def analyze(self, path: str | Path, **kwargs) -> DiagramModel:
+        """Analyze the source code at the given path and return a diagram model."""
+        pass
+
+
+class BaseDiagramGenerator(DiagramGenerator, ABC):
+    """Base implementation of the DiagramGenerator interface."""
+
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] | None = None):
+        """Initialize a base diagram generator.
+
+        Args:
+            file_system: The file system implementation to use
+            settings: Optional settings for the generator
+        """
+        self.file_system = file_system
+        self.settings = settings or {}
+
+    @abstractmethod
+    def generate_diagram(
+        self,
+        model: DiagramModel,
+        output_path: str | Path,
+        **kwargs,
+    ) -> None:
+        """Generate a UML diagram from the given model and write it to the output path."""
+        pass
+
+    def generate_index(
+        self,
+        output_dir: str | Path,
+        diagrams: list[Path],
+        **kwargs,
+    ) -> None:
+        """Generate an index file for all diagrams in the output directory.
+
+        Args:
+            output_dir: The directory containing the diagrams
+            diagrams: A list of paths to all diagrams
+            **kwargs: Additional generator-specific arguments
+
+        Raises:
+            GeneratorError: If the index file cannot be generated
+        """
+        try:
+            output_dir = Path(output_dir) if isinstance(output_dir, str) else output_dir
+            index_path = output_dir / "index.rst"
+
+            # Create basic RST index
+            lines = [
+                "UML Diagrams",
+                "===========",
+                "",
+                ".. toctree::",
+                "   :maxdepth: 2",
+                "   :caption: Available Diagrams:",
+                "",
+            ]
+
+            # Add diagram references
+            for diagram in sorted(diagrams):
+                rel_path = diagram.relative_to(output_dir)
+                # Use forward slashes for cross-platform compatibility
+                lines.append(f"   {str(rel_path).replace('\\', '/')}")
+
+            lines.append("")  # Add trailing newline
+
+            # Write the index file
+            self.file_system.write_file(index_path, "\n".join(lines))
+
+        except Exception as e:
+            raise GeneratorError(f"Failed to generate index file: {e}", cause=e)
+
+================
+File: diagrams/class_diagram/__init__.py
+================
+"""Class diagram generation.
+
+This module provides functionality for generating UML class diagrams from Python code.
+"""
+
+================
+File: diagrams/class_diagram/analyzer.py
+================
+"""Analyzer for extracting class diagrams from Python code.
+
+This module provides functionality for analyzing Python code and extracting
+class diagrams from it.
+"""
+
+import ast
+import logging
+import os
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import ParserError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.diagrams.base import BaseDiagramAnalyzer
+from utils.uml.diagrams.class_diagram.models import (
+    AttributeModel,
+    ClassDiagram,
+    ClassModel,
+    FileModel,
+    FunctionModel,
+    ImportModel,
+    MethodModel,
+    ParameterModel,
+    RelationshipModel,
+    TypeAnnotation,
+    Visibility,
+)
+
+
+class ClassAnalyzer(BaseDiagramAnalyzer):
+    """Analyzer for extracting class diagrams from Python code."""
+
+    def __init__(self, file_system: FileSystem):
+        """Initialize the class analyzer.
+
+        Args:
+            file_system: The file system implementation to use
+        """
+        super().__init__(file_system)
+        self.logger = logging.getLogger(__name__)
+        self.processed_files: set[Path] = set()
+        self.current_module = ""
+
+    def analyze(
+        self,
+        path: str | Path,
+        module_name: str | None = None,
+        exclude_patterns: list[str] | None = None,
+        include_private: bool = False,
+        **kwargs: Any,
+    ) -> ClassDiagram:
+        """Analyze the source code at the given path and generate a class diagram.
+
+        Args:
+            path: Path to the source code to analyze
+            module_name: Optional name of the module being analyzed
+            exclude_patterns: Optional list of patterns to exclude
+            include_private: Whether to include private members
+            **kwargs: Additional analyzer-specific arguments
+
+        Returns:
+            A class diagram model
+
+        Raises:
+            ParserError: If the analysis fails
+        """
+        try:
+            # Create the diagram
+            diagram = ClassDiagram(
+                name=module_name
+                or (Path(path).name if isinstance(path, str) else path.name),
+            )
+
+            # Determine if we're analyzing a directory or a single file
+            target_path = Path(path) if isinstance(path, str) else path
+
+            if target_path.is_dir():
+                self._analyze_directory(
+                    diagram,
+                    target_path,
+                    exclude_patterns or [],
+                    include_private,
+                )
+            else:
+                self._analyze_file(
+                    diagram,
+                    target_path,
+                    include_private=include_private,
+                )
+
+            # Process relationships between classes
+            self._process_relationships(diagram)
+
+            return diagram
+        except Exception as e:
+            raise ParserError(f"Failed to analyze code at {path}: {e}", cause=e)
+
+    def _analyze_directory(
+        self,
+        diagram: ClassDiagram,
+        directory: Path,
+        exclude_patterns: list[str],
+        include_private: bool,
+    ) -> None:
+        """Analyze all Python files in a directory.
+
+        Args:
+            diagram: The class diagram to populate
+            directory: The directory to analyze
+            exclude_patterns: Patterns to exclude
+            include_private: Whether to include private members
+        """
+        for root, _, files in os.walk(directory):
+            # Skip directories matching exclude patterns
+            if any(pattern in root for pattern in exclude_patterns):
+                continue
+
+            # Process Python files
+            for file in files:
+                if file.endswith(".py"):
+                    file_path = Path(os.path.join(root, file))
+
+                    # Skip files matching exclude patterns
+                    if any(pattern in str(file_path) for pattern in exclude_patterns):
+                        continue
+
+                    self._analyze_file(
+                        diagram,
+                        file_path,
+                        include_private=include_private,
+                    )
+
+    def _analyze_file(
+        self,
+        diagram: ClassDiagram,
+        file_path: Path,
+        include_private: bool = False,
+    ) -> None:
+        """Analyze a single Python file.
+
+        Args:
+            diagram: The class diagram to populate
+            file_path: The file to analyze
+            include_private: Whether to include private members
+        """
+        # Skip if already processed
+        if file_path in self.processed_files:
+            return
+
+        self.processed_files.add(file_path)
+
+        try:
+            # Read and parse the file
+            code = self.file_system.read_file(file_path)
+            tree = ast.parse(code)
+
+            # Create file model
+            file_model = FileModel(path=file_path)
+
+            # Extract imports, classes, and functions
+            visitor = ClassDefinitionVisitor(
+                file_path=file_path,
+                include_private=include_private,
+            )
+            visitor.visit(tree)
+
+            # Add imports, classes, and functions to the file model
+            file_model.imports = visitor.imports
+            file_model.classes = visitor.classes
+            file_model.functions = visitor.functions
+
+            # Add the file model to the diagram
+            diagram.add_file(file_model)
+
+        except SyntaxError as e:
+            self.logger.error(f"Syntax error in {file_path}: {e}")
+        except Exception as e:
+            self.logger.error(f"Failed to analyze file {file_path}: {e}")
+
+    def _process_relationships(self, diagram: ClassDiagram) -> None:
+        """Process relationships between classes.
+
+        Args:
+            diagram: The class diagram to process
+        """
+        # Dictionary to map class names to their full names
+        class_dict: dict[str, tuple[str, ClassModel]] = {}
+
+        # Build the class dictionary
+        for file in diagram.files:
+            for cls in file.classes:
+                class_dict[cls.name] = (cls.name, cls)
+
+        # Process inheritance relationships
+        for file in diagram.files:
+            for cls in file.classes:
+                # Add inheritance relationships
+                for base in cls.bases:
+                    if base in class_dict:
+                        base_name, _ = class_dict[base]
+                        relationship = RelationshipModel(
+                            source=cls.name,
+                            target=base_name,
+                            type="--|>",  # UML inheritance
+                        )
+                        diagram.add_relationship(relationship)
+
+
+class ClassDefinitionVisitor(ast.NodeVisitor):
+    """AST visitor that extracts class and function definitions."""
+
+    def __init__(
+        self,
+        file_path: Path,
+        include_private: bool = False,
+    ):
+        """Initialize the class definition visitor.
+
+        Args:
+            file_path: The path to the file being analyzed
+            include_private: Whether to include private members
+        """
+        self.file_path = file_path
+        self.include_private = include_private
+        self.imports: list[ImportModel] = []
+        self.classes: list[ClassModel] = []
+        self.functions: list[FunctionModel] = []
+        self.module_name = file_path.stem
+
+    def visit_Import(self, node: ast.Import) -> None:
+        """Visit an import node.
+
+        Args:
+            node: The AST node representing an import
+        """
+        for name in node.names:
+            import_model = ImportModel(
+                module=name.name,
+                name=name.name.split(".")[-1],
+                alias=name.asname,
+            )
+            self.imports.append(import_model)
+        self.generic_visit(node)
+
+    def visit_ImportFrom(self, node: ast.ImportFrom) -> None:
+        """Visit an import from node.
+
+        Args:
+            node: The AST node representing an import from
+        """
+        if node.module is None:
+            return
+
+        for name in node.names:
+            import_model = ImportModel(
+                module=node.module,
+                name=name.name,
+                alias=name.asname,
+            )
+            self.imports.append(import_model)
+        self.generic_visit(node)
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> None:
+        """Visit a class definition node.
+
+        Args:
+            node: The AST node representing a class definition
+        """
+        # Skip private classes if not included
+        if not self.include_private and node.name.startswith("_"):
+            return
+
+        # Create class model
+        class_model = ClassModel(
+            name=node.name,
+            filename=str(self.file_path),
+            bases=[
+                self._get_base_name(base)
+                for base in node.bases
+                if isinstance(base, (ast.Name, ast.Attribute))
+            ],
+            docstring=ast.get_docstring(node),
+            decorators=[self._get_decorator_name(d) for d in node.decorator_list],
+        )
+
+        # Process class body
+        for item in node.body:
+            # Process attribute assignments
+            if isinstance(item, ast.Assign):
+                for target in item.targets:
+                    if isinstance(target, ast.Name):
+                        # Class attribute
+                        attr_name = target.id
+                        if self.include_private or not attr_name.startswith("_"):
+                            visibility = (
+                                Visibility.PRIVATE
+                                if attr_name.startswith("__")
+                                else Visibility.PROTECTED
+                                if attr_name.startswith("_")
+                                else Visibility.PUBLIC
+                            )
+
+                            # Get default value as string
+                            try:
+                                default_value = ast.unparse(item.value)
+                            except (AttributeError, ValueError):
+                                default_value = None
+
+                            attr = AttributeModel(
+                                name=attr_name,
+                                type_annotation="Any",  # No type info available
+                                visibility=visibility,
+                                default_value=default_value,
+                            )
+                            class_model.attributes.append(attr)
+
+            # Process annotated assignments
+            elif isinstance(item, ast.AnnAssign) and isinstance(item.target, ast.Name):
+                attr_name = item.target.id
+                if self.include_private or not attr_name.startswith("_"):
+                    visibility = (
+                        Visibility.PRIVATE
+                        if attr_name.startswith("__")
+                        else Visibility.PROTECTED
+                        if attr_name.startswith("_")
+                        else Visibility.PUBLIC
+                    )
+
+                    # Get type annotation
+                    type_annotation = self._get_type_annotation(item.annotation)
+
+                    # Get default value if present
+                    default_value = None
+                    if item.value:
+                        try:
+                            default_value = ast.unparse(item.value)
+                        except (AttributeError, ValueError):
+                            pass
+
+                    attr = AttributeModel(
+                        name=attr_name,
+                        type_annotation=type_annotation,
+                        visibility=visibility,
+                        default_value=default_value,
+                    )
+                    class_model.attributes.append(attr)
+
+            # Process methods
+            elif isinstance(item, ast.FunctionDef):
+                method_name = item.name
+                if (
+                    self.include_private
+                    or not method_name.startswith("_")
+                    or method_name == "__init__"
+                ):
+                    method = self._process_function(item, is_class_method=True)
+                    if isinstance(
+                        method, MethodModel
+                    ):  # Type check to ensure correct type
+                        class_model.methods.append(method)
+
+        # Add the class model
+        self.classes.append(class_model)
+        self.generic_visit(node)
+
+    def visit_FunctionDef(self, node: ast.FunctionDef) -> None:
+        """Visit a function definition node.
+
+        Args:
+            node: The AST node representing a function definition
+        """
+        # Skip private functions if not included
+        if not self.include_private and node.name.startswith("_"):
+            return
+
+        # Only process top-level functions (not inside a class)
+        # We can tell by checking the context/parent type
+        for ancestor in ast.iter_child_nodes(node):
+            if isinstance(ancestor, ast.ClassDef):
+                # This is a method inside a class, already handled by visit_ClassDef
+                return
+
+        # This is a top-level function
+        function = self._process_function(node, is_class_method=False)
+        if isinstance(function, FunctionModel):
+            self.functions.append(function)
+
+        self.generic_visit(node)
+
+    def _process_function(
+        self,
+        node: ast.FunctionDef,
+        is_class_method: bool = False,
+    ) -> MethodModel | FunctionModel:
+        """Process a function definition.
+
+        Args:
+            node: The AST node representing a function definition
+            is_class_method: Whether this is a method in a class
+
+        Returns:
+            A method model if is_class_method is True, otherwise a function model
+        """
+        # Determine visibility
+        visibility = (
+            Visibility.PRIVATE
+            if node.name.startswith("__")
+            else Visibility.PROTECTED
+            if node.name.startswith("_")
+            else Visibility.PUBLIC
+        )
+
+        # Process parameters
+        parameters: list[ParameterModel] = []
+        for i, arg in enumerate(node.args.args):
+            # Skip 'self' parameter for class methods
+            if is_class_method and i == 0 and arg.arg == "self":
+                continue
+
+            # Get type annotation if present
+            type_annotation = (
+                self._get_type_annotation(arg.annotation) if arg.annotation else "Any"
+            )
+
+            # Get default value if present
+            default_value = None
+            if i >= len(node.args.args) - len(node.args.defaults):
+                default_idx = i - (len(node.args.args) - len(node.args.defaults))
+                try:
+                    default_value = ast.unparse(node.args.defaults[default_idx])
+                except (AttributeError, ValueError, IndexError):
+                    pass
+
+            param = ParameterModel(
+                name=arg.arg,
+                type_annotation=type_annotation,
+                default_value=default_value,
+            )
+            parameters.append(param)
+
+        # Get return type annotation
+        return_type = (
+            self._get_type_annotation(node.returns) if node.returns else "None"
+        )
+
+        # Check for staticmethod or classmethod decorators
+        is_static = any(
+            self._get_decorator_name(d) == "staticmethod" for d in node.decorator_list
+        )
+        is_classmethod = any(
+            self._get_decorator_name(d) == "classmethod" for d in node.decorator_list
+        )
+
+        # Create appropriate model
+        if is_class_method:
+            return MethodModel(
+                name=node.name,
+                parameters=parameters,
+                return_type=return_type,
+                visibility=visibility,
+                is_static=is_static,
+                is_classmethod=is_classmethod,
+                docstring=ast.get_docstring(node),
+                decorators=[self._get_decorator_name(d) for d in node.decorator_list],
+            )
+        return FunctionModel(
+            name=node.name,
+            parameters=parameters,
+            return_type=return_type,
+            visibility=visibility,
+        )
+
+    def _get_base_name(self, node: ast.expr) -> str:
+        """Get the name of a base class.
+
+        Args:
+            node: The AST node representing a base class
+
+        Returns:
+            The name of the base class
+        """
+        if isinstance(node, ast.Name):
+            return node.id
+        if isinstance(node, ast.Attribute):
+            try:
+                return ast.unparse(node)
+            except (AttributeError, ValueError):
+                return f"{self._get_base_name(node.value)}.{node.attr}"
+        return "object"  # Default base class
+
+    def _get_decorator_name(self, node: ast.expr) -> str:
+        """Get the name of a decorator.
+
+        Args:
+            node: The AST node representing a decorator
+
+        Returns:
+            The name of the decorator
+        """
+        if isinstance(node, ast.Name):
+            return node.id
+        if isinstance(node, ast.Call) and isinstance(node.func, ast.Name):
+            return node.func.id
+        if isinstance(node, ast.Attribute):
+            try:
+                return ast.unparse(node)
+            except (AttributeError, ValueError):
+                return f"{self._get_base_name(node.value)}.{node.attr}"
+        try:
+            return ast.unparse(node)
+        except (AttributeError, ValueError):
+            return "unknown"
+
+    def _get_type_annotation(self, node: ast.expr) -> TypeAnnotation:
+        """Get a string representation of a type annotation.
+
+        Args:
+            node: The AST node representing a type annotation
+
+        Returns:
+            A string representation of the type annotation
+        """
+        try:
+            return ast.unparse(node)
+        except (AttributeError, ValueError):
+            if isinstance(node, ast.Name):
+                return node.id
+            if isinstance(node, ast.Subscript):
+                if isinstance(node.value, ast.Name):
+                    value_name = node.value.id
+                    try:
+                        slice_name = ast.unparse(node.slice)
+                        return f"{value_name}[{slice_name}]"
+                    except (AttributeError, ValueError):
+                        return f"{value_name}[...]"
+                return "..."
+            if isinstance(node, ast.Attribute):
+                return f"{self._get_base_name(node.value)}.{node.attr}"
+            return "Any"  # Default type
+
+================
+File: diagrams/class_diagram/generator.py
+================
+"""Generator for converting class diagrams to PlantUML format.
+
+This module provides functionality for generating PlantUML class diagrams from
+class diagram models.
+"""
+
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import GeneratorError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.interfaces import DiagramModel
+from utils.uml.diagrams.base import BaseDiagramGenerator
+from utils.uml.diagrams.class_diagram.models import (
+    AttributeModel,
+    ClassDiagram,
+    ClassModel,
+    MethodModel,
+    RelationshipModel,
+)
+
+
+class ClassDiagramGenerator(BaseDiagramGenerator):
+    """Generates PlantUML class diagrams from class diagram models."""
+
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] | None = None):
+        """Initialize a class diagram generator.
+
+        Args:
+            file_system: The file system implementation to use
+            settings: Optional settings for the generator
+        """
+        super().__init__(file_system, settings)
+        self.indentation = "  "
+        self.current_indent = 0
+
+    def _indent(self) -> str:
+        """Get the current indentation string."""
+        return self.indentation * self.current_indent
+
+    def _increase_indent(self) -> None:
+        """Increase indentation level."""
+        self.current_indent += 1
+
+    def _decrease_indent(self) -> None:
+        """Decrease indentation level."""
+        self.current_indent = max(0, self.current_indent - 1)
+
+    def _format_class(self, class_model: ClassModel, skinny: bool = False) -> list[str]:
+        """Format a class model as PlantUML.
+
+        Args:
+            class_model: The class model to format
+            skinny: Whether to use a skinny class representation
+
+        Returns:
+            List of PlantUML lines for the class
+        """
+        lines = []
+
+        # Class declaration with stereotype if it has decorators
+        class_line = "class"
+        stereotype = None
+
+        # Check for common decorators and assign stereotypes
+        if class_model.decorators:
+            for decorator in class_model.decorators:
+                if decorator in ("dataclass", "dataclasses.dataclass"):
+                    stereotype = "<<dataclass>>"
+                elif decorator in ("abc.ABC", "ABC", "ABCMeta"):
+                    stereotype = "<<abstract>>"
+                elif decorator in ("Enum", "enum.Enum"):
+                    stereotype = "<<enumeration>>"
+                elif decorator in ("Protocol", "typing.Protocol"):
+                    stereotype = "<<protocol>>"
+
+        class_line = f"{class_line} {class_model.name}"
+        if stereotype:
+            class_line = f"{class_line} {stereotype}"
+
+        lines.append(class_line + " {")
+        self._increase_indent()
+
+        # Add attributes
+        if class_model.attributes and not skinny:
+            for attr in class_model.attributes:
+                lines.append(self._format_attribute(attr))
+
+        # Add a separator if we have both attributes and methods
+        if class_model.attributes and class_model.methods and not skinny:
+            lines.append("--")
+
+        # Add methods
+        if class_model.methods and not skinny:
+            for method in class_model.methods:
+                lines.append(self._format_method(method))
+
+        self._decrease_indent()
+        lines.append("}")
+
+        return lines
+
+    def _format_attribute(self, attr: AttributeModel) -> str:
+        """Format an attribute as PlantUML.
+
+        Args:
+            attr: The attribute to format
+
+        Returns:
+            PlantUML formatted attribute
+        """
+        # Format visibility prefix
+        visibility = attr.visibility.value
+
+        # Format default value
+        default = f" = {attr.default_value}" if attr.default_value else ""
+
+        # Format type annotation
+        type_str = f": {attr.type_annotation}" if attr.type_annotation != "Any" else ""
+
+        return f"{self._indent()}{visibility} {attr.name}{type_str}{default}"
+
+    def _format_method(self, method: MethodModel) -> str:
+        """Format a method as PlantUML.
+
+        Args:
+            method: The method to format
+
+        Returns:
+            PlantUML formatted method
+        """
+        # Format visibility prefix
+        visibility = method.visibility.value
+
+        # Format method modifiers
+        modifiers = ""
+        if method.is_static:
+            modifiers += "{static} "
+        elif method.is_classmethod:
+            modifiers += "{classmethod} "
+
+        # Format parameters
+        params = []
+        for param in method.parameters:
+            param_str = param.name
+            if param.type_annotation and param.type_annotation != "Any":
+                param_str += f": {param.type_annotation}"
+            if param.default_value:
+                param_str += f" = {param.default_value}"
+            params.append(param_str)
+
+        param_str = ", ".join(params)
+        return_type = (
+            f": {method.return_type}"
+            if method.return_type and method.return_type != "None"
+            else ""
+        )
+
+        return f"{self._indent()}{visibility} {modifiers}{method.name}({param_str}){return_type}"
+
+    def _format_relationship(self, rel: RelationshipModel) -> str:
+        """Format a relationship as PlantUML.
+
+        Args:
+            rel: The relationship to format
+
+        Returns:
+            PlantUML formatted relationship
+        """
+        return f"{rel.source} {rel.type} {rel.target}"
+
+    def generate_plantuml(
+        self,
+        diagram: ClassDiagram,
+        skinny: bool = False,
+    ) -> str:
+        """Generate PlantUML code from a class diagram model.
+
+        Args:
+            diagram: The class diagram model
+            skinny: Whether to use skinny class representations
+
+        Returns:
+            The generated PlantUML code
+        """
+        lines = ["@startuml", ""]
+
+        # Add title
+        if diagram.name:
+            lines.append(f"title {diagram.name}")
+            lines.append("")
+
+        # Add global settings from the settings dict, or use defaults
+        use_monochrome = self.settings.get("MONOCHROME", True)
+        hide_fields = skinny or self.settings.get("HIDE_FIELDS", False)
+        hide_methods = skinny or self.settings.get("HIDE_METHODS", False)
+        hide_empty_members = self.settings.get("HIDE_EMPTY_MEMBERS", True)
+
+        settings = [
+            "skinparam ClassAttributeIconSize 0",
+            "skinparam ClassBackgroundColor white",
+            "skinparam ClassBorderColor black",
+            "hide empty members" if hide_empty_members else "",
+            "hide fields" if hide_fields else "",
+            "hide methods" if hide_methods else "",
+            "skinparam monochrome true" if use_monochrome else "",
+        ]
+
+        # Filter out empty settings
+        settings = [s for s in settings if s]
+        lines.extend(settings)
+        lines.append("")
+
+        # Add package organization if available
+        # Group classes by their modules/packages
+        packages: dict[str, list[ClassModel]] = {}
+
+        for file_model in diagram.files:
+            package_name = file_model.path.parent.name
+            if package_name not in packages:
+                packages[package_name] = []
+
+            packages[package_name].extend(file_model.classes)
+
+        # Output classes by package
+        for package_name, classes in packages.items():
+            if not classes:
+                continue
+
+            if package_name and package_name != ".":
+                lines.append(f"package {package_name} {{")
+                self._increase_indent()
+
+            # Add classes in this package
+            for class_model in classes:
+                class_lines = self._format_class(class_model, skinny=skinny)
+                lines.extend([f"{self._indent()}{line}" for line in class_lines])
+                lines.append("")
+
+            if package_name and package_name != ".":
+                self._decrease_indent()
+                lines.append("}")
+                lines.append("")
+
+        # Add non-packaged classes
+        standalone_classes = []
+        for file_model in diagram.files:
+            if file_model.path.parent.name in packages:
+                continue
+            standalone_classes.extend(file_model.classes)
+
+        for class_model in standalone_classes:
+            class_lines = self._format_class(class_model, skinny=skinny)
+            lines.extend(class_lines)
+            lines.append("")
+
+        # Add relationships
+        lines.append("' Relationships")
+        # First, add inheritance relationships
+        for rel in diagram.global_relationships:
+            if rel.type == "--|>":  # Inheritance relationships first
+                lines.append(self._format_relationship(rel))
+
+        # Then add other relationships
+        for rel in diagram.global_relationships:
+            if rel.type != "--|>":  # Other relationships
+                lines.append(self._format_relationship(rel))
+
+        # End the diagram
+        lines.append("")
+        lines.append("@enduml")
+
+        return "\n".join(lines)
+
+    def generate_diagram(
+        self,
+        model: DiagramModel,
+        output_path: str | Path,
+        **kwargs,
+    ) -> None:
+        """Generate a UML diagram from the given model and write it to the output path.
+
+        Args:
+            model: The diagram model to generate a diagram from
+            output_path: The path to write the diagram to
+            **kwargs: Additional generator-specific arguments:
+                - skinny: Whether to use skinny class representations
+
+        Raises:
+            GeneratorError: If the diagram cannot be generated
+        """
+        try:
+            # Ensure the model is a ClassDiagram
+            if not isinstance(model, ClassDiagram):
+                raise GeneratorError(
+                    f"Expected ClassDiagram, got {type(model).__name__}",
+                )
+
+            # Generate the PlantUML code
+            skinny = kwargs.get("skinny", False)
+            plantuml_code = self.generate_plantuml(model, skinny=skinny)
+
+            # Ensure output directory exists and write the file
+            output_path = (
+                Path(output_path) if isinstance(output_path, str) else output_path
+            )
+            self.file_system.ensure_directory(output_path.parent)
+            self.file_system.write_file(output_path, plantuml_code)
+
+        except Exception as e:
+            raise GeneratorError(
+                f"Failed to generate class diagram: {e}",
+                cause=e,
+            )
+
+    def generate_index(
+        self,
+        output_dir: str | Path,
+        diagrams: list[Path],
+        **kwargs,
+    ) -> None:
+        """Generate an index file for all diagrams in the output directory.
+
+        Args:
+            output_dir: The directory containing the diagrams
+            diagrams: A list of paths to all diagrams
+            **kwargs: Additional generator-specific arguments
+
+        Raises:
+            GeneratorError: If the index file cannot be generated
+        """
+        # Filter to only include class diagrams
+        class_diagrams = [
+            d
+            for d in diagrams
+            if d.name.endswith(".puml") and self._is_class_diagram(d)
+        ]
+
+        if not class_diagrams:
+            return
+
+        try:
+            output_dir = Path(output_dir) if isinstance(output_dir, str) else output_dir
+            index_path = output_dir / "class_index.rst"
+
+            # Create basic RST index
+            lines = [
+                "Class Diagrams",
+                "==============",
+                "",
+                ".. toctree::",
+                "   :maxdepth: 1",
+                "",
+            ]
+
+            # Add diagram references
+            for diagram in sorted(class_diagrams):
+                rel_path = diagram.relative_to(output_dir)
+                # Use forward slashes for cross-platform compatibility
+                lines.append(f"   {str(rel_path).replace('\\', '/')}")
+
+            lines.append("")  # Add trailing newline
+
+            # Write the index file
+            self.file_system.write_file(index_path, "\n".join(lines))
+
+        except Exception as e:
+            raise GeneratorError(
+                f"Failed to generate class diagram index: {e}",
+                cause=e,
+            )
+
+    def _is_class_diagram(self, file_path: Path) -> bool:
+        """Check if a file is a class diagram.
+
+        Args:
+            file_path: The path to the file to check
+
+        Returns:
+            True if the file is a class diagram, False otherwise
+        """
+        try:
+            content = self.file_system.read_file(file_path)
+            # Simple heuristic: look for class diagram indicators
+            indicators = [
+                "class ",
+                "interface ",
+                "enum ",
+                "package ",
+                "namespace ",
+                "skinparam ClassAttributeIconSize",
+            ]
+            return any(indicator in content for indicator in indicators)
+        except Exception:
+            return False
+
+================
+File: diagrams/class_diagram/models.py
+================
+"""Data models for class diagram generation.
+
+This module defines the data models used for representing class diagrams.
+"""
+
+from dataclasses import dataclass, field
+from enum import Enum
+from pathlib import Path
+
+from utils.uml.diagrams.base import BaseDiagramModel
+
+# Type aliases for better readability
+ClassName = str
+MethodName = str
+AttributeName = str
+TypeAnnotation = str
+
+
+class Visibility(str, Enum):
+    """Visibility levels for class members."""
+
+    PUBLIC = "+"
+    PRIVATE = "-"
+    PROTECTED = "#"
+
+
+@dataclass
+class ParameterModel:
+    """Function/method parameter representation."""
+
+    name: str
+    type_annotation: TypeAnnotation
+    default_value: str | None = None
+
+
+@dataclass
+class AttributeModel:
+    """Class attribute representation."""
+
+    name: AttributeName
+    type_annotation: TypeAnnotation
+    visibility: Visibility = Visibility.PUBLIC
+    default_value: str | None = None
+    docstring: str | None = None
+    decorators: list[str] = field(default_factory=list)
+
+
+@dataclass
+class MethodModel:
+    """Method representation with signature information.
+
+    Attributes:
+        name: Method name
+        parameters: List of method parameters
+        return_type: Return type annotation
+        visibility: Method visibility (+: public, -: private, #: protected)
+        is_static: Whether this is a static method
+        is_classmethod: Whether this is a class method
+        docstring: Method docstring if present
+        decorators: List of decorator names
+        default_value: Default value if present
+    """
+
+    name: MethodName
+    parameters: list[ParameterModel]
+    return_type: TypeAnnotation
+    visibility: Visibility = Visibility.PUBLIC
+    is_static: bool = False
+    is_classmethod: bool = False
+    docstring: str | None = None
+    decorators: list[str] = field(default_factory=list)
+    default_value: str | None = None
+
+    @property
+    def signature(self) -> str:
+        """Generate method signature string.
+
+        Returns:
+            Formatted method signature
+        """
+        params = [
+            f"{param.name}: {param.type_annotation}"
+            + (f" = {param.default_value}" if param.default_value else "")
+            for param in self.parameters
+        ]
+        prefix = ""
+        if self.is_static:
+            prefix = "@staticmethod "
+        elif self.is_classmethod:
+            prefix = "@classmethod "
+        return f"{prefix}{self.name}({', '.join(params)}) -> {self.return_type}"
+
+
+@dataclass
+class RelationshipModel:
+    """Relationship between classes."""
+
+    source: ClassName
+    target: ClassName
+    type: str  # -->: association, *-->: composition, etc.
+
+
+@dataclass
+class ImportModel:
+    """Import statement representation."""
+
+    module: str
+    name: str
+    alias: str | None = None
+
+
+@dataclass
+class ClassModel:
+    """Class representation with methods, attributes and relationships."""
+
+    name: ClassName
+    filename: str
+    bases: list[ClassName] = field(default_factory=list)
+    methods: list[MethodModel] = field(default_factory=list)
+    attributes: list[AttributeModel] = field(default_factory=list)
+    relationships: list[RelationshipModel] = field(default_factory=list)
+    imports: list[ImportModel] = field(default_factory=list)
+    docstring: str | None = None
+    decorators: list[str] = field(default_factory=list)
+
+
+@dataclass
+class FunctionModel:
+    """Standalone function representation."""
+
+    name: str
+    parameters: list[ParameterModel]
+    return_type: TypeAnnotation
+    visibility: Visibility = Visibility.PUBLIC
+
+    @property
+    def signature(self) -> str:
+        """Generate function signature string.
+
+        Returns:
+            Formatted function signature
+        """
+        params = [
+            f"{param.name}: {param.type_annotation}"
+            + (f" = {param.default_value}" if param.default_value else "")
+            for param in self.parameters
+        ]
+        return f"{self.name}({', '.join(params)}) -> {self.return_type}"
+
+
+class ClassDiagram(BaseDiagramModel):
+    """Class diagram model containing information about classes and their relationships."""
+
+    def __init__(self, name: str):
+        """Initialize a class diagram model.
+
+        Args:
+            name: The name of the diagram
+        """
+        super().__init__(name=name, diagram_type="class")
+        self.files: list[FileModel] = []
+        self.global_relationships: list[RelationshipModel] = []
+
+    def add_file(self, file_model: "FileModel") -> None:
+        """Add a file model to the diagram.
+
+        Args:
+            file_model: The file model to add
+        """
+        self.files.append(file_model)
+
+    def add_relationship(self, relationship: RelationshipModel) -> None:
+        """Add a global relationship to the diagram.
+
+        Args:
+            relationship: The relationship to add
+        """
+        self.global_relationships.append(relationship)
+
+    @property
+    def all_classes(self) -> list[ClassModel]:
+        """Get all classes from all files.
+
+        Returns:
+            List of all class models in the diagram
+        """
+        return [cls for file in self.files for cls in file.classes]
+
+    @property
+    def all_functions(self) -> list[FunctionModel]:
+        """Get all functions from all files.
+
+        Returns:
+            List of all function models in the diagram
+        """
+        return [func for file in self.files for func in file.functions]
+
+
+@dataclass
+class FileModel:
+    """File representation containing classes and functions."""
+
+    path: Path
+    classes: list[ClassModel] = field(default_factory=list)
+    functions: list[FunctionModel] = field(default_factory=list)
+    imports: list[ImportModel] = field(default_factory=list)
+
+    @property
+    def filename(self) -> str:
+        """Get filename without extension.
+
+        Returns:
+            Filename without extension
+        """
+        return self.path.stem
+
+================
+File: diagrams/sequence_diagram/__init__.py
+================
+"""Sequence diagram generation.
+
+This module provides functionality for generating UML sequence diagrams from Python code.
+"""
+
+================
+File: diagrams/sequence_diagram/analyzer.py
+================
+"""Analyzer for extracting sequence diagrams from Python code.
+
+This module provides functionality for analyzing Python code and extracting
+sequence diagrams from it.
+"""
+
+import ast
+import os
+from pathlib import Path
+
+from utils.uml.core.exceptions import ParserError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.diagrams.base import BaseDiagramAnalyzer
+from utils.uml.diagrams.sequence_diagram.models import (
+    FunctionCall,
+    Message,
+    MessageType,
+    Participant,
+    ParticipantType,
+    SequenceDiagram,
+)
+
+
+class ClassInfo:
+    """Information about a Python class."""
+
+    def __init__(self, name: str, module: str):
+        """Initialize class information.
+
+        Args:
+            name: The name of the class
+            module: The module containing the class
+        """
+        self.name = name
+        self.module = module
+        self.methods: set[str] = set()
+        self.base_classes: list[str] = []
+
+    @property
+    def full_name(self) -> str:
+        """Get the full name with module."""
+        return f"{self.module}.{self.name}"
+
+
+class MethodCallVisitor(ast.NodeVisitor):
+    """AST visitor that extracts method calls."""
+
+    def __init__(self, class_name: str, method_name: str, file_path: str):
+        """Initialize the method call visitor.
+
+        Args:
+            class_name: The name of the class containing the method
+            method_name: The name of the method to analyze
+            file_path: The path to the file containing the method
+        """
+        self.class_name = class_name
+        self.method_name = method_name
+        self.file_path = file_path
+        self.calls: list[FunctionCall] = []
+
+    def visit_Call(self, node: ast.Call) -> None:
+        """Visit a function call node.
+
+        Args:
+            node: The AST node representing a function call
+        """
+        # Track the line number
+        line_number = getattr(node, "lineno", 0)
+
+        # Handle method calls: obj.method()
+        if isinstance(node.func, ast.Attribute) and isinstance(
+            node.func.value,
+            ast.Name,
+        ):
+            obj_name = node.func.value.id
+            method_name = node.func.attr
+
+            # Skip calls to self
+            if obj_name == "self":
+                # This is a call to another method in the same class
+                self.calls.append(
+                    FunctionCall(
+                        caller_class=self.class_name,
+                        caller_method=self.method_name,
+                        called_class=self.class_name,
+                        called_method=method_name,
+                        line_number=line_number,
+                        file_path=self.file_path,
+                    ),
+                )
+            else:
+                # This is a call to another object's method
+                self.calls.append(
+                    FunctionCall(
+                        caller_class=self.class_name,
+                        caller_method=self.method_name,
+                        called_class=obj_name,  # This is only the variable name, not necessarily the class
+                        called_method=method_name,
+                        line_number=line_number,
+                        file_path=self.file_path,
+                    ),
+                )
+
+        # Handle constructor calls: ClassName()
+        elif isinstance(node.func, ast.Name):
+            func_name = node.func.id
+
+            # Assume it's a constructor call if the name is capitalized
+            if func_name[0].isupper():
+                self.calls.append(
+                    FunctionCall(
+                        caller_class=self.class_name,
+                        caller_method=self.method_name,
+                        called_class=func_name,
+                        called_method="__init__",
+                        is_constructor=True,
+                        line_number=line_number,
+                        file_path=self.file_path,
+                    ),
+                )
+            else:
+                # This is a normal function call
+                self.calls.append(
+                    FunctionCall(
+                        caller_class=self.class_name,
+                        caller_method=self.method_name,
+                        called_class=None,  # It's a standalone function
+                        called_method=func_name,
+                        line_number=line_number,
+                        file_path=self.file_path,
+                    ),
+                )
+
+        # Continue visiting child nodes
+        self.generic_visit(node)
+
+
+class ClassDefVisitor(ast.NodeVisitor):
+    """AST visitor that extracts class definitions."""
+
+    def __init__(self, module_name: str, file_path: str):
+        """Initialize the class definition visitor.
+
+        Args:
+            module_name: The name of the module to analyze
+            file_path: The path to the file containing the module
+        """
+        self.module_name = module_name
+        self.file_path = file_path
+        self.classes: dict[str, ClassInfo] = {}
+        self.method_calls: list[FunctionCall] = []
+
+    def visit_ClassDef(self, node: ast.ClassDef) -> None:
+        """Visit a class definition node.
+
+        Args:
+            node: The AST node representing a class definition
+        """
+        class_name = node.name
+
+        # Create class info
+        class_info = ClassInfo(class_name, self.module_name)
+
+        # Extract base classes
+        for base in node.bases:
+            if isinstance(base, ast.Name):
+                class_info.base_classes.append(base.id)
+
+        self.classes[class_name] = class_info
+
+        # Visit all methods in the class
+        for item in node.body:
+            if isinstance(item, ast.FunctionDef):
+                method_name = item.name
+                class_info.methods.add(method_name)
+
+                # Find method calls inside this method
+                visitor = MethodCallVisitor(class_name, method_name, self.file_path)
+                visitor.visit(item)
+                self.method_calls.extend(visitor.calls)
+
+
+class SequenceAnalyzer(BaseDiagramAnalyzer):
+    """Analyzer for extracting sequence diagrams from Python code."""
+
+    def __init__(self, file_system: FileSystem, root_dir: str | Path = "."):
+        """Initialize the sequence analyzer.
+
+        Args:
+            file_system: The file system implementation to use
+            root_dir: The root directory to analyze
+        """
+        super().__init__(file_system)
+        self.root_dir = Path(root_dir) if isinstance(root_dir, str) else root_dir
+        self.classes: dict[str, ClassInfo] = {}
+        self.function_calls: list[FunctionCall] = []
+
+    def analyze(
+        self,
+        path: str | Path,
+        entry_class: str | None = None,
+        entry_method: str | None = None,
+        **kwargs,
+    ) -> SequenceDiagram:
+        """Analyze the source code at the given path and generate a sequence diagram.
+
+        Args:
+            path: Path to the source code to analyze
+            entry_class: The name of the entry point class
+            entry_method: The name of the entry point method
+            **kwargs: Additional analyzer-specific arguments
+
+        Returns:
+            A sequence diagram model
+
+        Raises:
+            ParserError: If the analysis fails
+        """
+        try:
+            # Analyze the code
+            self.analyze_directory(path)
+
+            # Check if entry points are provided
+            if not entry_class or not entry_method:
+                raise ParserError(
+                    "Entry class and method must be provided for sequence diagram generation",
+                )
+
+            # Generate the sequence diagram
+            return self.generate_sequence_diagram(entry_class, entry_method)
+        except Exception as e:
+            raise ParserError(f"Failed to analyze code at {path}: {e}", cause=e)
+
+    def analyze_file(self, file_path: str | Path) -> None:
+        """Analyze a single Python file.
+
+        Args:
+            file_path: Path to the file to analyze
+
+        Raises:
+            ParserError: If the file cannot be analyzed
+        """
+        path = Path(file_path) if isinstance(file_path, str) else file_path
+
+        # Use the file name without extension as module name
+        module_name = path.stem
+
+        try:
+            # Read and parse the file
+            code = self.file_system.read_file(path)
+            tree = ast.parse(code)
+
+            # Visit the AST to extract classes and method calls
+            visitor = ClassDefVisitor(module_name, str(path))
+            visitor.visit(tree)
+
+            # Store the results
+            self.classes.update(visitor.classes)
+            self.function_calls.extend(visitor.method_calls)
+
+        except SyntaxError as e:
+            raise ParserError(f"Syntax error in {file_path}: {e}", cause=e)
+        except Exception as e:
+            raise ParserError(f"Failed to analyze file {file_path}: {e}", cause=e)
+
+    def analyze_directory(self, dir_path: str | Path | None = None) -> None:
+        """Analyze all Python files in a directory.
+
+        Args:
+            dir_path: Path to the directory to analyze
+
+        Raises:
+            ParserError: If the directory cannot be analyzed
+        """
+        try:
+            if dir_path is None:
+                target_dir = self.root_dir
+            else:
+                target_dir = Path(dir_path) if isinstance(dir_path, str) else dir_path
+
+            # Walk through the directory and analyze Python files
+            for root, _, files in os.walk(target_dir):
+                for file in files:
+                    if file.endswith(".py"):
+                        file_path = os.path.join(root, file)
+                        self.analyze_file(file_path)
+        except Exception as e:
+            raise ParserError(f"Failed to analyze directory {dir_path}: {e}", cause=e)
+
+    def generate_sequence_diagram(
+        self,
+        entry_class: str,
+        entry_method: str,
+    ) -> SequenceDiagram:
+        """Generate a sequence diagram starting from an entry point.
+
+        Args:
+            entry_class: The name of the entry point class
+            entry_method: The name of the entry point method
+
+        Returns:
+            A sequence diagram model
+        """
+        # Create the diagram
+        diagram = SequenceDiagram(title=f"{entry_class}.{entry_method} Sequence")
+
+        # Add the entry point class as a participant
+        entry_participant = Participant(name=entry_class, type=ParticipantType.CLASS)
+        diagram.add_participant(entry_participant)
+
+        # Process the call graph starting from the entry point
+        self._process_call_graph(diagram, entry_class, entry_method)
+
+        return diagram
+
+    def _process_call_graph(
+        self,
+        diagram: SequenceDiagram,
+        caller_class: str,
+        caller_method: str,
+        level: int = 0,
+        processed: set[tuple[str, str]] | None = None,
+    ) -> None:
+        """Process the call graph recursively.
+
+        Args:
+            diagram: The sequence diagram to populate
+            caller_class: The name of the caller class
+            caller_method: The name of the caller method
+            level: The current recursion level
+            processed: Set of already processed (class, method) pairs
+        """
+        if processed is None:
+            processed = set()
+
+        # Avoid infinite recursion
+        call_key = (caller_class, caller_method)
+        if call_key in processed or level > 10:  # Limit recursion depth
+            return
+
+        processed.add(call_key)
+
+        # Find all calls made from this method
+        calls = [
+            call
+            for call in self.function_calls
+            if call.caller_class == caller_class and call.caller_method == caller_method
+        ]
+
+        for call in calls:
+            # Skip if called_class is None (function calls)
+            if call.called_class is None:
+                continue
+
+            # Add the called class as a participant
+            called_participant = Participant(
+                name=call.called_class,
+                type=ParticipantType.CLASS,
+            )
+            diagram.add_participant(called_participant)
+
+            # Add the message
+            message_type = (
+                MessageType.CREATE if call.is_constructor else MessageType.SYNCHRONOUS
+            )
+            is_self = caller_class == call.called_class
+
+            message = Message(
+                from_participant=caller_class,
+                to_participant=call.called_class,
+                text=call.called_method,
+                message_type=message_type,
+                is_self_message=is_self,
+                level=level,
+                method_name=call.called_method,
+            )
+            diagram.add_message(message)
+
+            # Recursively process the called method
+            self._process_call_graph(
+                diagram,
+                call.called_class,
+                call.called_method,
+                level + 1,
+                processed,
+            )
+
+            # Add a return message if it's a synchronous call
+            if message_type == MessageType.SYNCHRONOUS and not is_self:
+                return_message = Message(
+                    from_participant=call.called_class,
+                    to_participant=caller_class,
+                    text="return",
+                    message_type=MessageType.REPLY,
+                    level=level,
+                )
+                diagram.add_message(return_message)
+
+================
+File: diagrams/sequence_diagram/generator.py
+================
+"""Generator for converting sequence diagrams to PlantUML format.
+
+This module provides functionality for generating PlantUML sequence diagrams from
+sequence diagram models.
+"""
+
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import GeneratorError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.interfaces import DiagramModel
+from utils.uml.diagrams.base import BaseDiagramGenerator
+from utils.uml.diagrams.sequence_diagram.models import (
+    ActivationBar,
+    Message,
+    MessageType,
+    Participant,
+    SequenceDiagram,
+)
+
+
+class SequenceDiagramGenerator(BaseDiagramGenerator):
+    """Generates PlantUML sequence diagrams from sequence models."""
+
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] | None = None):
+        """Initialize a sequence diagram generator.
+
+        Args:
+            file_system: The file system implementation to use
+            settings: Optional settings for the generator
+        """
+        super().__init__(file_system, settings)
+        self.indentation = "  "
+        self.current_indent = 0
+
+    def _indent(self) -> str:
+        """Get the current indentation string."""
+        return self.indentation * self.current_indent
+
+    def _increase_indent(self) -> None:
+        """Increase indentation level."""
+        self.current_indent += 1
+
+    def _decrease_indent(self) -> None:
+        """Decrease indentation level."""
+        self.current_indent = max(0, self.current_indent - 1)
+
+    def _format_participant(self, participant: Participant) -> str:
+        """Format a participant as PlantUML.
+
+        Args:
+            participant: The participant to format
+
+        Returns:
+            The formatted participant string
+        """
+        participant_type = participant.type.value
+
+        if participant.alias:
+            return f'{participant_type} "{participant.name}" as {participant.alias}'
+
+        # Handle special characters in class names by optionally using quotes
+        if any(c in participant.name for c in " .-,;:/\\()[]{}<>!@#$%^&*+=|`~"):
+            return f'{participant_type} "{participant.name}"'
+        return f"{participant_type} {participant.name}"
+
+    def _format_message(self, message: Message) -> str:
+        """Format a message as PlantUML.
+
+        Args:
+            message: The message to format
+
+        Returns:
+            The formatted message string
+        """
+        arrow = message.message_type.value
+
+        # Format the message text
+        if message.method_name:
+            text = f"{message.method_name}()"
+        else:
+            text = message.text
+
+        # Self messages are handled differently
+        if message.is_self_message:
+            return (
+                f"{message.from_participant} {arrow} {message.from_participant}: {text}"
+            )
+        return f"{message.from_participant} {arrow} {message.to_participant}: {text}"
+
+    def _format_activation(self, activation: ActivationBar) -> str:
+        """Format an activation/deactivation as PlantUML.
+
+        Args:
+            activation: The activation bar to format
+
+        Returns:
+            The formatted activation string
+        """
+        if activation.is_start:
+            return f"activate {activation.participant}"
+        return f"deactivate {activation.participant}"
+
+    def generate_plantuml(self, diagram: SequenceDiagram) -> str:
+        """Generate PlantUML code from a sequence diagram model.
+
+        Args:
+            diagram: The sequence diagram model
+
+        Returns:
+            The generated PlantUML code
+        """
+        lines = ["@startuml", ""]
+
+        # Add title
+        if diagram.title:
+            lines.append(f"title {diagram.title}")
+            lines.append("")
+
+        # Add global settings from the settings dict, or use defaults
+        hide_footboxes = self.settings.get("HIDE_FOOTBOXES", True)
+        autonumber = self.settings.get("AUTONUMBER", False)
+
+        settings = [
+            "skinparam sequenceMessageAlign center",
+            "skinparam monochrome true",
+            "skinparam lifelinestrategy solid",
+        ]
+
+        if hide_footboxes:
+            settings.append("hide footbox")
+
+        if autonumber:
+            settings.append("autonumber")
+
+        lines.extend(settings)
+        lines.append("")
+
+        # Add participants
+        for participant in diagram.participants:
+            lines.append(self._format_participant(participant))
+        lines.append("")
+
+        # Process messages and activations
+        active_participants = set()
+
+        for i, message in enumerate(diagram.messages):
+            # Handle activations
+            if message.message_type in (
+                MessageType.SYNCHRONOUS,
+                MessageType.ASYNCHRONOUS,
+            ):
+                # Ensure source is activated if not already
+                if (
+                    message.from_participant not in active_participants
+                    and message.from_participant != message.to_participant
+                ):
+                    lines.append(f"activate {message.from_participant}")
+                    active_participants.add(message.from_participant)
+
+                # Add the message
+                lines.append(self._format_message(message))
+
+                # Activate the target
+                if (
+                    not message.is_self_message
+                    and message.to_participant not in active_participants
+                ):
+                    lines.append(f"activate {message.to_participant}")
+                    active_participants.add(message.to_participant)
+
+            elif message.message_type == MessageType.REPLY:
+                # Add the message
+                lines.append(self._format_message(message))
+
+                # Deactivate the source on return
+                if message.from_participant in active_participants:
+                    lines.append(f"deactivate {message.from_participant}")
+                    active_participants.remove(message.from_participant)
+
+            else:
+                # Other message types (CREATE, etc.)
+                lines.append(self._format_message(message))
+
+        # End the diagram
+        lines.append("")
+        lines.append("@enduml")
+
+        return "\n".join(lines)
+
+    def generate_diagram(
+        self,
+        model: DiagramModel,
+        output_path: str | Path,
+        **kwargs,
+    ) -> None:
+        """Generate a UML diagram from the given model and write it to the output path.
+
+        Args:
+            model: The diagram model to generate a diagram from
+            output_path: The path to write the diagram to
+            **kwargs: Additional generator-specific arguments
+
+        Raises:
+            GeneratorError: If the diagram cannot be generated
+        """
+        try:
+            # Ensure the model is a SequenceDiagram
+            if not isinstance(model, SequenceDiagram):
+                raise GeneratorError(
+                    f"Expected SequenceDiagram, got {type(model).__name__}",
+                )
+
+            # Generate the PlantUML code
+            plantuml_code = self.generate_plantuml(model)
+
+            # Ensure output directory exists and write the file
+            output_path = (
+                Path(output_path) if isinstance(output_path, str) else output_path
+            )
+            self.file_system.ensure_directory(output_path.parent)
+            self.file_system.write_file(output_path, plantuml_code)
+
+        except Exception as e:
+            raise GeneratorError(
+                f"Failed to generate sequence diagram: {e}",
+                cause=e,
+            )
+
+    def generate_index(
+        self,
+        output_dir: str | Path,
+        diagrams: list[Path],
+        **kwargs,
+    ) -> None:
+        """Generate an index file for all diagrams in the output directory.
+
+        Args:
+            output_dir: The directory containing the diagrams
+            diagrams: A list of paths to all diagrams
+            **kwargs: Additional generator-specific arguments
+
+        Raises:
+            GeneratorError: If the index file cannot be generated
+        """
+        # Filter to only include sequence diagrams
+        sequence_diagrams = [
+            d
+            for d in diagrams
+            if d.name.endswith(".puml") and self._is_sequence_diagram(d)
+        ]
+
+        if not sequence_diagrams:
+            return
+
+        try:
+            output_dir = Path(output_dir) if isinstance(output_dir, str) else output_dir
+            index_path = output_dir / "sequence_index.rst"
+
+            # Create basic RST index
+            lines = [
+                "Sequence Diagrams",
+                "================",
+                "",
+                ".. toctree::",
+                "   :maxdepth: 1",
+                "",
+            ]
+
+            # Add diagram references
+            for diagram in sorted(sequence_diagrams):
+                rel_path = diagram.relative_to(output_dir)
+                # Use forward slashes for cross-platform compatibility
+                lines.append(f"   {str(rel_path).replace('\\', '/')}")
+
+            lines.append("")  # Add trailing newline
+
+            # Write the index file
+            self.file_system.write_file(index_path, "\n".join(lines))
+
+        except Exception as e:
+            raise GeneratorError(
+                f"Failed to generate sequence diagram index: {e}",
+                cause=e,
+            )
+
+    def _is_sequence_diagram(self, file_path: Path) -> bool:
+        """Check if a file is a sequence diagram.
+
+        Args:
+            file_path: The path to the file to check
+
+        Returns:
+            True if the file is a sequence diagram, False otherwise
+        """
+        try:
+            content = self.file_system.read_file(file_path)
+            # Simple heuristic: look for sequence diagram indicators
+            indicators = [
+                "participant",
+                "actor",
+                "activate",
+                "deactivate",
+                "skinparam sequenceMessageAlign",
+            ]
+            return any(indicator in content for indicator in indicators)
+        except Exception:
+            return False
+
+================
+File: diagrams/sequence_diagram/models.py
+================
+"""Data models for sequence diagram extraction.
+
+This module provides the data models for representing sequence diagrams.
+"""
+
+from dataclasses import dataclass, field
+from enum import Enum
+
+from utils.uml.diagrams.base import BaseDiagramModel
+
+
+class ParticipantType(Enum):
+    """Types of participants in a sequence diagram."""
+
+    ACTOR = "actor"
+    BOUNDARY = "boundary"
+    CONTROL = "control"
+    ENTITY = "entity"
+    DATABASE = "database"
+    CLASS = "class"  # Regular Python class
+
+
+@dataclass
+class Participant:
+    """Represents a participant in a sequence diagram."""
+
+    name: str
+    type: ParticipantType = ParticipantType.CLASS
+    module: str | None = None
+    alias: str | None = None
+
+    @property
+    def full_name(self) -> str:
+        """Get the full name with module.
+
+        Returns:
+            The full name of the participant, including module if available.
+        """
+        if self.module:
+            return f"{self.module}.{self.name}"
+        return self.name
+
+
+class MessageType(Enum):
+    """Types of messages in a sequence diagram."""
+
+    SYNCHRONOUS = "->"
+    ASYNCHRONOUS = "->>"
+    REPLY = "-->"
+    CREATE = "-->>"
+    SELF = "->"
+
+
+@dataclass
+class Message:
+    """Represents a message between participants."""
+
+    from_participant: str
+    to_participant: str
+    text: str
+    message_type: MessageType = MessageType.SYNCHRONOUS
+    is_self_message: bool = False
+    level: int = 0  # Call stack level
+    method_name: str | None = None
+    arguments: list[str] = field(default_factory=list)
+
+    @property
+    def formatted_text(self) -> str:
+        """Format the text with arguments if needed.
+
+        Returns:
+            Formatted text for the message, including method name and arguments if available.
+        """
+        if self.method_name:
+            args_str = ", ".join(self.arguments)
+            return f"{self.method_name}({args_str})"
+        return self.text
+
+
+@dataclass
+class ActivationBar:
+    """Represents activation of a participant."""
+
+    participant: str
+    is_start: bool = True  # True for activation start, False for deactivation
+
+
+class SequenceDiagram(BaseDiagramModel):
+    """Represents a sequence diagram."""
+
+    def __init__(self, title: str):
+        """Initialize a sequence diagram.
+
+        Args:
+            title: The title of the diagram
+        """
+        super().__init__(name=title, diagram_type="sequence")
+        self.title = title
+        self.participants: list[Participant] = []
+        self.messages: list[Message] = []
+        self.activations: list[ActivationBar] = []
+
+    def add_participant(self, participant: Participant) -> None:
+        """Add a participant if it doesn't already exist.
+
+        Args:
+            participant: The participant to add
+        """
+        if not any(p.name == participant.name for p in self.participants):
+            self.participants.append(participant)
+
+    def add_message(self, message: Message) -> None:
+        """Add a message to the diagram.
+
+        Args:
+            message: The message to add
+        """
+        self.messages.append(message)
+
+        # Add activation/deactivation if it's a method call
+        if message.message_type in (MessageType.SYNCHRONOUS, MessageType.ASYNCHRONOUS):
+            # Start activation on the target
+            self.activations.append(
+                ActivationBar(
+                    participant=message.to_participant,
+                    is_start=True,
+                ),
+            )
+        elif message.message_type == MessageType.REPLY:
+            # End activation on the source
+            self.activations.append(
+                ActivationBar(
+                    participant=message.from_participant,
+                    is_start=False,
+                ),
+            )
+
+
+@dataclass
+class FunctionCall:
+    """Represents a function call extracted from code."""
+
+    caller_class: str | None
+    caller_method: str | None
+    called_class: str | None
+    called_method: str
+    arguments: list[str] = field(default_factory=list)
+    is_constructor: bool = False
+    line_number: int = 0
+    file_path: str | None = None
+
+================
+File: diagrams/state_diagram/__init__.py
+================
+"""State diagram generation.
+
+This module will provide functionality for generating UML state diagrams (planned).
+"""
+
+================
+File: diagrams/state_diagram/analyzer.py
+================
+"""Analyzer for extracting state diagrams from Python code.
+
+This module provides functionality for analyzing Python code and extracting
+state diagrams from it.
+"""
+
+import logging
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import ParserError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.diagrams.base import BaseDiagramAnalyzer
+from utils.uml.diagrams.state_diagram.models import (
+    CompositeStateModel,
+    EndStateModel,
+    StartStateModel,
+    StateDiagram,
+    StateModel,
+    TransitionModel,
+)
+
+
+class StateAnalyzer(BaseDiagramAnalyzer):
+    """Analyzer for extracting state diagrams from Python code."""
+
+    def __init__(self, file_system: FileSystem):
+        """Initialize the state analyzer.
+
+        Args:
+            file_system: The file system implementation to use
+        """
+        super().__init__(file_system)
+        self.logger = logging.getLogger(__name__)
+
+    def analyze(
+        self,
+        path: str | Path,
+        **kwargs: Any,
+    ) -> StateDiagram:
+        """Analyze the source code at the given path and generate a state diagram.
+
+        This is a placeholder implementation that will be expanded in the future.
+        Currently, it creates a simple example diagram.
+
+        Args:
+            path: Path to the source code to analyze
+            **kwargs: Additional analyzer-specific arguments
+
+        Returns:
+            A state diagram model
+
+        Raises:
+            ParserError: If the analysis fails
+        """
+        try:
+            # Create a placeholder diagram
+            diagram_name = kwargs.get("name", "State Diagram")
+            if isinstance(path, Path):
+                if path.is_file():
+                    diagram_name = f"State Diagram - {path.stem}"
+                else:
+                    diagram_name = f"State Diagram - {path.name}"
+
+            diagram = StateDiagram(diagram_name)
+
+            # This is a placeholder implementation
+            # In a real implementation, we would analyze the code and extract states
+
+            # Add a simple example diagram
+            self._create_example_diagram(diagram)
+
+            return diagram
+        except Exception as e:
+            raise ParserError(f"Failed to analyze code at {path}: {e}", cause=e)
+
+    def _create_example_diagram(self, diagram: StateDiagram) -> None:
+        """Create a simple example diagram.
+
+        Args:
+            diagram: The diagram to populate
+        """
+        # Add start state
+        start = StartStateModel("start")
+        diagram.add_start_state(start)
+
+        # Add states
+        idle = StateModel("idle", "Idle")
+        idle.add_entry_action("initialize()")
+        idle.add_exit_action("cleanup()")
+
+        processing = StateModel("processing", "Processing")
+        processing.add_entry_action("startProcess()")
+        processing.add_internal_action("updateProgress()")
+        processing.add_exit_action("endProcess()")
+
+        waiting = StateModel("waiting", "Waiting for Input")
+        waiting.add_entry_action("displayPrompt()")
+
+        error = StateModel("error", "Error")
+        error.add_entry_action("logError()")
+        error.add_internal_action("displayError()")
+
+        # Add composite state
+        composite = CompositeStateModel("composite", "Composite State")
+        substate1 = StateModel("substate1", "Substate 1")
+        substate2 = StateModel("substate2", "Substate 2")
+        composite.add_substate(substate1)
+        composite.add_substate(substate2)
+        composite.add_internal_transition(
+            TransitionModel("substate1", "substate2", "next", None, "transition()"),
+        )
+
+        # Add states to diagram
+        diagram.add_state(idle)
+        diagram.add_state(processing)
+        diagram.add_state(waiting)
+        diagram.add_state(error)
+        diagram.add_composite_state(composite)
+
+        # Add end state
+        end = EndStateModel("end")
+        diagram.add_end_state(end)
+
+        # Add transitions
+        diagram.add_transition(TransitionModel("start", "idle"))
+        diagram.add_transition(
+            TransitionModel("idle", "processing", "start", None, "beginProcessing()"),
+        )
+        diagram.add_transition(
+            TransitionModel(
+                "processing", "waiting", "needInput", None, "pauseProcessing()"
+            ),
+        )
+        diagram.add_transition(
+            TransitionModel(
+                "waiting", "processing", "inputReceived", None, "resumeProcessing()"
+            ),
+        )
+        diagram.add_transition(
+            TransitionModel(
+                "processing", "idle", "complete", None, "finishProcessing()"
+            ),
+        )
+        diagram.add_transition(
+            TransitionModel("processing", "error", "error", None, "handleError()"),
+        )
+        diagram.add_transition(
+            TransitionModel("error", "idle", "reset", None, "resetSystem()"),
+        )
+        diagram.add_transition(
+            TransitionModel("idle", "composite", "enterComposite"),
+        )
+        diagram.add_transition(
+            TransitionModel("composite", "idle", "exitComposite"),
+        )
+        diagram.add_transition(
+            TransitionModel("idle", "end", "shutdown"),
+        )
+
+================
+File: diagrams/state_diagram/generator.py
+================
+"""Generator for converting state diagrams to PlantUML format.
+
+This module provides functionality for generating PlantUML state diagrams from
+state diagram models.
+"""
+
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import GeneratorError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.interfaces import DiagramModel
+from utils.uml.diagrams.base import BaseDiagramGenerator
+from utils.uml.diagrams.state_diagram.models import (
+    StateDiagram,
+)
+
+
+class StateDiagramGenerator(BaseDiagramGenerator):
+    """Generates PlantUML state diagrams from state diagram models."""
+
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] | None = None):
+        """Initialize a state diagram generator.
+
+        Args:
+            file_system: The file system implementation to use
+            settings: Optional settings for the generator
+        """
+        super().__init__(file_system, settings)
+
+    def generate_diagram(
+        self,
+        model: DiagramModel,
+        output_path: str | Path,
+        **kwargs,
+    ) -> None:
+        """Generate a UML diagram from the given model and write it to the output path.
+
+        Args:
+            model: The diagram model to generate a diagram from
+            output_path: The path to write the diagram to
+            **kwargs: Additional generator-specific arguments
+
+        Raises:
+            GeneratorError: If the diagram cannot be generated
+        """
+        try:
+            # Ensure the model is a StateDiagram
+            if not isinstance(model, StateDiagram):
+                raise GeneratorError(
+                    f"Expected StateDiagram, got {type(model).__name__}",
+                )
+
+            # Generate the PlantUML code
+            plantuml_code = self.generate_plantuml(model, **kwargs)
+
+            # Ensure output directory exists and write the file
+            output_path = (
+                Path(output_path) if isinstance(output_path, str) else output_path
+            )
+            self.file_system.ensure_directory(output_path.parent)
+            self.file_system.write_file(output_path, plantuml_code)
+
+        except Exception as e:
+            raise GeneratorError(
+                f"Failed to generate state diagram: {e}",
+                cause=e,
+            )
+
+    def generate_plantuml(
+        self,
+        diagram: StateDiagram,
+        **kwargs,
+    ) -> str:
+        """Generate PlantUML code from a state diagram model.
+
+        Args:
+            diagram: The state diagram model
+            **kwargs: Additional generator-specific arguments
+
+        Returns:
+            The generated PlantUML code
+        """
+        lines = ["@startuml", ""]
+
+        # Add title
+        if diagram.name:
+            lines.append(f"title {diagram.name}")
+            lines.append("")
+
+        # Add global settings
+        use_monochrome = self.settings.get("MONOCHROME", True)
+        settings = [
+            "skinparam StateBackgroundColor white",
+            "skinparam StateBorderColor black",
+            "skinparam ArrowColor black",
+            "skinparam monochrome true" if use_monochrome else "",
+        ]
+
+        # Filter out empty settings
+        settings = [s for s in settings if s]
+        lines.extend(settings)
+        lines.append("")
+
+        # Add start states
+        for start_state in diagram.start_states:
+            lines.append(f"[*] --> {start_state.id}")
+
+        # Add states
+        for state in diagram.states:
+            # State with actions
+            if state.entry_actions or state.exit_actions or state.internal_actions:
+                lines.append(f"state {state.name} {{")
+
+                # Entry actions
+                for action in state.entry_actions:
+                    lines.append(f"  entry / {action}")
+
+                # Exit actions
+                for action in state.exit_actions:
+                    lines.append(f"  exit / {action}")
+
+                # Internal actions
+                for action in state.internal_actions:
+                    lines.append(f"  {action}")
+
+                lines.append("}")
+            else:
+                # Simple state
+                lines.append(f"state {state.name}")
+
+        # Add composite states
+        for composite in diagram.composite_states:
+            lines.append(f"state {composite.name} {{")
+
+            # Add substates
+            for substate in composite.substates:
+                lines.append(f"  state {substate.name}")
+
+            # Add internal transitions
+            for transition in composite.internal_transitions:
+                source = transition.source_id
+                target = transition.target_id
+                event = f" : {transition.event}" if transition.event else ""
+                guard = f" [{transition.guard}]" if transition.guard else ""
+                action = f" / {transition.action}" if transition.action else ""
+
+                lines.append(f"  {source} --> {target}{event}{guard}{action}")
+
+            lines.append("}")
+
+        # Add end states
+        for end_state in diagram.end_states:
+            lines.append(f"{end_state.id} --> [*]")
+
+        # Add transitions
+        lines.append("")
+        lines.append("' Transitions")
+
+        # Process transitions
+        for transition in diagram.transitions:
+            source = transition.source_id
+            target = transition.target_id
+            event = f" : {transition.event}" if transition.event else ""
+            guard = f" [{transition.guard}]" if transition.guard else ""
+            action = f" / {transition.action}" if transition.action else ""
+
+            # Skip transitions from start states and to end states (already handled)
+            if source in [s.id for s in diagram.start_states] or target in [
+                e.id for e in diagram.end_states
+            ]:
+                continue
+
+            lines.append(f"{source} --> {target}{event}{guard}{action}")
+
+        # End the diagram
+        lines.append("")
+        lines.append("@enduml")
+
+        return "\n".join(lines)
+
+    def generate_index(
+        self,
+        output_dir: str | Path,
+        diagrams: list[Path],
+        **kwargs,
+    ) -> None:
+        """Generate an index file for all diagrams in the output directory.
+
+        Args:
+            output_dir: The directory containing the diagrams
+            diagrams: A list of paths to all diagrams
+            **kwargs: Additional generator-specific arguments
+
+        Raises:
+            GeneratorError: If the index file cannot be generated
+        """
+        # Filter to only include state diagrams
+        state_diagrams = [
+            d
+            for d in diagrams
+            if d.name.endswith(".puml") and self._is_state_diagram(d)
+        ]
+
+        if not state_diagrams:
+            return
+
+        try:
+            output_dir = Path(output_dir) if isinstance(output_dir, str) else output_dir
+            index_path = output_dir / "state_index.rst"
+
+            # Create basic RST index
+            lines = [
+                "State Diagrams",
+                "==============",
+                "",
+                ".. toctree::",
+                "   :maxdepth: 1",
+                "",
+            ]
+
+            # Add diagram references
+            for diagram in sorted(state_diagrams):
+                rel_path = diagram.relative_to(output_dir)
+                # Use forward slashes for cross-platform compatibility
+                lines.append(f"   {str(rel_path).replace('\\', '/')}")
+
+            lines.append("")  # Add trailing newline
+
+            # Write the index file
+            self.file_system.write_file(index_path, "\n".join(lines))
+
+        except Exception as e:
+            raise GeneratorError(
+                f"Failed to generate state diagram index: {e}",
+                cause=e,
+            )
+
+    def _is_state_diagram(self, file_path: Path) -> bool:
+        """Check if a file is a state diagram.
+
+        Args:
+            file_path: The path to the file to check
+
+        Returns:
+            True if the file is a state diagram, False otherwise
+        """
+        try:
+            content = self.file_system.read_file(file_path)
+            # Simple heuristic: look for state diagram indicators
+            indicators = [
+                "state ",
+                "[*] -->",
+                "--> [*]",
+                "skinparam StateBackgroundColor",
+            ]
+            return any(indicator in content for indicator in indicators)
+        except Exception:
+            return False
+
+================
+File: diagrams/state_diagram/models.py
+================
+"""Models for state diagrams.
+
+This module provides models for representing state diagrams.
+"""
+
+from utils.uml.diagrams.base import BaseDiagramModel
+
+
+class StateDiagram(BaseDiagramModel):
+    """Model for a state diagram."""
+
+    def __init__(self, name: str):
+        """Initialize a state diagram.
+
+        Args:
+            name: The name of the diagram
+        """
+        super().__init__(name, "state")
+        self.states: list[StateModel] = []
+        self.transitions: list[TransitionModel] = []
+        self.start_states: list[StartStateModel] = []
+        self.end_states: list[EndStateModel] = []
+        self.composite_states: list[CompositeStateModel] = []
+
+    def add_state(self, state: "StateModel") -> None:
+        """Add a state to the diagram.
+
+        Args:
+            state: The state to add
+        """
+        self.states.append(state)
+
+    def add_transition(self, transition: "TransitionModel") -> None:
+        """Add a transition to the diagram.
+
+        Args:
+            transition: The transition to add
+        """
+        self.transitions.append(transition)
+
+    def add_start_state(self, start_state: "StartStateModel") -> None:
+        """Add a start state to the diagram.
+
+        Args:
+            start_state: The start state to add
+        """
+        self.start_states.append(start_state)
+
+    def add_end_state(self, end_state: "EndStateModel") -> None:
+        """Add an end state to the diagram.
+
+        Args:
+            end_state: The end state to add
+        """
+        self.end_states.append(end_state)
+
+    def add_composite_state(self, composite_state: "CompositeStateModel") -> None:
+        """Add a composite state to the diagram.
+
+        Args:
+            composite_state: The composite state to add
+        """
+        self.composite_states.append(composite_state)
+
+
+class StateModel:
+    """Model for a state."""
+
+    def __init__(
+        self, id: str, name: str | None = None, description: str | None = None
+    ):
+        """Initialize a state.
+
+        Args:
+            id: The unique identifier for the state
+            name: The name of the state
+            description: The description of the state
+        """
+        self.id = id
+        self.name = name or id
+        self.description = description
+        self.entry_actions: list[str] = []
+        self.exit_actions: list[str] = []
+        self.internal_actions: list[str] = []
+
+    def add_entry_action(self, action: str) -> None:
+        """Add an entry action to the state.
+
+        Args:
+            action: The entry action to add
+        """
+        self.entry_actions.append(action)
+
+    def add_exit_action(self, action: str) -> None:
+        """Add an exit action to the state.
+
+        Args:
+            action: The exit action to add
+        """
+        self.exit_actions.append(action)
+
+    def add_internal_action(self, action: str) -> None:
+        """Add an internal action to the state.
+
+        Args:
+            action: The internal action to add
+        """
+        self.internal_actions.append(action)
+
+
+class TransitionModel:
+    """Model for a transition between states."""
+
+    def __init__(
+        self,
+        source_id: str,
+        target_id: str,
+        event: str | None = None,
+        guard: str | None = None,
+        action: str | None = None,
+    ):
+        """Initialize a transition.
+
+        Args:
+            source_id: The ID of the source state
+            target_id: The ID of the target state
+            event: The event that triggers the transition
+            guard: The guard condition for the transition
+            action: The action performed during the transition
+        """
+        self.source_id = source_id
+        self.target_id = target_id
+        self.event = event
+        self.guard = guard
+        self.action = action
+
+
+class StartStateModel:
+    """Model for a start state."""
+
+    def __init__(self, id: str):
+        """Initialize a start state.
+
+        Args:
+            id: The unique identifier for the state
+        """
+        self.id = id
+
+
+class EndStateModel:
+    """Model for an end state."""
+
+    def __init__(self, id: str):
+        """Initialize an end state.
+
+        Args:
+            id: The unique identifier for the state
+        """
+        self.id = id
+
+
+class CompositeStateModel(StateModel):
+    """Model for a composite state."""
+
+    def __init__(
+        self,
+        id: str,
+        name: str | None = None,
+        description: str | None = None,
+    ):
+        """Initialize a composite state.
+
+        Args:
+            id: The unique identifier for the state
+            name: The name of the state
+            description: The description of the state
+        """
+        super().__init__(id, name, description)
+        self.substates: list[StateModel] = []
+        self.internal_transitions: list[TransitionModel] = []
+        self.internal_start_states: list[StartStateModel] = []
+        self.internal_end_states: list[EndStateModel] = []
+
+    def add_substate(self, state: StateModel) -> None:
+        """Add a substate to the composite state.
+
+        Args:
+            state: The substate to add
+        """
+        self.substates.append(state)
+
+    def add_internal_transition(self, transition: TransitionModel) -> None:
+        """Add an internal transition to the composite state.
+
+        Args:
+            transition: The internal transition to add
+        """
+        self.internal_transitions.append(transition)
+
+    def add_internal_start_state(self, start_state: StartStateModel) -> None:
+        """Add an internal start state to the composite state.
+
+        Args:
+            start_state: The internal start state to add
+        """
+        self.internal_start_states.append(start_state)
+
+    def add_internal_end_state(self, end_state: EndStateModel) -> None:
+        """Add an internal end state to the composite state.
+
+        Args:
+            end_state: The internal end state to add
+        """
+        self.internal_end_states.append(end_state)
+
+================
+File: factories.py
+================
+"""Factory classes for UML diagram generation.
+
+This module provides factory classes for creating diagram analyzers and generators.
+"""
+
+import logging
+from typing import Any
+
+from utils.uml.core.exceptions import DiagramTypeError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.interfaces import DiagramAnalyzer, DiagramFactory, DiagramGenerator
+from utils.uml.diagrams.activity_diagram.analyzer import ActivityAnalyzer
+from utils.uml.diagrams.activity_diagram.generator import ActivityDiagramGenerator
+from utils.uml.diagrams.class_diagram.analyzer import ClassAnalyzer
+from utils.uml.diagrams.class_diagram.generator import ClassDiagramGenerator
+from utils.uml.diagrams.sequence_diagram.analyzer import SequenceAnalyzer
+from utils.uml.diagrams.sequence_diagram.generator import SequenceDiagramGenerator
+from utils.uml.diagrams.state_diagram.analyzer import StateAnalyzer
+from utils.uml.diagrams.state_diagram.generator import StateDiagramGenerator
+
+
+class DefaultDiagramFactory(DiagramFactory):
+    """Default implementation of DiagramFactory."""
+
+    def __init__(self, file_system: FileSystem, settings: dict[str, Any] | None = None):
+        """Initialize factory with file system and settings.
+
+        Args:
+            file_system: The file system implementation to use
+            settings: Optional settings for the factory
+        """
+        self.file_system = file_system
+        self.settings = settings or {}
+        self.logger = logging.getLogger(__name__)
+
+        # Cache for created instances
+        self._analyzers: dict[str, DiagramAnalyzer] = {}
+        self._generators: dict[str, DiagramGenerator] = {}
+
+    def create_analyzer(self, diagram_type: str, **kwargs) -> DiagramAnalyzer:
+        """Create an analyzer for the given diagram type.
+
+        Args:
+            diagram_type: The type of diagram to create an analyzer for
+            **kwargs: Additional analyzer-specific arguments
+
+        Returns:
+            A diagram analyzer for the given diagram type
+
+        Raises:
+            DiagramTypeError: If the diagram type is not supported
+        """
+        # Create analyzer if not cached
+        if diagram_type not in self._analyzers:
+            if diagram_type == "sequence":
+                # Create sequence analyzer
+                root_dir = kwargs.get("root_dir", ".")
+                analyzer = SequenceAnalyzer(self.file_system, root_dir)
+                self._analyzers["sequence"] = analyzer
+            elif diagram_type == "class":
+                # Create class analyzer
+                analyzer = ClassAnalyzer(self.file_system)
+                self._analyzers["class"] = analyzer
+            elif diagram_type == "activity":
+                # Create activity analyzer
+                analyzer = ActivityAnalyzer(self.file_system)
+                self._analyzers["activity"] = analyzer
+            elif diagram_type == "state":
+                # Create state analyzer
+                analyzer = StateAnalyzer(self.file_system)
+                self._analyzers["state"] = analyzer
+            else:
+                self.logger.error(
+                    f"No analyzer available for diagram type: {diagram_type}",
+                )
+                raise DiagramTypeError(f"Unsupported diagram type: {diagram_type}")
+
+        return self._analyzers[diagram_type]
+
+    def create_generator(self, diagram_type: str, **kwargs) -> DiagramGenerator:
+        """Create a generator for the given diagram type.
+
+        Args:
+            diagram_type: The type of diagram to create a generator for
+            **kwargs: Additional generator-specific arguments
+
+        Returns:
+            A diagram generator for the given diagram type
+
+        Raises:
+            DiagramTypeError: If the diagram type is not supported
+        """
+        # Create generator if not cached
+        if diagram_type not in self._generators:
+            if diagram_type == "sequence":
+                # Create sequence generator
+                settings = {**self.settings.get("sequence_generator", {}), **kwargs}
+                generator = SequenceDiagramGenerator(self.file_system, settings)
+                self._generators["sequence"] = generator
+            elif diagram_type == "class":
+                # Create class generator
+                settings = {**self.settings.get("class_generator", {}), **kwargs}
+                generator = ClassDiagramGenerator(self.file_system, settings)
+                self._generators["class"] = generator
+            elif diagram_type == "activity":
+                # Create activity generator
+                settings = {**self.settings.get("activity_generator", {}), **kwargs}
+                generator = ActivityDiagramGenerator(self.file_system, settings)
+                self._generators["activity"] = generator
+            elif diagram_type == "state":
+                # Create state generator
+                settings = {**self.settings.get("state_generator", {}), **kwargs}
+                generator = StateDiagramGenerator(self.file_system, settings)
+                self._generators["state"] = generator
+            else:
+                self.logger.error(
+                    f"No generator available for diagram type: {diagram_type}",
+                )
+                raise DiagramTypeError(f"Unsupported diagram type: {diagram_type}")
+
+        return self._generators[diagram_type]
+
+    def register_analyzer(
+        self,
+        diagram_type: str,
+        analyzer_class: type[DiagramAnalyzer],
+    ) -> None:
+        """Register a new analyzer class for a diagram type.
+
+        Args:
+            diagram_type: The diagram type to register the analyzer for
+            analyzer_class: The analyzer class to register
+        """
+        # This basic implementation doesn't support dynamic registration
+        # Clear cache for this type to force recreation on next use
+        if diagram_type in self._analyzers:
+            del self._analyzers[diagram_type]
+
+    def register_generator(
+        self,
+        diagram_type: str,
+        generator_class: type[DiagramGenerator],
+    ) -> None:
+        """Register a new generator class for a diagram type.
+
+        Args:
+            diagram_type: The diagram type to register the generator for
+            generator_class: The generator class to register
+        """
+        # This basic implementation doesn't support dynamic registration
+        # Clear cache for this type to force recreation on next use
+        if diagram_type in self._generators:
+            del self._generators[diagram_type]
+
+================
+File: run.py
+================
+#!/usr/bin/env python
+"""Main entry point for UML diagram generation.
+
+This module provides the main entry point for generating UML diagrams using the
+unified architecture.
+"""
+
+import argparse
+import logging
+import os
+import sys
+from pathlib import Path
+from typing import Any
+
+from utils.uml.core.exceptions import DiagramTypeError
+from utils.uml.core.filesystem import FileSystem
+from utils.uml.core.service import UmlService
+from utils.uml.factories import DefaultDiagramFactory
+
+# Configure logging
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
+
+# Add the parent directory to the Python path
+PROJECT_ROOT = Path(__file__).parent.parent.parent
+sys.path.append(str(PROJECT_ROOT))
+
+# Constants
+OUTPUT_BASE_DIR = Path("docs/source/_generated_uml")
+
+
+def parse_arguments() -> argparse.Namespace:
+    """Parse command line arguments."""
+    parser = argparse.ArgumentParser(
+        description="Generate UML diagrams from source code.",
+    )
+
+    parser.add_argument(
+        "--type",
+        "-t",
+        choices=["class", "sequence", "activity", "state", "all"],
+        default="all",
+        help="Type of diagram to generate (default: all)",
+    )
+
+    parser.add_argument(
+        "--source",
+        "-s",
+        required=True,
+        help="Source directory or file to analyze",
+    )
+
+    parser.add_argument(
+        "--output",
+        "-o",
+        default=str(OUTPUT_BASE_DIR),
+        help=f"Output directory for diagrams (default: {OUTPUT_BASE_DIR})",
+    )
+
+    parser.add_argument(
+        "--recursive",
+        "-r",
+        action="store_true",
+        help="Recursively analyze directories",
+    )
+
+    parser.add_argument(
+        "--exclude",
+        "-e",
+        action="append",
+        default=[],
+        help="Patterns to exclude (can be specified multiple times)",
+    )
+
+    parser.add_argument(
+        "--include-private",
+        "-p",
+        action="store_true",
+        help="Include private members in diagrams",
+    )
+
+    parser.add_argument(
+        "--verbose",
+        "-v",
+        action="store_true",
+        help="Enable verbose logging",
+    )
+
+    return parser.parse_args()
+
+
+def create_service(settings: dict[str, Any] | None = None) -> UmlService:
+    """Create and return a UML service with the given settings."""
+    file_system = FileSystem()
+    factory = DefaultDiagramFactory(file_system, settings)
+    return UmlService(factory, settings)
+
+
+def get_source_paths(
+    source_path: str,
+    recursive: bool = False,
+    exclude_patterns: list[str] | None = None,
+) -> list[Path]:
+    """Get source paths to analyze.
+
+    Args:
+        source_path: The source path to analyze
+        recursive: Whether to recursively analyze directories
+        exclude_patterns: Patterns to exclude
+
+    Returns:
+        A list of paths to analyze
+    """
+    exclude_patterns = exclude_patterns or []
+    source_path_obj = Path(source_path)
+    paths = []
+
+    if source_path_obj.is_file():
+        # Single file
+        paths.append(source_path_obj)
+    elif source_path_obj.is_dir():
+        # Directory
+        if recursive:
+            # Recursively walk the directory
+            for root, dirs, files in os.walk(source_path_obj):
+                # Skip directories matching exclude patterns
+                dirs[:] = [
+                    d for d in dirs if not any(pat in d for pat in exclude_patterns)
+                ]
+
+                # Process Python files
+                for file in files:
+                    if file.endswith(".py"):
+                        file_path = Path(os.path.join(root, file))
+                        # Skip files matching exclude patterns
+                        if any(pat in str(file_path) for pat in exclude_patterns):
+                            continue
+                        paths.append(file_path)
+        else:
+            # Only process files in the top-level directory
+            for file in source_path_obj.glob("*.py"):
+                # Skip files matching exclude patterns
+                if any(pat in str(file) for pat in exclude_patterns):
+                    continue
+                paths.append(file)
+
+    return paths
+
+
+def main() -> int:
+    """Run the UML generator."""
+    args = parse_arguments()
+
+    # Configure logging
+    if args.verbose:
+        logging.getLogger().setLevel(logging.DEBUG)
+
+    # Create output directory
+    output_dir = Path(args.output)
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    # Create service
+    settings = {
+        "include_private": args.include_private,
+        "recursive": args.recursive,
+        "exclude_patterns": args.exclude,
+    }
+    service = create_service(settings)
+
+    # Get source paths
+    source_paths = get_source_paths(
+        args.source,
+        args.recursive,
+        args.exclude,
+    )
+
+    if not source_paths:
+        logger.error(f"No source files found at {args.source}")
+        return 1
+
+    # Generate diagrams
+    try:
+        if args.type == "all":
+            # Generate all diagram types
+            # Convert Path objects to strings to match the expected type
+            source_paths_str: list[str | Path] = [str(p) for p in source_paths]
+            source_paths_dict = {
+                "class": source_paths_str,
+                "sequence": source_paths_str,
+                # Activity and state diagrams are not yet implemented
+                # "activity": source_paths_str,
+                # "state": source_paths_str,
+            }
+            results = service.generate_all_diagrams(source_paths_dict, output_dir)
+
+            # Log results
+            for diagram_type, diagrams in results.items():
+                if diagrams:
+                    logger.info(
+                        f"Generated {len(diagrams)} {diagram_type} diagrams in {output_dir / diagram_type}",
+                    )
+        else:
+            # Generate a specific diagram type
+            try:
+                type_output_dir = output_dir / args.type
+                type_output_dir.mkdir(parents=True, exist_ok=True)
+
+                # Convert Path objects to strings to match the expected type
+                source_paths_str: list[str | Path] = [str(p) for p in source_paths]
+                diagrams = service.generate_diagrams(
+                    args.type,
+                    source_paths_str,
+                    type_output_dir,
+                )
+
+                if diagrams:
+                    logger.info(
+                        f"Generated {len(diagrams)} {args.type} diagrams in {type_output_dir}",
+                    )
+            except DiagramTypeError as e:
+                logger.error(f"Error: {e}")
+                return 1
+
+        logger.info(f"UML diagrams generated successfully in {output_dir}")
+        return 0
+    except Exception as e:
+        logger.error(f"Error generating diagrams: {e}")
+        if args.verbose:
+            import traceback
+
+            traceback.print_exc()
+        return 1
+
+
+if __name__ == "__main__":
+    sys.exit(main())
+
+================
+File: utils/__init__.py
+================
+"""Utility functions for UML diagram generation.
+
+This module provides utility functions used across the UML generation package.
+"""
+
+
+
+================================================================
+End of Codebase
+================================================================

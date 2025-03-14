@@ -1,0 +1,194 @@
+@startuml UML Generator Structure
+
+' Style settings
+skinparam packageStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Arial
+skinparam defaultFontSize 12
+skinparam packageFontStyle bold
+skinparam classFontStyle bold
+skinparam classFontSize 14
+skinparam classAttributeFontSize 12
+skinparam linetype ortho
+
+' Title
+title UML Generator Architecture
+
+' Packages
+package "utils.uml" {
+  class "run.py" as Run {
+    +parse_arguments()
+    +create_service()
+    +get_source_paths()
+    +main()
+  }
+  
+  class "factories.py" as Factories {
+    +DefaultDiagramFactory
+  }
+  
+  package "core" {
+    class "service.py" as Service {
+      +UmlService
+      +generate_diagram()
+      +generate_diagrams()
+      +generate_all_diagrams()
+    }
+    
+    class "interfaces.py" as Interfaces {
+      +DiagramAnalyzer
+      +DiagramGenerator
+      +DiagramFactory
+      +DiagramModel
+    }
+    
+    class "filesystem.py" as FileSystem {
+      +FileSystem
+      +read_file()
+      +write_file()
+      +ensure_directory()
+    }
+    
+    class "exceptions.py" as Exceptions {
+      +DiagramTypeError
+      +AnalysisError
+      +GenerationError
+    }
+  }
+  
+  package "diagrams" {
+    package "class_diagram" {
+      class "analyzer.py" as ClassAnalyzer {
+        +ClassAnalyzer
+        +analyze()
+      }
+      
+      class "generator.py" as ClassGenerator {
+        +ClassDiagramGenerator
+        +generate_diagram()
+      }
+      
+      class "models.py" as ClassModels {
+        +ClassModel
+        +ClassDiagram
+      }
+    }
+    
+    package "sequence_diagram" {
+      class "analyzer.py" as SequenceAnalyzer {
+        +SequenceAnalyzer
+        +analyze()
+      }
+      
+      class "generator.py" as SequenceGenerator {
+        +SequenceDiagramGenerator
+        +generate_diagram()
+      }
+      
+      class "models.py" as SequenceModels {
+        +SequenceModel
+        +SequenceDiagram
+      }
+    }
+    
+    package "activity_diagram" {
+      class "analyzer.py" as ActivityAnalyzer {
+        +ActivityAnalyzer
+        +analyze()
+      }
+      
+      class "generator.py" as ActivityGenerator {
+        +ActivityDiagramGenerator
+        +generate_diagram()
+      }
+      
+      class "models.py" as ActivityModels {
+        +ActivityModel
+        +ActivityDiagram
+      }
+    }
+    
+    package "state_diagram" {
+      class "analyzer.py" as StateAnalyzer {
+        +StateAnalyzer
+        +analyze()
+      }
+      
+      class "generator.py" as StateGenerator {
+        +StateDiagramGenerator
+        +generate_diagram()
+      }
+      
+      class "models.py" as StateModels {
+        +StateModel
+        +StateDiagram
+      }
+    }
+  }
+}
+
+' External scripts
+package "utils" {
+  class "extract_class.py" as ExtractClass {
+    +parse_arguments()
+    +main()
+  }
+  
+  class "extract_sequence.py" as ExtractSequence {
+    +parse_arguments()
+    +main()
+  }
+  
+  class "extract_activity.py" as ExtractActivity {
+    +parse_arguments()
+    +main()
+  }
+  
+  class "extract_state.py" as ExtractState {
+    +parse_arguments()
+    +main()
+  }
+  
+  class "run_uml_generator.py" as RunUmlGenerator {
+    +get_directories_to_process()
+    +generate_class_diagrams()
+    +generate_sequence_diagrams()
+    +generate_activity_diagrams()
+    +generate_state_diagrams()
+    +main()
+  }
+}
+
+' Relationships
+Run --> Service : uses
+Run --> Factories : creates
+
+Factories --> ClassAnalyzer : creates
+Factories --> ClassGenerator : creates
+Factories --> SequenceAnalyzer : creates
+Factories --> SequenceGenerator : creates
+Factories --> ActivityAnalyzer : creates
+Factories --> ActivityGenerator : creates
+Factories --> StateAnalyzer : creates
+Factories --> StateGenerator : creates
+
+Service --> Factories : uses
+Service --> Interfaces : implements
+
+ClassAnalyzer --> ClassModels : creates
+ClassGenerator --> ClassModels : uses
+SequenceAnalyzer --> SequenceModels : creates
+SequenceGenerator --> SequenceModels : uses
+ActivityAnalyzer --> ActivityModels : creates
+ActivityGenerator --> ActivityModels : uses
+StateAnalyzer --> StateModels : creates
+StateGenerator --> StateModels : uses
+
+ExtractClass --> Service : uses
+ExtractSequence --> Service : uses
+ExtractActivity --> Service : uses
+ExtractState --> Service : uses
+RunUmlGenerator --> Service : uses
+
+@enduml
