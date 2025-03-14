@@ -1,6 +1,6 @@
 # Utils Package
 
-This directory contains utility scripts for sequence diagram generation and UML tools.
+This directory contains utility scripts for sequence diagram generation, UML tools, and document processing pipelines.
 
 ## Setup
 
@@ -70,6 +70,18 @@ Extract a sequence diagram for a FastAPI router function:
 ```bash
 python -m utils.extract_sequence --dir backend/app --module api.routes.login --function login_access_token
 ```
+
+## Available Tools
+
+### UML Tools
+
+The UML tools provide functionality for generating UML diagrams from Python code. See the [uml directory](uml/) for more details.
+
+### Pipeline Tool
+
+The pipeline tool is a modular, pipeline-based system for extracting structured data from various document formats (PDF, Excel, Word). It follows SOLID principles and uses the Strategy pattern for extensibility.
+
+For setup and usage instructions, see the [pipeline directory](pipeline/README.md).
 
 ## Development
 

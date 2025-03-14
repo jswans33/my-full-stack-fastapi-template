@@ -1,0 +1,50 @@
+Sample Text File for Pipeline Testing
+=======================================
+
+This is a plain text file that contains various types of content for testing the pipeline tool's text extraction capabilities.
+
+Section 1: Basic Text
+--------------------
+This section contains simple paragraphs of text. The pipeline should be able to extract this content and preserve its structure.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+
+Section 2: Lists
+---------------
+This section contains different types of lists:
+
+Bulleted list:
+* Item 1
+* Item 2
+* Item 3
+
+Numbered list:
+1. First item
+2. Second item
+3. Third item
+
+Section 3: Table-like Content
+----------------------------
+This section contains content formatted like a table:
+
+| Name       | Age | Department  |
+|------------|-----|-------------|
+| John Doe   | 30  | Engineering |
+| Jane Doe   | 28  | Marketing   |
+| Bob Smith  | 45  | Finance     |
+
+Section 4: Special Characters
+---------------------------
+This section contains special characters and symbols:
+
+Currency symbols: $, €, £, ¥
+Mathematical symbols: +, -, ×, ÷, =, ≠, ≈, ∞
+Punctuation: !, ?, ., :, ;, ", ', (, ), [, ], {, }
+
+Section 5: Metadata
+-----------------
+Title: Sample Text File
+Author: Pipeline Test Team
+Date: 2025-03-14
+Version: 1.0
+Status: Draft

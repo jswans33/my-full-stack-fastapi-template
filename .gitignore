@@ -120,3 +120,4 @@ tmp/
 temp/
 utils/.venv/
 backend/.venv/
+utils/pipeline/.venv/

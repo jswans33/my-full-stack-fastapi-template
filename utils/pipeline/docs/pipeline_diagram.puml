@@ -1,0 +1,115 @@
+@startuml Pipeline Architecture
+
+' Define styles
+skinparam componentStyle uml2
+skinparam backgroundColor white
+skinparam ArrowColor #666666
+skinparam ComponentBorderColor #999999
+skinparam ComponentBackgroundColor #EEEEEE
+skinparam NoteBorderColor #999999
+skinparam NoteBackgroundColor #EEEEEE
+skinparam RectangleBorderColor #999999
+skinparam RectangleBackgroundColor #EEEEEE
+
+' Title
+title Document Pipeline Architecture
+
+' Main components
+rectangle "Input Data" as input #LightBlue {
+  file "PDF Files" as pdf
+  file "Excel Files" as excel
+  file "Word Files" as word
+  file "Text Files" as text
+}
+
+rectangle "Pipeline Core" as core #LightGreen {
+  component "Pipeline Orchestrator" as pipeline
+  component "ConfigManager" as config
+  component "StrategySelector" as selector
+}
+
+rectangle "Processing Stages" as stages #LightYellow {
+  component "Analyzer" as analyzer
+  component "Cleaner" as cleaner
+  component "Extractor" as extractor
+  component "Validator" as validator
+}
+
+rectangle "Strategies" as strategies #LightPink {
+  component "PDFStrategy" as pdfstrat
+  component "ExcelStrategy" as excelstrat
+  component "WordStrategy" as wordstrat
+  component "TextStrategy" as textstrat
+}
+
+rectangle "Models" as models #LightCyan {
+  component "Document" as doc
+  component "StructuredData" as structured
+  component "ValidationResult" as valresult
+}
+
+rectangle "Utilities" as utils #LightGray {
+  component "Logging" as logging
+  component "FileIO" as fileio
+  component "ErrorHandling" as error
+}
+
+rectangle "Output Data" as output #LightBlue {
+  file "YAML Files" as yaml
+  file "JSON Files" as json
+  file "Reports" as reports
+}
+
+' High-level flow
+input --> pipeline
+pipeline --> analyzer : 1. Analyze
+analyzer --> cleaner : 2. Clean
+cleaner --> extractor : 3. Extract
+extractor --> validator : 4. Validate
+validator --> output : 5. Output
+
+' Component relationships
+pipeline --> config : uses
+pipeline --> selector : uses
+selector --> strategies : selects
+analyzer --> strategies : uses
+cleaner --> strategies : uses
+extractor --> strategies : uses
+validator --> models : validates
+strategies --> models : populates
+pipeline --> utils : uses
+stages --> utils : uses
+
+' Notes
+note right of pipeline
+  Orchestrates the entire pipeline flow
+  and manages the processing stages
+end note
+
+note bottom of strategies
+  Strategy pattern implementation
+  for different document formats
+end note
+
+note bottom of models
+  Data structures representing
+  documents and extracted content
+end note
+
+note bottom of utils
+  Common utilities used
+  throughout the pipeline
+end note
+
+' Legend
+legend right
+  **Pipeline Flow**
+  1. Input data is loaded
+  2. Analyzer examines document structure
+  3. Cleaner normalizes content
+  4. Extractor pulls structured data
+  5. Validator ensures data integrity
+  6. Output is generated in desired format
+end legend
+
+@enduml
