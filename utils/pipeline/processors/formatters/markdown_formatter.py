@@ -30,19 +30,34 @@ class MarkdownFormatter(FormatterStrategy):
 
         try:
             # Build hierarchical structure
+            content_tree = self._build_content_tree(analyzed_data.get("sections", []))
+
+            # Convert content tree to markdown string
+            content_markdown = ""
+            for section in content_tree:
+                content_markdown += self._format_section_to_markdown(section)
+
+            # Convert tables to markdown string
+            tables_markdown = ""
+            for table in analyzed_data.get("tables", []):
+                tables_markdown += self._format_table_to_markdown(table)
+
+            # Create formatted data with strings for content and tables
             formatted_data = {
                 "document": {
                     "metadata": analyzed_data.get("metadata", {}),
                     "path": analyzed_data.get("path", ""),
                     "type": analyzed_data.get("type", ""),
                 },
-                "content": self._build_markdown_content(
-                    analyzed_data.get("sections", [])
-                ),
-                "tables": self._format_tables(analyzed_data.get("tables", [])),
+                "content": content_markdown,
+                "tables": tables_markdown,
                 "summary": analyzed_data.get("summary", {}),
                 "validation": analyzed_data.get("validation", {}),
             }
+
+            # Add classification if present
+            if "classification" in analyzed_data:
+                formatted_data["classification"] = analyzed_data["classification"]
 
             return formatted_data
 
@@ -50,67 +65,129 @@ class MarkdownFormatter(FormatterStrategy):
             self.logger.error(f"Error formatting PDF content: {str(e)}", exc_info=True)
             raise
 
-    def _build_markdown_content(self, sections: List[Dict[str, Any]]) -> str:
+    def _build_content_tree(
+        self, sections: List[Dict[str, Any]]
+    ) -> List[Dict[str, Any]]:
         """
-        Convert sections into Markdown format.
+        Build a hierarchical tree structure from flat sections list.
+        This matches the structure returned by JSONFormatter._build_content_tree().
 
         Args:
             sections: List of section dictionaries
 
         Returns:
-            Markdown formatted string
+            List of sections with hierarchical structure
         """
         if not sections:
-            return ""
+            return []
 
-        markdown_lines = []
+        # Initialize with root level sections
+        result = []
+        current_section = None
+        current_level = 0
+        section_stack = []  # [(section, level)]
+
         for section in sections:
-            level = section.get("level", 0)
             title = section.get("title", "")
+            level = section.get("level", 0)
             content = section.get("content", "")
 
-            # Add section header with appropriate level
-            if title:
-                markdown_lines.append(f"{'#' * (level + 1)} {title}\n")
+            new_section = {
+                "title": title,
+                "content": content,
+                "children": [],
+                "level": level,
+            }
 
-            # Add section content
-            if content:
-                markdown_lines.append(f"{content}\n")
+            # Add any additional metadata
+            if "font" in section:
+                new_section["font"] = section["font"]
 
-            # Process children recursively
-            children = section.get("children", [])
-            if children:
-                markdown_lines.append(self._build_markdown_content(children))
+            # Handle section nesting
+            if not current_section:
+                # First section
+                result.append(new_section)
+                current_section = new_section
+                current_level = level
+                section_stack.append((current_section, current_level))
+            else:
+                if level > current_level:
+                    # Child section
+                    current_section["children"].append(new_section)
+                    section_stack.append((current_section, current_level))
+                    current_section = new_section
+                    current_level = level
+                else:
+                    # Sibling or uncle section
+                    while section_stack and section_stack[-1][1] >= level:
+                        section_stack.pop()
+
+                    if section_stack:
+                        # Add as child to nearest parent
+                        parent, _ = section_stack[-1]
+                        parent["children"].append(new_section)
+                    else:
+                        # No parent found, add to root
+                        result.append(new_section)
+
+                    current_section = new_section
+                    current_level = level
+                    section_stack.append((current_section, current_level))
+
+        return result
+
+    def _format_section_to_markdown(self, section: Dict[str, Any]) -> str:
+        """
+        Convert a section dictionary to markdown text.
+
+        Args:
+            section: Section dictionary with title, content, children, and level
+
+        Returns:
+            Markdown formatted string for the section
+        """
+        markdown_lines = []
+
+        # Add section header with appropriate level
+        if section.get("title"):
+            level = section.get("level", 0)
+            markdown_lines.append(f"{'#' * (level + 1)} {section['title']}\n")
+
+        # Add section content
+        if section.get("content"):
+            markdown_lines.append(f"{section['content']}\n")
+
+        # Process children recursively
+        for child in section.get("children", []):
+            markdown_lines.append(self._format_section_to_markdown(child))
 
         return "\n".join(markdown_lines)
 
-    def _format_tables(self, tables: List[Dict[str, Any]]) -> str:
+    def _format_table_to_markdown(self, table: Dict[str, Any]) -> str:
         """
-        Format tables in Markdown.
+        Format a table dictionary to markdown.
 
         Args:
-            tables: List of table data
+            table: Table dictionary with headers and data
 
         Returns:
             Markdown formatted table string
         """
-        if not tables:
-            return ""
-
         markdown_lines = []
-        for table in tables:
-            if "headers" in table and "data" in table:
-                # Add table headers
-                headers = table["headers"]
-                markdown_lines.append("| " + " | ".join(headers) + " |")
-                markdown_lines.append("| " + " | ".join(["---"] * len(headers)) + " |")
 
-                # Add table data
-                for row in table["data"]:
-                    markdown_lines.append(
-                        "| " + " | ".join(str(cell) for cell in row) + " |"
-                    )
-                markdown_lines.append("\n")
+        if "headers" in table and "data" in table:
+            # Add table headers
+            headers = table["headers"]
+            markdown_lines.append("| " + " | ".join(headers) + " |")
+            markdown_lines.append("| " + " | ".join(["---"] * len(headers)) + " |")
+
+            # Add table data
+            for row in table["data"]:
+                markdown_lines.append(
+                    "| " + " | ".join(str(cell) for cell in row) + " |"
+                )
+
+            markdown_lines.append("")  # Add empty line after table
 
         return "\n".join(markdown_lines)
 
@@ -142,7 +219,7 @@ class MarkdownFormatter(FormatterStrategy):
             if content:
                 f.write("# Content\n\n")
                 f.write(content)
-                f.write("\n\n")
+                f.write("\n")
 
             # Write tables
             tables = data.get("tables", "")
@@ -157,3 +234,22 @@ class MarkdownFormatter(FormatterStrategy):
                 f.write("# Summary\n\n")
                 for key, value in summary.items():
                     f.write(f"## {key}\n\n{value}\n\n")
+
+            # Write classification if present
+            classification = data.get("classification", {})
+            if classification:
+                f.write("# Classification\n\n")
+                f.write(
+                    f"- Document Type: {classification.get('document_type', 'Unknown')}\n"
+                )
+                f.write(f"- Confidence: {classification.get('confidence', 0.0):.2f}\n")
+                f.write(
+                    f"- Schema Pattern: {classification.get('schema_pattern', 'Unknown')}\n"
+                )
+
+                key_features = classification.get("key_features", [])
+                if key_features:
+                    f.write("- Key Features:\n")
+                    for feature in key_features:
+                        f.write(f"  - {feature}\n")
+                f.write("\n")

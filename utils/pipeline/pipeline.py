@@ -86,12 +86,23 @@ class Pipeline:
                 )
                 stages_data["validate"] = validated_data
 
-                # 5. Format output
+                # 5. Classify document type and identify schema pattern
+                if self.config.get("enable_classification", True):
+                    classification_result = self._classify_document(validated_data)
+                    validated_data["classification"] = classification_result
+
+                    # Record schema if configured
+                    if self.config.get("record_schemas", False):
+                        self._record_schema(
+                            validated_data, classification_result["document_type"]
+                        )
+
+                # 6. Format output
                 output_format = self._get_output_format()
                 output_data = self._format_output(validated_data, output_format)
                 stages_data["format"] = output_data
 
-                # 6. Verify output structure
+                # 7. Verify output structure
                 self._verify_output_structure(output_data, output_format)
 
                 return output_data
@@ -99,7 +110,9 @@ class Pipeline:
             # Process with progress display
             with progress:
                 progress.start()
-                overall_task = progress.add_task("Processing document", total=6)
+                overall_task = progress.add_task(
+                    "Processing document", total=7
+                )  # Increased to 7 steps
 
                 # Determine document type and select appropriate strategies
                 doc_type = self._detect_document_type(input_path)
@@ -151,8 +164,33 @@ class Pipeline:
                 progress.update(overall_task, advance=1)
                 progress.display_success("Data validated")
 
-                # 5. Format output
-                format_task = progress.add_task("Step 5: Formatting output")
+                # 5. Classify document type and identify schema
+                if self.config.get("enable_classification", True):
+                    classify_task = progress.add_task(
+                        "Step 5: Classifying document type"
+                    )
+                    classification_result = self._classify_document(validated_data)
+
+                    # Add classification to the data
+                    validated_data["classification"] = classification_result
+
+                    # Record schema if configured
+                    if self.config.get("record_schemas", False):
+                        self._record_schema(
+                            validated_data, classification_result["document_type"]
+                        )
+
+                    progress.update(classify_task, advance=1)
+                    progress.update(overall_task, advance=1)
+                    progress.display_success(
+                        f"Document classified as: {classification_result['document_type']}"
+                    )
+                else:
+                    # Skip classification but still advance overall progress
+                    progress.update(overall_task, advance=1)
+
+                # 6. Format output
+                format_task = progress.add_task("Step 6: Formatting output")
                 output_format = self._get_output_format()
                 output_data = self._format_output(validated_data, output_format)
                 stages_data["format"] = output_data
@@ -160,8 +198,8 @@ class Pipeline:
                 progress.update(overall_task, advance=1)
                 progress.display_success("Output formatted")
 
-                # 6. Verify output structure
-                verify_task = progress.add_task("Step 6: Verifying output structure")
+                # 7. Verify output structure
+                verify_task = progress.add_task("Step 7: Verifying output structure")
                 self._verify_output_structure(output_data, output_format)
                 progress.update(verify_task, advance=1)
                 progress.update(overall_task, advance=1)
@@ -172,6 +210,11 @@ class Pipeline:
                     "tables": len(output_data.get("tables", [])),
                     "validation": output_data.get("validation", {}),
                 }
+
+                # Add classification to summary if available
+                if "classification" in validated_data:
+                    summary["classification"] = validated_data["classification"]
+
                 progress.display_summary(summary)
                 progress.display_success("Pipeline processing completed successfully")
                 return output_data
@@ -181,6 +224,80 @@ class Pipeline:
             self.logger.error(error_msg, exc_info=True)
             progress.display_error(error_msg)
             raise PipelineError(error_msg) from e
+
+    def _classify_document(self, validated_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Classify document type and identify schema pattern.
+
+        Args:
+            validated_data: Validated document data
+
+        Returns:
+            Classification result with document type, confidence, and schema pattern
+        """
+        # Get classifier configuration
+        classifier_config = self.config.get("classification", {})
+        classifier_type = classifier_config.get("type", "rule_based")
+
+        # Import the document classifier
+        from utils.pipeline.processors.document_classifier import DocumentClassifier
+
+        classifier = DocumentClassifier(classifier_type, classifier_config)
+
+        # Perform classification
+        classification = classifier.classify(validated_data)
+
+        # Check if we should match against known schemas
+        if self.config.get("match_schemas", False):
+            self._match_schema(validated_data, classification)
+
+        return classification
+
+    def _match_schema(
+        self, document_data: Dict[str, Any], classification: Dict[str, Any]
+    ) -> None:
+        """
+
+                Match document against known schemas and update classification.
+
+        Args:
+            document_data: Document data to match
+            classification: Classification result to update
+        """
+        # Import the schema registry
+        from utils.pipeline.schema.registry import SchemaRegistry
+
+        registry = SchemaRegistry()
+
+        # Match against known schemas
+        schema_id, confidence = registry.match(document_data)
+
+        if schema_id and confidence > 0.7:  # Only use if high confidence
+            # Get the schema
+            schema = registry.get_schema(schema_id)
+            if schema:
+                # Update classification with schema information
+                classification["schema_id"] = schema_id
+                classification["schema_match_confidence"] = confidence
+                classification["schema_document_type"] = schema.get(
+                    "document_type", "UNKNOWN"
+                )
+
+    def _record_schema(self, document_data: Dict[str, Any], document_type: str) -> None:
+        """
+        Record document schema in the registry.
+
+        Args:
+            document_data: Document data to record
+            document_type: Type of the document
+        """
+        # Import the schema registry
+        from utils.pipeline.schema.registry import SchemaRegistry
+
+        registry = SchemaRegistry()
+
+        # Record the schema
+        registry.record(document_data, document_type)
 
     def _detect_document_type(self, input_path: str) -> str:
         """Detect the document type based on file extension or content analysis."""

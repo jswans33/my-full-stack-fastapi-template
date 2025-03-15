@@ -1,0 +1,3563 @@
+{
+  "document": {
+    "metadata": {
+      "title": "",
+      "author": "",
+      "subject": "",
+      "creator": "Transform Foundation Server (Build 49290)",
+      "producer": "Transform Foundation Server (Build 49290 - PDF SDK v2.0.1.40)",
+      "creation_date": "D:20250314171925-04'00'",
+      "modification_date": "D:20250314171925-04'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\S7026896-0001 REV1.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "DENVER, CO 80222",
+      "content": "Cregger Company #73 - Denver\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DENVER, CO 80223-1413",
+      "content": "Phone 303-629-6122\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PAGE NO.",
+      "content": "Quotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n1 of 35\nCregger Company #73 - Denver\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "DENVER, CO 80223-1413",
+      "content": "Phone 303-629-6122\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "HOUSE ACCOUNT",
+      "content": "03/07/2025\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "KRISTA JAUCH - 73",
+      "content": "Cash On Delivery\n54159\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SHIP TO:",
+      "content": "No\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "-SUBJECT TO BELOW-",
+      "content": "***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "STAGE: ADDENDUM #3",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TIME OF SHIPMENT",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ENGINEER APPROVAL",
+      "content": "-----------------------------------\n.\nPrinted By: KMJ on 3/14/2025 5:19:25 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n2 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": ".\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WH-1,2,3 - WATER HEATERS",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "APPROVAL. VENT KIT BY OTHERS.",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "3ea\n32381.100/ea\n97143.30\nPn: 867869\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "NETRALIZER KIT 4.0 GPH",
+      "content": "3ea\n115.000/ea\n345.00\nPn: 724293\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "YEAR EXTENDED WARRANTY FOR TANK",
+      "content": "3ea\n7116.000/ea\n21348.00\nPn: 871907\nWH-1,2,3 Subtotal -------\n118836.30\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WH-F - WATER HEATER",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [
+        {
+          "title": "APPROVAL.",
+          "content": "-----------------------------------\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "**240V/3PH/7KW**",
+          "content": "-----------------------------------\n1ea\n3444.050/ea\n3444.05\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "Printed By: KMJ on 3/14/2025 5:19:25 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n3 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "-----------------------------------\nPn: 722485\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "3.5KW 2 ELEM CONV KIT",
+      "content": "1ea\n90.630/ea\n90.63\nPn: 704983\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "VALVE MALE NPT LFN36-M1",
+      "content": "1ea\n28.920/ea\n28.92\nPn: 521124\nWH-F Subtotal -------\n3563.60\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WH-K - WATER HEATER",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [
+        {
+          "title": "APPROVAL.",
+          "content": "-----------------------------------\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "119G 400K BTU NG COMM WH ASME",
+      "content": "1ea\n18685.330/ea\n18685.33\nPn: 734273\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "VENT KIT 6\"",
+      "content": "1ea\n499.410/ea\n499.41\nPn: 705672\n",
+      "children": [
+        {
+          "title": "KIT",
+          "content": "1ea\n78.750/ea\n78.75\nPn: 724287\nWH-K Subtotal -------\n19263.49\n______________\n.\n.\n***********************************\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "DET-1 - EXPANSION TANK",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n1823.530/ea\n1823.53\nPn: 552768\nDET-1 Subtotal -------\n1823.53\n______________\n.\nPrinted By: KMJ on 3/14/2025 5:19:25 PM EDT\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n4 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": ".\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DET-F - EXPANSION TANK",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION TANK NON ASME ST-12",
+      "content": "1ea\n77.490/ea\n77.49\nPn: 540384\nDET-F Subtotal -------\n77.49\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DET-K - EXPANSION TANK",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "10.3 GALLON EXPANSION TANK 390935",
+      "content": "1ea\n244.890/ea\n244.89\nPn: 143521\nDET-K Subtotal -------\n244.89\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DBP-1 - BOOSTER PUMP",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "100JA SCCR 3CRE45-2-2 3X460V 60HZ",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SHAFT GROUNDING RINGS NOT",
+      "content": "1ea\n56001.600/ea\n56001.60\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "-----------------------------------\nPn: 1040914\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "150# SS CONN",
+      "content": "1ea\n2085.000/ea\n2085.00\nPn: 860961\nDBP-1 Subtotal -------\n58086.60\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ADD FOR STARTUP",
+      "content": "-----------------------------------\nPrinted By: KMJ on 3/14/2025 5:19:25 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n5 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "AREA, ONE TRIP, DURING NORMAL",
+      "content": "1ea\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WEEKS FOR SCHEDULING.",
+      "content": "Pn: 916468\nDBP-1 STARTUP Subtotal -------\n150.00\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DCP-1,2 - CIRC PUMPS",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "RECIRCULATION PUMP 95906632",
+      "content": "2ea\n842.520/ea\n1685.04\nPn: 136816\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FLG SET",
+      "content": "2ea\n65.070/se\n130.14\nPn: 772721\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TAC-265-1 TACO 265-1 ANALOG TIMER",
+      "content": "2ea\n129.380/ea\n258.76\nPn: 7562\nDCP-1,2 Subtotal -------\n2073.94\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DCP-F,K - CIRC PUMPS",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "115V 1/6HP CIRC PUMP",
+      "content": "2ea\n709.040/ea\n1418.08\nPn: 290536\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FLG SET",
+      "content": "2ea\n65.070/se\n130.14\nPn: 772721\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TAC-265-1 TACO 265-1 ANALOG TIMER",
+      "content": "2ea\n129.380/ea\n258.76\nPn: 7562\nDCP-F,K Subtotal -------\n1806.98\n______________\n.\n.\n***********************************\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n6 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SP-1 - SUMP PUMP",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AVAILABLE FOR ADDERS.",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SUMP PUMP SYSTEM",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "(1) WEIL 1413, 1HP, 2\" SUMP PUMP,",
+      "content": "1ea\n4488.240/ea\n4488.24\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FULL FREIGHT ALLOWED***",
+      "content": "-----------------------------------\nPn: 863859\nSP-1 Subtotal -------\n4488.24\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SP-A,B1,B2,C,D - SUMP PUMPS",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FLOAT 115 VOLT",
+      "content": "1ea\n403.080/ea\n403.08\nPn: 273891\n",
+      "children": [
+        {
+          "title": "7-15FLA/STANDARD",
+          "content": "1ea\n684.540/ea\n684.54\nPn: 626791\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CONTROL FLOAT W/WEIGHT",
+      "content": "3ea\n66.210/ea\n198.63\nPn: 48147\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "STAINLESS STEEL",
+      "content": "1ea\n89.920/ea\n89.92\nPn: 21936\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "VALVE SOC UNION ENDS",
+      "content": "1ea\n45.480/ea\n45.48\nPn: 562878\nPrinted By: KMJ on 3/14/2025 5:19:25 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n7 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "FIBERGLASS BASIN",
+      "content": "1ea\n887.060/ea\n887.06\nPn: 1043484\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JKL-JC36FB 36\" FIBERGLASS COVER",
+      "content": "1ea\n317.650/ea\n317.65\nPn: 1043486\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JKL-E4STND-H5 JACKEL 4\" PIPE SEAL",
+      "content": "1ea\n14.670/ea\n14.67\nPn: 893069\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JKLE200H E200H 2\" GROMET FOR BASIN",
+      "content": "3ea\n10.670/ea\n32.01\nPn: 34572\nSP-A,B1,B2,C,D Subtotal -------\n2673.04\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ADD FOR STARTUP",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ZOE-STARTUP ZOELLER STARTUP FEE",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SERVICE, INCLUDING VERIFICATION",
+      "content": "1ea\n500.000/ea\n500.00\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WILL BE ADDED TO THIS CHARGE***",
+      "content": "-----------------------------------\nPn: 862836\nSUMP PUMP STARTUP Subtotal -------\n500.00\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "GI-1 - GREASE INTERCEPTOR",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "HIGH CAP GREASE INTERCEPTOR",
+      "content": "(4075-001-01)\n1ea\n10129.060/ea\n10129.06\nPn: 861873\nPrinted By: KMJ on 3/14/2025 5:19:25 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n8 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GB1000 GB1500 8010-006-01",
+      "content": "1ea\n446.470/ea\n446.47\nPn: 456811\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SCH-8020-005-01 AK2 ANCHOR KIT",
+      "content": "1ea\n409.590/ea\n409.59\nPn: 610401\nGI-1 Subtotal -------\n10985.12\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SI-1THRU12 - SOLIDS INTERCEPTORS",
+      "content": "***********************************\n.\n",
+      "children": [
+        {
+          "title": "INTERCEPTOR",
+          "content": "-----------------------------------\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ALTERNATE(S) SUBJECT TO ENGINEER",
+      "content": "12ea\n341.180/ea\n4094.16\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "-----------------------------------\nPn: 540870\nSI-1THRU10 Subtotal -------\n4094.16\n______________\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BF-1 - BOTTLE FILLER",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BOTTLE FILLING STSTION NON FILTERED",
+      "content": "1ea\n998.820/ea\n998.82\nPn: 349761\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "STOP LF (CR19)",
+      "content": "1ea\n7.010/ea\n7.01\nPn: 195279\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SIO-910-2 5/8\" OD CP ESC 58ODCPESC",
+      "content": "1ea\n0.540/ea\n0.54\nPn: 768174\nPrinted By: KMJ on 3/14/2025 5:19:25 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n9 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "BF-1 Subtotal -------\n1040.80\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BT-1 - BATHTUB",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***BY OWNER***",
+      "content": ".\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DF-1 - OUTDOOR DRINKING FOUNTAIN",
+      "content": "***********************************\n.\n",
+      "children": [
+        {
+          "title": "EVERGREEN",
+          "content": "1ea\n2417.060/ea\n2417.06\n-----------------------------------\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "-----------------------------------\nPn: 467740\nDF-1 Subtotal -------\n2417.06\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ESHR-1 - EMERGENCY EYEWASH/SHOWER",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [
+        {
+          "title": "EYEWASH",
+          "content": "1ea\n871.410/ea\n871.41\nPn: 557948\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SHROUD KIT",
+      "content": "1ea\n72.560/ea\n72.56\nPn: 955497\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "OUTLET EMERGENCY TMV S19-2150",
+      "content": "1ea\n1035.000/ea\n1035.00\nPrinted By: KMJ on 3/14/2025 5:19:25 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n10 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "Pn: 519576\nESHR-1 Subtotal -------\n1978.97\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ESHR-2 - EMERGENCY EYEWASH/SHOWER",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BWF-S19345JXB RECESSED COMB, EYE/FW",
+      "content": "1ea\n2602.060/ea\n2602.06\nPn: 994357\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "OUTLET EMERGENCY TMV S19-2150",
+      "content": "1ea\n1035.000/ea\n1035.00\nPn: 519576\nESHR-2 Subtotal -------\n3637.06\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EW-1 - EYEWASH",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n500.610/ea\n500.61\nPn: 534393\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "INLET FOR EYEWASH 4GPM MIN FLOW",
+      "content": "1ea\n458.820/ea\n458.82\nPn: 552388\nEW-1 Subtotal -------\n959.43\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EWC-1 - WATER COOLER",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "COOLER W/FILLING STATION",
+      "content": "1ea\n1542.350/ea\n1542.35\nPrinted By: KMJ on 3/14/2025 5:19:25 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n11 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "Pn: 291073\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "STOP LF (CR19)",
+      "content": "1ea\n7.010/ea\n7.01\nPn: 195279\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SIO-910-2 5/8\" OD CP ESC 58ODCPESC",
+      "content": "1ea\n0.540/ea\n0.54\nPn: 768174\nEWC-1 Subtotal -------\n1584.33\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ADD FOR CARRIER",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MTD FIXT SUPT F/ ELEC WC",
+      "content": "1ea\nPn: 823532\nCOOLER CARRIER Subtotal -------\n280.08\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EWC-2 - WATER COOLER",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BI-LEVEL COOLER W-FILLING STATION",
+      "content": "1ea\n2120.000/ea\n2120.00\nPn: 253974\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "STOP LF (CR19)",
+      "content": "1ea\n7.010/ea\n7.01\nPn: 195279\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SIO-910-2 5/8\" OD CP ESC 58ODCPESC",
+      "content": "1ea\n0.540/ea\n0.54\nPn: 768174\nEWC-2 Subtotal -------\n2161.98\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ADD FOR CARRIER",
+      "content": "-----------------------------------\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n12 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MTD FIXT SUPT F/ ELEC WC",
+      "content": "1ea\nPn: 823532\nCOOLER CARRIER Subtotal -------\n280.08\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "HB-1 - HOSE BIBB",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHI-952-CP SILL FAUCET",
+      "content": "1ea\n138.810/ea\n138.81\nPn: 480939\nHB-1 Subtotal -------\n138.81\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IMB-1 - ICE MAKER BOX",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BR- COPPER- HAM",
+      "content": "1ea\n61.470/ea\n61.47\nPn: 512213\nIMB-1 Subtotal -------\n61.47\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "L-1 - LAVATORY",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LAVA 4 IN CTRS WHT WHITE",
+      "content": "1ea\n45.290/ea\n45.29\nPn: 76745\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHI-802-317XKABCP LAVATORY FAUCET",
+      "content": "1ea\n105.210/ea\n105.21\nPn: 542313\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "VP SPRAY OUTLET",
+      "content": "1ea\n30.610/ea\n30.61\nPn: 332214\n",
+      "children": [
+        {
+          "title": "ACCESSIBILITY",
+          "content": "1ea\n28.880/ea\n28.88\nPn: 147263\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n13 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "& BRASS NUTS",
+      "content": "1ea\n28.800/ea\n28.80\nPn: 147258\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IPS-82194 (TRUEBRO 103EZ TRAP) STOP & SUPPLIE",
+      "content": "1ea\n44.790/ea\n44.79\nPn: 60804\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LEO-170D-LF LEONARD MIXING VALVE",
+      "content": "1ea\n70.000/ea\n70.00\nPn: 642969\nL-1 Subtotal -------\n422.34\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ADD FOR CARRIER",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JR SMITH",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FOR AMD STD #0355012",
+      "content": "1ea\n-----------------------------------\nPn: 823735\nLAV CARRIER Subtotal -------\n228.04\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "L-2 - LAVATORY",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 17\" SR LAV 4\" CC WHT",
+      "content": "1ea\n44.290/ea\n44.29\nPn: 76915\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHI-802-317XKABCP LAVATORY FAUCET",
+      "content": "1ea\n105.210/ea\n105.21\nPn: 542313\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "VP SPRAY OUTLET",
+      "content": "1ea\n30.610/ea\n30.61\nPn: 332214\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n14 of 35\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "ACCESSIBILITY",
+          "content": "1ea\n28.880/ea\n28.88\nPn: 147263\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "& BRASS NUTS",
+      "content": "1ea\n28.800/ea\n28.80\nPn: 147258\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IPS-82194 (TRUEBRO 103EZ TRAP) STOP & SUPPLIE",
+      "content": "1ea\n44.790/ea\n44.79\nPn: 60804\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LEO-170D-LF LEONARD MIXING VALVE",
+      "content": "1ea\n70.000/ea\n70.00\nPn: 642969\nL-2 Subtotal -------\n421.34\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "L-3 - LAVATORY",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "W/FRNT OVERFLOW WHT WHITE",
+      "content": "1ea\n42.350/ea\n42.35\nPn: 77012\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHI-802-317XKABCP LAVATORY FAUCET",
+      "content": "1ea\n105.210/ea\n105.21\nPn: 542313\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "VP SPRAY OUTLET",
+      "content": "1ea\n30.610/ea\n30.61\nPn: 332214\n",
+      "children": [
+        {
+          "title": "ACCESSIBILITY",
+          "content": "1ea\n28.880/ea\n28.88\nPn: 147263\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "& BRASS NUTS",
+      "content": "1ea\n28.800/ea\n28.80\nPn: 147258\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n15 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "IPS-82194 (TRUEBRO 103EZ TRAP) STOP & SUPPLIE",
+      "content": "1ea\n44.790/ea\n44.79\nPn: 60804\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LEO-170D-LF LEONARD MIXING VALVE",
+      "content": "1ea\n70.000/ea\n70.00\nPn: 642969\nL-3 Subtotal -------\n419.40\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MSB-1 - MOP SINK",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BSN36X24X12 ST THLD ONLY",
+      "content": "1ea\n503.530/ea\n503.53\nPn: 539142\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHI-897-CCP SERVICE SINK FAUCET",
+      "content": "1ea\n107.840/ea\n107.84\nPn: 480936\nMSB-1 Subtotal -------\n611.37\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "RH-1 - ROOF HYDRANT",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FEET MOUNTING SYSTEM",
+      "content": "1ea\n940.550/ea\n940.55\nPn: 545189\nRH-1 Subtotal -------\n940.55\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-1 - 1-COMP SINK",
+      "content": "***********************************\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n16 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": ".\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TO BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DROP-IN ADA SINK+PERFECT DRAIN",
+      "content": "1ea\n591.890/ea\n591.89\nPn: 610182\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SINK FAUCET",
+      "content": "1ea\n171.280/ea\n171.28\nPn: 569871\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FEM OUTLET",
+      "content": "1ea\n24.800/ea\n24.80\nPn: 1021523\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MCG-151A 151A SS BASKET STRAINER",
+      "content": "1ea\n35.460/ea\n35.46\nPn: 10898\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nS-1 Subtotal -------\n926.62\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-2 - WALL-MOUNT SINK",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "KIT INCLUDES FAUCET, DRAIN, & PTRAP",
+      "content": "1ea\n995.180/ea\n995.18\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n17 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "Pn: 423929\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nS-2 Subtotal -------\n1063.94\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ADD FOR CARRIER",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JR SMITH",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FOR ELKAY #CHS1716C",
+      "content": "1ea\n-----------------------------------\nPn: 823735\nSINK CARRIER Subtotal -------\n228.04\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-3 - LAB SINK",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TO BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DROP-IN ADA SINK+PERFECT DRAIN",
+      "content": "1ea\n591.890/ea\n591.89\nPn: 610182\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SINK FAUCET",
+      "content": "1ea\n171.280/ea\n171.28\nPn: 569871\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FEM OUTLET",
+      "content": "1ea\n24.800/ea\n24.80\nPn: 1021523\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MCG-151A 151A SS BASKET STRAINER",
+      "content": "1ea\n35.460/ea\n35.46\nPn: 10898\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n18 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nS-3 Subtotal -------\n926.62\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-4,5 - TEACHER/BIOMED SINKS",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MCG-151A 151A SS BASKET STRAINER",
+      "content": "1ea\n35.460/ea\n35.46\nPn: 10898\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nS-4,5 Subtotal -------\n138.65\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-6 - 1-COMP SINK",
+      "content": "***********************************\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n19 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": ".\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "18/300 SS",
+      "content": "1ea\n613.000/ea\n613.00\nPn: 616842\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "HANDLES 1/2IN OFFSET INLETS",
+      "content": "1ea\n277.710/ea\n277.71\nPn: 994467\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MCG-151A 151A SS BASKET STRAINER",
+      "content": "2ea\n35.460/ea\n70.92\nPn: 10898\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nS-6 Subtotal -------\n1064.82\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-7 - 2-COMP SINK",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "16/300 SS, NSF",
+      "content": "1ea\n1014.040/ea\n1014.04\nPn: 682287\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n20 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HANDLES 1/2IN OFFSET INLETS",
+      "content": "1ea\n277.710/ea\n277.71\nPn: 994467\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MCG-151A 151A SS BASKET STRAINER",
+      "content": "2ea\n35.460/ea\n70.92\nPn: 10898\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nS-7 Subtotal -------\n1465.86\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-8 - HAND WASH STATION",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n3900.590/ea\n3900.59\nPn: 378153\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "6ea\n6.190/ea\n37.14\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "6ea\n20.670/ea\n124.02\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "6ea\n7.520/ea\n45.12\nPn: 692994\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n21 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "S-8 Subtotal -------\n4141.30\n______________\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ADD FOR CARRIER",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "F/SS WASH SINK EWMA-6020",
+      "content": "1ea\nPn: 1043490\nSINK CARRIER Subtotal -------\n172.48\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-9 - 2-COMP SINK",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SINK W/20\" R&L DRAINBOARDS",
+      "content": "1ea\n1317.960/ea\n1317.96\nPn: 860731\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "HANDLES 1/2IN OFFSET INLETS",
+      "content": "1ea\n277.710/ea\n277.71\nPn: 994467\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MCG-151A 151A SS BASKET STRAINER",
+      "content": "2ea\n35.460/ea\n70.92\nPn: 10898\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n22 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "S-9 Subtotal -------\n1769.78\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-10 - 2-COMP SINK",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TO BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DB SS SINK",
+      "content": "1ea\n934.920/ea\n934.92\nPn: 814957\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SINK FAUCET",
+      "content": "1ea\n171.280/ea\n171.28\nPn: 569871\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FEM OUTLET",
+      "content": "1ea\n24.800/ea\n24.80\nPn: 1021523\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MCG-151A 151A SS BASKET STRAINER",
+      "content": "1ea\n35.460/ea\n35.46\nPn: 10898\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nS-10 Subtotal -------\n1269.65\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S-11 - 1-COMP SINK",
+      "content": "***********************************\n.\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n23 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TO BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DROP-IN ADA SINK+PERFECT DRAIN",
+      "content": "1ea\n577.960/ea\n577.96\nPn: 610182\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SINGLE LEVER",
+      "content": "1ea\n212.580/ea\n212.58\nPn: 480940\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MCG-151A 151A SS BASKET STRAINER",
+      "content": "1ea\n35.460/ea\n35.46\nPn: 10898\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASS NUTS",
+      "content": "1ea\n34.430/ea\n34.43\nPn: 147259\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "X 20\" CP LAV/ SINK RISER TUBE",
+      "content": "2ea\n6.190/ea\n12.38\nPn: 730017\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ANG1/2NOMCOMPX3/8OD COMP",
+      "content": "2ea\n20.670/ea\n41.34\nPn: 494045\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SET SCREW",
+      "content": "2ea\n7.520/ea\n15.04\nPn: 692994\nS-11 Subtotal -------\n929.19\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SH-1 - SHOWER",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BWF-HN300-SERIES ADA SHOWER SYSTEM",
+      "content": "-----------------------------------\n",
+      "children": [
+        {
+          "title": "(1.5GPM)",
+          "content": "1ea\n1049.910/ea\n1049.91\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "-----------------------------------\nPn: 885213\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n24 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MUDULE DRAIN",
+      "content": "1ea\n19.900/ea\n19.90\nPn: 204052\nSH-1 Subtotal -------\n1069.81\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SH-2 - SHOWER",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BWF-1C-SERIES SHOWER SYSTEM",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "S15: STANDARD SHOWERHEAD",
+      "content": "1ea\n1039.760/ea\n1039.76\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "-----------------------------------\nPn: 885208\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MUDULE DRAIN",
+      "content": "1ea\n19.900/ea\n19.90\nPn: 204052\nSH-2 Subtotal -------\n1059.66\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TMV-1 - MIXING VALVE",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n21905.880/ea\n21905.88\nPn: 937712\nTMV-1 Subtotal -------\n21905.88\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "UR-1 - URINAL",
+      "content": "Printed By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n25 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SLOAN (1107009)",
+      "content": "1ea\n100.000/ea\n100.00\nPn: 197075\n",
+      "children": [
+        {
+          "title": "OPERATOR",
+          "content": "1ea\n384.490/ea\n384.49\nPn: 340613\nUR-1 Subtotal -------\n484.49\n______________\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ADD FOR CARRIER",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JRS-637 URINAL CARRIER 637 JR SMITH",
+      "content": "1ea\nPn: 823733\nURINAL CARRIER Subtotal -------\n193.39\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WC-1 - WATER CLOSET",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WATER CLOSET (2102009)",
+      "content": "1ea\n74.120/ea\n74.12\nPn: 247863\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "111 SMO M YO",
+      "content": "1ea\n384.500/ea\n384.50\nPn: 1043525\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "W/VB & FITTINGS",
+      "content": "1ea\n70.280/ea\n70.28\nPn: 310917\nPrinted By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n26 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "WHT 5901.100SS.020",
+      "content": "1ea\n22.550/ea\n22.55\nPn: 327751\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BOLT SET",
+      "content": "1045\n1ea\n2.950/ea\n2.95\nPn: 776891\nWC-1 Subtotal -------\n554.40\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WC-1R - WATER CLOSET",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "OUTLET UNIVERSAL WATER CLOSET",
+      "content": "1ea\n323.000/ea\n323.00\nPn: 431348\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "111 SMO M YO",
+      "content": "1ea\n384.500/ea\n384.50\nPn: 1043525\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "W/VB & FITTINGS",
+      "content": "1ea\n70.280/ea\n70.28\nPn: 310917\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WHT 5901.100SS.020",
+      "content": "1ea\n22.550/ea\n22.55\nPn: 327751\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BOLT SET",
+      "content": "1045\n1ea\n2.950/ea\n2.95\nPn: 776891\nWC-1R Subtotal -------\n803.28\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WC-2 - WATER CLOSET",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***ALL SLOAN TO",
+      "content": "Printed By: KMJ on 3/14/2025 5:19:26 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n27 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WATER CLOSET (2102029)",
+      "content": "1ea\n85.880/ea\n85.88\nPn: 247865\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "111 SMO M YO",
+      "content": "1ea\n384.500/ea\n384.50\nPn: 1043525\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "W/VB & FITTINGS",
+      "content": "1ea\n70.280/ea\n70.28\nPn: 310917\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WHT 5901.100SS.020",
+      "content": "1ea\n22.550/ea\n22.55\nPn: 327751\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BOLT SET",
+      "content": "1045\n1ea\n2.950/ea\n2.95\nPn: 776891\nWC-2 Subtotal -------\n566.16\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WH-1 - WALL HYDRANT",
+      "content": "***********************************\n.\n",
+      "children": [
+        {
+          "title": "INLET",
+          "content": "1ea\n450.720/ea\n450.72\nPn: 49156\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "INLET",
+          "content": "1ea\n465.060/ea\n465.06\nPn: 406980\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "INLET",
+          "content": "1ea\n465.060/ea\n465.06\nPn: 107183\nWH-1 Subtotal -------\n1380.84\n______________\n.\n.\n***********************************\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n28 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "WWB-1 - WASHER WALL BOX",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n200.530/ea\n200.53\nPn: 373239\nWWB-1 Subtotal -------\n200.53\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AHR-1 - HOSE REEL",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n465.890/ea\n465.89\nPn: 866399\nAHR-1 Subtotal -------\n465.89\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DB-1 - DILUTION BASIN",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n962.940/ea\n962.94\nPn: 709125\nDB-1 Subtotal -------\n962.94\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DSN-1 - DOWNSPOUT NOZZLE",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JRS-1770T02 234\" T 1770",
+      "content": "1ea\n144.760/ea\n144.76\nPn: 221292\nPrinted By: KMJ on 3/14/2025 5:19:27 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n29 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "BRONZE NOZZLE AND FLANGE",
+      "content": "1ea\n144.760/ea\n144.76\nPn: 859570\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "THREADED DOWNSPOUT NOZZLE",
+      "content": "1ea\n144.760/ea\n144.76\nPn: 401677\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "NOZZLE AND FLANGE DOWNSPOUT",
+      "content": "1ea\n343.360/ea\n343.36\nPn: 221293\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JRS-1770T06 6IN T 1770",
+      "content": "1ea\n343.360/ea\n343.36\nPn: 873828\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JRS-1770T08 8 T 1770 DOWN SPOUT",
+      "content": "1ea\n521.300/ea\n521.30\nPn: 193294\nDSN-1 Subtotal -------\n1642.30\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FD-1 - FLOOR DRAIN",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FLOOR DRAIN W/ 5\" NB STRAINER W/ TP",
+      "content": "1ea\n110.440/ea\n110.44\nPn: 273558\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FLOOR DRAIN W/ 5\" NB STRAINER W/ TP",
+      "content": "1ea\n110.440/ea\n110.44\nPn: 558890\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FLOOR DRAIN W/ 5\" NB STRAINER W/ TP",
+      "content": "1ea\n110.440/ea\n110.44\nPn: 384131\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CLOSE TRAP SEAL",
+      "content": "1ea\n53.330/ea\n53.33\nPn: 164398\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "QUAD CLOSE TRAP SEAL",
+      "content": "1ea\n55.600/ea\n55.60\nPn: 160908\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JAY R SMITH 2692-04",
+      "content": "1ea\n65.870/ea\n65.87\nPn: 148925\nFD-1 Subtotal -------\n506.12\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FS-1 - FLOOR SINK",
+      "content": "Printed By: KMJ on 3/14/2025 5:19:27 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n30 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "HALF GRATE",
+      "content": "1ea\n575.950/ea\n575.95\nPn: 873824\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JRS-3420Y03(-12) 3IN IW DRN",
+      "content": "1ea\n575.950/ea\n575.95\nPn: 642125\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "HALF GRATE",
+      "content": "1ea\n575.950/ea\n575.95\nPn: 861995\nFS-1 Subtotal -------\n1727.85\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "GD-1 - GARBAGE DISPOSAL",
+      "content": "***********************************\n.\n",
+      "children": [
+        {
+          "title": "(BADGERVCORD)",
+          "content": "1ea\n124.880/ea\n124.88\nPn: 18779\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "(KEENEY 535SN)",
+      "content": "1ea\n40.850/ea\n40.85\nPn: 63998\nGD-1 Subtotal -------\n165.73\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "OD-1 - OVERFLOW ROOF DRAIN",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "REVERSIBLE COLLAR, PVC STANDPIPE,",
+      "content": "1ea\n588.470/ea\n588.47\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FOR METAL DOME",
+      "content": "Pn: 873221\nPrinted By: KMJ on 3/14/2025 5:19:27 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n31 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "REVERSIBLE COLLAR, PVC STANDPIPE,",
+      "content": "1ea\n588.470/ea\n588.47\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FOR METAL DOME",
+      "content": "Pn: 873264\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "REVERSIBLE COLLAR, PVC STANDPIPE,",
+      "content": "1ea\n588.470/ea\n588.47\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FOR METAL DOME",
+      "content": "Pn: 873266\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "F/METAL DOME W/(-R) SUMP RECEIVER",
+      "content": "1ea\n686.390/ea\n686.39\nPn: 900927\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "REVERSIBLE COLLAR, PVC STANDPIPE,",
+      "content": "1ea\n686.390/ea\n686.39\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FOR METAL DOME",
+      "content": "Pn: 873269\nOD-1 Subtotal -------\n3138.19\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "RD-1 - ROOF DRAIN",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "F/METAL DOME W/(-R) SUMP RECEIVER",
+      "content": "1ea\n495.110/ea\n495.11\nPn: 873206\nPrinted By: KMJ on 3/14/2025 5:19:27 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n32 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "F/METAL DOME W/(-R) SUMP RECEIVER",
+      "content": "1ea\n495.110/ea\n495.11\nPn: 873210\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "F/METAL DOME W/(-R) SUMP RECEIVER",
+      "content": "1ea\n495.110/ea\n495.11\nPn: 873213\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "F/METAL DOME W/(-R) SUMP RECEIVER",
+      "content": "1ea\n589.770/ea\n589.77\nPn: 873215\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "F/METAL DOME W/(-R) SUMP RECEIVER",
+      "content": "1ea\n589.770/ea\n589.77\nPn: 873216\nRD-1 Subtotal -------\n2664.87\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "T-1 - LAB GAS TURRET",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [
+        {
+          "title": "VALVES",
+          "content": "1ea\n120.070/ea\n120.07\nPn: 1021537\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "VALVES",
+          "content": "1ea\n120.070/ea\n120.07\nPn: 1041942\nT-1 Subtotal -------\n240.14\n______________\n.\n.\n***********************************\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "B-1,2,3,4 - BOILER PACKAGE",
+      "content": "***********************************\nPrinted By: KMJ on 3/14/2025 5:19:27 PM EDT\n** Continued on Next Page **\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n33 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": ".\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LOC-100304420 CREST,NATURAL,4001,HA",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FBN4001-8647, 4,000MBH, 480V/3PH,",
+      "content": "4ea\n85286.110/ea\n341144.44\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FREIGHT INCLUDED***",
+      "content": "-----------------------------------\nPn: 874383\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JER-DWGV JEREMIAS VENT PACKAGE",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WALL SPECIAL GAS VENT WITH UL 1738",
+      "content": "1ea\n29223.530/ea\n29223.53\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LENGTHS AND DIMENSIONS MUST BE",
+      "content": "Printed By: KMJ on 3/14/2025 5:19:27 PM EDT\n** Continued on Next Page **\nQuotation\n",
+      "children": [
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n34 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "***FREIGHT INCLUDED***",
+      "content": "-----------------------------------\nPn: 862534\nBOILERS Subtotal -------\n370367.97\n______________\n.\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "HWP-1,2,3 - PUMPS",
+      "content": "***********************************\n.\n-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BE FOB FACTORY***",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SPEED PUMP",
+      "content": "-----------------------------------\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MODEL# 4300 0307-020.0",
+      "content": "3ea\n14291.580/ea\n42874.74\n",
+      "children": [
+        {
+          "title": "READOUT.",
+          "content": "-----------------------------------\nPn: 858645\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "DIFFUS",
+          "content": "3ea\n600.140/ea\n1800.42\nPn: 830236\nPrinted By: KMJ on 3/14/2025 5:19:27 PM EDT\n** Continued on Next Page **\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "S7026896",
+          "content": "04/05/2025\n35 of 35\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXT PRICE",
+      "content": "HWP-1,2,3 Subtotal -------\n44675.16\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AS-1 - AIR SEPARATOR",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n11116.160/ea\n11116.16\nPn: 858691\nAS-1 Subtotal -------\n11116.16\n______________\n.\n.\n***********************************\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ET-1 - EXPANSION TANK",
+      "content": "***********************************\n.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "***FOB FACTORY***",
+      "content": "1ea\n8717.650/ea\n8717.65\nPn: 895716\nET-1 Subtotal -------\n8717.65\n______________\nSubtotal\nS&H Charges\n",
+      "children": [],
+      "level": 0
+    }
+  ],
+  "tables": [
+    {
+      "page": 16,
+      "table_number": 1,
+      "data": [
+        "EXPIRATION DATE",
+        "PAGE NO.",
+        "QUOTE NUMBER",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 2,
+      "data": [
+        "S7026896",
+        "04/05/2025",
+        "16 of 35",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 3,
+      "data": [
+        "ORDER QTY",
+        "DESCRIPTION",
+        "UNIT PRICE",
+        "EXT PRICE",
+        ".",
+        "-----------------------------------",
+        "***ALL ELKAY/CHICAGO",
+        "TO BE FOB FACTORY***",
+        "-----------------------------------",
+        "ELK-LRAD252165PD3 ELKAY LUSTERTONE",
+        "SS 25 X 21.2 X 6.5 SINGLE BOWL",
+        "DROP-IN ADA SINK+PERFECT DRAIN",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 4,
+      "data": [
+        "1ea",
+        "591.890/ea",
+        "591.89",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 5,
+      "data": [
+        "Pn: 610182",
+        "CHI-786-E35XKABCP CONCEALED KITCHEN",
+        "SINK FAUCET",
+        "1ea",
+        "171.280/ea",
+        "171.28",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 6,
+      "data": [
+        "Pn: 569871",
+        "CHI-E36VPJKABCP 1.5 GPM LAMINAR VP",
+        "FEM OUTLET",
+        "1ea",
+        "24.800/ea",
+        "24.80",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 7,
+      "data": [
+        "Pn: 1021523",
+        "MCG-151A 151A SS BASKET STRAINER",
+        "1ea",
+        "35.460/ea",
+        "35.46",
+        "Pn: 10898",
+        "DEA-510-1 1-1/2\" X 12\" SEMI-CAST",
+        "P-TRAP W/ CO WCO 17GA W/ DEEP FLG &",
+        "BRASS NUTS",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 8,
+      "data": [
+        "1ea",
+        "34.430/ea",
+        "34.43",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 9,
+      "data": [
+        "Pn: 147259",
+        "BRA-1-20A C 38X200CPLAVRSR 3/8\" OD",
+        "X 20\" CP LAV/ SINK RISER TUBE",
+        "2ea",
+        "6.190/ea",
+        "12.38",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 10,
+      "data": [
+        "Pn: 730017",
+        "BRA-KTSCR19XC 1/4 TURN LSKEY",
+        "ANG1/2NOMCOMPX3/8OD COMP",
+        "2ea",
+        "20.670/ea",
+        "41.34",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 11,
+      "data": [
+        "Pn: 494045",
+        "OAT-1119D1 5/8\" OD CAST BR ESC W/",
+        "SET SCREW",
+        "2ea",
+        "7.520/ea",
+        "15.04",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 12,
+      "data": [
+        "S-1 Subtotal -------",
+        "926.62",
+        "______________",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 13,
+      "data": [
+        ".",
+        ".",
+        "***********************************",
+        "S-2 - WALL-MOUNT SINK",
+        "***********************************",
+        ".",
+        "-----------------------------------",
+        "***ALL ELKAY TO",
+        "BE FOB FACTORY***",
+        "-----------------------------------",
+        "ELK-CHS1716C ELKAY STAINLESS STEEL",
+        "SINGLE BOWL WALL HUNG HANDWASH SINK",
+        "KIT INCLUDES FAUCET, DRAIN, & PTRAP",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 16,
+      "table_number": 14,
+      "data": [
+        "1ea",
+        "995.180/ea",
+        "995.18",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 15,
+      "data": [
+        "EXPIRATION DATE",
+        "PAGE NO.",
+        "QUOTE NUMBER",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 16,
+      "data": [
+        "S7026896",
+        "04/05/2025",
+        "17 of 35",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 17,
+      "data": [
+        "ORDER QTY",
+        "DESCRIPTION",
+        "UNIT PRICE",
+        "EXT PRICE",
+        "Pn: 423929",
+        "BRA-1-20A C 38X200CPLAVRSR 3/8\" OD",
+        "X 20\" CP LAV/ SINK RISER TUBE",
+        "2ea",
+        "6.190/ea",
+        "12.38",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 18,
+      "data": [
+        "Pn: 730017",
+        "BRA-KTSCR19XC 1/4 TURN LSKEY",
+        "ANG1/2NOMCOMPX3/8OD COMP",
+        "2ea",
+        "20.670/ea",
+        "41.34",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 19,
+      "data": [
+        "Pn: 494045",
+        "OAT-1119D1 5/8\" OD CAST BR ESC W/",
+        "SET SCREW",
+        "2ea",
+        "7.520/ea",
+        "15.04",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 20,
+      "data": [
+        "S-2 Subtotal -------",
+        "1063.94",
+        "______________",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 21,
+      "data": [
+        "ADD FOR CARRIER",
+        "-----------------------------------",
+        "JRS-700 LAV CARRIER W/ 19\" ARMS 700",
+        "JR SMITH",
+        "-----------------------------------",
+        "FOR ELKAY #CHS1716C",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 22,
+      "data": [
+        "-----------------------------------",
+        "Pn: 823735",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 23,
+      "data": [
+        "SINK CARRIER Subtotal -------",
+        "228.04",
+        "______________",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 24,
+      "data": [
+        ".",
+        ".",
+        "***********************************",
+        "S-3 - LAB SINK",
+        "***********************************",
+        ".",
+        "-----------------------------------",
+        "***ALL ELKAY/CHICAGO",
+        "TO BE FOB FACTORY***",
+        "-----------------------------------",
+        "ELK-LRAD252165PD3 ELKAY LUSTERTONE",
+        "SS 25 X 21.2 X 6.5 SINGLE BOWL",
+        "DROP-IN ADA SINK+PERFECT DRAIN",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 25,
+      "data": [
+        "1ea",
+        "591.890/ea",
+        "591.89",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 26,
+      "data": [
+        "Pn: 610182",
+        "CHI-786-E35XKABCP CONCEALED KITCHEN",
+        "SINK FAUCET",
+        "1ea",
+        "171.280/ea",
+        "171.28",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 27,
+      "data": [
+        "Pn: 569871",
+        "CHI-E36VPJKABCP 1.5 GPM LAMINAR VP",
+        "FEM OUTLET",
+        "1ea",
+        "24.800/ea",
+        "24.80",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 17,
+      "table_number": 28,
+      "data": [
+        "Pn: 1021523",
+        "MCG-151A 151A SS BASKET STRAINER",
+        "1ea",
+        "35.460/ea",
+        "35.46",
+        "Pn: 10898",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 29,
+      "data": [
+        "EXPIRATION DATE",
+        "PAGE NO.",
+        "QUOTE NUMBER",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 30,
+      "data": [
+        "S7026896",
+        "04/05/2025",
+        "23 of 35",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 31,
+      "data": [
+        "ORDER QTY",
+        "DESCRIPTION",
+        "UNIT PRICE",
+        "EXT PRICE",
+        "-----------------------------------",
+        "***ALL ELKAY/CHICAGO",
+        "TO BE FOB FACTORY***",
+        "-----------------------------------",
+        "ELK-LRAD252165PD3 ELKAY LUSTERTONE",
+        "SS 25 X 21.2 X 6.5 SINGLE BOWL",
+        "DROP-IN ADA SINK+PERFECT DRAIN",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 32,
+      "data": [
+        "1ea",
+        "577.960/ea",
+        "577.96",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 33,
+      "data": [
+        "Pn: 610182",
+        "CHI-434-ABCP KITCHEN FAUCET MANUAL",
+        "SINGLE LEVER",
+        "1ea",
+        "212.580/ea",
+        "212.58",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 34,
+      "data": [
+        "Pn: 480940",
+        "MCG-151A 151A SS BASKET STRAINER",
+        "1ea",
+        "35.460/ea",
+        "35.46",
+        "Pn: 10898",
+        "DEA-510-1 1-1/2\" X 12\" SEMI-CAST",
+        "P-TRAP W/ CO WCO 17GA W/ DEEP FLG &",
+        "BRASS NUTS",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 35,
+      "data": [
+        "1ea",
+        "34.430/ea",
+        "34.43",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 36,
+      "data": [
+        "Pn: 147259",
+        "BRA-1-20A C 38X200CPLAVRSR 3/8\" OD",
+        "X 20\" CP LAV/ SINK RISER TUBE",
+        "2ea",
+        "6.190/ea",
+        "12.38",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 37,
+      "data": [
+        "Pn: 730017",
+        "BRA-KTSCR19XC 1/4 TURN LSKEY",
+        "ANG1/2NOMCOMPX3/8OD COMP",
+        "2ea",
+        "20.670/ea",
+        "41.34",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 38,
+      "data": [
+        "Pn: 494045",
+        "OAT-1119D1 5/8\" OD CAST BR ESC W/",
+        "SET SCREW",
+        "2ea",
+        "7.520/ea",
+        "15.04",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 39,
+      "data": [
+        "S-11 Subtotal -------",
+        "929.19",
+        "______________",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 40,
+      "data": [
+        ".",
+        ".",
+        "***********************************",
+        "SH-1 - SHOWER",
+        "***********************************",
+        ".",
+        "BWF-HN300-SERIES ADA SHOWER SYSTEM",
+        "-----------------------------------",
+        "B: AXIS SHOWERHEAD W/BALL JOINT",
+        "(1.5GPM)",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 41,
+      "data": [
+        "1ea",
+        "1049.910/ea",
+        "1049.91",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 23,
+      "table_number": 42,
+      "data": [
+        "BP: BACK PLATE",
+        "HD: EQUAFLO HD PRESSURE BALANCING",
+        "A36: 60IN FLEX HOSE, 36IN ADA GRAB",
+        "BAR, VACUUM BREAKER.",
+        "***FOB FACTORY***",
+        "-----------------------------------",
+        "Pn: 885213",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 43,
+      "data": [
+        "EXPIRATION DATE",
+        "PAGE NO.",
+        "QUOTE NUMBER",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 44,
+      "data": [
+        "S7026896",
+        "04/05/2025",
+        "30 of 35",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 45,
+      "data": [
+        "ORDER QTY",
+        "DESCRIPTION",
+        "UNIT PRICE",
+        "EXT PRICE",
+        "***********************************",
+        ".",
+        "JRS-3420Y02(-12) 2IN Y 3420 W/(-12)",
+        "HALF GRATE",
+        "1ea",
+        "575.950/ea",
+        "575.95",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 46,
+      "data": [
+        "Pn: 873824",
+        "JRS-3420Y03(-12) 3IN IW DRN",
+        "1ea",
+        "575.950/ea",
+        "575.95",
+        "Pn: 642125",
+        "JRS-3420Y04(-12) 4IN Y 3420 W/(-12)",
+        "HALF GRATE",
+        "1ea",
+        "575.950/ea",
+        "575.95",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 47,
+      "data": [
+        "FS-1 Subtotal -------",
+        "1727.85",
+        "______________",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 48,
+      "data": [
+        ".",
+        ".",
+        "***********************************",
+        "GD-1 - GARBAGE DISPOSAL",
+        "***********************************",
+        ".",
+        "INS-BADGER5W/C BADGER V 5-1/2 HP",
+        "DISPOSER W/CORD AND PLUG",
+        "(BADGERVCORD)",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 49,
+      "data": [
+        "1ea",
+        "124.880/ea",
+        "124.88",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 50,
+      "data": [
+        "Pn: 18779",
+        "DEA-100-20-1 DEARBORN DISPOSER KIT",
+        "WITH BAFFLE 1-1/2\" X 13\"",
+        "(KEENEY 535SN)",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 51,
+      "data": [
+        "1ea",
+        "40.850/ea",
+        "40.85",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 52,
+      "data": [
+        "GD-1 Subtotal -------",
+        "165.73",
+        "______________",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 53,
+      "data": [
+        ".",
+        ".",
+        "***********************************",
+        "OD-1 - OVERFLOW ROOF DRAIN",
+        "***********************************",
+        ".",
+        "JRS-1074Y02-C-CID-MDU-R 2\" JRS",
+        "DUCO CAST IRON BODY WITH",
+        "ADJUSTABLE EXTENSION SLEEVE,",
+        "REVERSIBLE COLLAR, PVC STANDPIPE,",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 54,
+      "data": [
+        "1ea",
+        "588.470/ea",
+        "588.47",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 30,
+      "table_number": 55,
+      "data": [
+        "CI DOME AND COMBINED FLASHING",
+        "CLAMP AND GRAVEL STOP, UNDERDECK",
+        "CLAMP, SUMP RECEIVER, & VP COLLAR",
+        "FOR METAL DOME",
+        "Pn: 873221",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 56,
+      "data": [
+        "EXPIRATION DATE",
+        "PAGE NO.",
+        "QUOTE NUMBER",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 57,
+      "data": [
+        "S7026896",
+        "04/05/2025",
+        "31 of 35",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 58,
+      "data": [
+        "ORDER QTY",
+        "DESCRIPTION",
+        "UNIT PRICE",
+        "EXT PRICE",
+        "JRS-1074Y03-C-CID-MDU-R 3\" JRS",
+        "DUCO CAST IRON BODY WITH",
+        "ADJUSTABLE EXTENSION SLEEVE,",
+        "REVERSIBLE COLLAR, PVC STANDPIPE,",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 59,
+      "data": [
+        "1ea",
+        "588.470/ea",
+        "588.47",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 60,
+      "data": [
+        "CI DOME AND COMBINED FLASHING",
+        "CLAMP AND GRAVEL STOP, UNDERDECK",
+        "CLAMP, SUMP RECEIVER, & VP COLLAR",
+        "FOR METAL DOME",
+        "Pn: 873264",
+        "JRS-1074Y04-C-CID-MDU-R 4\" JRS",
+        "DUCO CAST IRON BODY WITH",
+        "ADJUSTABLE EXTENSION SLEEVE,",
+        "REVERSIBLE COLLAR, PVC STANDPIPE,",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 61,
+      "data": [
+        "1ea",
+        "588.470/ea",
+        "588.47",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 62,
+      "data": [
+        "CI DOME AND COMBINED FLASHING",
+        "CLAMP AND GRAVEL STOP, UNDERDECK",
+        "CLAMP, SUMP RECEIVER, & VP COLLAR",
+        "FOR METAL DOME",
+        "Pn: 873266",
+        "JRS-1070Y05(-C-CID-MDU-R) 5IN Y",
+        "1070 W/(-C) UNDERDECK CLAMPS W/",
+        "CAST IRON DOME W/(-MDU)VP COLLAR",
+        "F/METAL DOME W/(-R) SUMP RECEIVER",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 63,
+      "data": [
+        "1ea",
+        "686.390/ea",
+        "686.39",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 64,
+      "data": [
+        "Pn: 900927",
+        "JRS-1074Y06-C-CID-MDU-R 6\" JRS",
+        "DUCO CAST IRON BODY WITH",
+        "ADJUSTABLE EXTENSION SLEEVE,",
+        "REVERSIBLE COLLAR, PVC STANDPIPE,",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 65,
+      "data": [
+        "1ea",
+        "686.390/ea",
+        "686.39",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 66,
+      "data": [
+        "CI DOME AND COMBINED FLASHING",
+        "CLAMP AND GRAVEL STOP, UNDERDECK",
+        "CLAMP, SUMP RECEIVER, & VP COLLAR",
+        "FOR METAL DOME",
+        "Pn: 873269",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 67,
+      "data": [
+        "OD-1 Subtotal -------",
+        "3138.19",
+        "______________",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 68,
+      "data": [
+        ".",
+        ".",
+        "***********************************",
+        "RD-1 - ROOF DRAIN",
+        "***********************************",
+        ".",
+        "JRS-1015Y02(-C-CID-MDU-R) 2IN Y",
+        "1015 W/(-C) UNDERDECK CLAMPS W/",
+        "CAST IRON DOME W/(-MDU)VP COLLAR",
+        "F/METAL DOME W/(-R) SUMP RECEIVER",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 31,
+      "table_number": 69,
+      "data": [
+        "1ea",
+        "495.110/ea",
+        "495.11",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 33,
+      "table_number": 70,
+      "data": [
+        "EXPIRATION DATE",
+        "PAGE NO.",
+        "QUOTE NUMBER",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 33,
+      "table_number": 71,
+      "data": [
+        "S7026896",
+        "04/05/2025",
+        "33 of 35",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 33,
+      "table_number": 72,
+      "data": [
+        "ORDER QTY",
+        "DESCRIPTION",
+        "UNIT PRICE",
+        "EXT PRICE",
+        ".",
+        "LOC-100304420 CREST,NATURAL,4001,HA",
+        "-----------------------------------",
+        "QTY 4- LOCHINVAR CREST",
+        "FBN4001-8647, 4,000MBH, 480V/3PH,",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 33,
+      "table_number": 73,
+      "data": [
+        "4ea",
+        "85286.110/ea",
+        "341144.44",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 33,
+      "table_number": 74,
+      "data": [
+        "HIGH EFFICIENCY, CONDENSING, HIGH",
+        "ALTITUDE NATURAL GAS FIRED",
+        "BOILERS, EQUIPPED WITH STANDARD",
+        "FEATURES OF, BUT NOT LIMITED TO:",
+        "CON-X-USREMOTE CONNECTION, BACNET",
+        "MSTP, ASME PRESSURE RELIEF VALVE",
+        "AT 50 PSI, ASME STAINLESS STEEL",
+        "FIRETUBE HEAT EXCHANGER WITH 160",
+        "PSI WORKING PRESSURE, ADJUSTABLE",
+        "HIGH LIMIT W/MANUAL RESET,",
+        "CSD-1-HIGH & LOW GAS PRESSURE",
+        "SWITCHES W/MANUAL RESET, INLET &",
+        "OUTLET TEMPERATURE SENSORS, LOW",
+        "AIR PRESSURE SWITCHES, AND LOW",
+        "WATER CUT OFF. ADDED OPTIONS OF:",
+        "BACNET COMPATIBLE, MOTORIZED",
+        "ISOLATION VALVES, 208/3PH",
+        "TRANSFORMER, CONDENSATE",
+        "NEUTRALIZERS, AND GAS REGULATORS.",
+        "***FREIGHT INCLUDED***",
+        "-----------------------------------",
+        "Pn: 874383",
+        "JER-DWGV JEREMIAS VENT PACKAGE",
+        "-----------------------------------",
+        "LOT OF JEREMIAS 12\" DWGV DOUBLE",
+        "WALL SPECIAL GAS VENT WITH UL 1738",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 33,
+      "table_number": 75,
+      "data": [
+        "1ea",
+        "29223.530/ea",
+        "29223.53",
+        ""
+      ],
+      "accuracy": null
+    },
+    {
+      "page": 33,
+      "table_number": 76,
+      "data": [
+        "APPROVED STAINLESS INNER, 1\"",
+        "INSULATING AIR SPACE, 304",
+        "STAINLESS STEEL OUTER JACKET, ALL",
+        "304 STAINLESS STEEL SUPPORTS AND",
+        "ACCESSORIES, INCLUDING FLUE COLLAR",
+        "CONNECTORS, REQUIRED SUPPORTS,",
+        "GUIDES, ROOF FLASHINGS, AND",
+        "TERMINATIONS FOR (4) FBN4001",
+        "B-1,2,3,4. (COMBUSTION AIR PIPE",
+        "NOT INCLUDED) *PLEASE NOTE:",
+        "ASSUMED 18FT VERTICAL AND 4FT",
+        "HORIZONTAL OFFSET. ALL ROUTING,",
+        "LENGTHS AND DIMENSIONS MUST BE",
+        ""
+      ],
+      "accuracy": null
+    }
+  ],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: title",
+      "Missing optional metadata: author",
+      "Missing optional metadata: subject",
+      "Missing optional metadata: keywords",
+      "Section 'AREA, ONE TRIP, DURING NORMAL' has very short content",
+      "Section 'EXT PRICE' has very short content"
+    ]
+  }
+}

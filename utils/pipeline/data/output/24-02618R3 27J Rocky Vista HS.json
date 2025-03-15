@@ -1,0 +1,136 @@
+{
+  "document": {
+    "metadata": {
+      "title": "",
+      "author": "Devon DuVal",
+      "subject": "",
+      "creator": "Acrobat PDFMaker 25 for Word",
+      "producer": "Adobe PDF Library 25.1.208",
+      "creation_date": "D:20250313080912-06'00'",
+      "modification_date": "D:20250313080914-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\24-02618R3 27J Rocky Vista HS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Page 1 of 6\n(Continued on Next Page)\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "QUOTE NUMBER: 24-02618R3",
+      "content": "Project: 27J Rocky Vista High School\nBid Date: 03/13/2025\nEngineer: Cator Ruma\nLocation: Commerce City\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BASE BID SCOPE",
+      "content": "679\nTitus – Grilles, registers, and diffusers w/ standard white finish\n•\nExcludes return sound boots; if Titus return canopies acceptable, ADD: $  84.00/EACH\n",
+      "children": [
+        {
+          "title": "2 Lots",
+          "content": "Prihoda – Fabric duct system w/ single track suspension, internal ring supports, perforations, premi...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "B03, C02, C03, C04, D05, D09, D12, E01, E02)",
+      "content": "1\nLoren Cook – Belt drive upblast roof kitchen exhaust fan w/ UL762, SGR, NEMA 3 disconnect, hinged ba...\n",
+      "children": [
+        {
+          "title": "1 Lot",
+          "content": "Metal-Fab – PSW single wall factory built grease duct, 10”Ø w/ 430 stainless steel construction, 18”...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "1 Lot",
+          "content": "Metal-Fab – 3G double wall factory built grease duct, 10”Ø w/ 430 stainless steel construction, 3” c...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "4 Lots",
+          "content": "Metal-Fab – Corr/guard double wall boiler flue, 10”Ø AL29-4C SS inner / 1” air space / aluminized st...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "(@ B-1 THRU 4)",
+      "content": "•\nRouting per plans w/ maximum vertical rise of 20’, roof penetration with flashing, storm collar, exi...\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ALT 01 SCOPE",
+      "content": "49\nTitus – Grilles, registers, and diffusers w/ standard white finish (A, B, D, F, H)\n•\nExcludes return sound boots; if Titus return canopies acceptable, ADD: $  84.00/EACH\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "D02, D04)",
+      "content": "•\nExcludes direct drive, gravity BD\n1\nLoren Cook – Direct drive downblast roof exhaust fan w/ EC motor, speed controller, NEMA 1 disconnec...\n",
+      "children": [
+        {
+          "title": "1 Lot",
+          "content": "Metal-Fab – PSW single wall factory built grease duct, 10”Ø w/ 430 stainless steel construction, 18”...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "3 Lots",
+          "content": "Metal-Fab – 3G double wall factory built grease duct w/ 430 stainless steel construction, 3” ceramic...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "1 Lot",
+          "content": "US Duct – Clamp together ductwork, 12”Ø w/ general dust standard gauge galvanized construction, roll...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Notes and Exclusions:",
+          "content": " Excludes AHUs, MAUs, FCUs, split systems, hydronic heat, fume hoods, airflow monitoring stations\n(AFMS), dryer boxes/venting, access panels/doors\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "STANDARD TERMS AND CONDITIONS OF SALE",
+      "content": "CREDIT AGREEMENT:  Sales and delivery of materials by Air Purification Company, Inc. (“Seller”) shal...\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "VARIOUS MANUFACTURERS AT STANDARD PRICES AND IS NOT INSURING PURCHASER AGAINST POSSIBLE CONSEQUENCES OF",
+      "content": "ERROR, OMISSIONS OR NEGLECT IN MANUFACTURE, PRODUCTION OR DELIVERY.  Seller shall have no liability ...\n",
+      "children": [],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: title",
+      "Missing optional metadata: subject",
+      "Missing optional metadata: keywords",
+      "No tables extracted"
+    ]
+  }
+}

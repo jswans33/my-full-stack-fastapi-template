@@ -1,0 +1,84 @@
+{
+  "document": {
+    "metadata": {
+      "title": "Rocky Vista HS proposal 031325.xlsm",
+      "author": "Shawn Jennings",
+      "subject": "",
+      "creator": "",
+      "producer": "Microsoft: Print To PDF",
+      "creation_date": "D:20250313154545-06'00'",
+      "modification_date": "D:20250313154545-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\Rocky Vista HS proposal 031325.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Addenda Reflected:",
+      "content": "Qty\nTag\nModel\nNo.\nVulcan Hydronic Cabinet Unit Heater\n· 115/1/60 Main electrical power connection – EC Motor\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "FTR",
+      "content": "Exclusions: custom colors, any hydronic piping or acceessories, valve\npackage, custom trim\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "UH",
+      "content": "Exclusions: custom colors, any hydronic piping or acceessories, valve\npackage, external vibration isolation, disconnect switch\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "FTR",
+      "content": "Exclusions: custom colors, any hydronic piping or acceessories, valve\npackage, custom trim\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "E24-02618",
+      "content": "Rocky Vista HS\n$41,960\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "Total Net Price:",
+      "content": "3/13/2025\nCator Ruma\n2/19/2025\nDescription\n7\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "CUH",
+      "content": "Exclusions: custom colors, any hydronic piping or acceessories, valve\npackage, external vibration isolation, disconnect switch\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "STANDARD TERMS AND CONDITIONS OF SALE",
+      "content": "TAXES:  Seller's prices do not include any applicable sales, use, excise or similar taxes. If, under...\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "MATERIALS AND PRODUCTS OF VARIOUS MANUFACTURERS AT STANDARD PRICES AND IS NOT INSURING PURCHASER AGAINST",
+      "content": "POSSIBLE CONSEQUENCES OF ERROR, OMISSIONS OR NEGLECT IN MANUFACTURE, PRODUCTION OR DELIVERY .  Selle...\n",
+      "children": [],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: subject",
+      "Missing optional metadata: keywords",
+      "No tables extracted"
+    ]
+  }
+}
