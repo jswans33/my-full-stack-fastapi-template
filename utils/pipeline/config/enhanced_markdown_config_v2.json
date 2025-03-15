@@ -1,0 +1,37 @@
+{
+  "output_format": "MARKDOWN",
+  "use_enhanced_markdown": true,
+  "markdown_options": {
+    "content_segmentation": true,
+    "inline_formatting": true,
+    "enhanced_tables": true,
+    "html_for_complex_tables": true,
+    "html_anchors": true,
+    "post_processing": true,
+    "validation": true,
+    "include_validation_report": true
+  },
+  "classification": {
+    "method": "rule_based",
+    "rules": {
+      "HVAC_SPECIFICATION": {
+        "title_keywords": [
+          "hvac",
+          "heating",
+          "ventilation",
+          "air conditioning",
+          "furnace"
+        ],
+        "content_keywords": [
+          "hvac",
+          "heating",
+          "ventilation",
+          "air conditioning",
+          "furnace"
+        ],
+        "confidence": 0.8,
+        "schema_pattern": "hvac_spec"
+      }
+    }
+  }
+}

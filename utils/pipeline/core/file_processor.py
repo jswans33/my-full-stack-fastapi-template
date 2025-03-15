@@ -155,8 +155,16 @@ class FileProcessor:
         """Extract pipeline-specific configuration."""
         pipeline_config = {}
 
+        # TODO : Extract relevant keys from config and put in central pipeline config file or file processigning config
+
         # Copy relevant top-level keys
-        for key in ["output_format", "strategies", "classification"]:
+        for key in [
+            "output_format",
+            "strategies",
+            "classification",
+            "use_enhanced_markdown",
+            "markdown_options",
+        ]:
             if key in self.config:
                 pipeline_config[key] = self.config[key]
 

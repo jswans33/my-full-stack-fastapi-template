@@ -354,7 +354,13 @@ class Pipeline:
         self, validated_data: Dict[str, Any], output_format: OutputFormat
     ) -> Dict[str, Any]:
         """Format validated data using the specified formatter."""
-        formatter = FormatterFactory.create_formatter(output_format)
+        # Get markdown-specific configuration if available
+        markdown_config = None
+        if output_format in [OutputFormat.MARKDOWN, OutputFormat.ENHANCED_MARKDOWN]:
+            markdown_config = self.config.get("markdown_options", {})
+
+        # Create formatter with config if needed
+        formatter = FormatterFactory.create_formatter(output_format, markdown_config)
         return formatter.format(validated_data)
 
     def _verify_output_structure(
@@ -374,6 +380,7 @@ class Pipeline:
         verifier_map = {
             OutputFormat.JSON: VerifierType.JSON_TREE,
             OutputFormat.MARKDOWN: VerifierType.MARKDOWN,
+            OutputFormat.ENHANCED_MARKDOWN: VerifierType.MARKDOWN,  # Use same verifier as regular markdown
         }
 
         verifier_type = verifier_map.get(output_format)
@@ -402,7 +409,19 @@ class Pipeline:
     def _get_output_format(self) -> OutputFormat:
         """Get output format from config or use default."""
         format_name = self.config.get("output_format", "json").upper()
+
+        # Check if enhanced markdown is enabled
+        use_enhanced = self.config.get("use_enhanced_markdown", False)
+        print(
+            f"DEBUG: use_enhanced_markdown = {use_enhanced}, format_name = {format_name}"
+        )
+
+        if format_name == "MARKDOWN" and use_enhanced:
+            print("DEBUG: Using ENHANCED_MARKDOWN format")
+            return OutputFormat.ENHANCED_MARKDOWN
+
         try:
+            print(f"DEBUG: Using {format_name} format")
             return OutputFormat[format_name]
         except KeyError:
             self.logger.warning(f"Unsupported output format: {format_name}, using JSON")
@@ -417,7 +436,13 @@ class Pipeline:
 
         # Get formatter based on file extension
         output_format = self._get_format_from_path(output_path)
-        formatter = FormatterFactory.create_formatter(output_format)
+
+        # Get markdown-specific configuration if available
+        markdown_config = None
+        if output_format in [OutputFormat.MARKDOWN, OutputFormat.ENHANCED_MARKDOWN]:
+            markdown_config = self.config.get("markdown_options", {})
+
+        formatter = FormatterFactory.create_formatter(output_format, markdown_config)
 
         # Format and write the data
         formatter.write(output_data, output_path)
@@ -427,10 +452,17 @@ class Pipeline:
         _, ext = os.path.splitext(path)
         ext = ext.lower()
 
+        # Check if enhanced markdown is enabled in config
+        use_enhanced_markdown = self.config.get("use_enhanced_markdown", False)
+
         format_map = {
             ".json": OutputFormat.JSON,
-            ".md": OutputFormat.MARKDOWN,
-            ".markdown": OutputFormat.MARKDOWN,
+            ".md": OutputFormat.ENHANCED_MARKDOWN
+            if use_enhanced_markdown
+            else OutputFormat.MARKDOWN,
+            ".markdown": OutputFormat.ENHANCED_MARKDOWN
+            if use_enhanced_markdown
+            else OutputFormat.MARKDOWN,
         }
 
         return format_map.get(ext, OutputFormat.JSON)

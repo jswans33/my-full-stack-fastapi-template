@@ -414,3 +414,112 @@ This enhancement ensures that the schema includes:
 6. Accurate counts of sections and tables
 
 These enhancements make the schema more useful for analysis and visualization, and support the improved visualization tools. The implementation has been tested and verified to work correctly.
+
+## 5. Enhanced Markdown Formatter (✅ COMPLETED)
+
+### Problem Description
+The standard markdown formatter produced basic markdown output that lacked structure, proper formatting, and advanced features. This resulted in poor readability and limited usefulness of the markdown output.
+
+### Code Analysis
+The original markdown formatter in `utils/pipeline/processors/formatters/markdown_formatter.py` had several limitations:
+
+1. No support for content segmentation (paragraphs, lists, code blocks)
+2. No inline formatting for emphasis, bold, etc.
+3. Poor handling of tables, especially complex ones with merged cells
+4. No support for special elements like notes, warnings, and definitions
+5. No post-processing for improved readability
+6. No validation of the generated markdown
+
+### Fix Implementation
+We implemented an enhanced markdown formatter in `utils/pipeline/processors/formatters/enhanced_markdown_formatter.py` that extends the base markdown formatter with advanced features:
+
+```python
+class EnhancedMarkdownFormatter(MarkdownFormatter):
+    """
+    Enhanced formatter for converting extracted PDF content into readable Markdown.
+
+    Features:
+    - Content segmentation (paragraphs, lists, code blocks, etc.)
+    - Enhanced table formatting with support for complex tables
+    - Inline formatting detection
+    - Special element handling (notes, warnings, definitions, etc.)
+    - Post-processing for improved readability
+    - Markdown validation
+    """
+
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Initialize the enhanced markdown formatter.
+
+        Args:
+            config: Optional configuration dictionary
+        """
+        super().__init__()
+        self.config = config or {}
+        self.logger = get_logger(__name__)
+
+    def format(self, analyzed_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Format the analyzed data into a Markdown structure with enhanced features.
+
+        Args:
+            analyzed_data: Data from the PDF analyzer
+
+        Returns:
+            Formatted data structure with Markdown content
+        """
+        self.logger.info("Formatting PDF content as Markdown with enhanced features")
+
+        # Implementation details...
+```
+
+Key enhancements include:
+
+1. **Content Segmentation**: Automatically identifies and formats paragraphs, lists, code blocks, and other structural elements
+2. **Inline Formatting**: Detects and applies appropriate formatting for emphasis, bold, code, etc.
+3. **Enhanced Table Handling**: Supports complex tables with merged cells using HTML when needed
+4. **Special Element Handling**: Properly formats notes, warnings, definitions, and figure captions
+5. **Post-Processing**: Improves readability with consistent spacing and formatting
+6. **Validation**: Validates the generated markdown and provides statistics
+
+### Configuration
+The enhanced markdown formatter can be enabled by setting `use_enhanced_markdown: true` in the pipeline configuration:
+
+```json
+{
+  "output_format": "MARKDOWN",
+  "use_enhanced_markdown": true,
+  "markdown_options": {
+    "content_segmentation": true,
+    "inline_formatting": true,
+    "enhanced_tables": true,
+    "html_for_complex_tables": true,
+    "html_anchors": true,
+    "post_processing": true,
+    "validation": true,
+    "include_validation_report": false
+  }
+}
+```
+
+### Integration
+We updated the pipeline to properly pass the configuration to the formatter factory:
+
+1. Modified `FileProcessor._extract_pipeline_config()` to include markdown-related configuration
+2. Updated `Pipeline._get_output_format()` to check for enhanced markdown setting
+3. Enhanced `Pipeline._format_output()` to pass markdown configuration to the formatter
+
+### Verification
+The enhanced markdown formatter has been tested with various documents and produces significantly improved output:
+
+- Better structure with proper headings, paragraphs, and lists
+- Improved readability with consistent formatting
+- Better handling of tables, including complex ones
+- Support for special elements like notes and warnings
+- HTML anchors for cross-references
+
+Example output shows:
+- HTML anchors for section headings: `<a id="section-id"></a>`
+- Bold formatting for terms in all caps: `**AIA**`, `**HVAC**`, etc.
+- Proper heading structure with appropriate levels
+- Validation report at the end of the file

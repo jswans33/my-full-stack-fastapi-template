@@ -24,6 +24,13 @@ The document processing pipeline has been enhanced in several key areas:
    - Improved the command-line interface for schema visualization
    - Created comprehensive documentation for the visualization tools
 
+4. **Enhanced Markdown Formatter**
+   - Implemented advanced content segmentation for better structure recognition
+   - Added support for complex tables with merged cells using HTML when needed
+   - Implemented special element handling for notes, warnings, definitions, and figure captions
+   - Added post-processing for improved readability and consistent formatting
+   - Created comprehensive documentation in [enhanced_markdown.md](./docs/enhanced_markdown.md)
+
 ## Verification Status
 
 The following verification documents have been created to track the status of the enhancements:
@@ -75,6 +82,7 @@ Based on our analysis, we recommend the following next steps:
    - Modify the rule-based classifier to prioritize specific rules over generic types
    - Enhance the table detection algorithm
    - ✅ Enhance the schema storage to include content samples and table data (COMPLETED)
+   - ✅ Implement enhanced markdown formatter for better document output (COMPLETED)
 
 3. **Update Documentation**
    - Update PIPELINE_USAGE.md with examples of using the enhanced configuration system
@@ -99,6 +107,7 @@ The following steps should be executed in order:
      1. Classification override fix
      2. Table detection enhancements
      3. ✅ Schema storage enhancements (COMPLETED)
+     4. ✅ Enhanced markdown formatter (COMPLETED)
 
 3. **Testing**
    - Test each fix individually to ensure it works as expected

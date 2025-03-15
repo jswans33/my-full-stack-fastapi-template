@@ -311,6 +311,13 @@ def main():
         # Load and update configuration
         config = load_config(args.config)
 
+        # Debug output to check configuration
+        print("Configuration loaded:")
+        print(f"Config path: {args.config}")
+        print(f"use_enhanced_markdown: {config.get('use_enhanced_markdown', False)}")
+        print(f"output_format: {config.get('output_format', 'unknown')}")
+        print(f"markdown_options: {config.get('markdown_options', {})}")
+
         # Debug output to check if classification configuration is loaded
         if "classification" in config:
             print("Classification configuration found:")
