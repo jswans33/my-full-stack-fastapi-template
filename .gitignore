@@ -121,3 +121,5 @@ temp/
 utils/.venv/
 backend/.venv/
 utils/pipeline/.venv/
+utils/pipeline/data/
+utils/pipeline/data/outputs/
