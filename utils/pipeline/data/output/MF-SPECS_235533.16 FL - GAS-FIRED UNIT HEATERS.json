@@ -1,0 +1,431 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 235533.16 - GAS-FIRED UNIT HEATERS",
+      "author": "ARCOM, Inc.",
+      "subject": "GAS-FIRED UNIT HEATERS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234300Z",
+      "modification_date": "D:20250314222502-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_235533.16 FL - GAS-FIRED UNIT HEATERS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n09/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "GAS-FIRED UNIT HEATERS",
+      "content": "235533.16 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary\nConditions and Division 01 Specification Sections, apply to this Section.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Section includes gas-fired unit heaters.\n1.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of gas-fired unit heater.\n1.\nInclude rated capacities, operating characteristics, and accessories.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Shop Drawings: For gas-fired unit heaters[; signed and sealed by a qualified professional\nengineer]. Include plans, elevations, sections, and attachment details.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordination Drawings: Plans, elevations, and other details, drawn to scale, on which the\nfollowing items are shown and coordinated with each other, using input from installers of the\n",
+          "children": [
+            {
+              "title": "items involved:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n09/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED UNIT HEATERS",
+      "content": "235533.16 - 2\n1.\nStructural members to which equipment will be attached.\n2.\n",
+      "children": [
+        {
+          "title": "Items penetrating roof and the following:",
+          "content": "a.\nVent and gas piping rough-ins and connections.\nb.\n<Insert item>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "B.",
+          "content": "Seismic Qualification Certificates: For gas-fired unit heaters, accessories, and components, from\nmanufacturer.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Field quality-control reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Sample Warranty: For special warranty.\n1.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For gas-fired unit heaters to include in emergency, operation,\nand maintenance manuals.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Furnish extra materials that match products installed and that are packaged with protective\ncovering for storage and identified with labels describing contents.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "ASHRAE/IES 90.1 Compliance: Applicable requirements in ASHRAE/IES 90.1, Section 6 -\n\"Heating, Ventilating, and Air-Conditioning.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer agrees to repair or replace heat exchanger of gas-fired unit heater\nthat fails in materials or workmanship within specified warranty period.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED UNIT HEATERS",
+      "content": "235533.16 - 3\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n2.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Seismic Performance: Gas-fired unit heaters shall withstand the effects of earthquake motions\ndetermined according to [ASCE/SEI 7] <Insert requirement>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a\nqualified testing agency, and marked for intended location and application.\n",
+          "children": [
+            {
+              "title": "Capacities and Characteristics:",
+              "content": "1.\nGas Input: <Insert Btu/h (kW)>.\n2.\nGas Output: <Insert Btu/h (kW)>.\n3.\nAnnual Gas Utilization Efficiency: [80] <Insert number> percent.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Electrical Characteristics:",
+              "content": "a.\nMotor Size: <Insert horsepower>.\nb.\nMotor Speed: <Insert number> rpm.\nc.\nVolts: [120] [208] [230] <Insert value>.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Factory assembled, piped, and wired, and complying with ANSI Z83.8/CSA 2.6.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED UNIT HEATERS",
+      "content": "235533.16 - 4\n",
+      "children": [
+        {
+          "title": "B.",
+          "content": "Gas Type: Design burner for [natural] [propane] gas having characteristics same as those of gas\navailable at Project site.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Type of Venting: [Gravity] [Powered] [Indoor, separated combustion, power] vented.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Housing: Steel, with integral draft hood and inserts for suspension mounting rods.\n1.\nExternal Casings and Cabinets: [Baked enamel] [Powder coating] over corrosion-\n",
+          "children": [
+            {
+              "title": "Accessories:",
+              "content": "1.\nFour-point suspension kit.\n2.\nPower Venter: Centrifugal aluminized-steel fan, with stainless-steel shaft; 120-V ac motor.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Heat Exchanger: [Aluminized] [Stainless] steel.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Burner Material: [Aluminized steel with stainless-steel inserts] [Stainless steel].\n",
+          "children": [
+            {
+              "title": "Propeller Unit Fan:",
+              "content": "1.\n[Formed-steel] [Aluminum] propeller blades riveted to heavy-gage steel spider bolted to\ncast-iron hub, dynamically balanced, and resiliently mounted.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Centrifugal Unit Fan:",
+              "content": "1.\nSteel, centrifugal fan dynamically balanced and resiliently mounted.\n2.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Belt-Driven Drive Assembly:",
+              "content": "a.\nResiliently mounted to housing, with the following features:\n1)\nFan Shaft: Turned, ground, and polished steel; keyed to wheel hub.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Motors:",
+              "content": "1.\nComply with NEMA designation, temperature rating, service factor, and efficiency\nrequirements for motors specified in Section 230513 \"Common Motor Requirements for\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED UNIT HEATERS",
+      "content": "235533.16 - 5\n3.\nMotor Bearings: <Insert requirements>.\n4.\n",
+      "children": [
+        {
+          "title": "Unusual Service Conditions:",
+          "content": "a.\nAmbient Temperature: <Insert deg C>.\nb.\nAltitude: <Insert feet ((m))> above sea level.\nc.\nHigh humidity.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "K.",
+          "content": "Controls: Regulated redundant gas valve containing pilot solenoid valve, electric gas valve, pilot\nfilter, pressure regulator, pilot shutoff, and manual shutoff all in one body.\n",
+          "children": [
+            {
+              "title": "[Wall] [Unit]-Mounted Thermostat:",
+              "content": "a.\n[Single] [Two] stage.\nb.\nFan on-off-automatic switch.\nc.\n24-V ac.\nd.\n50 to 90 deg F (10 to 32 deg C) operating range.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "L.",
+          "content": "Electrical Connection: Factory wire motors and controls for a single electrical connection.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Install and connect gas-fired unit heaters and associated gas and vent features and systems\naccording to [NFPA 54] [CSA B149.1], applicable local codes and regulations, and\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Suspended Units: Suspend from substrate using threaded rods, spring hangers, and building\nattachments. Secure rods to unit hanger attachments. Adjust hangers so unit is level and plumb.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Substrate-Mounted Units: Provide supports connected to substrate. Secure units to supports.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED UNIT HEATERS",
+      "content": "235533.16 - 6\n1.\nSpring hangers[ and seismic restraints] are specified in [Section 230529 \"Hangers and\n",
+      "children": [
+        {
+          "title": "HVAC.\"]",
+          "content": "2.\nThreaded Rods, Spring Hangers, and Building Attachments: Comply with requirements in\nSection 230529 \"Hangers and Supports for HVAC Piping and Equipment\" and\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Piping installation requirements are specified in other Sections. Drawings indicate general\narrangement of piping, fittings, and specialties.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Where installing piping adjacent to gas-fired unit heater, allow space for service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Gas Piping: Comply with [Section 231123 \"Facility Natural-Gas Piping.\"] [Section 231126\n\"Facility Liquefied-Petroleum Gas Piping.\"] Connect gas piping to gas train inlet; provide\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Vent Connections: Comply with Section 235123 \"Gas Vents.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Ground equipment according to Section 260526 \"Grounding and Bonding for Electrical Systems.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Connect wiring according to Section 260519 \"Low-Voltage Electrical Power Conductors and\nCables.\"\n3.4\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Manufacturer's Field Service: Engage a factory-authorized service representative to test and\ninspect components, assemblies, and equipment installations, including connections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Perform the following tests and inspections[ with the assistance of a factory-authorized service\n",
+          "children": [
+            {
+              "title": "representative]:",
+              "content": "1.\nTest and adjust controls and safeties. Replace damaged and malfunctioning controls and\nequipment.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED UNIT HEATERS",
+      "content": "235533.16 - 7\nc.\nTest results that do not comply with requirements and corrective action taken to\nachieve compliance with requirements.\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Gas-fired unit heater will be considered defective if it does not pass tests and inspections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Prepare test and inspection reports.\n3.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Adjust initial temperature and humidity set points.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Adjust burner and other unit components for optimum heating performance and efficiency.\n3.6\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to train] [Train] Owner's maintenance\npersonnel to adjust, operate, and maintain gas-fired unit heaters.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

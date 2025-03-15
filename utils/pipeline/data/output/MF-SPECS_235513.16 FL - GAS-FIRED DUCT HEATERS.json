@@ -1,0 +1,343 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 235513.16 - GAS-FIRED DUCT HEATERS",
+      "author": "ARCOM, Inc.",
+      "subject": "GAS-FIRED DUCT HEATERS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234300Z",
+      "modification_date": "D:20250314222437-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_235513.16 FL - GAS-FIRED DUCT HEATERS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n09/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "GAS-FIRED DUCT HEATERS",
+      "content": "235513.16 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary Conditions and\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Section includes gas-fired duct heaters.\n1.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of gas-fired duct heater.\n1.\nInclude rated capacities, operating characteristics, and accessories.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Shop Drawings: For gas-fired duct heaters[; signed and sealed by a qualified professional engineer]....\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordination Drawings: Plans, elevations, and other details, drawn to scale, on which the following ...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED DUCT HEATERS",
+      "content": "235513.16 - 2\n1.\nStructural members to which equipment will be attached.\n2.\n",
+      "children": [
+        {
+          "title": "Items penetrating roof and the following:",
+          "content": "a.\nDuct, vent, and gas piping rough-ins and connections.\nb.\n<Insert item>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "B.",
+          "content": "Seismic Qualification Certificates: For gas-fired duct heaters, accessories, and components, from ma...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Field quality-control reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Sample Warranty: For special warranty.\n1.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For gas-fired duct heaters to include in emergency, operation, and m...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "ASHRAE/IES 90.1 Compliance: Applicable requirements in ASHRAE/IES 90.1, Section 6 - \"Heating,\nVentilating, and Air-Conditioning.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer agrees to repair or replace heat exchanger of gas-fired duct heater t...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED DUCT HEATERS",
+      "content": "235513.16 - 3\n2.2\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Seismic Performance: Gas-fired duct heaters shall withstand the effects of earthquake motions determ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a qual...\n",
+          "children": [
+            {
+              "title": "Capacities and Characteristics:",
+              "content": "1.\nHeat Exchanger: [Aluminized] [Stainless] steel.\n2.\nBurner Material: [Aluminized steel with stainless-steel inserts] [Stainless steel].\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Factory assembled, piped, and wired; and complying with ANSI Z83.8/CSA 2.6.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Fuel Type: Design burner for [natural] [propane] gas having characteristics same as those of gas ava...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Indoor External Housing: Steel cabinet with integral support inserts and removable bottom arranged t...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED DUCT HEATERS",
+      "content": "235513.16 - 4\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Outdoor External Housing: Weatherproof steel cabinet with integral support inserts and removable bot...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Internal Casing: Aluminized steel, arranged to contain airflow, with duct flanges at inlet and outle...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Power Venter: Integral, motorized centrifugal fan interlocked with gas valve.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Controls: Regulated redundant gas valve containing pilot solenoid valve, electric gas valve, pilot f...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Install and connect gas-fired duct heaters and associated fuel and vent features and systems accordi...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Suspended Units: Suspend from substrate using threaded rods, spring hangers, and building attachment...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED DUCT HEATERS",
+      "content": "235513.16 - 5\n3.2\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Piping installation requirements are specified in other Sections. Drawings indicate general arrangem...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Where installing piping adjacent to gas-fired duct heaters, allow space for service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Gas Piping: Comply with [Section 231123 \"Facility Natural-Gas Piping.\"] [Section 231126 \"Facility\nLiquefied-Petroleum Gas Piping.\"] Connect gas piping to gas train inlet; provide union with enough c...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Vent Connections: Comply with Section 235123 \"Gas Vents.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Duct Connections: Comply with [Section 233113 \"Metal Ducts.\"] [Section 233116 \"Nonmetal Ducts.\"]\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Electrical Connections: Comply with applicable requirements in electrical Sections.\n1.\nInstall electrical devices furnished with heaters but not specified to be factory mounted.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Manufacturer's Field Service: Engage a factory-authorized service representative to test and inspect...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Perform the following tests and inspections[ with the assistance of a factory-authorized service\n",
+          "children": [
+            {
+              "title": "representative]:",
+              "content": "1.\nTest and adjust controls and safeties. Replace damaged and malfunctioning controls and equipment.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Gas-fired duct heater will be considered defective if it does not pass tests and inspections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Prepare test and inspection reports.\n3.4\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Adjust initial temperature and humidity set points.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Adjust burner and other unit components for optimum heating performance and efficiency.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "GAS-FIRED DUCT HEATERS",
+      "content": "235513.16 - 6\n3.5\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to train] [Train] Owner's maintenance personnel ...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

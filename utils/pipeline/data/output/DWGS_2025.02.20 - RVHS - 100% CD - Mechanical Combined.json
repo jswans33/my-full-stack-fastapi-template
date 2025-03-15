@@ -1,0 +1,19 @@
+{
+  "document": {
+    "metadata": {},
+    "path": "",
+    "type": ""
+  },
+  "content": [],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": true,
+    "errors": [],
+    "warnings": [
+      "Missing or empty metadata",
+      "No sections extracted",
+      "No tables extracted"
+    ]
+  }
+}

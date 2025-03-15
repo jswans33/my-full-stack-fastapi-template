@@ -1,0 +1,1197 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 236413.16 - INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "author": "ARCOM, Inc.",
+      "subject": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234300Z",
+      "modification_date": "D:20250314222601-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_236413.16 FL - INDIRECT-FIRED ABSORPTION WATER CHILLERS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary Conditions and\n",
+          "children": [
+            {
+              "title": "Section Includes:",
+              "content": "1.\nPackaged, water-cooled, [single-] [and] [double-]effect absorption chillers.\n2.\nHeat-exchanger, brush-cleaning system.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "COP: Coefficient of performance. The ratio of the rate of heat removal to the rate of energy input u...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "DDC: Direct digital control.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "IPLV: Integrated part-load value. A single-number part-load efficiency figure of merit calculated pe...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "NPLV: Nonstandard part-load value. A single-number part-load efficiency figure of merit calculated p...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Seismic Performance: Indirect-fired absorption chillers shall withstand the effects of earthquake mo...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 2\n1.\nThe term \"withstand\" means \"the unit will remain in place without separation of any parts from the\n",
+      "children": [
+        {
+          "title": "Condenser-Fluid Temperature Performance:",
+          "content": "1.\nStartup Condenser-Fluid Temperature: Chiller shall be capable of starting with an entering condenser...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "C.",
+          "content": "Site Altitude: Chiller shall be suitable for altitude at which installed without affecting performan...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Performance Tolerance: Comply with the following in lieu of ARI 560:\n1.\nAllowable Capacity Tolerance: [Zero] <Insert number> percent.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product indicated. Include rated capacities, operating characteristic...\n",
+          "children": [
+            {
+              "title": "LEED Submittals:",
+              "content": "1.\nProduct Data for Prerequisite EA 2: Documentation indicating that units comply with ASHRAE 90.1.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 3\n3.\nProduct Data for Credit EA 4: Documentation indicating that equipment and refrigerants comply.\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Shop Drawings: Include plans, elevations, sections, details, and attachments to other work.\n1.\nDetail equipment assemblies and indicate dimensions, weights, load distribution, required clearances...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordination Drawings: Floor plans, drawn to scale, on which the following items are shown and coord...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Certificates: For certification required in \"Quality Assurance\" Article.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Seismic Qualification Certificates: For chillers, accessories, and components, from manufacturer.\n1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Source quality-control reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Startup service reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Warranty: Sample of special warranty.\n1.7\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For each chiller to include in emergency, operation, and maintenance...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "ARI Rating: Rate chiller performance according to requirements in ARI 560.\nCopyright 2013 AIA\nMasterSpec Premium\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 4\n",
+      "children": [
+        {
+          "title": "ASHRAE Compliance:",
+          "content": "1.\nASHRAE 15 for safety code for mechanical refrigeration.\n2.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "C.",
+          "content": "ASME Compliance: Fabricate and label chiller pressure vessels to comply with applicable portions of ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Comply with NFPA 70.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Comply with requirements of UL and UL Canada, and include label by a qualified testing agency showin...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Ship chillers factory charged with nitrogen.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Ship absorbent and refrigerant in chillers or in containers separate from chillers.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Ship [absorbent] [and] [refrigerant] in containers separate from chillers.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Package chiller for export shipping in totally enclosed [bagging] [crate] [crate with bagging].\n1.10\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordinate sizes and locations of concrete bases with actual equipment provided. Cast anchor-bolt in...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Coordinate sizes, locations, and anchoring attachments of structural-steel support structures.\n1.11\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer's standard form in which manufacturer agrees to repair or replace com...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Warranty Period: [Two] [Three] [Four] [Five] <Insert number> years from date of Substantial Completi...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 5\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n2.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Factory-assembled and -tested, hermetic-design chiller complete with absorber, evaporat...\n",
+          "children": [
+            {
+              "title": "Absorbent and Refrigerant:",
+              "content": "1.\nAbsorbent: Lithium bromide solution with corrosion inhibitor.\n2.\nRefrigerant: Deionized [or distilled ]water.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Seismic Fabrication Requirements: Fabricate mounting base and attachment to chiller, accessories, an...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Hermetically sealed, self-lubricating, and fitted with self-adjusting, spring-loaded, wear-compensat...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Pump motor assembly shall be designed to operate for not less than [25,000] [50,000] hours between i...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Pump motors cooled, and bearings lubricated, either by fluid being pumped or by a filtered supply of...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Pump suction and discharge equipped with isolation valves.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Separate and dedicated pumps for absorbent solution and refrigerant.\n1.\nAbsorbent solution and refrigerant flow-control method shall be manufacturer's choice to comply with\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Purge System: Unit mounted and factory wired, equipped with controls and a pump to automatically rem...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 6\n1.\nPurge Pump Motor: Comply with NEMA designation, temperature rating, service factor, and efficiency\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Configuration for Single-Effect Chillers: Two shells; one shell consists of the absorber/evaporator ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Configuration for Double-Effect Chillers: Two shells; one shell consists of the absorber/evaporator,...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Construction: Fabricated from continuously welded carbon-steel sheet or plate, or from seamless pipe...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Design Pressure and Temperature Rating: Comply with applicable requirements in ASME Boiler and Press...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "End Tube Sheets: Carbon-steel plates continuously welded to each end of shell; drilled and reamed to\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Intermediate Tube Sheets: Carbon-steel plates installed in shell and spaced along length of tube at ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Generator/Condenser Shell Pressure Relief Device: Manufacturers standard rupture disk complying with\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Nozzle or Dispersion Trays: Designed to evenly distribute absorbent solution over tubes. Constructed...\n",
+          "children": [
+            {
+              "title": "Tubes:",
+              "content": "1.\nIndividually replaceable, straight tubes expanded into tube sheets. Replaceable from either end and\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Water Boxes:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 7\n1.\nCarbon-steel construction; arranged to provide visual inspection and cleaning of tubes from either e...\n",
+      "children": [
+        {
+          "title": "Additional Corrosion Protection:",
+          "content": "1.\nElectrolytic corrosion-inhibitor anode.\n2.\nCoat wetted surfaces with a corrosion-resistant finish.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "E.",
+          "content": "Absorber/Condenser Crossover Piping: Factory [furnished] [installed] piping connecting fluid connect...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Nozzle or Dispersion Trays: Designed to evenly distribute refrigerant over tubes. Constructed of bra...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Refrigerant Holding Pan: [Steel] [Stainless steel] [Steel or stainless steel].\n",
+          "children": [
+            {
+              "title": "Tubes:",
+              "content": "1.\nIndividually replaceable, straight tubes expanded into tube sheets. Replaceable from either end and\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 8\n",
+      "children": [
+        {
+          "title": "Water Boxes:",
+          "content": "1.\nCarbon-steel construction; arranged to provide visual inspection and cleaning of tubes from either e...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Refrigerant Holding Pan: [Steel] [Stainless steel] [Steel or stainless steel].\n",
+          "children": [
+            {
+              "title": "Tubes:",
+              "content": "1.\nIndividually replaceable, straight tubes expanded into tube sheets. Replaceable from either end and\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Water Boxes:",
+              "content": "1.\nCarbon-steel construction; arranged to provide visual inspection and cleaning of tubes from either e...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 9\na.\nWater boxes shall have lifting lugs or eyebolts.\nb.\n[Hinged] [or] [davited] water boxes.\n",
+      "children": [
+        {
+          "title": "Additional Corrosion Protection:",
+          "content": "1.\nElectrolytic corrosion-inhibitor anode.\n2.\nCoat wetted surfaces with a corrosion-resistant finish.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Tubes:",
+          "content": "1.\nIndividually replaceable, straight tubes expanded into tube sheets. Replaceable from either end and\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Water Boxes:",
+          "content": "1.\nCarbon-steel construction; arranged to provide visual inspection and cleaning of tubes from either e...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Additional Corrosion Protection:",
+          "content": "1.\nElectrolytic corrosion-inhibitor anode.\n2.\nCoat wetted surfaces with a corrosion-resistant finish.\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 10\n3.\nUsing same material as tubes, clad surfaces of end tube sheets in contact with fluid. Coat other wet...\n",
+      "children": [
+        {
+          "title": "Tubes:",
+          "content": "1.\nReplaceable, straight, or U tubes expanded into tube sheets.\n2.\nMaterial: [Manufacturer's standard] [06/11 copper-nickel alloy] [Type 409 stainless steel]\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Water Boxes:",
+          "content": "1.\nCarbon-steel construction; arranged to provide visual inspection and cleaning of tubes from either e...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Additional Corrosion Protection:",
+          "content": "1.\nElectrolytic corrosion-inhibitor anode.\n2.\nCoat wetted surfaces with a corrosion-resistant finish.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Tubes:",
+          "content": "1.\nIndividually replaceable, straight tubes expanded into tube sheets. Replaceable from either end and\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 11\n",
+      "children": [
+        {
+          "title": "Water Boxes:",
+          "content": "1.\nCarbon-steel construction; arranged to provide visual inspection and cleaning of tubes from either e...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Additional Corrosion Protection:",
+          "content": "1.\nElectrolytic corrosion-inhibitor anode.\n2.\nCoat wetted surfaces with a corrosion-resistant finish.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Description: Shell-and-tube or brazed-plate heat exchanger; integral part of chiller to increase cyc...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Shell-and-tube heat exchanger constructed of carbon-steel shell and copper-nickel-alloy...\n",
+          "children": [
+            {
+              "title": "Factory-Applied Insulation on Cold Surfaces:",
+              "content": "1.\nClosed-cell, flexible elastomeric thermal insulation complying with ASTM C 534, Type I for tube and\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 12\nb.\nBefore insulating steel surfaces, prepare surfaces for paint, and prime and paint as indicated for\n",
+      "children": [
+        {
+          "title": "Factory-Applied Insulation on Hot Surfaces:",
+          "content": "1.\nMineral-fiber board, pipe or tank insulation complying with one of following:\na.\nASTM C 547, Type I or Type II, Grade A.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Factory installed and wired, and functionally tested at factory before shipment.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Single-point, field-power connection to [fused disconnect switch] [nonfused disconnect switch] [circ...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 13\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Terminal blocks with numbered [and color-coded ]wiring to match wiring diagram. Spare wiring termina...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Wiring Outside of Enclosures: Factory installed in metal raceway except make terminal connections wi...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Control: Standalone and microprocessor based, with all memory stored in nonvolatile memory so that\nreprogramming is not required on loss of electrical power.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Enclosure: Unit mounted, NEMA 250, [Type 1] [Type 4] [Type 4x] <Insert type>, hinged or lockable.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Operator Interface: Multiple-character digital or graphic display with dynamic update of information...\n",
+          "children": [
+            {
+              "title": "Control Functions:",
+              "content": "1.\nManual or automatic startup and shutdown time schedule.\n2.\nAutomatic cycle to prevent crystallization.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 14\n",
+      "children": [
+        {
+          "title": "E.",
+          "content": "Capacity Control: Automatically controls input flow rate of heat source to maintain chilled-water te...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Control Valve Package: [Factory-furnished, for field installation,] [Factory-installed] control valv...\n",
+          "children": [
+            {
+              "title": "Safety Shutdowns:",
+              "content": "1.\nCrystallization.\n2.\nLow refrigerant temperature.\n3.\nLoss of chilled- or condenser-water flow.\n4.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Warning Conditions: Control panel shall close warning contacts and generate a message when one of th...\n",
+          "children": [
+            {
+              "title": "following operating conditions is detected:",
+              "content": "1.\nLow refrigerant temperature.\n2.\nHigh generator temperature or pressure.\n3.\nHigh entering generator-water temperature (single-stage generator only).\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "Trending: Capability to trend analog data of up to five parameters simultaneously over an adjustable...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "J.",
+          "content": "Security Access: Provide electronic security access to controls through identification and password ...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 15\n",
+      "children": [
+        {
+          "title": "K.",
+          "content": "Control Authority: At least four conditions: Off, local manual control at chiller, local automatic c...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "L.",
+          "content": "Communication Port: RS-232 port, USB 2.0 port, or equivalent connection capable of connecting a prin...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "M.",
+          "content": "Interface with DDC System for HVAC: Factory-installed hardware and software to enable the DDC system...\n",
+          "children": [
+            {
+              "title": "Hardwired Points:",
+              "content": "a.\nMonitoring: On-off status, [common trouble alarm] <Insert monitoring point>.\nb.\nControl: On-off operation, [chilled-water, discharge temperature set-point adjustment]\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Paint chiller, using manufacturer's standard procedures, except comply with the following minimum\n",
+          "children": [
+            {
+              "title": "requirements:",
+              "content": "1.\nProvide at least one coat of primer with a total dry film thickness of at least 2 mils (0.05 mm).\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Provide Owner with quart container of paint used in application of topcoat to use in touchup applica...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Sight Glasses: Equip unit with sight glasses for visual inspection of absorbent solution and refrige...\n",
+          "children": [
+            {
+              "title": "Flow Switches:",
+              "content": "1.\nChiller manufacturer shall furnish a switch for each [condenser] [evaporator and condenser] and veri...\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Paddle Flow Switches:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 16\na.\nVane operated to actuate a double-pole, double-throw switch with one pole field wired to the\n",
+      "children": [
+        {
+          "title": "Pressure Differential Switches:",
+          "content": "a.\nConstruction: Wetted parts of body and trim constructed of Type 316 stainless steel.\nb.\nPerformance: Switch shall withstand, without damage, the full-pressure rating of the heat\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Vibration Isolation:",
+          "content": "1.\nChiller manufacturer shall furnish neoprene-pad vibration isolation for each chiller.\na.\nTwo layers of 0.375-inch- (10-mm-) thick, ribbed- or waffle-pattern neoprene pads separated by a\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Lithium Bromide Filter:",
+          "content": "1.\nFactory install a filter, isolation valves, and associated piping.\n2.\nFilter shall consist of a stainless-steel body, with removable and cleanable 150-micron, stainless-s...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Capacity: <Insert tons (kW)>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Full-Load Efficiency (COP): <Insert number>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Part-Load Efficiency [(IPLV)] [(NPLV)]: <Insert number>.\nCopyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 17\n",
+      "children": [
+        {
+          "title": "Evaporator:",
+          "content": "1.\nPressure Rating: [150 psig (1035 kPa)] [300 psig (2070 kPa)] <Insert psig (kPa)>.\n2.\nNumber of Passes: [One] [Two] [Three] <Insert number>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Absorber/Condenser:",
+          "content": "1.\nPressure Rating: [150 psig (1035 kPa)] [300 psig (2070 kPa)] <Insert psig (kPa)>.\n2.\nNumber of Passes: [One] [Two] [Three].\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Hot-Water Generator:",
+          "content": "1.\nCapacity: <Insert MBtu/h (kW)>.\n2.\nPressure Rating: [150 psig (1035 kPa)] [300 psig (2070 kPa)] <Insert psig (kPa)>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Steam Generator:",
+          "content": "1.\nCapacity: <Insert MBtu/h (kW)>.\n2.\nFlow Rate: <Insert lb/h (L/s)>.\n3.\nPressure: <Insert psig (kPa)>.\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 18\n",
+      "children": [
+        {
+          "title": "Pump Horsepower:",
+          "content": "1.\nPurge: <Insert value>.\n2.\nRefrigerant: <Insert value>.\n3.\nSolution: <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Chiller Control Electrical Requirements:",
+          "content": "1.\nPower Input: <Insert kilowatts>.\n2.\nMinimum Circuit Ampacity: <Insert value>.\n3.\nMaximum Overcurrent Protection Device: <Insert amperage>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Chiller Electrical Requirements:",
+          "content": "1.\nPower Input: <Insert kilowatts>.\n2.\nMinimum Circuit Ampacity: <Insert value>.\n3.\nMaximum Overcurrent Protection Device: <Insert amperage>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "K.",
+          "content": "Noise Rating: [80] [85] <Insert dBA> sound power level when measured according to ARI 575. Provide\nfactory-installed sound treatment if necessary to achieve the performance indicated.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Furnish for field installation a brush-cleaning system on each chiller [condenser] <Insert heat exch...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "System shall maintain tube fouling at or below design conditions without interrupting normal equipme...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "System shall consist of a brush inserted in each tube and a catch basket attached to each end of the...\n",
+          "children": [
+            {
+              "title": "Components:",
+              "content": "1.\nBrush: Each brush shall have nylon bristles, titanium wires, and polypropylene tips. Brush interfere...\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Four-Way Valve:",
+              "content": "a.\nConstruct valve body of carbon steel with internal sealing parts of hard rubber and Type 304\nstainless steel.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 19\nb.\nConfigure valve with parallel flow connections to minimize field installation piping.\n",
+      "children": [
+        {
+          "title": "features:",
+          "content": "a.\nNEMA 250, [Type 1] [Type 4] [Type 4x] [Type 12] enclosure.\nb.\nTimer to automatically initiate the cleaning cycle over a 24-hour period.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Perform functional [run ]tests of chillers before shipping.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Factory test and inspect absorber, generator, evaporator and condenser according to ASME Boiler and ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Rate sound power level according to ARI 575.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Factory performance test chillers, before shipping, according to ARI 560.\n1.\n",
+          "children": [
+            {
+              "title": "Test the following conditions:",
+              "content": "a.\nDesign conditions indicated.\nb.\nReduction in capacity from design to minimum load in steps of [10] [25] [33] <Insert number>\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 20\nc.\nReduction in capacity from design to minimum load in steps of [10] [25] [33] <Insert number>\n",
+      "children": [
+        {
+          "title": "E.",
+          "content": "Factory sound test chillers, before shipping, according to ARI 575.\n1.\n",
+          "children": [
+            {
+              "title": "Test the following conditions:",
+              "content": "a.\nDesign conditions indicated.\nb.\nChiller operating at calculated worst-case sound condition.\nc.\nAt [one] [two] [three] [four] [five] <Insert number> point(s) of varying part-load performance\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Allow [Owner] <Insert entity> access to place where chillers are being tested. Notify Architect [14]...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Prepare test report indicating test procedures, instrumentation, test conditions, and results. Submi...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Examine chillers before installation. Reject chillers that are damaged.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Examine roughing-in for equipment support, anchor-bolt sizes and locations, piping, and electrical c...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Proceed with installation only after unsatisfactory conditions have been corrected.\n3.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Install chillers on support structure indicated.\n",
+          "children": [
+            {
+              "title": "Equipment Mounting:",
+              "content": "1.\nInstall chillers on cast-in-place concrete equipment bases. Comply with requirements for equipment b...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 21\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Maintain manufacturer's recommended clearances for service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Charge chiller with absorbent and refrigerant if not factory charged.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Install separate devices furnished by manufacturer and not factory installed.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Insulate hot and cold chiller surfaces that are recommended by chiller manufacturer to be insulated,...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Install brush-cleaning system control panel adjacent to chiller control panel.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Arrange piping to provide service access to four-way valve assembly without affecting access to chil...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Provide field electric power, as required, to each system control panel and electric actuated valve.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Provide pneumatic piping with pressure regulator and isolation valve to each pneumatic supply connec...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Interconnect brush-cleaning system controls with chiller controls. Coordinate requirements to ensure...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Functionally test the entire brush-cleaning system, including the valve, actuator, position indicato...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with requirements in Section 232113 \"Hydronic Piping\" and Section 232116 Hydronic Piping\nSpecialties\" for hydronic piping. Drawings indicate general arrangement of piping, fittings, and spe...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Comply with requirements in Section 232213 \"Steam and Condensate Heating Piping\" and Section 232216\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Install piping adjacent to chiller to allow service and maintenance.\n",
+          "children": [
+            {
+              "title": "Generator Steam Piping Connections:",
+              "content": "1.\nConnect steam piping with trapped drip leg, gate valve, strainer, control valve, and pressure gage. ...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 22\n[condensate receiver and pump,] and check valve. Make connections to chiller with a [flange] [or]\n",
+      "children": [
+        {
+          "title": "E.",
+          "content": "Generator Hot-Water Connections: Connect to generator inlet with shutoff valve, [strainer,] [flexibl...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Evaporator-Fluid Connections: Connect to evaporator inlet with shutoff valve, [strainer,] [flexible ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Absorber/Condenser-Fluid Connections: Connect to inlet with shutoff valve, [strainer,] [flexible con...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Refrigerant Pressure Relief Device Connections: Extend [vent piping] [separate vent piping for each ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "Extend [purge vent piping] [separate purge vent piping for each chiller] to the outdoors. Comply wit...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "J.",
+          "content": "Connect each chiller drain connection with a union and drain pipe, and extend pipe, full size of con...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Engage a factory-authorized service representative to perform startup service.\n1.\nComplete installation and startup checks according to manufacturer's written instructions.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "INDIRECT-FIRED ABSORPTION WATER CHILLERS",
+      "content": "236413.16 - 23\n10.\nVerify and record performance of fluid flow and low-temperature interlocks for evaporator and\n",
+      "children": [
+        {
+          "title": "B.",
+          "content": "Inspect field-assembled components, equipment installation, and piping and electrical connections fo...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Prepare test and inspection startup reports.\n3.6\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Engage a factory-authorized service representative to train Owner's maintenance personnel to adjust,...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

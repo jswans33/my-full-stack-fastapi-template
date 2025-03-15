@@ -93,10 +93,19 @@ Examples:
 
   # Specify output formats
   python -m utils.pipeline.run_pipeline --input data/input --formats json,markdown
+  
+  # Analyze schemas
+  python -m utils.pipeline.run_pipeline --analyze-schemas
+  
+  # Compare schemas
+  python -m utils.pipeline.run_pipeline --compare-schemas schema1_id schema2_id
+  
+  # Visualize schemas
+  python -m utils.pipeline.run_pipeline --visualize-schemas clusters
 """,
     )
 
-    input_group = parser.add_mutually_exclusive_group(required=True)
+    input_group = parser.add_mutually_exclusive_group()
     input_group.add_argument(
         "-i",
         "--input",
@@ -105,11 +114,28 @@ Examples:
     )
     input_group.add_argument("-f", "--file", type=Path, help="Single file to process")
 
+    # Schema analysis arguments
+    input_group.add_argument(
+        "--analyze-schemas", action="store_true", help="Analyze existing schemas"
+    )
+    input_group.add_argument(
+        "--compare-schemas",
+        nargs=2,
+        metavar=("SCHEMA1", "SCHEMA2"),
+        help="Compare two schemas",
+    )
+    input_group.add_argument(
+        "--visualize-schemas",
+        choices=["clusters", "features", "structure", "tables"],
+        help="Visualize schemas",
+    )
+
+    parser.add_argument("--document-type", help="Filter schemas by document type")
+
     parser.add_argument(
         "-o",
         "--output",
         type=Path,
-        required=True,
         help="Output directory for processed files",
     )
     parser.add_argument("-c", "--config", type=Path, help="Path to configuration file")
@@ -178,9 +204,99 @@ def main():
         # Parse arguments
         args = parse_args()
 
+        # Handle schema analysis commands
+        if args.analyze_schemas or args.compare_schemas or args.visualize_schemas:
+            from utils.pipeline.schema.extended_registry import ExtendedSchemaRegistry
+
+            registry = ExtendedSchemaRegistry()
+
+            if args.analyze_schemas:
+                progress.display_success("Analyzing schemas...")
+                analysis = registry.analyze(args.document_type)
+
+                # Display analysis results
+                progress.display_success("\nSchema Analysis Results:")
+                progress.display_success(
+                    f"Total Schemas: {analysis.get('schema_count', 0)}"
+                )
+
+                doc_types = analysis.get("document_types", {})
+                if doc_types:
+                    progress.display_success("\nDocument Types:")
+                    for doc_type, count in doc_types.items():
+                        progress.display_success(f"  {doc_type}: {count}")
+
+                # Display common metadata fields
+                common_metadata = analysis.get("common_metadata", {})
+                if common_metadata:
+                    progress.display_success("\nCommon Metadata Fields:")
+                    for field, frequency in sorted(
+                        common_metadata.items(), key=lambda x: x[1], reverse=True
+                    ):
+                        progress.display_success(f"  {field}: {frequency:.2f}")
+
+                return
+
+            elif args.compare_schemas:
+                schema_id1, schema_id2 = args.compare_schemas
+                progress.display_success(
+                    f"Comparing schemas: {schema_id1} vs {schema_id2}"
+                )
+
+                comparison = registry.compare(schema_id1, schema_id2)
+
+                progress.display_success(
+                    f"Overall Similarity: {comparison.get('overall_similarity', 0):.2f}"
+                )
+                progress.display_success(
+                    f"Same Document Type: {comparison.get('same_document_type', False)}"
+                )
+
+                # Display metadata comparison
+                metadata_comparison = comparison.get("metadata_comparison", {})
+                if metadata_comparison:
+                    progress.display_success("\nMetadata Comparison:")
+                    progress.display_success(
+                        f"  Similarity: {metadata_comparison.get('similarity', 0):.2f}"
+                    )
+                    progress.display_success(
+                        f"  Common Fields: {len(metadata_comparison.get('common_fields', []))}"
+                    )
+
+                return
+
+            elif args.visualize_schemas:
+                viz_type = args.visualize_schemas
+                progress.display_success(f"Generating {viz_type} visualization...")
+
+                # Create visualizations directory
+                import os
+
+                viz_dir = os.path.join(
+                    "utils", "pipeline", "schema", "data", "visualizations"
+                )
+                os.makedirs(viz_dir, exist_ok=True)
+
+                viz_path = registry.visualize(viz_type, output_dir=viz_dir)
+                progress.display_success(f"Visualization saved to: {viz_path}")
+                return
+
         # Load and update configuration
         config = load_config(args.config)
         config = update_config_from_args(config, args)
+
+        # Check if required arguments are provided for document processing
+        if not args.input and not args.file:
+            progress.display_error(
+                "Error: Either --input or --file is required for document processing"
+            )
+            sys.exit(1)
+
+        if not args.output:
+            progress.display_error(
+                "Error: --output is required for document processing"
+            )
+            sys.exit(1)
 
         # Create output directory
         args.output.mkdir(parents=True, exist_ok=True)

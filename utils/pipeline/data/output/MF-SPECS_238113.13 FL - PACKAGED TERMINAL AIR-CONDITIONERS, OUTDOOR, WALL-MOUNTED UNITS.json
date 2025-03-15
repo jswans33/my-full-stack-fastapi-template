@@ -1,0 +1,604 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 238113.13 - PACKAGED TERMINAL AIR-CONDITIONERS, OUTDOOR, WALL-MOUNTED UNITS",
+      "author": "ARCOM, Inc.",
+      "subject": "PACKAGED TERMINAL AIR-CONDITIONERS, OUTDOOR, WALL-MOUNTED UNITS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234400Z",
+      "modification_date": "D:20250314222844-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_238113.13 FL - PACKAGED TERMINAL AIR-CONDITIONERS, OUTDOOR, WALL-MOUNTED UNITS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n09/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary\nConditions and Division 01 Specification Sections, apply to this Section.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Section includes packaged, terminal, outdoor, wall-mounted air conditioners.\n1.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product. Include rated capacities, operating characteristics,\nelectrical characteristics, and furnished specialties and accessories.\n",
+          "children": [
+            {
+              "title": "LEED Submittals:",
+              "content": "1.\nProduct Data for Credit EA 4: Documentation indicating that equipment and refrigerants\ncomply.\n2.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Shop Drawings: For packaged, terminal air conditioners.\n1.\nInclude plans, elevations, sections, details for wall penetrations,[ seismic bracing,] and\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Color Samples: For unit cabinet, discharge grille, and exterior louver, and for each color and\ntexture specified.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 2\n1.4\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Product Test Reports: For packaged, terminal air conditioners, for tests performed by\nmanufacturer and witnessed by a qualified testing agency.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Field quality-control reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Sample Warranty: For special warranty.\n1.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For packaged, terminal air conditioners to include in\nemergency, operation, and maintenance manuals.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer agrees to repair or replace components of packaged, terminal air\nconditioners that fail in materials or workmanship within specified warranty period.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n2.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Factory-assembled and -tested, self-contained, packaged, terminal air conditioner\nwith room cabinet, electric refrigeration system,[ heating,] and temperature controls; fully\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by\na qualified testing agency, and marked for intended location and application.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 3\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "ASHRAE Compliance: Applicable requirements in ASHRAE 62.1, Section 4 - \"Outdoor Air\nQuality,\" Section 5 - \"Systems and Equipment,\" Section 6 - \"Ventilation Rate Procedures,\" and\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "ASHRAE/IES Compliance: Applicable requirements in ASHRAE/IES 90.1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "ASHRAE Thermal Comfort: Applicable requirements in ASHRAE 55.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "ASHRAE ERV Testing: Applicable requirements in ASHRAE 84.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "AHRI Rating: Applicable requirements in AHRI 1060.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "UL listed and ETL performance certified.\n2.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Cabinet: Sloped top, [0.052-inch- (1.32-mm-)] <Insert dimension> thick [steel] [aluminum]\nwith removable front panel with concealed latches.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Refrigeration System: Direct-expansion indoor coil with capillary restrictor and hermetically\nsealed[, soft-start] scroll compressor with [crankcase heater,] liquid line filter dryer, externally\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 4\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Indoor Fan: Forward curved, centrifugal; with [single] [twin] [constant-] [variable-]speed\nmotor(s) and positive-pressure ventilation damper with [concealed manual] [electric] operator.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Filters: [Washable polyurethane in molded plastic frame] [2-inch (25-mm), pleated,\ndisposable MERV 6], serviceable from front of the unit.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Condensate Drain: Coated galvanized-steel drain pan [to direct condensate to outdoor coil for\nre-evaporation] [and piping to direct condensate to building waste and vent piping].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Outdoor Fan: [High-ambient] [Forward curved, centrifugal] [Propeller] [Forward curved,\ncentrifugal, or propeller] type [with separate] [driven by indoor fan] motor.\n",
+          "children": [
+            {
+              "title": "Energy Recovery Wheel:",
+              "content": "1.\nCasing: Steel with standard factory-painted finish.\n2.\nCasing seals on periphery of rotor and on duct divider.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Electric-Resistance Heating Coil: Nickel-chromium-wire, electric-resistance heating elements\nwith contactor and high-temperature-limit switch.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 5\n",
+      "children": [
+        {
+          "title": "Gas Heat:",
+          "content": "1.\nGeneral Requirements for Gas-Fired, Noncondensing Furnaces: Factory assembled, piped,\nwired, and tested; complying with ANSI Z21.86/CSA 2.32, \"Vented Gas-Fired Space\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Burner:",
+          "content": "a.\nGas Valve: 100 percent safety, [two-stage] [modulating] main gas valve; main\nshutoff valve; pressure regulator; safety pilot with electronic flame sensor; limit\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Gas-Burner Safety Controls:",
+          "content": "a.\nElectronic Flame Sensor: Prevents gas valve from opening until pilot flame is\nproven; stops gas flow on ignition failure.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Control Module: Unit-mounted digital panel with touchpad temperature control and with\ntouchpad for heating, cooling, and fan operation. Include the following features:\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Remote Control: Standard unit-mounted controls with remote-mounted, low-voltage, adjustable\nthermostat with heat anticipator; [heat-off-cool-auto] [heat-off-cool] switch; and[ on-auto] fan\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 6\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Outdoor Air: Motorized intake damper. Open intake when unit indoor-air fan runs.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Outdoor Air: Manual intake damper.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Economizer Operation: Motorized intake-air damper controlled by an enthalpy sensor and a\nmixed-air sensor to provide natural cooling when the outdoor air temperature is favorable.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Dual Unit Control (DUC): Hinged cover with two-stage heat/cool thermostat with individual\nheat/cool setpoints, adjustable interstage differentials and bimetallic elements. The control shall\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Three-Phase Power Rotation Monitor: Three-phase monitoring to protect compressor from\nreverse rotation and to protect the unit from phase failure. Monitor manually reset.\n",
+          "children": [
+            {
+              "title": "Ventilation:",
+              "content": "1.\nExtra Ventilation: Section internally mounted, allowing up to 50% outside air and exhaust\nair through the action of adjustable dampers.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "Dehumidification Circuit: Supply-air stream, independent heat exchanger using a separate\nhumidistat, hot gas three-way valve, separate desuperheating condenser circuit, and back drain\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Airflow: <Insert cfm (L/s)>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Outdoor-Air Intake Rate: <Insert cfm (L/s)>.\n",
+          "children": [
+            {
+              "title": "Cooling Capacity:",
+              "content": "1.\nTotal: <Insert Btu/h (kW)>.\n2.\nSensible: <Insert Btu/h (kW)>.\n3.\nEnergy-Efficiency Ratio: <Insert number>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Heat-Pump Capacity:",
+              "content": "1.\nTotal: <Insert Btu/h (kW)>.\n2.\nOutdoor Temperature: <Insert deg F (deg C)>.\nCopyright 2013 AIA\nMasterSpec Premium\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 7\n",
+      "children": [
+        {
+          "title": "E.",
+          "content": "Electric Heat Capacity: <Insert Btu/h (kW)>.\n",
+          "children": [
+            {
+              "title": "Hydronic Heat Capacity:",
+              "content": "1.\nTotal: <Insert Btu/h (kW)>.\n2.\nEntering-Air Temperature: <Insert deg F (deg C)>.\n3.\nLeaving-Air Temperature: <Insert deg F (deg C)>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Gas Heat Capacity:",
+              "content": "1.\nInput: <Insert Btu/h (kW)>.\n2.\nOutput: <Insert Btu/h (kW)>.\n3.\nAFUE: [80] <Insert number> percent.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Exhaust Air:",
+              "content": "1.\nAirflow: <Insert cfm (L/s)>.\n2.\nFace Velocity: <Insert fpm (m/s)>.\n3.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Summer:",
+              "content": "a.\nEntering-Air Temperature, Dry Bulb: <Insert deg F (deg C)>.\nb.\nEntering-Air Temperature, Wet Bulb: <Insert deg F (deg C)>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Winter:",
+              "content": "a.\nEntering-Air Temperature, Dry Bulb: <Insert deg F (deg C)>.\nb.\nEntering-Air Temperature, Wet Bulb: <Insert deg F (deg C)>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Supply Air:",
+              "content": "1.\nAirflow: <Insert cfm (L/s)>.\n2.\nFace Velocity: <Insert fpm (m/s)>.\n3.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Summer:",
+              "content": "a.\nEntering-Air Temperature, Dry Bulb: <Insert deg F (deg C)>.\nb.\nEntering-Air Temperature, Wet Bulb: <Insert deg F (deg C)>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Winter:",
+              "content": "a.\nEntering-Air Temperature, Dry Bulb: <Insert deg F (deg C)>.\nCopyright 2013 AIA\nMasterSpec Premium\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 8\nb.\nEntering-Air Temperature, Wet Bulb: <Insert deg F (deg C)>.\nc.\nLeaving-Air Temperature, Dry Bulb: <Insert deg F (deg C)>.\n",
+      "children": [
+        {
+          "title": "Wheel Drive:",
+          "content": "1.\nMotor Size: <Insert horsepower>.\n2.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Motor Electrical Characteristics:",
+          "content": "a.\nVolts: [120] [208] [230] <Insert value>.\nb.\nPhase: [Single] [Three].\nc.\nHertz: 60.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "K.",
+          "content": "Effectiveness: <Insert percent>.\n",
+          "children": [
+            {
+              "title": "Sound:",
+              "content": "1.\nIndoor: <Insert bels>.\n2.\nOutdoor: <Insert bels>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Electrical Characteristics:",
+              "content": "1.\nVolts: <Insert value>.\n2.\nPhase: [Single] [Three].\n3.\nHertz: 60.\n4.\nFull-Load Amperes: <Insert value>.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Sound-Power Level Ratings: Factory test to comply with AHRI 300, \"Sound Rating and Sound\nTransmission Loss of Packaged Terminal Equipment.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Unit Performance Ratings: Factory test to comply with AHRI 310/380/CSA C744, \"Packaged\nTerminal Air-Conditioners and Heat Pumps.\"\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Install units level and plumb, maintaining manufacturer's recommended clearances and\ntolerances.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Install wall sleeves in finished wall assembly; seal and weatherproof. Joint-sealant materials and\napplications are specified in Section 079200 \"Joint Sealants.\"\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 9\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Install and anchor wall sleeves to withstand, without damage to equipment and structure, seismic\nforces required by building code.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with requirements for piping specified in Section 232113 \"Hydronic Piping\" and Section\n232116 \"Hydronic Piping Specialties.\" Drawings indicate general arrangement of piping, fittings,\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Comply with requirements for piping specified in Section 231123 \"Facility Natural-Gas Piping.\"\nDrawings indicate general arrangement of piping, fittings, and specialties.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Install piping adjacent to machine to allow service and maintenance.\n3.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Testing Agency: [Owner will engage] [Engage] a qualified testing agency to perform tests and\ninspections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Manufacturer's Field Service: Engage a factory-authorized service representative to test and\ninspect components, assemblies, and equipment installations, including connections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Perform the following tests and inspections[ with the assistance of a factory-authorized\n",
+          "children": [
+            {
+              "title": "service representative]:",
+              "content": "1.\nInspect for and remove shipping bolts, blocks, and tie-down straps.\n2.\nAfter installing packaged, terminal air conditioners and after electrical circuitry has been\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "including the following:",
+              "content": "a.\nLubricate bearings on fan.\nb.\nCheck fan-wheel rotation for correct direction without vibration and binding.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "MOUNTED UNITS",
+      "content": "238113.13 - 10\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "After performance test, change filters.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Packaged, terminal air conditioners will be considered defective if they do not pass tests and\ninspections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Prepare test and inspection reports.\n3.4\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Adjust initial temperature set points.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Set field-adjustable switches and circuit-breaker trip ranges as indicated.\n3.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to train] [Train] Owner's maintenance\npersonnel to adjust, operate, and maintain packaged, terminal air conditioners.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

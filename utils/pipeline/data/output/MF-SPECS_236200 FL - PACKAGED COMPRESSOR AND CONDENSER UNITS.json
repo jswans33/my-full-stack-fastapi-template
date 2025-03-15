@@ -1,0 +1,818 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 236200 - PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "author": "ARCOM, Inc.",
+      "subject": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234300Z",
+      "modification_date": "D:20250314222525-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_236200 FL - PACKAGED COMPRESSOR AND CONDENSER UNITS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary\nConditions and Division 01 Specification Sections, apply to this Section.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Section includes packaged, refrigerant compressor and condenser units.\n1.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Seismic Performance: Compressor and condenser units shall withstand the effects of earthquake\nmotions determined according to [ASCE/SEI 7] <Insert requirement>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each compressor and condenser unit. Include rated capacities, operating\ncharacteristics, and furnished specialties and accessories. Include equipment dimensions, weights\n",
+          "children": [
+            {
+              "title": "LEED Submittals:",
+              "content": "1.\nProduct Data for Prerequisite EA 2: Documentation indicating that units comply with\napplicable requirements in ASHRAE/IESNA 90.1.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 2\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Shop Drawings: For compressor and condenser units. Include plans, elevations, sections, details,\nand attachments to other work.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Delegated-Design Submittal: For compressor and condenser units indicated to comply with\nperformance requirements and design criteria, including analysis data signed and sealed by the\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordination Drawings: Plans, drawn to scale, on which the following items are shown and\ncoordinated with each other, based on input from installers of the items involved:\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Seismic Qualification Certification: For compressor and condenser units, accessories, and\ncomponents, from manufacturer.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Field quality-control reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Warranty: Sample of special warranty.\n1.6\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For compressor and condenser units to include in emergency,\noperation, and maintenance manuals.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 3\n1.7\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a\nqualified testing agency, and marked for intended location and application.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Fabricate and label refrigeration system according to ASHRAE 15, \"Safety Standard for\nRefrigeration Systems.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "ASHRAE/IESNA 90.1 Compliance: Applicable requirements in ASHRAE/IESNA 90.1,\nSection 6, \"Heating, Ventilating, and Air-Conditioning.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "ASME Compliance: Fabricate and label water-cooled compressor and condenser units to comply\nwith ASME Boiler and Pressure Vessel Code: Section VIII, Division 1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordinate sizes and locations of concrete bases. Cast anchor-bolt inserts into bases. Concrete,\nreinforcement, and formwork requirements are specified in Section 033000 \"Cast-In-Place\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Coordinate installation of roof curbs, equipment supports, and roof penetrations. These items are\nspecified in Section 077200 \"Roof Accessories.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Coordinate location of piping and electrical rough-ins.\n1.9\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer's standard form in which manufacturer agrees to repair or replace\ncomponents of compressor and condenser units that fail in materials or workmanship within\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 4\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\nCOMPRESSOR AND CONDENSER UNITS, AIR COOLED, 1 TO 5 TONS (3.5 TO 17.6 kW)\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Description: Factory assembled and tested; consisting of compressor, condenser coil, fan, motors,\nrefrigerant reservoir, and operating controls.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Compressor: Scroll, hermetically sealed, with rubber vibration isolators.\n1.\nMotor: [Single] [Two] speed, and includes thermal- and current-sensitive overload devices,\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Refrigerant: [R-22] [R-407C] [R-410A] <Insert type>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Refrigerant: R-407C or R-410A.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Condenser Coil: Seamless copper-tube, aluminum-fin coil; circuited for integral liquid subcooler,\nwith removable drain pan and brass service valves with service ports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Condenser Fan: Direct-drive, aluminum propeller fan; with permanently lubricated, totally\nenclosed fan motor with thermal-overload protection[ and ball bearings].\n",
+          "children": [
+            {
+              "title": "Accessories:",
+              "content": "1.\nCoastal Filter: Mesh screen to protect condenser coil from salt damage.\n2.\nCrankcase heater.\n3.\nCycle Protector: Automatic-reset timer to prevent rapid compressor cycling.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 5\n13.\nPrecharged and insulated suction and liquid tubing.\n14.\nSound Hood: Wraps around sound attenuation cover for compressor.\n",
+      "children": [
+        {
+          "title": "I.",
+          "content": "Unit Casing: Galvanized steel, finished with baked enamel; with removable panels for access to\ncontrols, weep holes for water drainage, and mounting holes in base. Mount service valves,\n",
+          "children": [
+            {
+              "title": "Capacities and Characteristics:",
+              "content": "1.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Compressor and Condenser Unit:",
+              "content": "a.\nFull-Load Cooling Capacity: <Insert MBh (kW)>.\nb.\nEnergy-Efficiency Ratio (EER): <Insert value>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Refrigerant Connections:",
+              "content": "a.\nLiquid Pipe Size: <Insert NPS (DN)>.\nb.\nSuction Pipe Size: <Insert NPS (DN)>.\n3.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Compressor:",
+              "content": "a.\nRated-Load Amperes: <Insert value>.\nb.\nLocked-Rotor Amperes: <Insert value>.\nc.\nPower Input: <Insert kilowatts>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Air-Cooled Condenser:",
+              "content": "a.\nAmbient-Air Temperature: <Insert deg F (deg C)>.\nb.\nAirflow: <Insert cfm (L/s)>.\nc.\nNumber of Condenser Fans: <Insert number>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Electrical Characteristics:",
+              "content": "a.\nKilowatt Input: <Insert value>.\nb.\nVolts: <Insert value>.\nc.\nPhase: <Insert value>.\nd.\nHertz: <Insert value>.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 6\n2.2\nCOMPRESSOR AND CONDENSER UNITS, AIR COOLED, 6 TO 120 TONS (21 TO 422 kW)\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Description: Factory assembled and tested, air cooled; consisting of casing, compressors,\ncondenser coils, condenser fans and motors, and unit controls.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Compressor: Hermetic scroll compressor designed for service with crankcase sight glass,\ncrankcase heater, and backseating service access valves on suction and discharge ports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Compressor: Hermetic or semihermetic rotary screw compressor designed for service with\ncrankcase sight glass, crankcase heater, and backseating service access valves on suction and\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Refrigerant: [R-22] [R-407C] [R-410A] [R-134a] <Insert type>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Refrigerant: R-407C, R-410A, or R-134a.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Condenser Coil: Seamless copper-tube, aluminum-fin coil, including subcooling circuit and\nbackseating liquid-line service access valve. Factory pressure test coils, then dehydrate by\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Condenser Fans: Propeller-type vertical discharge; either directly or belt driven. Include the\n",
+          "children": [
+            {
+              "title": "following:",
+              "content": "1.\nPermanently lubricated, ball-bearing[ totally enclosed] motors.\n2.\nSeparate motor for each fan.\n3.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "Operating and safety controls include the following:\n1.\nManual-reset, high-pressure cutout switches.\n",
+          "children": [
+            {
+              "title": "Accessories:",
+              "content": "1.\n[Electronic programmable thermostat] [Low-voltage thermostat and subbase] to\ncontrol compressor and condenser unit and evaporator fan.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 7\n2.\nLow-Ambient Controller: Cycles condenser fan to permit operation down to 0 deg F\n(minus 18 deg C)[ with time-delay relay to bypass low-pressure switch].\n",
+      "children": [
+        {
+          "title": "K.",
+          "content": "Unit Casings: Designed for outdoor installation with weather protection for components and\ncontrols and with removable panels for required access to compressors, controls, condenser fans,\n",
+          "children": [
+            {
+              "title": "Capacities and Characteristics:",
+              "content": "1.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Compressor and Condenser Unit:",
+              "content": "a.\nFull-Load Cooling Capacity: <Insert MBh (kW)>.\nb.\nEnergy-Efficiency Ratio (EER): <Insert value>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Refrigerant Connections:",
+              "content": "a.\nLiquid Pipe Size: <Insert NPS (DN)>.\nb.\nSuction Pipe Size: <Insert NPS (DN)>.\n3.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Compressors:",
+              "content": "a.\nNumber of Compressors: <Insert number>.\nb.\nRated-Load Amperes: <Insert value>.\nc.\nLocked-Rotor Amperes: <Insert value>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Air-Cooled Condenser:",
+              "content": "a.\nAmbient-Air Temperature: <Insert deg F (deg C)>.\nb.\nAirflow: <Insert cfm (L/s)>.\nc.\nNumber of Condenser Fans: <Insert number>.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 8\nd.\nCondenser Fan Motor Size: <Insert horsepower>.\n5.\n",
+      "children": [
+        {
+          "title": "Electrical Characteristics:",
+          "content": "a.\nKilowatt Input: <Insert value>.\nb.\nVolts: <Insert value>.\nc.\nPhase: <Insert value>.\nd.\nHertz: <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Description: Factory assembled and tested, consisting of compressors, water-cooled condensers,\nbases, and unit controls.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Compressor: Hermetic or serviceable hermetic type; with oil pump, operating oil charge, and\nsuction and discharge shutoff valves. Factory mounted on base using spring isolators. Include the\n",
+          "children": [
+            {
+              "title": "following:",
+              "content": "1.\nThermally protected compressor motor.\n2.\nCrankcase heater.\n3.\nCapacity control using cylinder unloading, suction pressure controlled and discharge\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Refrigerant: [R-22] [R-407C] [R-410A] [R-134a] <Insert type>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Refrigerant: R-407C, R-410A, or R-134a.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Condenser: Single-pass, tube-in-tube, coaxial type; with seamless, integral-finned, copper tube\nand steel outer shell with water-regulating valve.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Condenser: Multipass, shell-and-tube type; with replaceable, seamless, integral-finned copper\ntubes; positive-liquid subcooling circuit; pressure relief device; liquid-level test cock; purge\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Condenser: Plate type, with brazed assembly of two end plates, one with threaded nozzles and\npattern-embossed plates.\n",
+          "children": [
+            {
+              "title": "Accessories:",
+              "content": "1.\nDischarge-line muffler.\n2.\nGage panel containing gages for suction, discharge, and oil pressure.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 9\n5.\nCrankcase cover plates with equalizer connections.\n",
+      "children": [
+        {
+          "title": "J.",
+          "content": "Controls: Factory-mounted and -wired panel with the following:\n1.\nTimer to prevent short cycling.\n2.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "K.",
+          "content": "Unit Casings: Galvanized steel, finished with baked enamel; with removable panels for access to\ncontrols, weep holes for water drainage, and mounting holes in base. Mount service valves,\n",
+          "children": [
+            {
+              "title": "Capacities and Characteristics:",
+              "content": "1.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Compressor and Condenser Unit:",
+              "content": "a.\nFull-Load Cooling Capacity: <Insert MBh (kW)>.\nb.\nEnergy-Efficiency Ratio (EER): <Insert value>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Refrigerant Connections:",
+              "content": "a.\nLiquid Pipe Size: <Insert NPS (DN)>.\nb.\nSuction Pipe Size: <Insert NPS (DN)>.\n3.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Compressors:",
+              "content": "a.\nNumber of Compressors: <Insert number>.\nb.\nRated-Load Amperes: <Insert value>.\nc.\nLocked-Rotor Amperes: <Insert value>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Water-Cooled Condenser:",
+              "content": "a.\nCondenser Temperature: <Insert deg F (deg C)>.\nb.\nEntering-Water Temperature: <Insert deg F (deg C)>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Electrical Characteristics:",
+              "content": "a.\nKilowatt Input: <Insert value>.\nCopyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 10\nb.\nVolts: <Insert value>.\nc.\nPhase: <Insert value>.\nd.\nHertz: <Insert value>.\ne.\nMaximum Circuit Amperes: <Insert value>.\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Comply with NEMA designation, temperature rating, service factor, enclosure type, and\nefficiency requirements for motors specified in Section 230513 \"Common Motor Requirements\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Verification of Performance: Rate compressor and condenser units according to [ARI 206/110]\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Energy Efficiency: Equal to or greater than prescribed by ASHRAE/IESNA 90.1, \"Energy\nEfficient Design of New Buildings except Low-Rise Residential Buildings,\" Section 6, \"Heating,\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Test and inspect shell and tube condensers according to ASME Boiler and Pressure Vessel Code:\nSection VIII, Division 1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Testing Requirements: Factory test sound-power-level ratings according to [ARI 270] [ARI 370].\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Examine substrates, areas, and conditions, with Installer present, for compliance with\nrequirements for installation tolerances and other conditions affecting performance of compressor\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Examine roughing-in for refrigerant piping systems to verify actual locations of piping\nconnections before equipment installation.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Examine walls, floors, and roofs for suitable conditions where compressor and condenser units\nwill be installed.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Proceed with installation only after unsatisfactory conditions have been corrected.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 11\n3.2\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Install units level and plumb, firmly anchored in locations indicated.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Install roof-mounting units on equipment supports specified in Section 077200 \"Roof\nAccessories.\"\n",
+          "children": [
+            {
+              "title": "Equipment Mounting:",
+              "content": "1.\nInstall compressor and condenser units on cast-in-place concrete equipment bases. Comply\nwith requirements for equipment bases and foundations specified in [Section 033000\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Maintain manufacturer's recommended clearances for service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Loose Components: Install electrical components, devices, and accessories that are not factory\nmounted.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with requirements for piping in other Section 232113 \"Hydronic Piping\" and Section\n",
+          "children": [
+            {
+              "title": "232116 Hydronic Piping Specialties.\" Drawings indicate general arrangement of piping, fittings,",
+              "content": "and specialties.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Where installing piping adjacent to equipment, allow space for service and maintenance of\nequipment.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Connect precharged refrigerant tubing to unit's quick-connect fittings. Install tubing so it does no...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Connect refrigerant piping to air-cooled compressor and condenser units; maintain required access\nto unit. Install furnished field-mounted accessories. Refrigerant piping and specialties are\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Connect refrigerant and condenser-water piping to water-cooled compressor and condenser\nunits.[ Maintain clear tube removal space.] Refrigerant piping and specialties are specified in\n",
+          "children": [
+            {
+              "title": "232116 Hydronic Piping Specialties.\"] Install shutoff valve and union or flange at each water",
+              "content": "supply connection; install balancing valve and union or flange at each return connection.\n3.4\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Perform tests and inspections.\nCopyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 12\n1.\nManufacturer's Field Service: Engage a factory-authorized service representative to inspect,\n",
+      "children": [
+        {
+          "title": "Tests and Inspections:",
+          "content": "1.\nPerform each visual and mechanical inspection and electrical test. Certify compliance with\ntest parameters.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "C.",
+          "content": "Verify that vibration isolation and flexible connections properly dampen vibration transmission to\nstructure.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Compressor and condenser units will be considered defective if they do not pass tests and\ninspections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Prepare test and inspection reports.\n3.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to perform] [Perform] startup service.\n1.\nComplete installation and startup checks according to manufacturer's written instructions\n",
+          "children": [
+            {
+              "title": "and perform the following:",
+              "content": "a.\nInspect for physical damage to unit casing.\nb.\nVerify that access doors move freely and are weathertight.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Lubricate bearings on fan motors.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Verify that fan wheel is rotating in the correct direction and is not vibrating or binding.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Adjust fan belts to proper alignment and tension.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Start unit according to manufacturer's written instructions and complete manufacturer's startup\nchecklist.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Measure and record airflow and air temperature rise over coils.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Verify proper operation of condenser capacity control device.\nCopyright 2013 AIA\nMasterSpec Premium\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PACKAGED COMPRESSOR AND CONDENSER UNITS",
+      "content": "236200 - 13\n",
+      "children": [
+        {
+          "title": "H.",
+          "content": "Verify that vibration isolation and flexible connections properly dampen vibration transmission to\nstructure.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "After startup and performance test, lubricate bearings.\n3.6\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to train] [Train] Owner's maintenance\npersonnel to adjust, operate, and maintain compressor and condenser units.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'Capacities and Characteristics:' has very short content",
+      "Section 'Capacities and Characteristics:' has very short content",
+      "Section 'Capacities and Characteristics:' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

@@ -1,0 +1,84 @@
+{
+  "document": {
+    "metadata": {
+      "title": "Quotation No",
+      "author": "Armando Escalante",
+      "subject": "",
+      "creator": "Microsoft® Word for Microsoft 365",
+      "producer": "Microsoft® Word for Microsoft 365",
+      "creation_date": "D:20250313124032-06'00'",
+      "modification_date": "D:20250313124043-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\QUOTE_27J ROCKY VISTA HIGH SCHOOL.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "AE",
+      "content": "1\nQuotation No.  2025-3-13-11:00\nQuote Date: 3.13.25\nJob: 27J Rocky Vista High School\nWe are pleased to quote you on the following equipment for the above project.  This quotation is off...\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "AE",
+      "content": "2\nTag: DET-1\n1\nWessels TTA-80 ASME Potable Tank (35-24 GAL),     Wt.: 76 lbs\nea.\n$1,596.00\n$1,596.00\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "Includes:",
+      "content": "º Multistage Pumps, 15 HP, 2-Pole, 3PH/60HZ, TEFC-PE,\nStandard Seal\nº Isolation Valves For Each Pump\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "Features:",
+      "content": "º Single Point Power Connection\nº Low Suction Pressure Alarm & Cutout\nº Low System Pressure Alarm\nº High System Pressure Alarm & Cutout\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "Included Options:",
+      "content": "º TEPE Motor Enclosures\nº 5.7 in. Touch Screen\nº Audio Alarm\n$46,688.00\n$46,688.00\n•\nMFG/MVP-FK4 - Hyfab 4\" Flange Kit Accessory,\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "AE",
+      "content": "3\nTag: DBP-1\n1\nWessles Model FXA-700 HP – Hydro Pneumatic Tank, ASME\nRated, Booster Package Tank, 185 Gal, 200 PSI   Wt.: 797 lbs ea.\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "LIMITED TO THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR PARTICULAR PURPOSE. IN THE EVENT THIS",
+      "content": "DISCLAIMER IS NEGATED IN ANY MANNER, ANY AND ALL DAMAGES SUFFERED by any person or entity as a resul...\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "INCORPORATED INTO ANY FUTURE WRITINGS IN ORDER TO BE EFFECTIVE ON SUBSEQUENT TRANSACTIONS.",
+      "content": "Claims: Any claims or exceptions for defective material must be made in writing after 30 days receip...\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "OBLIGATION TO MAKE ANY CLAIM ON YOUR BEHALF OR ANY END USER OF THE PRODUCT.",
+      "content": "Acceptance of this quotation or a reasonable facsimile thereof shall constitute acceptance of all te...\n",
+      "children": [],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: subject",
+      "Missing optional metadata: keywords",
+      "No tables extracted"
+    ]
+  }
+}

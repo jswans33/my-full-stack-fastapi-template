@@ -1,0 +1,1470 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 236416 - CENTRIFUGAL WATER CHILLERS",
+      "author": "ARCOM, Inc.",
+      "subject": "CENTRIFUGAL WATER CHILLERS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234300Z",
+      "modification_date": "D:20250314222614-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_236416 FL - CENTRIFUGAL WATER CHILLERS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary Conditions and ...\n",
+          "children": [
+            {
+              "title": "Section Includes:",
+              "content": "1.\nPackaged, water-cooled, electric-motor-driven centrifugal chillers.\n2.\nPackaged, portable refrigerant recovery units.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Related Section:",
+              "content": "1.\nSection 283500 \"Refrigerant Detection and Alarm\" for refrigerant monitors, alarms, supplemental brea...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "COP: Coefficient of performance. The ratio of the rate of heat removal to the rate of energy input u...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "DDC: Direct digital control.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "EER: Energy-efficiency ratio. The ratio of the cooling capacity given in terms of Btu/h to the total...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "IPLV: Integrated part-load value. A single-number part-load efficiency figure of merit calculated pe...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "kW/Ton (kW/kW): The ratio of total power input of the chiller in kilowatts to the net refrigerating ...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 2\n",
+      "children": [
+        {
+          "title": "F.",
+          "content": "NPLV: Nonstandard part-load value. A single-number part-load efficiency figure of merit calculated p...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Seismic Performance: Centrifugal chillers shall withstand the effects of earthquake motions determin...\n",
+          "children": [
+            {
+              "title": "Condenser-Fluid Temperature Performance:",
+              "content": "1.\nStartup Condenser-Fluid Temperature: Chiller shall be capable of starting with an entering condenser...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Site Altitude: Chiller shall be suitable for altitude at which installed without affecting performan...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Performance Tolerance: Comply with the following in lieu of ARI 506/110:\n1.\nAllowable Capacity Tolerance: [Zero] <Insert number> percent.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product indicated. Include refrigerant, rated capacities, operating c...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 3\n9.\nPerformance at varying capacities with constant design condenser-fluid temperature. Repeat performan...\n",
+      "children": [
+        {
+          "title": "LEED Submittals:",
+          "content": "1.\nProduct Data for Credit EA 4: Documentation indicating that equipment and refrigerants comply.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "C.",
+          "content": "Shop Drawings: Include plans, elevations, sections, details, and attachments to other work.\n1.\nDetail equipment assemblies and indicate dimensions, weights, load distribution, required clearances...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordination Drawings: Floor plans, drawn to scale, on which the following items are shown and coord...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Certificates: For certification required in \"Quality Assurance\" Article.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Seismic Qualification Certificates: For chillers, accessories, and components, from manufacturer.\n1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Source quality-control reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Startup service reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Warranty: Sample of special warranty.\n1.7\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For each chiller to include in emergency, operation, and maintenance...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 4\n1.8\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "ARI Certification: Certify chiller according to ARI 550 certification program.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "ARI Rating: Rate chiller performance according to requirements in ARI 506/110.\n",
+          "children": [
+            {
+              "title": "ASHRAE Compliance:",
+              "content": "1.\nASHRAE 15 for safety code for mechanical refrigeration.\n2.\nASHRAE 147 for refrigerant leaks, recovery, and handling and storage requirements.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "ASHRAE/IESNA Compliance: Applicable requirements in ASHRAE/IESNA 90.1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "ASME Compliance: Fabricate and label chillers to comply with ASME Boiler and Pressure Vessel Code: S...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Comply with NFPA 70.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Comply with requirements of UL and UL Canada, and include label by a qualified testing agency showin...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Green Seal Compliance: Signed by [manufacturer] [Green Seal] certifying compliance with GS-31.\n1.9\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Ship chillers from the factory fully charged with refrigerant.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Ship each chiller with a full charge of refrigerant. Charge each chiller with nitrogen if refrigeran...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Ship each oil-lubricated chiller with a full charge of oil.\n1.\nShip oil [factory installed in chiller] [in containers separate from chiller].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Package chiller for export shipping in totally enclosed [bagging] [crate] [crate with bagging].\n1.10\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordinate sizes and locations of concrete bases with actual equipment provided. Cast anchor-bolt in...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Coordinate sizes, locations, and anchoring attachments of structural-steel support structures.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 5\n1.11\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer's standard form in which manufacturer agrees to repair or replace com...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n2.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Factory-assembled and -tested chiller complete with compressor, compressor motor, compr...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Fabricate chiller mounting base with reinforcement strong enough to resist chiller movement during a...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Single-stage or multistage, variable-displacement, centrifugal-type compressor driven b...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 6\n",
+      "children": [
+        {
+          "title": "Compressor:",
+          "content": "1.\nCasing: Cast iron, precision ground.\n2.\nImpeller: High-strength cast aluminum or cast-aluminum alloy on carbon- or alloy-steel shaft.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "C.",
+          "content": "Drive: [Direct-drive, hermetic] [Gear-drive, hermetic] [Gear-drive, open] [Direct- or gear-drive, he...\n",
+          "children": [
+            {
+              "title": "Compressor Motor:",
+              "content": "1.\nContinuous-duty, squirrel-cage, induction-type, two-pole motor with energy efficiency required to su...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Vibration Balance: Balance chiller compressor and drive assembly to provide a precision balance that...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Service: Easily accessible for inspection and service.\n1.\nCompressor's internal components shall be accessible without having to remove compressor-drive assem...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Economizers: For multistage chillers, provide interstage economizers.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Capacity Control: Modulating, variable-inlet, guide-vane assembly combined with hot-gas bypass, if n...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 7\n1.\nMaintain stable operation that is free of surge, cavitation, and vibration throughout range of opera...\n",
+      "children": [
+        {
+          "title": "I.",
+          "content": "Oil Lubrication System: Consisting of pump, filtration, [heater, ]cooler, factory-wired power connec...\n",
+          "children": [
+            {
+              "title": "Refrigerant:",
+              "content": "1.\nType: [R-123; ASHRAE 34, Class B1] [or] [R-134a; ASHRAE 34, Class A1].\n2.\nCompatibility: Chiller parts exposed to refrigerants shall be fully compatible with refrigerants, an...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Refrigerant Flow Control: Manufacturer's standard refrigerant flow-control device satisfying perform...\n",
+          "children": [
+            {
+              "title": "Pressure Relief Device:",
+              "content": "1.\nComply with requirements in ASHRAE 15 and in applicable portions of ASME Boiler and Pressure Vessel\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Refrigeration Transfer: Provide service valves and other factory-installed accessories required to f...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 8\n",
+      "children": [
+        {
+          "title": "E.",
+          "content": "Refrigerant Isolation for Chillers Using R-134a: Factory install [positive shutoff, manual ]isolatio...\n",
+          "children": [
+            {
+              "title": "Purge System:",
+              "content": "1.\nFor chillers operating at subatmospheric pressures (using R-123 refrigerant), factory install an aut...\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Positive-Pressure System:",
+              "content": "1.\nFor chillers operating at subatmospheric pressures (using R-123 refrigerant), factory install an aut...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Shell-and-tube design with water in tubes and refrigerant surrounding tubes within shel...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Shell Material: Carbon-steel rolled plates with continuously welded seams or seamless pipe.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Designed to prevent liquid refrigerant carryover from entering compressor.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Provide evaporator with sight glass or other form of positive visual verification of liquid-refriger...\n",
+          "children": [
+            {
+              "title": "Tubes:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 9\n1.\nIndividually replaceable from either end and without damage to tube sheets and other tubes.\n",
+      "children": [
+        {
+          "title": "F.",
+          "content": "End Tube Sheets: Continuously welded to each end of shell; drilled and reamed to accommodate tubes w...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Intermediate Tube Sheets: Installed in shell and spaced along length of tube at intervals required t...\n",
+          "children": [
+            {
+              "title": "Water Box:",
+              "content": "1.\nCast-iron or carbon-steel construction; arranged to provide visual inspection and cleaning of tubes ...\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Additional Corrosion Protection:",
+              "content": "1.\nElectrolytic corrosion-inhibitor anode.\n2.\nCoat wetted surfaces with a corrosion-resistant finish.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Shell-and-tube design with water in tubes and refrigerant surrounding tubes within shel...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Shell Material: Carbon-steel rolled plates with continuously welded seams or seamless pipe.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 10\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Designed to prevent direct impingement of high-velocity hot gas from compressor discharge on tubes.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Provide condenser with sight glass or other form of positive visual verification of refrigerant char...\n",
+          "children": [
+            {
+              "title": "Tubes:",
+              "content": "1.\nIndividually replaceable from either end and without damage to tube sheets and other tubes.\n2.\nMechanically expanded into end sheets and physically attached to intermediate tube sheets.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "End Tube Sheets: Continuously welded to each end of shell; drilled and reamed to accommodate tubes w...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Intermediate Tube Sheets: Installed in shell and spaced along length of tube at intervals required t...\n",
+          "children": [
+            {
+              "title": "Water Box:",
+              "content": "1.\nCast-iron or carbon-steel construction; arranged to provide visual inspection and cleaning of tubes ...\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Additional Corrosion Protection:",
+              "content": "1.\nElectrolytic corrosion-inhibitor anode.\n2.\nCoat wetted surfaces with a corrosion-resistant finish.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 11\n2.7\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Description: Shell-and-tube design with water in tubes and refrigerant surrounding tubes within shel...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Shell Material: Carbon-steel rolled plates with continuously welded seams or seamless pipe.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Designed to prevent direct impingement of high-velocity hot gas from compressor discharge on tubes.\n",
+          "children": [
+            {
+              "title": "Tubes:",
+              "content": "1.\nIndividually replaceable from either end and without damage to tube sheets and other tubes.\n2.\nMechanically expanded into end sheets and physically attached to intermediate tube sheets.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "End Tube Sheets: Continuously welded to each end of shell; drilled and reamed to accommodate tubes w...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Intermediate Tube Sheets: Installed in shell and spaced along length of tube at intervals required t...\n",
+          "children": [
+            {
+              "title": "Water Box:",
+              "content": "1.\nCast-iron or carbon-steel construction; arranged to provide visual inspection and cleaning of tubes ...\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Additional Corrosion Protection:",
+              "content": "1.\nElectrolytic corrosion-inhibitor anode.\nCopyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 12\n2.\nCoat wetted surfaces with a corrosion-resistant finish.\n3.\nUsing same material as tubes, clad surfaces of end tube sheets in contact with fluid. Coat other wet...\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Closed-cell, flexible elastomeric thermal insulation complying with ASTM C 534, Type I for tubular m...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Adhesive: As recommended by insulation manufacturer.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Factory-applied insulation over all cold surfaces of chiller capable of forming condensation. Compon...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Factory installed and wired, and functionally tested at factory before shipment.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Single-point, field-power connection to [fused disconnect switch] [nonfused disconnect switch] [circ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Terminal blocks with numbered [and color-coded ]wiring to match wiring diagram. Spare wiring termina...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 13\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Factory-installed wiring outside of enclosures shall be in metal raceway except make terminal connec...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Factory install and wire capacitor bank for the purpose of power factor correction to [0.95] <Insert...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Enclosure: [Factory installed, unit mounted] [Factory furnished, field mounted], [NEMA 250] [NEMA IC...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Control Circuit: Obtained from [integral control power transformer] <Insert source of control power>...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Overload Relay: Shall be sized according to UL 1995 or shall be an integral component of chiller con...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Across-the-Line Controller: NEMA ICS 2, Class A, full voltage, nonreversing; include isolation switc...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Star-Delta, Reduced-Voltage Controller: NEMA ICS 2, closed transition.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Autotransformer Reduced-Voltage Controller: NEMA ICS 2, closed transition; include isolation switch ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Solid-State, Reduced-Voltage Controller: NEMA ICS 2.\n1.\nSurge suppressor in solid-state power circuits providing three-phase protection against damage from ...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 14\n",
+      "children": [
+        {
+          "title": "H.",
+          "content": "Accessories: Devices shall be factory installed in controller enclosure unless otherwise indicated.\n",
+          "children": [
+            {
+              "title": "the following:",
+              "content": "a.\nAmmeter: Output current for each phase, with current sensors rated to suit application.\nb.\nVoltmeter: Output voltage for each phase.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "and with the following features:",
+              "content": "a.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Selectable, digital display of the following:",
+              "content": "1)\nPhase Currents, Each Phase: Plus or minus 1 percent.\n2)\nPhase-to-Phase Voltages, Three Phase: Plus or minus 1 percent.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 15\n2.11\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Motor controller shall be factory mounted and wired on the chiller to provide a single-point, field-...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Description: NEMA ICS 2; listed and labeled as a complete unit and arranged to provide variable spee...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Enclosure: Unit mounted, NEMA 250, [Type 1] [Type 4] [Type 4x] [Type 12], with hinged full-front acc...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Integral Disconnecting Means: [Door-interlocked, ]NEMA AB 1, instantaneous-trip circuit breaker with...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Technology: Pulse width modulated (PWM) output with insulated gate bipolar transistors (IGBT); suita...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Controller shall consist of a rectifier converter section, a digital/analog driver regulator section...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Output Rating: Three phase; with voltage proportional to frequency throughout voltage range.\n",
+          "children": [
+            {
+              "title": "Operating Requirements:",
+              "content": "1.\nInput AC Voltage Tolerance: [460-V ac, plus 10 percent or 506 V maximum] <Insert voltage and\ntolerance>.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 16\n9.\nIsolated control interface to allow controller to follow control signal over a 10:1 speed range.\n",
+      "children": [
+        {
+          "title": "Internal Adjustability Capabilities:",
+          "content": "1.\nMinimum Output Frequency: 6 Hz.\n2.\nMaximum Output Frequency: 60 Hz.\n3.\nAcceleration: 2 seconds to a minimum of 60 seconds.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "J.",
+          "content": "Self-Protection and Reliability Features: Subjecting the controller to any of the following conditio...\n",
+          "children": [
+            {
+              "title": "component failure or the need for replacement:",
+              "content": "1.\nOvertemperature.\n2.\nShort circuit at controller output.\n3.\nGround fault at controller output. Variable frequency controller shall be able to start a grounded m...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "K.",
+          "content": "Motor Protection: Controller shall protect motor against overvoltage and undervoltage, phase loss, r...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "L.",
+          "content": "Automatic Reset and Restart: Capable of [three] <Insert number> restarts after controller fault or o...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "M.",
+          "content": "Visual Indication: On face of controller enclosure or chiller control enclosure; indicating the foll...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 17\n9.\nDC-link voltage.\n10.\nMotor output voltage.\n11.\nInput kilovolt amperes.\n12.\nTotal power factor.\n",
+      "children": [
+        {
+          "title": "N.",
+          "content": "Operator Interface: At controller or chiller control panel; with start-stop and auto-manual selector...\n",
+          "children": [
+            {
+              "title": "Control Signal Interface:",
+              "content": "1.\nElectric Input Signal Interface: A minimum of two analog inputs (0 to 10 V or 0/4-20 mA) and six\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "P.",
+          "content": "Active Harmonic Distortion Filter: Factory mounted and wired to limit total voltage and current dist...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "Q.",
+          "content": "Input Line Conditioning: <Insert requirements>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "R.",
+          "content": "Cooling: [Air] [Refrigerant] [Water] [Air, refrigerant, or water] cooled.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "S.",
+          "content": "Accessories: Devices shall be factory installed in controller enclosure unless otherwise indicated.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "T.",
+          "content": "Chiller Capacity Control Interface: Equip chiller with adaptive control logic to automatically adjus...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Control: Standalone and microprocessor based, with all memory stored in nonvolatile memory so that r...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Enclosure: Unit mounted, NEMA 250, [Type 1] [Type 4] [Type 4x] [Type 12] <Insert type>, hinged or lo...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 18\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Operator Interface: Multiple-character digital or graphic display with dynamic update of information...\n",
+          "children": [
+            {
+              "title": "interface, display the following information:",
+              "content": "1.\nDate and time.\n2.\nOperating or alarm status.\n3.\nFault history with not less than last 10 faults displayed.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Control Functions:",
+              "content": "1.\nManual or automatic startup and shutdown time schedule.\n2.\nEntering and leaving chilled-water temperatures, control set points, and motor load limits. Evaporat...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 19\n3.\nCurrent limit and demand limit.\n4.\nCondenser-fluid temperature.\n5.\nExternal chiller emergency stop.\n",
+      "children": [
+        {
+          "title": "E.",
+          "content": "Manually Reset Safety Controls: The following conditions shall shut down chiller and require manual ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Trending: Capability to trend analog data of up to five parameters simultaneously over an adjustable...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Security Access: Provide electronic security access to controls through identification and password ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Control Authority: At least four conditions: Off, local manual control at chiller, local automatic c...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "Communication Port: RS-232 port, USB 2.0 port, or equivalent connection capable of connecting a prin...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "J.",
+          "content": "Interface with DDC System for HVAC: Factory-installed hardware and software to enable the DDC system...\n",
+          "children": [
+            {
+              "title": "Hardwired Points:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 20\na.\nMonitoring: On-off status, [common trouble alarm] [electrical power demand (kilowatts)]\n",
+      "children": [
+        {
+          "title": "HVAC.",
+          "content": "2.13\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Paint chiller, using manufacturer's standard procedures, except comply with the following minimum re...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Provide Owner with quart container of paint used in application of topcoat to use in touchup applica...\n",
+          "children": [
+            {
+              "title": "Flow Switches:",
+              "content": "1.\nChiller manufacturer shall furnish a switch for each [condenser] [evaporator and condenser] and veri...\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Paddle Flow Switches:",
+              "content": "a.\nVane operated to actuate a double-pole, double-throw switch with one pole field wired to the chiller\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Pressure Differential Switches:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 21\na.\nConstruction: Wetted parts of body and trim constructed of Type 316 stainless steel.\n",
+      "children": [
+        {
+          "title": "Vibration Isolation:",
+          "content": "1.\nChiller manufacturer shall furnish vibration isolation for each chiller.\n2.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Neoprene Pad:",
+          "content": "a.\nTwo layers of 0.375-inch- (10-mm-) thick, ribbed- or waffle-pattern neoprene pads separated by a 16-\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Spring Isolator:",
+          "content": "a.\nStable in operation and designed for not less than 30 percent reserve deflection beyond actual\noperating conditions. Isolators shall be designed so that the Kx/Ky ratio shall be 1.0 or more for\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Sound Barrier:",
+          "content": "1.\nFurnish removable and reusable sound-barrier covers over the compressor housing, hermetic motor,\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 22\n5.\nForm covers around control devices, gages, conduit, piping, and supports without degrading sound-bar...\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Tool Kit: Chiller manufacturer shall assemble a tool kit specially designed for use in serving the c...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Capacity: <Insert tons (kW)>.\n",
+          "children": [
+            {
+              "title": "Full-Load Efficiency:",
+              "content": "1.\nCOP: <Insert value>.\n2.\nEER: <Insert value>.\n3.\nPower Input/Cooling Output: <Insert kW/ton (kW/kW)>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Part-Load Efficiency:",
+              "content": "1.\nIPLV: <Insert value>.\n2.\nNPLV: <Insert value>.\n3.\nComply with GS-31.\n4.\nComply with FEMP.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Evaporator:",
+              "content": "1.\nPressure Rating: <Insert psig (kPa)>.\n2.\nNumber of Passes: [One] [Two] [Three].\n3.\nFluid Type: [Water] <Insert fluid type>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Condenser:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 23\n1.\nPressure Rating: <Insert psig (kPa)>.\n2.\nNumber of Passes: [One] [Two] [Three].\n3.\nFluid Type: [Water] <Insert fluid type>.\n",
+      "children": [
+        {
+          "title": "Heat-Reclaim Condenser:",
+          "content": "1.\nPressure Rating: <Insert psig (kPa)>.\n2.\nNumber of Passes: [One] [Two] [Three].\n3.\nFluid Type: [Water] <Insert fluid type>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Compressor:",
+          "content": "1.\nNumber of Compressors: [One] [Two].\n2.\n[First ]Compressor Rated Load Amperes: <Insert value>.\n3.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Chiller Control Electrical Requirements:",
+          "content": "1.\nPower Connections: [Integral] [Field].\n2.\nPower Input: <Insert kilowatts>.\n3.\nMinimum Circuit Ampacity: <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Chiller Electrical Requirements:",
+          "content": "1.\nPower Input: <Insert kilowatts>.\n2.\nPower Factor: [0.90] [0.95] <Insert value>.\n3.\nMinimum Circuit Ampacity: <Insert value>.\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 24\n6.\nPhase: Three.\n7.\nHertz: 60.\n",
+      "children": [
+        {
+          "title": "J.",
+          "content": "Noise Rating: [85] <Insert dBA> sound power level when measured according to ARI 575. Provide factor...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Packaged portable unit consisting of compressor, air-cooled condenser, recovery system, tank pressur...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Furnish for field installation a brush-cleaning system on each chiller [condenser] <Insert heat exch...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "System shall maintain tube fouling at or below design conditions without interrupting normal equipme...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "System shall consist of a brush inserted in each tube and a catch basket attached to each end of the...\n",
+          "children": [
+            {
+              "title": "Components:",
+              "content": "1.\nBrush: Each brush shall have nylon bristles, titanium wires, and polypropylene tips. Brush interfere...\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Four-Way Valve:",
+              "content": "a.\nConstruct valve body of carbon steel with internal sealing parts of hard rubber and Type 304 stainle...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 25\ng.\nDesign the valve to cause no more than 0.5-psig (3-kPa) pressure drop at design flow conditions.\n",
+      "children": [
+        {
+          "title": "features:",
+          "content": "a.\nNEMA 250, [Type 1] [Type 4] [Type 4x] [Type 12] enclosure.\nb.\nTimer to automatically initiate the cleaning cycle over a 24-hour period.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "A.",
+          "content": "Perform functional [run ]tests of chillers before shipping.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Factory performance test chillers, before shipping, according to ARI 506/110.\n1.\n",
+          "children": [
+            {
+              "title": "Test the following conditions:",
+              "content": "a.\nDesign conditions indicated.\nb.\nReduction in capacity from design to minimum load in steps of [10] [25] [33] <Insert number> with\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Factory sound test chillers, before shipping, according to ARI 575.\n1.\n",
+          "children": [
+            {
+              "title": "Test the following conditions:",
+              "content": "a.\nDesign conditions indicated.\nCopyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 26\nb.\nChiller operating at calculated worst-case sound condition.\nc.\nAt [one] [two] [three] [four] [five] <Insert number> point(s) of varying part-load performance to be\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "For chillers using R-134a refrigerant, factory test and inspect evaporator [and condenser] [, conden...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "For chillers using R-123 refrigerant, factory test and inspect evaporator [and condenser] [, condens...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "For chillers located indoors, rate sound power level according to ARI 575.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Examine chillers before installation. Reject chillers that are damaged.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Examine roughing-in for equipment support, anchor-bolt sizes and locations, piping, and electrical c...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Proceed with installation only after unsatisfactory conditions have been corrected.\n3.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Install chillers on support structure indicated.\n",
+          "children": [
+            {
+              "title": "Equipment Mounting:",
+              "content": "1.\nInstall chillers on cast-in-place concrete equipment bases. Comply with requirements for equipment b...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 27\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Maintain manufacturer's recommended clearances for service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Charge chiller with refrigerant and fill with oil if not factory installed.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Install separate devices furnished by manufacturer and not factory installed.\n3.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Install brush-cleaning system control panel adjacent to chiller control panel.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Arrange piping to provide service access to four-way valve assembly without affecting access to chil...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Provide field electric power, as required, to each system control panel and electric actuated valve.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Provide pneumatic piping with pressure regulator and isolation valve to each pneumatic supply connec...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Interconnect brush-cleaning system controls with chiller controls. Coordinate requirements to ensure...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Functionally test the entire brush-cleaning system, including the valve, actuator, position indicato...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with requirements for piping specified in Section 232113 \"Hydronic Piping,\" Section 232116 Hy...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Install piping adjacent to chiller to allow service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Evaporator Fluid Connections: Connect to evaporator inlet with shutoff valve, [strainer,] [flexible ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Condenser-Fluid Connections: Connect to condenser inlet with shutoff valve, [strainer,] [flexible co...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Heat-Reclaim Condenser-Fluid Connections: Connect to condenser inlet with shutoff valve, [strainer,]...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CENTRIFUGAL WATER CHILLERS",
+      "content": "236416 - 28\ncondenser outlet with shutoff valve, balancing valve,[ flexible connector,] flow switch, thermometer...\n",
+      "children": [
+        {
+          "title": "F.",
+          "content": "Refrigerant Pressure Relief Device Connections: For chillers installed indoors, extend [vent piping]...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "For chillers equipped with a purge system, extend [purge vent piping] [separate purge vent piping fo...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Connect each chiller drain connection with a union and drain pipe, and extend pipe, full size of con...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Engage a factory-authorized service representative to perform startup service.\n1.\nComplete installation and startup checks according to manufacturer's written instructions.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Inspect field-assembled components, equipment installation, and piping and electrical connections fo...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Prepare test and inspection startup reports.\n3.6\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Engage a factory-authorized service representative to train Owner's maintenance personnel to adjust,...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'and with the following features:' has very short content",
+      "Section 'HVAC.' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

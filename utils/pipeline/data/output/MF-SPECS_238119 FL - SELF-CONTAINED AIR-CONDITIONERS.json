@@ -1,0 +1,635 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 238119 - SELF-CONTAINED AIR-CONDITIONERS",
+      "author": "ARCOM, Inc.",
+      "subject": "SELF-CONTAINED AIR-CONDITIONERS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234400Z",
+      "modification_date": "D:20250314222851-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_238119 FL - SELF-CONTAINED AIR-CONDITIONERS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary\nConditions and Division 01 Specification Sections, apply to this Section.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Section includes packaged, [air] [water]-cooled air-conditioning units with refrigerant\ncompressors and controls intended for indoor installations.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product indicated. Include rated capacities, operating\ncharacteristics, and furnished specialties and accessories.\n",
+          "children": [
+            {
+              "title": "LEED Submittals:",
+              "content": "1.\nProduct Data for Credit EA 4: Documentation indicating that equipment and refrigerants\ncomply.\n2.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Shop Drawings: Include plans, elevations, sections, details, and attachments to other work.\n1.\nDetail equipment assemblies and indicate dimensions, weights, loads, required\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Samples for Initial Selection: For units with factory-applied color finishes.\nCopyright 2013 AIA\nMasterSpec Premium\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 2\n1.4\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Warranty: Sample of special warranty.\n1.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For self-contained air conditioners to include in emergency,\noperation, and maintenance manuals.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Furnish extra materials that match products installed and that are packaged with protective\ncovering for storage and identified with labels describing contents.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by\na qualified testing agency, and marked for intended location and application.\n",
+          "children": [
+            {
+              "title": "ARI Compliance:",
+              "content": "1.\nApplicable requirements in ARI 210/240.\n2.\nApplicable requirements in ARI 340/360.\n3.\nApplicable requirements in ARI 390.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "ASHRAE Compliance:",
+              "content": "1.\nFabricate and label refrigeration system to comply with ASHRAE 15, \"Safety Standard\nfor Refrigeration Systems.\"\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "ASHRAE/IESNA Compliance: Applicable requirements in ASHRAE/IESNA 90.1.\n1.8\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordinate sizes and locations of concrete bases with actual equipment provided. Cast anchor-\nbolt inserts into bases. Concrete, reinforcement, and formwork are specified in Section 033000\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 3\n1.9\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer's standard form in which manufacturer agrees to repair or\nreplace components of self-contained air conditioners that fail in materials or workmanship\n",
+          "children": [
+            {
+              "title": "Warranty Period:",
+              "content": "a.\nFor Compressor: [One] [Five] <Insert number> year(s) from date of Substantial\nCompletion.\nb.\nFor Parts: [One] [Five] <Insert number> year(s) from date of Substantial\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n2.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Factory assembled, wired, and tested; and fully charged with refrigerant and oil.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Configuration: Horizontal, ceiling[-plenum] mounted.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Configuration: Vertical, floor mounted; [vertical] [and] [horizontal] discharge.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Configuration: Horizontal, ceiling mounted and vertical, floor mounted; [vertical] [and]\n[horizontal] discharge.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Disconnect Switch: Factory mounted [in control panel] [on cabinet].\n2.3\nCabinet\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Frame and Panels: Structural-steel frame with galvanized-steel panels and access doors or\npanels.\n1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Insulation: 1-inch- (25-mm-) thick, glass-fiber duct liner complying with ASTM C 1091 and\nhaving a microbial coating on cabinet interior and control panel. 1/2-inch- (13-mm-) thick liner\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Return-Air Opening: Rear, [open] [flange for duct connection].\nCopyright 2013 AIA\nMasterSpec Premium\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 4\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Corrosion-Resistant Treatment: Phenolic coating on unit interior and exterior.\n2.4\nSupply-air Fan\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Fan Material: Galvanized steel.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Configuration: Double-width, double-inlet, [forward-curved] [airfoil] centrifugal fan;\nstatically and dynamically balanced. [Vertical] [Horizontal] discharge with flexible discharge\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Drive: [Belt, with fan mounted on permanently lubricated bearings] [Direct, with fan and\nmotor resiliently mounted].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Fan Sheaves: Variable pitch, dynamically balanced, bored to fit shafts, and keyed for initial\nstartup.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Motor Sheave: Variable and adjustable pitch, dynamically balanced, and selected to achieve\nspecified rpm when set at midposition.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Belt Rating: As recommended by manufacturer or a minimum of one and one-half times\nnameplate rating of motor.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Bearings: Grease lubricated with grease lines extended to exterior of unit[ with L-50 life at\n200,000 hours].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Variable Air Volume: Variable-frequency motor controller[ with bypass].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "Comply with NEMA designation, temperature rating, service factor, enclosure type, and\nefficiency requirements for motors specified in Section 230513 \"Common Motor Requirements\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "J.",
+          "content": "Isolation: Mount fan and motor on common subbase and mount assembly on spring isolators\nwith minimum static deflection of [1 inch (25 mm)] <Insert dimension>.\n",
+          "children": [
+            {
+              "title": "Outdoor-Air-Intake Accessories:",
+              "content": "1.\nBarometric Outdoor-Air Damper: Adjustable-blade damper allowing induction of up to\n25 percent outdoor air when evaporator fan is running.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 5\n2.5\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Compressor: Scroll type, hermetically sealed, 3600 rpm maximum, and resiliently mounted with\npositive lubrication and internal motor protection.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Refrigerant Coils (Indoor and Outdoor for Air-Cooled Units): Seamless copper tubes expanded\ninto aluminum fins.\n",
+          "children": [
+            {
+              "title": "Water-Cooled Condenser:",
+              "content": "1.\nDescription: Factory assembled and tested; tube in tube coaxial type with water-\nregulating valve.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Water-Side Economizer Section:",
+              "content": "1.\nDescription: Factory assembled and tested; consisting of water coil, modulating valves,\ncontrols, piping with cleanouts, and access panels.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Water Coil: Copper tube, with mechanically bonded aluminum fins spaced no closer than 0.1\ninch (2.5 mm); leak tested to 300 psig (2070 kPa) underwater; and having a two-position control\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Electric Coil: Helical, nickel-chrome, resistance-wire heating elements with refractory ceramic\nsupport bushings; automatic-reset thermal cutout; built-in magnetic contactors; manual-reset\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 6\nthermal cutout; airflow-proving device; and one-time fuses in terminal box for overcurrent\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Control equipment and sequence of operation are specified in Section 230923 \"Direct Digital\nControl (DDC) System for HVAC\" and Section 230993.11 \"Sequence of Operations for HVAC\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Control Package: Factory wired, including contactor, high- and low-pressure cutouts, internal-\nwinding thermostat for compressor, control-circuit transformer, and noncycling reset relay.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Time-Delay Relay: Five-minute delay to prevent compressor cycling.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Adjustable Thermostat: [Unit mounted] [Remote] to control the following:\n1.\nSupply fan.\n2.\nCompressor.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "System Selector Switch: [Heat-off-cool] [Off-heat-auto-cool].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Fan Control Switch: Auto-on.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Time Clock: Cycle unit on and off.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Microprocessor Control Panel: Controls unit functions as standalone or network operation,\nincluding refrigeration and safety controls, with unit-mounted display, and the following:\n",
+          "children": [
+            {
+              "title": "Panel-mounted indication of the following:",
+              "content": "a.\nOperating status.\nb.\nSystem diagnostics and safety alarms.\nc.\nSupply-air temperature set point.\nd.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 7\nf.\nEconomizer minimum position set point.\ng.\nSupply-air-pressure, high-limit set point.\nh.\n",
+      "children": [
+        {
+          "title": "Cooling Capacity:",
+          "content": "1.\nTotal: <Insert Btu/h (kW)>.\n2.\nSensible: <Insert Btu/h (kW)>.\n3.\nSeasonal Energy Efficiency Ratio: [10.0] [12.0] [13.0] [14.0] [16.0] <Insert ratio>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Entering-Air Temperature:",
+          "content": "a.\nDry Bulb: <Insert deg F (deg C)>.\nb.\nWet Bulb: <Insert deg F (deg C)>.\n7.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Leaving-Air Temperature:",
+          "content": "a.\nDry Bulb: <Insert deg F (deg C)>.\nb.\nWet Bulb: <Insert deg F (deg C)>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Heating Capacity:",
+          "content": "1.\nTotal: <Insert Btu/h (kW)>.\n2.\nAir-Temperature Rise: <Insert deg F (deg C)>.\n3.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Heat Pump:",
+          "content": "a.\nCoefficient of Performance: <Insert value>.\nb.\nHeating Season Performance Factor: [7.7] [8.0] <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Hot Water:",
+          "content": "a.\nEntering-Water Temperature: <Insert deg F (deg C)>.\nb.\nLeaving-Water Temperature: <Insert deg F (deg C)>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Electric Heat:",
+          "content": "a.\nTotal Capacity: <Insert Btu/h (kW)>.\nb.\nAir-Temperature Rise: <Insert deg F (deg C)>.\nc.\nControl Steps: [One] [Two] [Three] <Insert number>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Auxiliary Electric Heat:",
+          "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 8\n1.\nTotal Capacity: <Insert Btu/h (kW)>.\n2.\nAir-Temperature Rise: <Insert deg F (deg C)>.\n",
+      "children": [
+        {
+          "title": "Supply-Air Fan:",
+          "content": "1.\nFan motor.\n2.\nSize: <Insert value> hp.\n3.\n[Multispeed, PSC] [Open-dripproof] [Totally enclosed fan-cooled] type.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Total Airflow:",
+          "content": "a.\nHigh: <Insert cfm (L/s)>.\nb.\nLow: <Insert cfm (L/s)>.\n5.\nOutdoor Airflow: <Insert cfm (L/s)>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Air-Cooled Condenser:",
+          "content": "1.\nFan Quantity: [Two] [Four] <Insert number>.\n2.\nMotor Speed: <Insert value> rpm.\n3.\nMotor Horsepower: <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Water-Cooled Condenser:",
+          "content": "1.\nEntering-Water Temperature: <Insert deg F (deg C)>.\n2.\nLeaving-Water Temperature: <Insert deg F (deg C)>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Filters:",
+          "content": "1.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Prefilters:",
+          "content": "a.\nType: [Flat] [Pleated] disposable panel.\nb.\nMERV: <Insert number>.\nc.\nFace Area: <Insert sq. ft. (sq. m)>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Final Filter:",
+          "content": "a.\nType: [Flat] [Pleated] disposable panel.\nb.\nMERV: <Insert number>.\nc.\nFace Area: <Insert sq. ft. (sq. m)>.\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 9\nf.\nNumber of Filters: <Insert number>.\ng.\nMaximum or Rated Face Velocity: <Insert fpm (m/s)>.\n",
+      "children": [
+        {
+          "title": "Accessories:",
+          "content": "1.\nManual outdoor-air damper.\n2.\nMotorized outdoor-air damper.\n3.\nAir-side economizer.\n4.\nWater-side economizer.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Single-Point Electrical Characteristics:",
+          "content": "1.\nVolts: [120] [208] [230] [460] <Insert value>.\n2.\nPhase: [Single] [Three].\n3.\nHertz: 60.\n4.\nFull-Load Amperes: <Insert value>.\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Install units level and plumb.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Anchor units to structure.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Install seismic restraints.\n3.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Piping installation requirements are specified in other Sections. Drawings indicate general\narrangement of piping, fittings, and specialties.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SELF-CONTAINED AIR-CONDITIONERS",
+      "content": "238119 - 10\n",
+      "children": [
+        {
+          "title": "B.",
+          "content": "Where installing piping adjacent to equipment, allow space for service and maintenance of\nequipment.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Duct Connections: Duct installation requirements are specified in Section 233113 \"Metal\nDucts.\" Drawings indicate the general arrangement of ducts. Connect supply[ and return] ducts\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Manufacturer's Field Service: Engage a factory-authorized service representative to inspect, test,\nand adjust components, assemblies, and equipment installations, including connections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Perform tests and inspections.\n1.\nManufacturer's Field Service: Engage a factory-authorized service representative to\n",
+          "children": [
+            {
+              "title": "Tests and Inspections:",
+              "content": "1.\nOperational Test: After electrical circuitry has been energized, start units to confirm\nproper motor rotation and unit operation, and inspect for refrigerant leaks.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Units will be considered defective if they do not pass tests and inspections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Prepare test and inspection reports.\n3.4\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to perform] [Perform] startup service.\n3.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to train] [Train] Owner's maintenance\npersonnel to adjust, operate, and maintain units.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'Filters:' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

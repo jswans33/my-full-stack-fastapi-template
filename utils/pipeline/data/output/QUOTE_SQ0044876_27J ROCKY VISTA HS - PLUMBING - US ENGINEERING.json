@@ -1,0 +1,4324 @@
+{
+  "document": {
+    "metadata": {
+      "title": "",
+      "author": "",
+      "subject": "",
+      "creator": "CoolSpools V7R1-151215100642",
+      "producer": "CoolSpools V7R1-151215100642",
+      "creation_date": "D:20250311132124-04'00'",
+      "modification_date": ""
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\QUOTE_SQ0044876_27J ROCKY VISTA HS - PLUMBING - US ENGINEERING.PDF",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "27J Rocky Vista HS - Plumbing\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "FAX",
+      "content": "(303) 344-5773\n0044876\n3/11/25\n1\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nQuoted To Customer\nBid Due Date\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "KANSAS CITY, MO  64111-3726",
+      "content": "Phone (303) 629-1244\nJames Hitchcock\nFax\njwhitchcock@winnelson.com\n(303) 344-5980\n005099\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2% 60/NET 61 DAYS",
+      "content": "Terri McMahon\n",
+      "children": [
+        {
+          "title": "S",
+          "content": "Job Name\nQuote No.\nDate\nPage\nQuoted By\nCustomer\nQuoted To\nSalesperson\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "FOB",
+          "content": "Payment Terms\nUnit\nExtended\nLine\nQty.\nD e s c r i p t i o n\nPrice\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ALT SUBJECT TO APPROVAL",
+      "content": "4.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "3 BTHS1000A NG COMM WHTR ASME100",
+      "content": "28839.4200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AO SMITH 120GAL 1,000,000BTU",
+      "content": "5.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "3 15 YEAR WARRANTY FOR BTHS1000A",
+      "content": "7116.0000\n21348.00\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AO SMITH",
+      "content": "6.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 12-16 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "7.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "6 0009869     2 LF3001A CXF DIEL",
+      "content": "115.6207\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WATTS  LEAD FREE",
+      "content": "8.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "6 SFP600A-LF 2     FP BALL VLV",
+      "content": "94.6900\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DISTRO LEAD FREE",
+      "content": "9.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "3 LFN36M1 3/4 RELIEF VALVE",
+      "content": "30.8100\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LEAD FREE",
+      "content": "10.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "3 NC-2 NEUTRALIZATION KIT",
+      "content": "122.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "109586.56\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** WH-F ***",
+      "content": "14.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LE255T3-3 55G ELEC 7KW 240V 3P",
+      "content": "3925.6300\n3925.63\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRADFORD WHITE COMMERCIAL",
+      "content": "15.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 6-8 WEEKS OUT",
+      "content": "100.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "16.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 0009865   3/4 LF3001A CXF DIEL",
+      "content": "19.4400\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DISTRO LEAD FREE",
+      "content": "17.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 SFP600A-LF 3/4   FP BALL VLV",
+      "content": "15.3000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DISTRO LEAD FREE",
+      "content": "18.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LFN36M1 3/4 RELIEF VALVE",
+      "content": "30.8100\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LEAD FREE",
+      "content": "19.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 24X24 GLV WTR HTR PAN 4\" DEPTH",
+      "content": "91.8700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "4\"DEEP W/ 1-1/4\"MIP DRAIN",
+      "content": "20.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 RS-094-3/4-MK6 FLOODMASTER KIT",
+      "content": "340.5800\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "4558.37\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** WH-F  *** ALT",
+      "content": "27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n2\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nBid Due Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ALT SUBJECT TO APPROVAL",
+      "content": "24.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 DEN66 66G COMM ELECTRIC HEATER",
+      "content": "3271.8500\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AO SMITH",
+      "content": "25.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 100109502 3.5KW 208V 2ELE CNV",
+      "content": "145.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AO SMITH",
+      "content": "26.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": "150.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "27.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 0009865   3/4 LF3001A CXF DIEL",
+      "content": "19.4400\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DISTRO LEAD FREE",
+      "content": "28.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 SFP600A-LF 3/4   FP BALL VLV",
+      "content": "15.3000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DISTRO LEAD FREE",
+      "content": "29.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LFN36M1 3/4 RELIEF VALVE",
+      "content": "30.8100\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LEAD FREE",
+      "content": "30.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 24X24 GLV WTR HTR PAN 4\" DEPTH",
+      "content": "91.8700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "4\"DEEP W/ 1-1/4\"MIP DRAIN",
+      "content": "31.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 RS-094-3/4-MK6 FLOODMASTER KIT",
+      "content": "340.5800\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "4099.59\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ALT SUBJECT TO APPROVAL",
+      "content": "36.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 BTH400A NG COMM W HTR ASME 300",
+      "content": "17365.1800\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AO SMITH",
+      "content": "37.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "38.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 100113124 636 6X6X48 CONC VENT",
+      "content": "517.6900\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AO SMITH",
+      "content": "39.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": "80.0000\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "40.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 0009869     2 LF3001A CXF DIEL",
+      "content": "115.6207\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "WATTS  LEAD FREE",
+      "content": "41.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 SFP600A-LF 2     FP BALL VLV",
+      "content": "94.6900\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "DISTRO LEAD FREE",
+      "content": "42.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LFN36M1 3/4 RELIEF VALVE",
+      "content": "30.8100\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LEAD FREE",
+      "content": "43.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 WHP36 36X36 SQ WTR HTR PAN",
+      "content": "106.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "W/DRAIN(NO SUPPORT BRACKETS)",
+      "content": "44.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NC-1 NEUTRALIZATION KIT",
+      "content": "83.5500\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       83.55",
+      "content": "45.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 2-3 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "18603.87\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** DET-1 ***",
+      "content": "48.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 ST-70VC 34GAL ASME EXP TANK",
+      "content": "1823.5294\n1823.53\n",
+      "children": [
+        {
+          "title": "AMTROL",
+          "content": "49.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "80.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1903.53\n27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n3\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** DET-F ***",
+      "content": "52.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 ST-12  4.4 EXPANSION TANK",
+      "content": "83.7309\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "83.73\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** DET-K ***",
+      "content": "56.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 ST-25V 10.3 EXPANSION TANK",
+      "content": "260.2000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AMTROL ASME",
+      "content": "57.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "40.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "300.20\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SHAFT GROUNDING NOT AVAILABLE",
+      "content": "61.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 HYDRO MPC E 100KA SCCR 3CRE452",
+      "content": "53054.1473\n53054.15\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "GRUNDFOS -2 3X460V  60HZ",
+      "content": "62.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 99455347 TANK GFXA 400 106GAL",
+      "content": "2085.0000\n2085.00\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "GRUNDFOS 150# SS CONN",
+      "content": "63.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 BOOSTER START UP 1 MECH ROOM",
+      "content": "150.0000\n150.00\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TM SALES / GRUNDFOS",
+      "content": "64.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 10-14 WEEKS FACTORY",
+      "content": "500.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "55789.15\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "TIMER NOT OFFERED",
+      "content": "72.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 95906632 UPS26-150SF SUPERBRUT",
+      "content": "873.3500\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "STAINLESS FLANGED",
+      "content": "73.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 519652 1 BZ FLG",
+      "content": "61.0000\n",
+      "children": [
+        {
+          "title": "GRUNDFOS",
+          "content": "74.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "60.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1988.70\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** DCP-F & K ***",
+      "content": "77.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 98961763 UPS26-99SFC SS PUMP",
+      "content": "734.9800\n",
+      "children": [
+        {
+          "title": "GRUNDFOS",
+          "content": "78.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 519652 1 BZ FLG",
+      "content": "61.0000\n",
+      "children": [
+        {
+          "title": "GRUNDFOS",
+          "content": "79.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "60.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA      120.00",
+      "content": "27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n4\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nBid Due Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "SUBTOTAL",
+          "content": "1711.96\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** SI-1 - 10 ***",
+      "content": "86.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "10 Z1180-2IP 2 SOLIDS INTERCEPTOR",
+      "content": "427.6000\n",
+      "children": [
+        {
+          "title": "ZURN",
+          "content": "87.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "35.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "4311.00\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** BF-1 ***",
+      "content": "90.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 EZWSSM BOTTLE FILLING STATION",
+      "content": "1035.3700\n1035.37\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ELKAY NON REF NON FILTERED",
+      "content": "91.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "92.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "93.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1082.67\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "COLOR SUBJECT TO APPROVAL",
+      "content": "99.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LK4405FRKEVG OUTDOOR DRK FOUNT",
+      "content": "2505.4900\n2505.49\n",
+      "children": [
+        {
+          "title": "ELKAY",
+          "content": "100.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "101.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "102.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 PLB100XP 1/2COMPX3/8OD ANG STP",
+      "content": "6.6600\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "2532.53\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** ESHR-1 ***",
+      "content": "105.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 S19314BF EYE/FACE WASH",
+      "content": "925.8800\n925.88\n",
+      "children": [
+        {
+          "title": "BRADLEY",
+          "content": "106.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 S19-2150 TSTAT SAFETY VLV",
+      "content": "1035.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRADLEY MIXING VALVE",
+      "content": "107.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 5-6 WEEKS OUT",
+      "content": "100.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA      100.00",
+      "content": "27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n5\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nBid Due Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "SUBTOTAL",
+          "content": "2060.88\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** ESHR-2 ***",
+      "content": "110.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 S19345JXB COMB EYE/FACE WASH",
+      "content": "2602.0600\n2602.06\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRADLEY RECESSED",
+      "content": "111.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 S24-193 SPINTEC STN. STL. SHRO",
+      "content": "64.0300\n64.03\n",
+      "children": [
+        {
+          "title": "BRADLEY",
+          "content": "112.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 S19-2150 TSTAT SAFETY VLV",
+      "content": "1035.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRADLEY MIXING VALVE",
+      "content": "113.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": "150.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "3851.09\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** EW-1 ***",
+      "content": "116.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 G1848 DECK MTD SW DWN EYE WASH",
+      "content": "531.9000\n531.90\n",
+      "children": [
+        {
+          "title": "GUARDIAN",
+          "content": "117.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 TA-300-LF-RF 1/2 EMER MIX VLV",
+      "content": "526.7500\n",
+      "children": [
+        {
+          "title": "LEONARD",
+          "content": "118.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "60.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1118.65\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** EWC-1 ***",
+      "content": "121.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 EZS8WSLK COOLER/BOTTLE STATION",
+      "content": "1419.8400\n",
+      "children": [
+        {
+          "title": "ELKAY",
+          "content": "122.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "123.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "124.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 PLB100XP 1/2COMPX3/8OD ANG STP",
+      "content": "6.6600\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "125.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 0830 ELECT WTR COOLER CARRIER",
+      "content": "202.8300\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1649.71\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** EWC-2 ***",
+      "content": "129.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 EZSTL8WSLK BILVL W/BOTTLE FILL",
+      "content": "1919.4200\n",
+      "children": [
+        {
+          "title": "ELKAY",
+          "content": "130.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "131.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "132.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 PLB100XP 1/2COMPX3/8OD ANG STP",
+      "content": "6.6600\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "133.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 0834-M31EZSTL8 BI-LEV CARRIER",
+      "content": "293.7600\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "2240.22\n27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n6\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** HB-1 ***",
+      "content": "137.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 952-CP INSIDE SILL FAUCET",
+      "content": "157.3200\n",
+      "children": [
+        {
+          "title": "CHICAGO",
+          "content": "138.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 2-3 WEEKS OUT",
+      "content": "30.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "187.32\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** IMB-1 ***",
+      "content": "141.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 88531 IMOB METAL ECONO SWT ARR",
+      "content": "141.5800\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "GUY GRAY MIB1HAAB ICE MAKER BX",
+      "content": "142.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 2-3 WEEKS OUT",
+      "content": "25.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "166.58\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** L-1 ***",
+      "content": "145.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 0355.012.020 WHT 4CC WALL LAV",
+      "content": "48.1300\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IN STOCK  / IN TOWN",
+      "content": "147.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 802-317XKABCP 4\"CC LAV FAUCET",
+      "content": "109.0700\n109.07\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FAUCET",
+      "content": "148.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 E2805JKABCP .5 VP EONOFLO",
+      "content": "26.5300\n26.53\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FUACET",
+      "content": "149.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "30.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "150.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 760-1  1-1/4X6 CAST GRID DRAIN",
+      "content": "11.6300\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       11.63",
+      "content": "151.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 701-1 1-1/4 CP 17GA P-TRAP",
+      "content": "18.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       18.37",
+      "content": "152.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-12A F 3/8 X 1/2 CONN",
+      "content": "3.7000\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "153.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 LFUSG-B M3 3/8 THERM MIX VLV",
+      "content": "79.0400\n",
+      "children": [
+        {
+          "title": "WATTS",
+          "content": "154.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-12DW F 3/8X3/8 CONN",
+      "content": "6.0000\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "155.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "156.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA         .48",
+      "content": "157.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 82193 102-EZ P-TRAP INSULATION",
+      "content": "39.8000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "TRUEBRO 102EZ/PTRAP/STOP/SUPLY",
+      "content": "158.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 0700 LAV CARRIER",
+      "content": "239.1700\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "675.46\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** L-2 ***",
+      "content": "162.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 0476.028.020 WHT 4CC CTOP LAV",
+      "content": "50.2000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IN STOCK  / IN TOWN",
+      "content": "164.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 802-317XKABCP 4\"CC LAV FAUCE",
+      "content": "109.0700\n109.07\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FAUCET",
+      "content": "165.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 E2805JKABCP .5 VP ECONOFL",
+      "content": "26.5300\n26.53\n27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n7\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FAUCET",
+      "content": "166.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "30.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "167.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 760-1  1-1/4X6 CAST GRID DRAIN",
+      "content": "11.6300\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       11.63",
+      "content": "168.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 701-1 1-1/4 CP 17GA P-TRAP",
+      "content": "18.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       18.37",
+      "content": "169.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-12A F 3/8 X 1/2 CONN",
+      "content": "3.7000\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "170.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 LFUSG-B M3 3/8 THERM MIX VLV",
+      "content": "79.0400\n",
+      "children": [
+        {
+          "title": "WATTS",
+          "content": "171.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-12DW F 3/8X3/8 CONN",
+      "content": "6.0000\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "172.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "173.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA         .48",
+      "content": "174.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 82193 102-EZ P-TRAP INSULATION",
+      "content": "39.8000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "438.36\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** L-3 ***",
+      "content": "177.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 0496.221.020 WHT UNDRCTR LAV",
+      "content": "42.3600\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IN STOCK / IN TOWN",
+      "content": "179.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 802-317XKABCP 4\"CC LAV FAUCE",
+      "content": "109.0700\n109.07\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FAUCET",
+      "content": "180.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 E2805JKABCP .5VP ECONO FLOW",
+      "content": "26.5300\n26.53\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FAUCET",
+      "content": "181.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "30.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "182.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 760-1  1-1/4X6 CAST GRID DRAIN",
+      "content": "11.6300\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       11.63",
+      "content": "183.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 701-1 1-1/4 CP 17GA P-TRAP",
+      "content": "18.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       18.37",
+      "content": "184.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-12A F 3/8 X 1/2 CONN",
+      "content": "3.7000\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "185.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 LFUSG-B M3 3/8 THERM MIX VLV",
+      "content": "79.0400\n",
+      "children": [
+        {
+          "title": "WATTS",
+          "content": "186.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-12DW F 3/8X3/8 CONN",
+      "content": "6.0000\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "187.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "188.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA         .48",
+      "content": "189.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 82193 102-EZ P-TRAP INSULATION",
+      "content": "39.8000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "430.52\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** MSB-1 ***",
+      "content": "192.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 TSB3013501 36X24 MOP SINK",
+      "content": "503.5300\n503.53\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "FIAT TERRAZO DROP FRONT",
+      "content": "193.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "194.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 897-CCP SERVICE FCT",
+      "content": "122.2200\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "195.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "30.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       30.00",
+      "content": "27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n8\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nBid Due Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "196.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 832AA 30     HOSE/BRACKET COMB",
+      "content": "43.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       43.00",
+      "content": "197.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 889-CC      MOP HANGER BRACKET",
+      "content": "91.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "789.76\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** RH-1 ***",
+      "content": "200.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 RHY2-1-MS ROOF HYDRANT W/ VENT",
+      "content": "913.7000\n",
+      "children": [
+        {
+          "title": "WOODFORD",
+          "content": "201.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 2-3 WEEKS OUT",
+      "content": "60.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "973.70\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** S-1 & 3 ***",
+      "content": "204.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LRAD252165PD3 3H 18GA SINK",
+      "content": "558.2700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ELKAY SS SINGLE BOWL ADA",
+      "content": "205.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "206.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 786-E35XKABCP CONCEAL KIT FCT",
+      "content": "181.9900\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FAUCET",
+      "content": "207.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "35.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SINK INCLUDES DRAIN",
+      "content": "209.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "210.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-20A F 3/8 X 1/2 CONN",
+      "content": "4.3300\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "211.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "212.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA         .48",
+      "content": "213.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 82193 102-EZ P-TRAP INSULATION",
+      "content": "39.8000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "898.42\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** S-2 ***",
+      "content": "216.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 CHS1716C SS HND SINK",
+      "content": "971.7700\n971.77\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "LK940GN04L2H INCLUDED",
+      "content": "219.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "220.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-20A F 3/8 X 1/2 CONN",
+      "content": "4.3300\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "221.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "222.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA         .48",
+      "content": "223.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 82193 102-EZ P-TRAP INSULATION",
+      "content": "39.8000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1074.56\n27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n9\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** S-6 ***",
+      "content": "228.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 B1C18X21X UTILITY SINK",
+      "content": "635.9900\n",
+      "children": [
+        {
+          "title": "ELKAY",
+          "content": "229.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 LK940LGN08T4H 8\"CC 2HDL FAUCET",
+      "content": "271.1800\n271.18\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ELKAY GOOSENECK",
+      "content": "230.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "231.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 11             BASKET STRAINER",
+      "content": "5.5800\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA        5.58",
+      "content": "232.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 803-20-1 1-1/2X12 CP FLGD TLPC",
+      "content": "14.3200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       14.32",
+      "content": "233.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "234.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-20A F 3/8 X 1/2 CONN",
+      "content": "4.3300\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "235.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "236.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1010.43\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** S-7 ***",
+      "content": "239.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 14-2C16X20-2-0X",
+      "content": "1052.0700\n",
+      "children": [
+        {
+          "title": "ELKAY",
+          "content": "240.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 LK940LGN08T4H 8\"CC 2HDL FAUCET",
+      "content": "271.1800\n271.18\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ELKAY GOOSENECK",
+      "content": "241.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "242.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 11             BASKET STRAINER",
+      "content": "5.5800\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       11.16",
+      "content": "243.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 2121A 1-1/2X16 SP22G HL EO WST",
+      "content": "31.3000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       31.30",
+      "content": "244.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       40.74",
+      "content": "245.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-20A F 3/8 X 1/2 CONN",
+      "content": "4.3300\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "246.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "247.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1469.44\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "3 LK723 MIXING VALVES & DRAIN",
+      "content": "252.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 EWMA6020SACTMC 3 ST WASH SINK",
+      "content": "5829.5500\n5829.55\n",
+      "children": [
+        {
+          "title": "ELKAY",
+          "content": "253.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 8-10 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "254.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 Z1224-75-TRIPLE CARRIER",
+      "content": "202.1300\n202.13\n",
+      "children": [
+        {
+          "title": "ZURN",
+          "content": "255.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "120.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "256.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n10\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nBid Due Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n257.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "6 PLS1-20A F 3/8 X 1/2 CONN",
+      "content": "4.3300\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "258.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "6 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "259.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "6 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "6361.00\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** S-9 ***",
+      "content": "262.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 E2C20X20-2-20X 2CMP SS SINK",
+      "content": "1367.3900\n1367.39\n",
+      "children": [
+        {
+          "title": "ELKAY",
+          "content": "263.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 LK940LGN08T4H 8\"CC 2HDL FAUCET",
+      "content": "271.1800\n271.18\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ELKAY GOOSENECK",
+      "content": "264.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "265.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 11             BASKET STRAINER",
+      "content": "5.5800\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       11.16",
+      "content": "266.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 2121A 1-1/2X16 SP22G HL EO WST",
+      "content": "31.3000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       31.30",
+      "content": "267.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "268.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-20A F 3/8 X 1/2 CONN",
+      "content": "4.3300\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "269.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "270.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1764.39\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** S-10 ***",
+      "content": "273.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LR4322 2 COMP 43X22 SS SINK",
+      "content": "969.9800\n969.98\n",
+      "children": [
+        {
+          "title": "ELKAY",
+          "content": "274.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "275.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 786-E35XKABCP CONCEAL KIT FCT",
+      "content": "181.9900\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA      181.99",
+      "content": "276.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "35.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "277.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 11             BASKET STRAINER",
+      "content": "5.5800\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       11.16",
+      "content": "278.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 2121A 1-1/2X16 SP22G HL EO WST",
+      "content": "31.3000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       31.30",
+      "content": "279.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-20A F 3/8 X 1/2 CONN",
+      "content": "4.3300\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "280.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "281.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1292.42\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** S-11 ***",
+      "content": "284.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LRAD252165PD3 3H 18GA SINK",
+      "content": "558.2700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "ELKAY SS SINGLE BOWL ADA",
+      "content": "285.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "FFA",
+          "content": "286.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 527-919SLXKCABCP 8\"CC PRERINSE",
+      "content": "371.1300\n371.13\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FAUCET DECK MT",
+      "content": "287.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "45.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       45.00",
+      "content": "27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n11\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nBid Due Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "288.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 803-20-1 1-1/2X12 CP FLGD TLPC",
+      "content": "14.3200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       14.32",
+      "content": "289.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 704       CP 1-1/2 17GA P-TRAP",
+      "content": "20.3700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       20.37",
+      "content": "290.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 PLS1-20A F 3/8 X 1/2 CONN",
+      "content": "4.3300\n",
+      "children": [
+        {
+          "title": "BRASSCRAFT",
+          "content": "291.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2 KTSCR19XC 1/2X3/8 LK ANG STP",
+      "content": "26.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT LOOSE KEY ANGLE STP",
+      "content": "292.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2 1099B  5/8   OD  CP FLANGE",
+      "content": ".2400\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA         .48",
+      "content": "293.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 82193 102-EZ P-TRAP INSULATION",
+      "content": "39.8000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1111.88\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SHOWER BY ARCHITECT",
+      "content": "297.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 HN300-B-BP-HD-A36 SHOWER KIT",
+      "content": "1085.8600\n1085.86\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1085.86\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SHOWER BY ARCHITECT",
+      "content": "306.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 1C -SERIES S15 AKV HD A24",
+      "content": "1104.7500\n1104.75\n",
+      "children": [
+        {
+          "title": "BRADLEY",
+          "content": "307.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 5-6 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1104.76\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** TMV-1 ***",
+      "content": "310.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 PNV-200-LF-3PS ELEC MIXING VLV",
+      "content": "19395.8400\n19395.84\n",
+      "children": [
+        {
+          "title": "LEONARD",
+          "content": "311.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 5-6 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "19395.85\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** UR-1 ***",
+      "content": "314.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 1107009 SU-7009 TOP SP URINAL",
+      "content": "113.3400\n113.34\n",
+      "children": [
+        {
+          "title": "SLOAN",
+          "content": "315.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "80.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "8183 NOT A GOOD MODEL",
+      "content": "317.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 G2 8186-0.5 SENSOR FLUSH VALVE",
+      "content": "482.3000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IN STOCK / IN TOWN",
+      "content": "319.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 0637  URINAL CARRIER",
+      "content": "215.5100\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA      215.51",
+      "content": "27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n12\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nBid Due Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "SUBTOTAL",
+          "content": "891.15\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** WC-1 ***",
+      "content": "323.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 2102009 ST-2009 15\"FLR MT BOWL",
+      "content": "78.7500\n78.75\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SLOAN WHITE ELONG TOP SPUD",
+      "content": "324.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "80.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "325.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 3250289 8111 1.28 G2 OPT",
+      "content": "482.3000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IN STOCK / IN TOWN",
+      "content": "327.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 1955SSCT 000 WHT EL PL SEAT",
+      "content": "26.7000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       26.70",
+      "content": "328.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 90-241   JUMBO JOHNI RING PLUS",
+      "content": "4.0500\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EQUALS HARVEY'S #10",
+      "content": "329.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 90904 1/4\" QUICK JOHNI-BOLT PR",
+      "content": "2.2300\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "674.03\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** WC-2 ***",
+      "content": "332.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 2102029 ST-2029 ADA BOWL",
+      "content": "91.2500\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "SLOAN WHITE ELONG TOP SPUD",
+      "content": "333.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "80.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PLUS ESTIMATED FREIGHT",
+      "content": "334.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 3250289 8111 1.28 G2 OPT",
+      "content": "482.3000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "IN STOCK / IN TOWN",
+      "content": "336.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 1955SSCT 000 WHT EL PL SEAT",
+      "content": "26.7000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       26.70",
+      "content": "337.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 90-241   JUMBO JOHNI RING PLUS",
+      "content": "4.0500\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EQUALS HARVEY'S #10",
+      "content": "338.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 90904 1/4\" QUICK JOHNI-BOLT PR",
+      "content": "2.2300\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "686.53\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CC-8\" SAME COST",
+      "content": "342.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 B67C 4\"  CHROME WALL HYDRANT",
+      "content": "437.8600\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "10\"-16\" SAME COST",
+      "content": "344.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 B67C 12\" CHROME WALL HYDRANT",
+      "content": "451.8200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "18\"-24\" SAME COST",
+      "content": "346.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 B67C 24\" WALL HYDRANT",
+      "content": "423.4300\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA      423.43",
+      "content": "347.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1313.12\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** WWB-1 ***",
+      "content": "350.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 82158 T200TPPVCHA WASHER BOX",
+      "content": "200.4800\n200.48\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "GUY GRAY  W/HAMMER ARRESTORS",
+      "content": "351.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 2-3 WEEKS OUT",
+      "content": "35.0000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       35.00",
+      "content": "27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n13\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\nBid Due Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "SUBTOTAL",
+          "content": "235.48\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "VERIFY SIZE & COLOR TO ORDER",
+      "content": "355.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 736000 T10 1.5\" BLACK DIL TAN",
+      "content": "878.7500\n878.75\n",
+      "children": [
+        {
+          "title": "ORION",
+          "content": "356.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "50.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "928.75\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** DSN-1 ***",
+      "content": "359.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21014-Z 4\" NH DOWN SPOUT",
+      "content": "149.4600\n149.46\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM ROUGH BRZ",
+      "content": "360.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21016-Z 6\" NH DOWN SPOUT",
+      "content": "354.7800\n354.78\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM ROUGH BRZ",
+      "content": "361.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21016-Z 8\" NH DOWN SPOUT",
+      "content": "508.2200\n508.22\n",
+      "children": [
+        {
+          "title": "JOSAM",
+          "content": "362.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 21016-Z 10\" NH DOWN SPOUT",
+      "content": "659.5300\n659.53\n",
+      "children": [
+        {
+          "title": "JOSAM",
+          "content": "363.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1672.00\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2\"-4\" SAME COST",
+      "content": "367.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 30002-5A-Z  2 FLOOR DRAIN W/S",
+      "content": "112.8600\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "2\" FD W/ 5A NB TOP NH TPA",
+      "content": "368.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "45.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "157.86\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "NO MODELS PROVIDED",
+      "content": "372.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 49320A-4NH CI GRATE FLOOR SINK",
+      "content": "595.8400\n",
+      "children": [
+        {
+          "title": "JOSAM",
+          "content": "373.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "80.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "675.84\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** TRAP GUARD ***",
+      "content": "376.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 2692-02 2 TRAP SEAL",
+      "content": "49.6300\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       49.63",
+      "content": "377.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 2692-03 3 TRAP SEAL",
+      "content": "51.7400\n",
+      "children": [
+        {
+          "title": "SMITH",
+          "content": "378.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 2692-04 4 QUAD TRAP SEAL",
+      "content": "61.2900\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "162.66\n27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n14\nExpiration Date\n4/14/25\nRevised Date\n3/11/25\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** GD-1 ***",
+      "content": "382.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 BADGER 5 W/CD 1/2HP",
+      "content": "212.3000\n",
+      "children": [
+        {
+          "title": "79883A-ISE",
+          "content": "383.0\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "1 660-GTR1B 3/8\"OD F BULK N/L MI",
+      "content": "15.7600\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "OATEY HAMMER ARRESTOR",
+      "content": "384.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 PLS1-60DW12 F 3/8X3/8 CONN",
+      "content": "10.0100\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "BRASSCRAFT B6W60K",
+      "content": "385.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 8000E              PVC AIR GAP",
+      "content": "2.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "240.07\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** OD-1 ***",
+      "content": "389.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21504-Z-3-16-22-VP",
+      "content": "601.9500\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM 4\" ROOF DRAIN",
+      "content": "390.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21506-Z-3-16-22-VP",
+      "content": "670.1700\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM 6\" ROOF DRAIN",
+      "content": "391.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21506-Z-3-16-22-VP",
+      "content": "737.7600\n737.76\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM 8\" ROOF DRAIN",
+      "content": "392.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "2009.89\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** RD-1 ***",
+      "content": "395.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21504-Z-3-22-VP",
+      "content": "737.7600\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM 4\" ROOF DRAIN",
+      "content": "396.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21506-Z-3-22-VP",
+      "content": "575.8200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM 6\" ROOF DRAIN",
+      "content": "397.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 21506-Z-3-22-VP",
+      "content": "643.4100\n643.41\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM 8\" ROOF DRAIN",
+      "content": "398.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "80.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "2036.99\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "2\"-4\" SAME COST",
+      "content": "402.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 24704-22 4\" THRD CI DOME",
+      "content": "139.8900\n139.89\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM ROOF DRAIN SIDE OUTLET",
+      "content": "403.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 24706-22 6\" THRD CI DOME",
+      "content": "331.4100\n331.41\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "JOSAM ROOF DRAIN SIDE OUTLET",
+      "content": "404.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "471.31\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** T-1 ***",
+      "content": "407.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LGB1-11A-20 LABORATORY GAS VLV",
+      "content": "127.5800\n127.58\n27J Rocky Vista HS - Plumbing\n0044876\n3/11/25\n15\nExpiration Date\n4/14/25\nRevised Date\n",
+      "children": [
+        {
+          "title": "UOM",
+          "content": "Price\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FACUET",
+      "content": "408.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 LGB1-11C-20 LABAORATORY GAS VL",
+      "content": "127.5800\n127.58\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CHICAGO FAUCETS",
+      "content": "409.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK, 3-4 WEEKS OUT",
+      "content": "60.0000\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "315.16\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** TD-1 ***",
+      "content": "412.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 76000 - SUPER-FLO 6\"W TRENCH D",
+      "content": "1517.8700\n1517.87\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "NON CANCELABLE / NON RETURNABL",
+      "content": "414.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NON-STOCK 8-12 WEEKS FACTORY",
+      "content": ".0100\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "1517.88\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** WCO-1 ***",
+      "content": "417.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 NH 36 4 TEST TEE L/PLUG",
+      "content": "48.9200\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "EA       48.92",
+      "content": "418.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 P50-400 4\"          BRASS PLUG",
+      "content": "16.5100\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "\"RAISED HEAD\"",
+      "content": "419.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 1843-C 6   CO CVR PLATE",
+      "content": "7.2000\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "6 \" CLEANOUT COVER SS",
+      "content": "420.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 874-4    1/4X4         SS BOLT",
+      "content": "1.8300\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "74.46\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "*** GCO *** IN DRAWINGS",
+      "content": "424.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 4253S 4 NH CI FLOOR C/O",
+      "content": "464.5647\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "W/BRZ PLUG",
+      "content": "425.0\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "1 4253S 6\" NH CI FLOOR C/O",
+      "content": "316.2352\n",
+      "children": [
+        {
+          "title": "SUBTOTAL",
+          "content": "780.80\nTax Area Id\nNet Sales\n272,547.10\n061230920\nFreight\n.00\nTax\n.00\nQuotation Total\n272,547.10\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: title",
+      "Missing optional metadata: author",
+      "Missing optional metadata: subject",
+      "Missing optional metadata: keywords",
+      "Section 'UOM' has very short content",
+      "Section 'ALT SUBJECT TO APPROVAL' has very short content",
+      "Section 'AO SMITH 120GAL 1,000,000BTU' has very short content",
+      "Section 'AO SMITH' has very short content",
+      "Section '1 NON-STOCK 12-16 WEEKS FACTORY' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '6 0009869     2 LF3001A CXF DIEL' has very short content",
+      "Section 'WATTS  LEAD FREE' has very short content",
+      "Section '6 SFP600A-LF 2     FP BALL VLV' has very short content",
+      "Section 'DISTRO LEAD FREE' has very short content",
+      "Section '3 LFN36M1 3/4 RELIEF VALVE' has very short content",
+      "Section 'LEAD FREE' has very short content",
+      "Section '3 NC-2 NEUTRALIZATION KIT' has very short content",
+      "Section '*** WH-F ***' has very short content",
+      "Section 'BRADFORD WHITE COMMERCIAL' has very short content",
+      "Section '1 NON-STOCK, 6-8 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '2 0009865   3/4 LF3001A CXF DIEL' has very short content",
+      "Section 'DISTRO LEAD FREE' has very short content",
+      "Section '2 SFP600A-LF 3/4   FP BALL VLV' has very short content",
+      "Section 'DISTRO LEAD FREE' has very short content",
+      "Section '1 LFN36M1 3/4 RELIEF VALVE' has very short content",
+      "Section 'LEAD FREE' has very short content",
+      "Section '1 24X24 GLV WTR HTR PAN 4\" DEPTH' has very short content",
+      "Section '4\"DEEP W/ 1-1/4\"MIP DRAIN' has very short content",
+      "Section '1 RS-094-3/4-MK6 FLOODMASTER KIT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'ALT SUBJECT TO APPROVAL' has very short content",
+      "Section 'AO SMITH' has very short content",
+      "Section '1 100109502 3.5KW 208V 2ELE CNV' has very short content",
+      "Section 'AO SMITH' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '2 0009865   3/4 LF3001A CXF DIEL' has very short content",
+      "Section 'DISTRO LEAD FREE' has very short content",
+      "Section '2 SFP600A-LF 3/4   FP BALL VLV' has very short content",
+      "Section 'DISTRO LEAD FREE' has very short content",
+      "Section '1 LFN36M1 3/4 RELIEF VALVE' has very short content",
+      "Section 'LEAD FREE' has very short content",
+      "Section '1 24X24 GLV WTR HTR PAN 4\" DEPTH' has very short content",
+      "Section '4\"DEEP W/ 1-1/4\"MIP DRAIN' has very short content",
+      "Section '1 RS-094-3/4-MK6 FLOODMASTER KIT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'ALT SUBJECT TO APPROVAL' has very short content",
+      "Section 'AO SMITH' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 100113124 636 6X6X48 CONC VENT' has very short content",
+      "Section 'AO SMITH' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '2 0009869     2 LF3001A CXF DIEL' has very short content",
+      "Section 'WATTS  LEAD FREE' has very short content",
+      "Section '2 SFP600A-LF 2     FP BALL VLV' has very short content",
+      "Section 'DISTRO LEAD FREE' has very short content",
+      "Section '1 LFN36M1 3/4 RELIEF VALVE' has very short content",
+      "Section 'LEAD FREE' has very short content",
+      "Section '1 WHP36 36X36 SQ WTR HTR PAN' has very short content",
+      "Section 'W/DRAIN(NO SUPPORT BRACKETS)' has very short content",
+      "Section '1 NC-1 NEUTRALIZATION KIT' has very short content",
+      "Section 'EA       83.55' has very short content",
+      "Section '1 NON-STOCK, 2-3 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** DET-1 ***' has very short content",
+      "Section 'AMTROL' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'UOM' has very short content",
+      "Section '*** DET-F ***' has very short content",
+      "Section '1 ST-12  4.4 EXPANSION TANK' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** DET-K ***' has very short content",
+      "Section '1 ST-25V 10.3 EXPANSION TANK' has very short content",
+      "Section 'AMTROL ASME' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'SHAFT GROUNDING NOT AVAILABLE' has very short content",
+      "Section 'GRUNDFOS -2 3X460V  60HZ' has very short content",
+      "Section 'GRUNDFOS 150# SS CONN' has very short content",
+      "Section 'TM SALES / GRUNDFOS' has very short content",
+      "Section '1 NON-STOCK 10-14 WEEKS FACTORY' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'TIMER NOT OFFERED' has very short content",
+      "Section '2 95906632 UPS26-150SF SUPERBRUT' has very short content",
+      "Section 'STAINLESS FLANGED' has very short content",
+      "Section '2 519652 1 BZ FLG' has very short content",
+      "Section 'GRUNDFOS' has very short content",
+      "Section '2 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** DCP-F & K ***' has very short content",
+      "Section '2 98961763 UPS26-99SFC SS PUMP' has very short content",
+      "Section 'GRUNDFOS' has very short content",
+      "Section '2 519652 1 BZ FLG' has very short content",
+      "Section 'GRUNDFOS' has very short content",
+      "Section '2 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** SI-1 - 10 ***' has very short content",
+      "Section '10 Z1180-2IP 2 SOLIDS INTERCEPTOR' has very short content",
+      "Section 'ZURN' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** BF-1 ***' has very short content",
+      "Section 'ELKAY NON REF NON FILTERED' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       20.37' has very short content",
+      "Section '1 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'COLOR SUBJECT TO APPROVAL' has very short content",
+      "Section 'ELKAY' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       20.37' has very short content",
+      "Section '1 PLB100XP 1/2COMPX3/8OD ANG STP' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** ESHR-1 ***' has very short content",
+      "Section 'BRADLEY' has very short content",
+      "Section 'BRADLEY MIXING VALVE' has very short content",
+      "Section '1 NON-STOCK, 5-6 WEEKS OUT' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** ESHR-2 ***' has very short content",
+      "Section 'BRADLEY RECESSED' has very short content",
+      "Section 'BRADLEY' has very short content",
+      "Section 'BRADLEY MIXING VALVE' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** EW-1 ***' has very short content",
+      "Section 'GUARDIAN' has very short content",
+      "Section '1 TA-300-LF-RF 1/2 EMER MIX VLV' has very short content",
+      "Section 'LEONARD' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** EWC-1 ***' has very short content",
+      "Section 'ELKAY' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       20.37' has very short content",
+      "Section '1 PLB100XP 1/2COMPX3/8OD ANG STP' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '1 0830 ELECT WTR COOLER CARRIER' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** EWC-2 ***' has very short content",
+      "Section 'ELKAY' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       20.37' has very short content",
+      "Section '1 PLB100XP 1/2COMPX3/8OD ANG STP' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '1 0834-M31EZSTL8 BI-LEV CARRIER' has very short content",
+      "Section 'UOM' has very short content",
+      "Section '*** HB-1 ***' has very short content",
+      "Section '1 952-CP INSIDE SILL FAUCET' has very short content",
+      "Section 'CHICAGO' has very short content",
+      "Section '1 NON-STOCK, 2-3 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** IMB-1 ***' has very short content",
+      "Section '1 88531 IMOB METAL ECONO SWT ARR' has very short content",
+      "Section 'GUY GRAY MIB1HAAB ICE MAKER BX' has very short content",
+      "Section '1 NON-STOCK, 2-3 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** L-1 ***' has very short content",
+      "Section '1 0355.012.020 WHT 4CC WALL LAV' has very short content",
+      "Section 'IN STOCK  / IN TOWN' has very short content",
+      "Section 'CHICAGO FAUCET' has very short content",
+      "Section 'CHICAGO FUACET' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 760-1  1-1/4X6 CAST GRID DRAIN' has very short content",
+      "Section 'EA       11.63' has very short content",
+      "Section '1 701-1 1-1/4 CP 17GA P-TRAP' has very short content",
+      "Section 'EA       18.37' has very short content",
+      "Section '2 PLS1-12A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '1 LFUSG-B M3 3/8 THERM MIX VLV' has very short content",
+      "Section 'WATTS' has very short content",
+      "Section '2 PLS1-12DW F 3/8X3/8 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'EA         .48' has very short content",
+      "Section '1 82193 102-EZ P-TRAP INSULATION' has very short content",
+      "Section 'TRUEBRO 102EZ/PTRAP/STOP/SUPLY' has very short content",
+      "Section '1 0700 LAV CARRIER' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** L-2 ***' has very short content",
+      "Section '1 0476.028.020 WHT 4CC CTOP LAV' has very short content",
+      "Section 'IN STOCK  / IN TOWN' has very short content",
+      "Section 'CHICAGO FAUCET' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'CHICAGO FAUCET' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 760-1  1-1/4X6 CAST GRID DRAIN' has very short content",
+      "Section 'EA       11.63' has very short content",
+      "Section '1 701-1 1-1/4 CP 17GA P-TRAP' has very short content",
+      "Section 'EA       18.37' has very short content",
+      "Section '2 PLS1-12A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '1 LFUSG-B M3 3/8 THERM MIX VLV' has very short content",
+      "Section 'WATTS' has very short content",
+      "Section '2 PLS1-12DW F 3/8X3/8 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'EA         .48' has very short content",
+      "Section '1 82193 102-EZ P-TRAP INSULATION' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** L-3 ***' has very short content",
+      "Section '1 0496.221.020 WHT UNDRCTR LAV' has very short content",
+      "Section 'IN STOCK / IN TOWN' has very short content",
+      "Section 'CHICAGO FAUCET' has very short content",
+      "Section 'CHICAGO FAUCET' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 760-1  1-1/4X6 CAST GRID DRAIN' has very short content",
+      "Section 'EA       11.63' has very short content",
+      "Section '1 701-1 1-1/4 CP 17GA P-TRAP' has very short content",
+      "Section 'EA       18.37' has very short content",
+      "Section '2 PLS1-12A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '1 LFUSG-B M3 3/8 THERM MIX VLV' has very short content",
+      "Section 'WATTS' has very short content",
+      "Section '2 PLS1-12DW F 3/8X3/8 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'EA         .48' has very short content",
+      "Section '1 82193 102-EZ P-TRAP INSULATION' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** MSB-1 ***' has very short content",
+      "Section 'FIAT TERRAZO DROP FRONT' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 897-CCP SERVICE FCT' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 832AA 30     HOSE/BRACKET COMB' has very short content",
+      "Section 'EA       43.00' has very short content",
+      "Section '1 889-CC      MOP HANGER BRACKET' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** RH-1 ***' has very short content",
+      "Section '1 RHY2-1-MS ROOF HYDRANT W/ VENT' has very short content",
+      "Section 'WOODFORD' has very short content",
+      "Section '1 NON-STOCK, 2-3 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** S-1 & 3 ***' has very short content",
+      "Section '1 LRAD252165PD3 3H 18GA SINK' has very short content",
+      "Section 'ELKAY SS SINGLE BOWL ADA' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 786-E35XKABCP CONCEAL KIT FCT' has very short content",
+      "Section 'CHICAGO FAUCET' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SINK INCLUDES DRAIN' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       20.37' has very short content",
+      "Section '2 PLS1-20A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'EA         .48' has very short content",
+      "Section '1 82193 102-EZ P-TRAP INSULATION' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** S-2 ***' has very short content",
+      "Section 'LK940GN04L2H INCLUDED' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '2 PLS1-20A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'EA         .48' has very short content",
+      "Section '1 82193 102-EZ P-TRAP INSULATION' has very short content",
+      "Section 'UOM' has very short content",
+      "Section '*** S-6 ***' has very short content",
+      "Section '1 B1C18X21X UTILITY SINK' has very short content",
+      "Section 'ELKAY' has very short content",
+      "Section 'ELKAY GOOSENECK' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 11             BASKET STRAINER' has very short content",
+      "Section 'EA        5.58' has very short content",
+      "Section '1 803-20-1 1-1/2X12 CP FLGD TLPC' has very short content",
+      "Section 'EA       14.32' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       20.37' has very short content",
+      "Section '2 PLS1-20A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** S-7 ***' has very short content",
+      "Section 'ELKAY' has very short content",
+      "Section 'ELKAY GOOSENECK' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '2 11             BASKET STRAINER' has very short content",
+      "Section 'EA       11.16' has very short content",
+      "Section '1 2121A 1-1/2X16 SP22G HL EO WST' has very short content",
+      "Section 'EA       31.30' has very short content",
+      "Section '2 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       40.74' has very short content",
+      "Section '2 PLS1-20A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '3 LK723 MIXING VALVES & DRAIN' has very short content",
+      "Section 'ELKAY' has very short content",
+      "Section '1 NON-STOCK 8-10 WEEKS FACTORY' has very short content",
+      "Section 'FFA' has very short content",
+      "Section 'ZURN' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section '6 PLS1-20A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '6 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '6 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** S-9 ***' has very short content",
+      "Section 'ELKAY' has very short content",
+      "Section 'ELKAY GOOSENECK' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '2 11             BASKET STRAINER' has very short content",
+      "Section 'EA       11.16' has very short content",
+      "Section '1 2121A 1-1/2X16 SP22G HL EO WST' has very short content",
+      "Section 'EA       31.30' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       20.37' has very short content",
+      "Section '2 PLS1-20A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** S-10 ***' has very short content",
+      "Section 'ELKAY' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'FFA' has very short content",
+      "Section '1 786-E35XKABCP CONCEAL KIT FCT' has very short content",
+      "Section 'EA      181.99' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '2 11             BASKET STRAINER' has very short content",
+      "Section 'EA       11.16' has very short content",
+      "Section '1 2121A 1-1/2X16 SP22G HL EO WST' has very short content",
+      "Section 'EA       31.30' has very short content",
+      "Section '2 PLS1-20A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** S-11 ***' has very short content",
+      "Section '1 LRAD252165PD3 3H 18GA SINK' has very short content",
+      "Section 'ELKAY SS SINGLE BOWL ADA' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'FFA' has very short content",
+      "Section 'CHICAGO FAUCET DECK MT' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 803-20-1 1-1/2X12 CP FLGD TLPC' has very short content",
+      "Section 'EA       14.32' has very short content",
+      "Section '1 704       CP 1-1/2 17GA P-TRAP' has very short content",
+      "Section 'EA       20.37' has very short content",
+      "Section '2 PLS1-20A F 3/8 X 1/2 CONN' has very short content",
+      "Section 'BRASSCRAFT' has very short content",
+      "Section '2 KTSCR19XC 1/2X3/8 LK ANG STP' has very short content",
+      "Section 'BRASSCRAFT LOOSE KEY ANGLE STP' has very short content",
+      "Section '2 1099B  5/8   OD  CP FLANGE' has very short content",
+      "Section 'EA         .48' has very short content",
+      "Section '1 82193 102-EZ P-TRAP INSULATION' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'SHOWER BY ARCHITECT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'SHOWER BY ARCHITECT' has very short content",
+      "Section 'BRADLEY' has very short content",
+      "Section '1 NON-STOCK 5-6 WEEKS FACTORY' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** TMV-1 ***' has very short content",
+      "Section 'LEONARD' has very short content",
+      "Section '1 NON-STOCK, 5-6 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** UR-1 ***' has very short content",
+      "Section 'SLOAN' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section '8183 NOT A GOOD MODEL' has very short content",
+      "Section '1 G2 8186-0.5 SENSOR FLUSH VALVE' has very short content",
+      "Section 'IN STOCK / IN TOWN' has very short content",
+      "Section '1 0637  URINAL CARRIER' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** WC-1 ***' has very short content",
+      "Section 'SLOAN WHITE ELONG TOP SPUD' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 3250289 8111 1.28 G2 OPT' has very short content",
+      "Section 'IN STOCK / IN TOWN' has very short content",
+      "Section '1 1955SSCT 000 WHT EL PL SEAT' has very short content",
+      "Section 'EA       26.70' has very short content",
+      "Section '1 90-241   JUMBO JOHNI RING PLUS' has very short content",
+      "Section 'EQUALS HARVEY'S #10' has very short content",
+      "Section '1 90904 1/4\" QUICK JOHNI-BOLT PR' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** WC-2 ***' has very short content",
+      "Section '1 2102029 ST-2029 ADA BOWL' has very short content",
+      "Section 'SLOAN WHITE ELONG TOP SPUD' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'PLUS ESTIMATED FREIGHT' has very short content",
+      "Section '1 3250289 8111 1.28 G2 OPT' has very short content",
+      "Section 'IN STOCK / IN TOWN' has very short content",
+      "Section '1 1955SSCT 000 WHT EL PL SEAT' has very short content",
+      "Section 'EA       26.70' has very short content",
+      "Section '1 90-241   JUMBO JOHNI RING PLUS' has very short content",
+      "Section 'EQUALS HARVEY'S #10' has very short content",
+      "Section '1 90904 1/4\" QUICK JOHNI-BOLT PR' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'CC-8\" SAME COST' has very short content",
+      "Section '1 B67C 4\"  CHROME WALL HYDRANT' has very short content",
+      "Section '10\"-16\" SAME COST' has very short content",
+      "Section '1 B67C 12\" CHROME WALL HYDRANT' has very short content",
+      "Section '18\"-24\" SAME COST' has very short content",
+      "Section '1 B67C 24\" WALL HYDRANT' has very short content",
+      "Section 'EA      423.43' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** WWB-1 ***' has very short content",
+      "Section 'GUY GRAY  W/HAMMER ARRESTORS' has very short content",
+      "Section '1 NON-STOCK, 2-3 WEEKS OUT' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'VERIFY SIZE & COLOR TO ORDER' has very short content",
+      "Section 'ORION' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** DSN-1 ***' has very short content",
+      "Section 'JOSAM ROUGH BRZ' has very short content",
+      "Section 'JOSAM ROUGH BRZ' has very short content",
+      "Section 'JOSAM' has very short content",
+      "Section 'JOSAM' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '2\"-4\" SAME COST' has very short content",
+      "Section '1 30002-5A-Z  2 FLOOR DRAIN W/S' has very short content",
+      "Section '2\" FD W/ 5A NB TOP NH TPA' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section 'NO MODELS PROVIDED' has very short content",
+      "Section '1 49320A-4NH CI GRATE FLOOR SINK' has very short content",
+      "Section 'JOSAM' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** TRAP GUARD ***' has very short content",
+      "Section '1 2692-02 2 TRAP SEAL' has very short content",
+      "Section 'EA       49.63' has very short content",
+      "Section '1 2692-03 3 TRAP SEAL' has very short content",
+      "Section 'SMITH' has very short content",
+      "Section '1 2692-04 4 QUAD TRAP SEAL' has very short content",
+      "Section 'UOM' has very short content",
+      "Section '*** GD-1 ***' has very short content",
+      "Section '1 BADGER 5 W/CD 1/2HP' has very short content",
+      "Section '79883A-ISE' has very short content",
+      "Section '1 660-GTR1B 3/8\"OD F BULK N/L MI' has very short content",
+      "Section 'OATEY HAMMER ARRESTOR' has very short content",
+      "Section '1 PLS1-60DW12 F 3/8X3/8 CONN' has very short content",
+      "Section 'BRASSCRAFT B6W60K' has very short content",
+      "Section '1 8000E              PVC AIR GAP' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** OD-1 ***' has very short content",
+      "Section '1 21504-Z-3-16-22-VP' has very short content",
+      "Section 'JOSAM 4\" ROOF DRAIN' has very short content",
+      "Section '1 21506-Z-3-16-22-VP' has very short content",
+      "Section 'JOSAM 6\" ROOF DRAIN' has very short content",
+      "Section 'JOSAM 8\" ROOF DRAIN' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** RD-1 ***' has very short content",
+      "Section '1 21504-Z-3-22-VP' has very short content",
+      "Section 'JOSAM 4\" ROOF DRAIN' has very short content",
+      "Section '1 21506-Z-3-22-VP' has very short content",
+      "Section 'JOSAM 6\" ROOF DRAIN' has very short content",
+      "Section 'JOSAM 8\" ROOF DRAIN' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '2\"-4\" SAME COST' has very short content",
+      "Section 'JOSAM ROOF DRAIN SIDE OUTLET' has very short content",
+      "Section 'JOSAM ROOF DRAIN SIDE OUTLET' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** T-1 ***' has very short content",
+      "Section 'UOM' has very short content",
+      "Section 'CHICAGO FACUET' has very short content",
+      "Section 'CHICAGO FAUCETS' has very short content",
+      "Section '1 NON-STOCK, 3-4 WEEKS OUT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** TD-1 ***' has very short content",
+      "Section 'NON CANCELABLE / NON RETURNABL' has very short content",
+      "Section '1 NON-STOCK 8-12 WEEKS FACTORY' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** WCO-1 ***' has very short content",
+      "Section '1 NH 36 4 TEST TEE L/PLUG' has very short content",
+      "Section 'EA       48.92' has very short content",
+      "Section '1 P50-400 4\"          BRASS PLUG' has very short content",
+      "Section '\"RAISED HEAD\"' has very short content",
+      "Section '1 1843-C 6   CO CVR PLATE' has very short content",
+      "Section '6 \" CLEANOUT COVER SS' has very short content",
+      "Section '1 874-4    1/4X4         SS BOLT' has very short content",
+      "Section 'SUBTOTAL' has very short content",
+      "Section '*** GCO *** IN DRAWINGS' has very short content",
+      "Section '1 4253S 4 NH CI FLOOR C/O' has very short content",
+      "Section 'W/BRZ PLUG' has very short content",
+      "Section '1 4253S 6\" NH CI FLOOR C/O' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

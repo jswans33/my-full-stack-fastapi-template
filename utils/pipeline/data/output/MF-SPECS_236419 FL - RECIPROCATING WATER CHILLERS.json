@@ -1,0 +1,789 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 236419 - RECIPROCATING WATER CHILLERS",
+      "author": "ARCOM, Inc.",
+      "subject": "RECIPROCATING WATER CHILLERS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234300Z",
+      "modification_date": "D:20250314222624-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_236419 FL - RECIPROCATING WATER CHILLERS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary Conditions and ...\n",
+          "children": [
+            {
+              "title": "Section Includes:",
+              "content": "1.\nPackaged, water-cooled, electric-motor-driven, reciprocating water chillers.\n2.\nPackaged, air-cooled, electric-motor-driven, reciprocating water chillers.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Related Sections:",
+              "content": "1.\nSection 283500 \"Refrigerant Detection and Alarm\" for refrigerant monitors, alarms, supplemental brea...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "COP: Coefficient of performance. The ratio of the rate of heat removal to the rate of energy input u...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "DDC: Direct digital control.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "EER: Energy-efficiency ratio. The ratio of the cooling capacity given in terms of Btu/h to the total...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "IPLV: Integrated part-load value. A single number part-load efficiency figure of merit calculated pe...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "kW/Ton: The ratio of total power input of the chiller in kilowatts to the net refrigerating capacity...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 2\n",
+      "children": [
+        {
+          "title": "F.",
+          "content": "NPLV: Nonstandard part-load value. A single number part-load efficiency figure of merit calculated p...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Seismic Performance: Reciprocating water chillers shall withstand the effects of earthquake motions ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: Include refrigerant, rated capacities, operating characteristics, furnished specialtie...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Shop Drawings: Complete set of manufacturer's prints of water chiller assemblies, control panels, se...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 3\n1.6\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Coordination Drawings: Floor plans, drawn to scale, on which the following items are shown and coord...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Certificates: For certification required in \"Quality Assurance\" Article.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Seismic Qualification Certificates: For water chillers, accessories, and components, from manufactur...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Source quality-control test reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Startup service reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Warranty: Sample of special warranty.\n1.7\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For each water chiller to include in emergency, operation, and maint...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "ARI Certification: Certify chiller according to ARI 590 certification program.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "ARI Rating: Rate water chiller performance according to requirements in ARI 506/110, \"Water Chilling...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "ASHRAE Compliance: ASHRAE 15 for safety code for mechanical refrigeration.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "ASHRAE/IESNA 90.1 Compliance: Applicable requirements in ASHRAE/IESNA 90.1, Section 6 - \"Heating,\nVentilating, and Air-Conditioning.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "ASME Compliance: Fabricate and stamp water chiller heat exchangers to comply with ASME Boiler and Pr...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Comply with NFPA 70.\nCopyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 4\n1.9\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Ship water chillers from the factory fully charged with refrigerant and filled with oil.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Package water chiller for export shipping.\n1.10\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Coordinate sizes and locations of concrete bases with actual equipment provided.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Coordinate sizes, locations, and anchoring attachments of structural-steel support structures.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Coordinate sizes and locations of roof curbs, equipment supports, and roof penetrations with actual ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer's standard form in which manufacturer agrees to repair or replace com...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Description: Factory-assembled and run-tested water chiller complete with compressor(s), compressor ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Fabricate water chiller mounting base with reinforcement strong enough to resist water chiller movem...\n",
+          "children": [
+            {
+              "title": "Compressors:",
+              "content": "1.\nDescription: Positive-displacement direct drive with semihermetically sealed and accessible bolted c...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 5\n5.\nOil Lubrication System: Automatically reversible, positive-displacement pump with strainer, sight gl...\n",
+      "children": [
+        {
+          "title": "Compressor Motors:",
+          "content": "1.\nHermetically sealed and cooled by refrigerant suction gas.\n2.\nHigh-torque, four-pole induction type with inherent thermal-overload protection on each phase.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Compressor Motor Controllers:",
+          "content": "1.\nAcross the Line: NEMA ICS 2, Class A, full voltage, nonreversing.\n2.\nPart-Wind Start: NEMA ICS 2, Class A, reduced voltage, nonreversing.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Refrigeration:",
+          "content": "1.\nRefrigerant: R-22. Classified as Safety Group A1 according to ASHRAE 34.\n2.\nRefrigerant Compatibility: Parts exposed to refrigerants shall be fully compatible with refrigerants...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Evaporator:",
+          "content": "1.\nBrazed-plate or shell-and-tube design, as indicated.\n2.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Shell and Tube:",
+          "content": "a.\nDescription: Direct-expansion, shell-and-tube design with fluid flowing through the shell and\nrefrigerant flowing through the tubes within the shell.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Brazed Plate:",
+          "content": "a.\nDirect-expansion, single-pass, brazed-plate design.\nCopyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 6\nb.\nType 316 stainless-steel construction.\nc.\nCode Compliance: Tested and stamped according to ASME Boiler and Pressure Vessel Code.\n",
+      "children": [
+        {
+          "title": "Condenser:",
+          "content": "1.\nShell and tube, brazed plate, or without integral condenser; as indicated.\n2.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Shell and Tube:",
+          "content": "a.\nDescription: Shell-and-tube design with refrigerant flowing through the shell and fluid flowing thro...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Brazed Plate:",
+          "content": "a.\nSingle-pass, brazed-plate design provides positive subcooling of liquid refrigerant.\nb.\nType 316 stainless-steel construction.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Electrical Power:",
+          "content": "1.\nFactory-installed and -wired switches, motor controllers, transformers, and other electrical devices...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 7\n6.\nProvide branch power circuit to each motor and to controls with one of the following disconnecting m...\n",
+      "children": [
+        {
+          "title": "Controls:",
+          "content": "1.\nStand-alone, microprocessor based.\n2.\nEnclosure: Share enclosure with electrical power devices or provide a separate enclosure of matching\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "or light-emitting diodes. Display the following:",
+          "content": "a.\nDate and time.\nb.\nOperating or alarm status.\nc.\nOperating hours.\nd.\nOutside-air temperature if required for chilled-water reset.\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 8\np.\nNumber of compressor starts.\nq.\n<Insert items>.\n4.\n",
+      "children": [
+        {
+          "title": "Control Functions:",
+          "content": "a.\nManual or automatic startup and shutdown time schedule.\nb.\nEntering and leaving chilled-water temperatures, control set points, and motor load limit. Chilled-w...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Hardwired Points:",
+          "content": "1)\nMonitoring: On/off status, [common trouble alarm] [electrical power demand (kilowatts)]\n[electrical power consumption (kilowatt hours)] <Insert monitoring point>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Insulation:",
+          "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 9\n1.\nMaterial: Closed-cell, flexible elastomeric, thermal insulation complying with ASTM C 534, Type I, f...\n",
+      "children": [
+        {
+          "title": "Accessories:",
+          "content": "1.\nFactory-furnished, chilled-[ and condenser-]water flow switches for field installation.\n2.\nIndividual compressor suction and discharge pressure gages with shutoff valves.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Capacities and Characteristics:",
+          "content": "1.\nCapacity: <Insert tons (kW)>.\n2.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Full-Load Efficiency:",
+          "content": "a.\nCOP: <Insert number>.\nb.\nEER: <Insert number>.\nc.\nPower Input/Cooling Output, kW/ton (kW/kW): <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Part-Load Efficiency:",
+          "content": "a.\nIPLV: <Insert number>.\nb.\nNPLV: <Insert number>.\n4.\nEvaporator Type: [Brazed plate] [Shell and tube].\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 10\n20.\nCondenser Fouling Factor: [0.00025 sq. ft. x h x deg F/Btu (0.000044 sq. m x deg C/W)] [0.0005 sq. f...\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Description: Factory-assembled and run-tested water chiller complete with base and frame, condenser ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Fabricate base, frame, and attachment to water chiller components strong enough to resist movement d...\n",
+          "children": [
+            {
+              "title": "Cabinet:",
+              "content": "1.\nBase: Galvanized-steel base extending the perimeter of water chiller. Secure frame, compressors, and\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 11\n6.\nSecurity Package: Provide security grilles with fasteners for additional protection of compressors, ...\n",
+      "children": [
+        {
+          "title": "Compressors:",
+          "content": "1.\nDescription: Positive-displacement direct drive with semihermetically sealed and accessible bolted c...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Compressor Motors:",
+          "content": "1.\nHermetically sealed and cooled by refrigerant suction gas.\n2.\nHigh-torque, four-pole induction type with inherent thermal-overload protection on each phase.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Compressor Motor Controllers:",
+          "content": "1.\nAcross the Line: NEMA ICS 2, Class A, full voltage, nonreversing.\n2.\nPart-Wind Start: NEMA ICS 2, Class A, reduced voltage, nonreversing.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Refrigeration:",
+          "content": "1.\nRefrigerant: R-22. Classified as Safety Group A1 according to ASHRAE 34.\n2.\nRefrigerant Compatibility: Parts exposed to refrigerants shall be fully compatible with refrigerants...\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Evaporator:",
+          "content": "1.\nDescription: Direct-expansion shell-and-tube design with fluid flowing through the shell and refrige...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 12\n3.\nShell Material: Carbon steel.\n4.\nShell Heads: Removable carbon-steel heads with multipass baffles designed to ensure positive oil ret...\n",
+      "children": [
+        {
+          "title": "Air-Cooled Condenser:",
+          "content": "1.\nPlate-fin coil with integral subcooling circuit, leak tested at 150 psig (1034 kPa).\na.\nConstruct coils of copper tubes mechanically bonded to [aluminum] [aluminum with precoated\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Electrical Power:",
+          "content": "1.\nFactory-installed and -wired switches, motor controllers, transformers, and other electrical devices...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 13\n8.\nOverload relay sized according to UL 1995, or an integral component of water chiller control micropr...\n",
+      "children": [
+        {
+          "title": "Controls:",
+          "content": "1.\nStand-alone, microprocessor based.\n2.\nEnclosure: Share enclosure with electrical power devices or provide a separate enclosure of matching\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "or light-emitting diodes. Display the following:",
+          "content": "a.\nDate and time.\nb.\nOperating or alarm status.\nc.\nOperating hours.\nd.\nOutside-air temperature if required for chilled-water reset.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Control Functions:",
+          "content": "a.\nManual or automatic startup and shutdown time schedule.\nCopyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 14\nb.\nEntering and leaving chilled-water temperature, control set points, and motor load limit. Chilled-wa...\n",
+      "children": [
+        {
+          "title": "Hardwired Points:",
+          "content": "1)\nMonitoring: On/off status, [common trouble alarm] [electrical power demand (kilowatts)]\n[electrical power consumption (kilowatt hours)] <Insert monitoring point>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Insulation:",
+          "content": "1.\nMaterial: Closed-cell, flexible elastomeric, thermal insulation complying with ASTM C 534, Type I, f...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 15\n",
+      "children": [
+        {
+          "title": "Accessories:",
+          "content": "1.\nFactory-furnished, chilled-[ and condenser-]water flow switches for field installation.\n2.\nIndividual compressor suction and discharge pressure gages with shutoff valves.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Capacities and Characteristics:",
+          "content": "1.\nCapacity: <Insert tons (kW)>.\n2.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Full-Load Efficiency:",
+          "content": "a.\nCOP: <Insert number>.\nb.\nEER: <Insert number>.\nc.\nPower Input/Cooling Output, kW/ton (kW/kW): <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Part-Load Efficiency:",
+          "content": "a.\nIPLV: <Insert number>.\nb.\nNPLV: <Insert number>.\n4.\nLow Ambient Operation: Chiller designed for operation to minus 20 deg F (minus 29 deg C).\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 16\n23.\nChiller Minimum Circuit Ampacity: <Insert value>.\n24.\nChiller Maximum Overcurrent Protection Device: <Insert amperage>.\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Packaged portable unit shall consist of compressor, air-cooled condenser, recovery system, tank pres...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Perform functional test of water chillers before shipping.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Factory performance test water chillers, before shipping, according to ARI 506/110, \"Water Chilling ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Factory test and inspect evaporator [and water-cooled condenser ]according to ASME Boiler and Pressu...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "For water chillers located indoors, rate sound power level according to ARI 575 procedure.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "For water chillers located outdoors, rate sound power level according to ARI 370 procedure.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Before water chiller installation, examine roughing-in for equipment support, anchor-bolt sizes and ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Proceed with installation only after unsatisfactory conditions have been corrected.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 17\n3.2\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Install water chillers on support structure indicated.\n",
+          "children": [
+            {
+              "title": "Equipment Mounting:",
+              "content": "1.\nInstall water chillers on cast-in-place concrete equipment bases. Comply with requirements for equip...\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Maintain manufacturer's recommended clearances for service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Charge water chiller with refrigerant if not factory charged and fill with oil if not factory instal...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Install separate devices furnished by manufacturer and not factory installed.\n3.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with requirements in Section 232113 \"Hydronic Piping\" and Section 232116 Hydronic Piping Spec...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Comply with requirements in Section 232300 \"Refrigerant Piping.\" Drawings indicate general arrangeme...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Install piping adjacent to chiller to allow service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Evaporator Fluid Connections: Connect to evaporator inlet with shutoff valve,[ strainer,] [ flexible...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Condenser Fluid Connections: Connect to condenser inlet with shutoff valve,[ strainer,] [ flexible c...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Refrigerant Pressure Relief Valve Connections: For water chillers installed indoors, extend vent pip...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Connect each drain connection with a union and drain pipe, and extend pipe, full size of connection,...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "RECIPROCATING WATER CHILLERS",
+      "content": "236419 - 18\n3.4\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to perform] [Perform] startup service.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Inspect field-assembled components, equipment installation, and piping and electrical connections fo...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Complete installation and startup checks according to manufacturer's written instructions and perfor...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Prepare a written startup report that records results of tests and inspections.\n3.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to train] [Train] Owner's maintenance personnel ...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

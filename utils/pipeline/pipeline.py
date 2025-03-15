@@ -296,8 +296,15 @@ class Pipeline:
 
         registry = SchemaRegistry()
 
-        # Record the schema
-        registry.record(document_data, document_type)
+        # Get document name from metadata or path
+        document_name = None
+        if "metadata" in document_data and "title" in document_data["metadata"]:
+            document_name = document_data["metadata"]["title"]
+        elif "setup" in document_data and "path" in document_data["setup"]:
+            document_name = os.path.basename(document_data["setup"]["path"])
+
+        # Record the schema with document name
+        registry.record(document_data, document_type, document_name)
 
     def _detect_document_type(self, input_path: str) -> str:
         """Detect the document type based on file extension or content analysis."""

@@ -1,0 +1,48 @@
+{
+  "metadata_fields": [
+    "title",
+    "author",
+    "subject",
+    "creator",
+    "producer",
+    "creation_date",
+    "modification_date"
+  ],
+  "content_structure": [],
+  "table_structure": [
+    {
+      "has_headers": false,
+      "header_count": 0,
+      "row_count": 8
+    },
+    {
+      "has_headers": false,
+      "header_count": 0,
+      "row_count": 25
+    },
+    {
+      "has_headers": false,
+      "header_count": 0,
+      "row_count": 21
+    },
+    {
+      "has_headers": false,
+      "header_count": 0,
+      "row_count": 18
+    },
+    {
+      "has_headers": false,
+      "header_count": 0,
+      "row_count": 15
+    },
+    {
+      "has_headers": false,
+      "header_count": 0,
+      "row_count": 3
+    }
+  ],
+  "section_count": 0,
+  "table_count": 6,
+  "document_type": "FORM",
+  "recorded_at": "2025-03-14T23:13:32.962343"
+}

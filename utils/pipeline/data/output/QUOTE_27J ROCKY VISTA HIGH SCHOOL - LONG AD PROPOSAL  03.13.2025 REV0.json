@@ -1,0 +1,120 @@
+{
+  "document": {
+    "metadata": {
+      "title": "1795 W",
+      "author": "Valarie Daniels",
+      "subject": "",
+      "creator": "Microsoft® Word for Microsoft 365",
+      "producer": "Microsoft® Word for Microsoft 365",
+      "creation_date": "D:20250313170525-06'00'",
+      "modification_date": "D:20250313170525-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\QUOTE_27J ROCKY VISTA HIGH SCHOOL - LONG AD PROPOSAL  03.13.2025 REV0.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Colorado\nNevada\nUtah\nWyoming\nTechnology for Better Buildings…Since 1965\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "to:",
+      "content": "Kevin Esslinger & James Swanson\nMarch 13, 2025\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "company:",
+      "content": "US Engineering\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "delivery terms:",
+      "content": "FOB Factory.  Freight allowed to first destination.\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "from:",
+      "content": "Billy Donovan\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "payment terms:",
+      "content": "Net 30 days (with credit approval). Otherwise cash.\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "regarding:",
+      "content": "27J Rocky Vista High School\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "order acceptance:",
+      "content": "Conditional on the terms and conditions attached.\nIf you do not have them, please request a copy.\nPer Plans & Specs Dated: 03/06/2025\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "5001 S. Zuni Street",
+      "content": "Littleton, CO 80120\n303.975.2100 tel\nwww.long.com\nC:\\Users\\bdonovan\\AppData\\Local\\Microsoft\\Windows\\INetCache\\Content.Outlook\\XKDMNVSD\\27J Rocky Vista...\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "3 Year Warranty [with Factory Authorized Startup; 2 Years otherwise]",
+      "content": "Not Included: Line Reactors or Filters; All Section 3 Testing (Harmonic Distortion, Noise\nand Induced Shaft Voltage); Harmonic Distortion Levels cannot be determined without\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "4 Lots",
+      "content": "Duravent Boiler Flue\n✓\nDouble Wall; AL 29-4C SS Inner, 430 SS Outer; 1” Air Space\n✓\nBoiler Adaptors; Stack Support; Roof Penetration; Roof Cap; Drain; Sealant\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "2 Lots",
+      "content": "KE Fibertec Fabric Ducts\n✓\nMounting Hardware\n1\nAirflow Systems Fan Filter Unit\n✓\nGalv. Steel Construction\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "Excluded Equipment:",
+      "content": "▪\nAnything Not Listed Above\n▪\nControls (by TC)\n▪\nSpins & Flex Duct\n▪\nAccess Doors\n▪\nLabor Warranties\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "Notes:",
+      "content": "▪\nPricing includes freight but NOT taxes\nPlease call with any questions.\nYour building technology partner,\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "TERMS AND CONDITIONS OF SALE - EQUIPMENT & PARTS",
+      "content": "OFFER AND ACCEPTANCE:  LONG BUILDING ENVIRONMENTS (LONG) is a manufacturer's agent representing the ...\n",
+      "children": [],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: subject",
+      "Missing optional metadata: keywords",
+      "No tables extracted"
+    ]
+  }
+}

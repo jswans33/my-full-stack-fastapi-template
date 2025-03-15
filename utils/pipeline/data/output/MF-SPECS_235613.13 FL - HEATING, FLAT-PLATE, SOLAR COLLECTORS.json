@@ -1,0 +1,397 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 235613.13 - HEATING, FLAT-PLATE, SOLAR COLLECTORS",
+      "author": "ARCOM, Inc.",
+      "subject": "HEATING, FLAT-PLATE, SOLAR COLLECTORS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234300Z",
+      "modification_date": "D:20250314222507-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_235613.13 FL - HEATING, FLAT-PLATE, SOLAR COLLECTORS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n03/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "HEATING, FLAT-PLATE, SOLAR COLLECTORS",
+      "content": "235613.13 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary Conditions\nand Division 01 Specification Sections, apply to this Section.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Section Includes: Liquid-type, medium-temperature, glazed, heating, flat-plate, solar collectors,\naccessories, and mountings.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "FSEC: Florida Solar Energy Center.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "SRCC: Solar Rating and Certification Corporation.\n1.4\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product.\n1.\nInclude construction details, material descriptions, dimensions of individual components\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Shop Drawings: For solar collectors.\n1.\nInclude plans, elevations, sections, and mounting and attachment details.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HEATING, FLAT-PLATE, SOLAR COLLECTORS",
+      "content": "235613.13 - 2\n1.5\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Product Certificates: For each type of solar collector, certifying compliance with SRCC OG-100.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Sample Warranty: For manufacturer's special warranty.\n1.6\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Collector Certification: Certified by FSEC and SRCC.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Manufacturer and collector model shall be listed in \"Directory of SRCC Certified Solar Collector\nRatings.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Manufacturer's Warranty: Manufacturer and Installer agree to repair or replace solar collectors that\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Hail Resistance: Able to withstand 1-inch- (25-mm-) diameter hail.\n2.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n2.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Enclosure: Extruded aluminum.\n1.\nFinish: [Clear anodized] [Anodized bronze] [Powder coated].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Back Sheet: [Aluminum sheet] [or] [galvanized sheet steel].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Insulation: [Fiberglass board] [Polyisocyanurate board] [Polyisocyanurate board with\nmineral-fiber blanket].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Absorber Plate: [Copper fins and tubes] [aluminum fins and copper tubes] [or] [copper sheet].\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HEATING, FLAT-PLATE, SOLAR COLLECTORS",
+      "content": "235613.13 - 3\n",
+      "children": [
+        {
+          "title": "E.",
+          "content": "Header and Absorber Tubes: Copper, NPS 3/4 (DN 65).\n",
+          "children": [
+            {
+              "title": "Glazing:",
+              "content": "1.\nGlazing Materials: Single-sheet, low-iron, tempered glass with textured finish on outside\nsurface.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Mounting Frame:",
+              "content": "1.\nFabricated to withstand wind loads of up to 130 mph (210 km/h) with no separation of the\ncollector from the frame or the frame from the structure.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Collector Certification: Certified by FSEC and SRCC.\n2.4\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with requirements in Section 230993.11 \"Sequence of Operations for HVAC DDC.\"\n2.5\n",
+          "children": [
+            {
+              "title": "Area:",
+              "content": "1.\nGross: <Insert sq. ft. (sq. m)>.\n2.\nNet Aperture: <Insert sq. ft. (sq. m)>.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Dry Weight: <Insert lb (kg)>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Fluid Type: [Water] <Insert medium>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Fluid Capacity: <Insert gal. (L)>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Test Pressure: <Insert psig (kPa)>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Maximum Operating Temperature: <Insert deg F (deg C)>.\n",
+          "children": [
+            {
+              "title": "SRCC Certified Performance Rating:",
+              "content": "1.\nClear Day at 2000 Btu/sq. ft. per Day (23 MJ/sq. m per Day): <Insert rating value>.\n2.\nMildly Cloudy Day at 1500 Btu/sq. ft. per Day (17 MJ/sq. m per Day): <Insert rating\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HEATING, FLAT-PLATE, SOLAR COLLECTORS",
+      "content": "235613.13 - 4\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Examine substrates, areas, and conditions for compliance with requirements for installation and\nother conditions affecting performance of the Work.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Examine roughing-in for solar-collector piping to verify actual locations of piping connections\nbefore solar-panel installation.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Examine walls and roofs for suitable conditions where solar collector will be installed.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Proceed with installation only after unsatisfactory conditions have been corrected.\n3.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with manufacturer's written instructions for collector mounting and installation.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Install the collector according to ASHRAE's \"Active Solar Heating Systems Installation Manual.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Install low-voltage wiring from the sensor to the energy-management panel.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Mount the collector frame support feet to the structural support steel using stainless-steel bolts.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Place high-temperature-resistant covers over the header to prevent contaminants from entering the\nheaders.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Coat the controller's sensor with a layer of thermal paste and insert into the collector sensor port...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "After connecting the inlet and outlet of the collectors to the system, purge the system of all air.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Install collectors with not less than minimum space for access and service as recommended by\nsolar-collector manufacturer.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with requirements for piping specified in Section 232113 \"Hydronic Piping\" and Section\n",
+          "children": [
+            {
+              "title": "232116 Hydronic Piping Specialties.\" Drawings indicate general arrangement of piping, fittings,",
+              "content": "and specialties.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Where installing piping adjacent to solar collectors, allow space for service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Install flexible connections on piping between collectors installed in series.\nCopyright 2013 AIA\nMasterSpec Premium\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HEATING, FLAT-PLATE, SOLAR COLLECTORS",
+      "content": "235613.13 - 5\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Install ball valve and union at inlet and outlet of solar collectors. Comply with requirements in\nSection 230523.12 \"Ball Valves for HVAC Piping\" for materials and installation requirements for\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Connect solar collectors to lightning protection system. Comply with requirements in\nSection 264113 \"Lightning Protection for Structures.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "[Engage a factory-authorized service representative to perform] [Perform] startup service.\n1.\nComplete installation and startup checks according to manufacturer's written instructions.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Adjust tilt angle per design requirement and adjust the collector balance valve to provide the\ndesign flow.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

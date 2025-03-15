@@ -1,0 +1,480 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 235523.16 - HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "author": "ARCOM, Inc.",
+      "subject": "HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234300Z",
+      "modification_date": "D:20250314222450-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_235523.16 FL - HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n09/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "content": "235523.16 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary Conditions and\n",
+          "children": [
+            {
+              "title": "Section Includes:",
+              "content": "1.\nHigh-intensity, infrared, gas-fired, radiant heaters.\n2.\nGas-fired, outdoor, infrared patio heaters.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product.\n1.\nInclude rated capacities, operating characteristics, electrical characteristics, and furnished\n",
+          "children": [
+            {
+              "title": "Shop Drawings:",
+              "content": "1.\nSigned, sealed, and prepared by or under the supervision of a qualified professional engineer.\n2.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Delegated-Design Submittal: For gas-fired, radiant heaters.\n1.\nInclude design calculations for seismic restraints.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "content": "235523.16 - 2\n1.4\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Coordination Drawings: Plans, elevations, and other details, drawn to scale, on which the following\n",
+          "children": [
+            {
+              "title": "Other suspended ceiling components:",
+              "content": "a.\nLighting fixtures.\nb.\nAir outlets and inlets.\nc.\nSprinklers.\nd.\n<Insert item>.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Field quality-control reports.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Sample Warranty: For manufacturer's special warranties.\n1.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For gas-fired, radiant heaters to include in emergency, operation, a...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Furnish extra materials that match products installed and that are packaged with protective covering...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Manufacturer's Special Warranty: Manufacturer agrees to repair or replace components of radiant\nheaters that fail in materials or workmanship within specified warranty period.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "content": "235523.16 - 3\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Comply with [ANSI Z83.19A/CSA 2.35A] [ANSI Z83.26/CSA 2.37].\n1.\nCSA certified, with CSA Seal and certification number clearly visible on units.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a\nqualified testing agency, and marked for intended location and application.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Factory-assembled, [indoor] [outdoor], overhead-mounted, electrically controlled, high-intensity,\ninfrared, radiant heating units using gas combustion. Heater to have all necessary factory-installed\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Fuel Type: Design burner for [natural] [propane] gas having characteristics same as those of gas\navailable at Project site.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Main Housing: Continuous, one-piece, [aluminized] [stainless]-steel unit without gaps between\nhousing and reflectors.\n",
+          "children": [
+            {
+              "title": "Burner Assembly:",
+              "content": "1.\nModular, [aluminized steel with powder-coat or similar finish] [stainless-steel] plenum\nchamber [coated with ceramic fiber insulation ]secured with stainless-steel retainers.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Emitter: Perforated ceramic tiles.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Reflector: [One-sided, bright-polished aluminum] [High-grade steel with cold-bonded, polished-\naluminum layer] [Aluminized steel].\n",
+          "children": [
+            {
+              "title": "Ignition:",
+              "content": "1.\nManual Pilot: Self-energizing with no external power connection.\n2.\nDirect Spark: [24/25] [115/120]-V ac, solid-state ignition module with spark electrode and flame\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Accessories:",
+              "content": "1.\n[Parabolic reflector] [Reflector extensions].\n2.\nWire grid or expanded metal secondary emitter for increased efficiency.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "content": "235523.16 - 4\n4.\nStainless-steel flexible connector with manual valve for gas supply.\n5.\nHanger chain with \"S\" hooks.\n",
+      "children": [
+        {
+          "title": "Capacities and Characteristics:",
+          "content": "1.\nGas Input: <Insert Btu/h (kW)>.\n2.\nGas Output: <Insert Btu/h (kW)>.\n3.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Electrical Characteristics:",
+          "content": "a.\nVolts: [Millivolt] [24/25] [115/120] <Insert value>.\nb.\nPhase: Single.\nc.\nHertz: 60.\nd.\nFull-Load Amperes: <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "K.",
+          "content": "Mounting Angle: <Insert value> degrees.\n2.3\nGAS-FIRED, OUTDOOR, INFRARED PATIO HEATERS <Insert drawing designation>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Factory-assembled, [indoor] [outdoor], overhead-mounted, electrically controlled, high-intensity,\ninfrared, radiant heating units using gas combustion. Heater to have all necessary factory-installed\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Fuel Type: Design burner for [natural] [propane] gas having characteristics same as those of gas\navailable at Project site.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Main Housing: Continuous, one-piece, [aluminized] [stainless]-steel unit without gaps between\nhousing and reflectors.\n",
+          "children": [
+            {
+              "title": "Burner Assembly:",
+              "content": "1.\nModular, [aluminized-steel with powder-coat or similar finish] [stainless-steel] plenum\nchamber [coated with ceramic fiber insulation ]secured with stainless-steel retainers.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Emitter: Perforated ceramic tiles.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Reflector: [Polished stainless steel] <Insert material>.\n",
+          "children": [
+            {
+              "title": "Ignition:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n09/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "content": "235523.16 - 5\n1.\nDirect Spark: [24/25] [115/120]-V ac, solid-state ignition module with spark electrode and flame\n",
+      "children": [
+        {
+          "title": "Accessories:",
+          "content": "1.\nWire grid or expanded metal secondary emitter for increased efficiency.\n2.\nProtective screen and heat-deflector shield.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Capacities and Characteristics:",
+          "content": "1.\nGas Input: <Insert Btu/h (kW)>.\n2.\nGas Output: <Insert Btu/h (kW)>.\n3.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Electrical Characteristics:",
+          "content": "a.\nVolts: [24/25] [115/120] <Insert value>.\nb.\nPhase: Single.\nc.\nHertz: 60.\nd.\nFull-Load Amperes: <Insert value>.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "K.",
+          "content": "Mounting Angle: <Insert value> degrees.\n2.4\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Failure Safeguards: 100 percent main gas shutoff on [pilot] [pilot or power] failure.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Thermostat: Devices and wiring are specified in Section 230923.27 \"Temperature Instruments.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Thermostat: Single-stage, wall-mounted type with 50 to 90 deg F (10 to 32 deg C) operating range and\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Thermostat: Two-stage, wall-mounted type with 50 to 90 deg F (10 to 32 deg C) operating range and fa...\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "content": "235523.16 - 6\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Examine structures, substrates, areas and conditions, with Installer present, for compliance with\nrequirements for installation tolerances, required clearances, and other conditions affecting perfor...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Examine roughing-in for fuel-gas piping to verify actual locations of piping connections before\nequipment installation.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Prepare written report, endorsed by Installer, listing conditions detrimental to performance of the ...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Proceed with installation only after unsatisfactory conditions have been corrected.\n3.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Equipment Mounting: Install gas-fired, infrared heaters with continuous-thread hanger rods and sprin...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Equipment Installation: Install gas-fired, radiant heaters and associated gas features and systems\naccording to [NFPA 54] [CSA B149.1].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Suspended Units: [Suspend from substrate using chain hanger kits and building attachments]\n[Mount to substrate using rigid mounting kits or brackets, supplied by manufacturer or\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Maintain manufacturers' recommended clearances for combustibles.\n3.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Gas Piping: Comply with [Section 231123 \"Facility Natural-Gas Piping.\"] [Section 231126 \"Facility\nLiquefied-Petroleum Gas Piping.\"] Connect gas piping to gas train inlet; provide union with enough\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "HIGH-INTENSITY, GAS-FIRED, RADIANT HEATERS",
+      "content": "235523.16 - 7\n1.\nGas Connections: Connect gas piping to radiant heaters according to [NFPA 54] [CSA B149.1].\n",
+      "children": [
+        {
+          "title": "B.",
+          "content": "Where installing piping adjacent to gas-fired, radiant heaters, allow space for service and maintena...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Electrical Connections: Comply with applicable requirements in Section 260519 \"Low-Voltage\nElectrical Power Conductors and Cables.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Adjust initial-temperature set points.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Adjust burner and other unit components for optimum heating performance and efficiency.\n3.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Manufacturer's Field Service: Engage a factory-authorized service representative to test and inspect\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Perform the following tests and inspections[ with the assistance of a factory-authorized service\n",
+          "children": [
+            {
+              "title": "representative]:",
+              "content": "1.\nTest and adjust controls and safeties. Replace damaged and malfunctioning controls and\nequipment.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Gas-fired, radiant heaters will be considered defective if they do not pass tests and inspections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Prepare test and inspection reports.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

@@ -1,0 +1,378 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 235113.11 - DRAFT CONTROL FANS",
+      "author": "ARCOM, Inc.",
+      "subject": "DRAFT CONTROL FANS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234200Z",
+      "modification_date": "D:20250314222218-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_235113.11 FL - DRAFT CONTROL FANS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n09/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "DRAFT CONTROL FANS",
+      "content": "235113.11 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary Conditions\nand Division 01 Specification Sections, apply to this Section.\n",
+          "children": [
+            {
+              "title": "Section Includes:",
+              "content": "1.\nDraft inducer fans.\n2.\nVenturi-draft inducer fans.\n3.\nMechanical-draft vent fans.\n4.\nVent exhaust fans.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Related Requirements:",
+              "content": "1.\nSection 235113.16 \"Vent Dampers\" for barometric dampers and vent dampers.\n2.\nSection 235116 \"Fabricated Breechings and Accessories\" for listed, refractory-lined metal\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Shop Drawings: For each type of product.\n1.\nInclude plans, elevations, sections, and attachment details.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "DRAFT CONTROL FANS",
+      "content": "235113.11 - 2\n2.\nInclude details of equipment assemblies. Indicate dimensions, weights, loads, required\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Sample Warranty: For special warranty.\n1.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For draft control fans to include in emergency, operation, and\nmaintenance manuals.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Special Warranty: Manufacturer agrees to repair or replace components of [draft inducer fans]\n[venturi-draft inducer fans] [mechanical-draft vent fans] [vent exhaust fans] [combustion-air\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Fan Construction: [Galvanized] [Aluminized]-steel housing and radial-blade centrifugal fan.\n1.\nFan Motor: Permanent-split-capacitor type.\n",
+          "children": [
+            {
+              "title": "Controls:",
+              "content": "1.\nDraft-proving switch.\n2.\nControl kit to cycle fan with gas flow to a single burner.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a\nqualified testing agency, and marked for intended location and application.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "DRAFT CONTROL FANS",
+      "content": "235113.11 - 3\n",
+      "children": [
+        {
+          "title": "B.",
+          "content": "Fan Construction: Enameled-steel venturi tube for vents 20 inches (508 mm) in diameter and smaller\nand ASTM A 666, Type 304, stainless-steel venturi tube for vents 22 to 48 inches (559 to 1219 mm)\n",
+          "children": [
+            {
+              "title": "Controls:",
+              "content": "1.\nDraft-proving switch.\n2.\nControl kit to cycle fan with gas flow to a single burner.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a\nqualified testing agency, and marked for intended location and application.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Fan Construction: Forward-curved centrifugal fan and scroll fabricated of [aluminized] [galvanized]\n",
+          "children": [
+            {
+              "title": "Controls:",
+              "content": "1.\nDraft-proving switch.\n2.\nControl kit to cycle fan with gas flow to [single] [multiple] burner(s).\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Accessories:",
+              "content": "1.\n[Aluminized] [Stainless]-steel, wall-vent hood.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a\nqualified testing agency, and marked for intended location and application.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "General: Centrifugal fan with [variable] [constant]-speed control mounted at end of [sidewall]\n[vertical] vent.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Test Standard: UL 378.\n",
+          "children": [
+            {
+              "title": "Fan Construction:",
+              "content": "1.\n[Cast-aluminum] [Galvanized-steel] [Stainless-steel] housing [painted manufacturer's\nstandard color of baked enamel].\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "DRAFT CONTROL FANS",
+      "content": "235113.11 - 4\n2.\n[Galvanized] [Stainless]-steel vent.\n3.\n[Cast-aluminum] [Stainless-steel] wheel.\n4.\n",
+      "children": [
+        {
+          "title": "E.",
+          "content": "Motor: Fully enclosed,[ variable-speed duty,] permanent-split capacitor, out of the airstream, with\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Constant-Speed Controls: Boiler interlock relay starts fan when burner control cycles on. Pressure\nswitch permits burner operation via interlock with boiler. Fan-proving switch is adjustable between\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Variable-Speed Controls: Boiler interlock relay starts fan when burner control cycles on. Pressure\ncontroller, control transformer, and miscellaneous controls for automatic modulation of fan speed to\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "H.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a\nqualified testing agency, and marked for intended location and application.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Fan Construction: [Galvanized] [Aluminized]-steel housing; steel forward-curved fan and scroll;\ndirect-drive, totally enclosed, fan-cooled motor with ball bearings; stainless-steel shaft; and inte...\n",
+          "children": [
+            {
+              "title": "Controls:",
+              "content": "1.\nFan-proving switch to permit burner operation when combustion-air fan is operating.\n2.\nMultiple-appliance control starts fan with operation of any one of [three] [four] appliances.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Optional Controls:",
+              "content": "a.\nAlarm circuit.\nb.\nExcessive negative pressure limit.\nc.\nInterface relay for vent exhaust fan, draft inducer fan, or mechanical-draft vent fan.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "DRAFT CONTROL FANS",
+      "content": "235113.11 - 5\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by a\nqualified testing agency, and marked for intended location and application.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Comply with NEMA designation, temperature rating, service factor, and efficiency requirements for\nmotors specified in Section 230513 \"Common Motor Requirements for HVAC Equipment.\"\n",
+          "children": [
+            {
+              "title": "Fan:",
+              "content": "1.\nManufacturer: <Insert manufacturer>.\n2.\nModel No.: <Insert number>.\n3.\nRated Appliance Input: <Insert Btu/h (kW)>.\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Electrical Characteristics:",
+              "content": "a.\nMotor Horsepower: <Insert value>.\nb.\nVolts: [115] [208] [230] [460] <Insert value>.\nc.\nPhase: [Single] [Three].\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Install listed components in a manner complying with the listing.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Install draft inducer fans in single-wall vent section that is designed to couple with other vent\nmaterials.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Secure draft inducer fans to appliances, breechings, or stacks with hardware compatible with\nconnected materials.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Install draft inducer fans with clearances for service and maintenance.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Install[ PVC] intake duct that is sized according to manufacturer's written instructions.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "DRAFT CONTROL FANS",
+      "content": "235113.11 - 6\n3.2\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Ground equipment according to Section 260526 \"Grounding and Bonding for Electrical Systems.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Connect wiring according to Section 260519 \"Low-Voltage Electrical Power Conductors and\nCables.\"\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

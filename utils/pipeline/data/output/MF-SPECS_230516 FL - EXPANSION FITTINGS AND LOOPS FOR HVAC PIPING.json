@@ -1,0 +1,389 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 230516 - EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "author": "ARCOM, Inc.",
+      "subject": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216233900Z",
+      "modification_date": "D:20250314220707-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_230516 FL - EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2013 AIA\nMasterSpec Premium\n06/13\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary Conditions\nand Division 01 Specification Sections, apply to this Section.\n",
+          "children": [
+            {
+              "title": "Section Includes:",
+              "content": "1.\nFlexible, ball-joint packed expansion joints.\n2.\nSlip-joint, packed expansion joints.\n3.\nMetal, compensator packless expansion joints.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Delegated-Design Submittal: For each anchor and alignment guide, including analysis data, signed\nand sealed by the qualified professional engineer responsible for their preparation.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 2\n4.\nSchedule: Indicate type, manufacturer's number, size, material, pressure rating, end\nconnections, and location for each expansion joint.\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Welding certificates.\n1.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Maintenance Data: For expansion joints to include in maintenance manuals.\n1.6\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Welding Qualifications: Qualify procedures and personnel according to AWS D1.1/D1.1M,\n\"Structural Welding Code - Steel.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Pipe and Pressure-Vessel Welding Qualifications: Qualify procedures and operators according to\nASME Boiler and Pressure Vessel Code.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Compatibility: Products shall be suitable for piping service fluids, materials, working pressures, a...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Capability: Products to absorb 200 percent of maximum axial movement between anchors.\n2.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Flexible, Ball-Joint Packed Expansion Joints [FBJ-01] <Insert drawing designation>:\n1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 3\na.\nStuffing Box: Incorporates containment seals and compression seals for containment\nof injectable packing.\n",
+      "children": [
+        {
+          "title": "B.",
+          "content": "Slip-Joint Packed Expansion Joints [SJ-01] <Insert drawing designation>:\n1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Metal, Compensator Packless Expansion Joints [MCEJ-01] <Insert drawing designation>:\n1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Rubber Union Connector Expansion Joints [RUEJ-01] <Insert drawing designation>:\nCopyright 2013 AIA\nMasterSpec Premium\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 4\n1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Flexible-Hose Packless Expansion Joints [FHEJ-01] <Insert drawing designation>:\n1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 5\n8.\nExpansion Joints for Steel Piping NPS 8 to NPS 12 (DN 200 to DN 300): Carbon-steel\nfittings with [flanged] [welded] end connections.\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Metal-Bellows Packless Expansion Joints [MBEJ-01] <Insert drawing designation>:\n1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Externally Pressurized Metal-Bellows Packless Expansion Joints [EPEJ-01] <Insert drawing\n",
+          "children": [
+            {
+              "title": "designation>:",
+              "content": "1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n2.\nMinimum Pressure Rating: [150 psig (1035 kPa)] [200 psig (1379 kPa)] [300 psig (2068\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Description:",
+              "content": "Copyright 2013 AIA\nMasterSpec Premium\n06/13\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 6\na.\nTotally enclosed, externally pressurized, multi-ply, stainless-steel bellows isolated\n",
+      "children": [
+        {
+          "title": "F.",
+          "content": "Rubber Packless Expansion Joints [REJ-01] <Insert drawing designation>:\n1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Description: Factory-assembled expansion joint made of several grooved-end pipe nipples,\ncouplings, and grooved joints.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Standard: AWWA C606, for grooved joints.\nCopyright 2013 AIA\nMasterSpec Premium\n06/13\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 7\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Nipples: [Galvanized, ]ASTM A 53/A 53M, Schedule 40, Type E or S, steel pipe with grooved\nends.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Couplings: [Five] [Seven] [10] [12] <Insert number>, flexible type for steel-pipe dimensions.\nInclude ferrous housing sections, [Buna-N gasket suitable for diluted acid, alkaline fluids, and\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Alignment Guides [AG-01] <Insert drawing designation>:\n1.\n<Double click here to find, evaluate, and insert list of manufacturers and products.>\n",
+          "children": [
+            {
+              "title": "Anchor Materials:",
+              "content": "1.\nSteel Shapes and Plates: ASTM A 36/A 36M.\n2.\nBolts and Nuts: ASME B18.10 or ASTM A 183, steel hex head.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Install expansion joints of sizes matching sizes of piping in which they are installed.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Install packed-type expansion joints with packing suitable for fluid service.\nCopyright 2013 AIA\nMasterSpec Premium\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 8\n",
+      "children": [
+        {
+          "title": "C.",
+          "content": "Install metal-bellows expansion joints according to EJMA's \"Standards of the Expansion Joint\nManufacturers Association, Inc.\"\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Install rubber packless expansion joints according to FSA-PSJ-703.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Install grooved-joint expansion joints to grooved-end steel piping.\n3.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Install pipe loops cold-sprung in tension or compression as required to partly absorb tension or\ncompression produced during anticipated change in temperature.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Connect risers and branch connections to mains with at least [five] <Insert number> pipe fittings,\nincluding tee in main.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Connect risers and branch connections to terminal units with at least [four] <Insert number> pipe\nfittings, including tee in riser.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Connect mains and branch connections to terminal units with at least [four] <Insert number> pipe\nfittings, including tee in main.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Install alignment guides to guide expansion and to avoid end-loading and torsional stress.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Install [one] [two] guide(s) on each side of pipe expansion fittings and loops. Install guides neare...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Attach guides to pipe, and secure guides to building structure.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Install anchors at locations to prevent stresses from exceeding those permitted by ASME B31.9 and\nto prevent transfer of loading and stresses to connected equipment.\n",
+          "children": [
+            {
+              "title": "Anchor Attachments:",
+              "content": "1.\nAnchor Attachment to Steel Pipe: Attach by welding. Comply with ASME B31.9 and ASME\nBoiler and Pressure Vessel Code: Section IX, \"Welding and Brazing Qualifications.\"\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Fabricate and install steel anchors by welding steel shapes, plates, and bars. Comply with\nASME B31.9 and AWS D1.1/D1.1M.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Use grout to form flat bearing surfaces for guides and anchors attached to concrete.\nCopyright 2013 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "EXPANSION FITTINGS AND LOOPS FOR HVAC PIPING",
+      "content": "230516 - 9\n",
+      "children": [],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

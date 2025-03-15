@@ -1,0 +1,101 @@
+{
+  "timestamp": "2025-03-14T23:04:52.085444",
+  "summary": {
+    "total_files": 13,
+    "successful": 13,
+    "failed": 0
+  },
+  "details": [
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_24-02618R3 27J ROCKY VISTA HS.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_24-02618R3 27J ROCKY VISTA HS.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_27J ROCKY VISTA HIGH SCHOOL - LONG AD PROPOSAL  03.13.2025 REV0.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_27J ROCKY VISTA HIGH SCHOOL - LONG AD PROPOSAL  03.13.2025 REV0.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_27J ROCKY VISTA HIGH SCHOOL.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_27J ROCKY VISTA HIGH SCHOOL.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_FERG-PROPOSAL-BPLB20250100008839.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_FERG-PROPOSAL-BPLB20250100008839.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_LONG HY-PL PROPOSAL - 27J ROCKY VISTA HS (3.13.2025) SDS.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_LONG HY-PL PROPOSAL - 27J ROCKY VISTA HS (3.13.2025) SDS.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_MECHANICAL PAGES FROM MASTERFORMAT_2018_WEB.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_MECHANICAL PAGES FROM MASTERFORMAT_2018_WEB.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_PAGES FROM 2022_DBCA - 12-2023.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_PAGES FROM 2022_DBCA - 12-2023.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_QISPEC.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_QISPEC.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_QUOTATION 79520-4 - ROCKY VISTA HS 100%CD (25-03-12).pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_QUOTATION 79520-4 - ROCKY VISTA HS 100%CD (25-03-12).json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_ROCKY VISTA HS PROPOSAL 031325.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_ROCKY VISTA HS PROPOSAL 031325.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_S7026896-0001 REV1.pdf",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_S7026896-0001 REV1.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_SQ0044876_27J ROCKY VISTA HS - PLUMBING - US ENGINEERING.PDF",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_SQ0044876_27J ROCKY VISTA HS - PLUMBING - US ENGINEERING.json"
+      ]
+    },
+    {
+      "file": "utils\\pipeline\\data\\input\\QUOTE_SQ0044877_27J ROCKY VISTA HS - MECHANICAL - US ENGINEERING.PDF",
+      "status": "success",
+      "outputs": [
+        "utils\\pipeline\\data\\output\\QUOTE_SQ0044877_27J ROCKY VISTA HS - MECHANICAL - US ENGINEERING.json"
+      ]
+    }
+  ]
+}

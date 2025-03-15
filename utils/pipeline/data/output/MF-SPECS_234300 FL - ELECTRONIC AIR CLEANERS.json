@@ -1,0 +1,541 @@
+{
+  "document": {
+    "metadata": {
+      "title": "SECTION 234300 - ELECTRONIC AIR CLEANERS",
+      "author": "ARCOM, Inc.",
+      "subject": "ELECTRONIC AIR CLEANERS",
+      "creator": "Microsoft Office Word",
+      "producer": "Aspose.Words for .NET 24.11.1",
+      "creation_date": "D:20131216234200Z",
+      "modification_date": "D:20250314222210-06'00'"
+    },
+    "path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\input\\MF-SPECS_234300 FL - ELECTRONIC AIR CLEANERS.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Copyright 2010 AIA\nMasterSpec Premium\n03/10\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "ELECTRONIC AIR CLEANERS",
+      "content": "234300 - 1\n",
+      "children": [
+        {
+          "title": "TIPS:",
+          "content": "To view non-printing Editor's Notes that provide guidance for editing, click on Masterworks/Single-F...\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 1 - GENERAL",
+      "content": "1.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Drawings and general provisions of the Contract, including General and Supplementary\nConditions and Division 01 Specification Sections, apply to this Section.\n",
+          "children": [
+            {
+              "title": "Section Includes:",
+              "content": "1.\nElectronic air cleaners.\n2.\nSide-service housings.\n3.\nFront- and rear-access filter frames.\n4.\nFilter gages.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Product Data: For each type of product indicated. Include dimensions; operating characteristics;\nrequired clearances and access; rated flow capacity, including initial and final pressure drop at\n",
+          "children": [
+            {
+              "title": "LEED Submittals:",
+              "content": "1.\nProduct Data for Prerequisite IEQ 1: Documentation indicating that units comply with\nASHRAE 62.1, Section 5 - \"Systems and Equipment.\"\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Shop Drawings: For each electronic air cleaner. Include plans, elevations, sections, details, and\nattachments to other work.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ELECTRONIC AIR CLEANERS",
+      "content": "234300 - 2\n1.4\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Field quality-control reports.\n1.5\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Operation and Maintenance Data: For each type of filter and housing to include in emergency,\noperation, and maintenance manuals.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Furnish extra materials that match products installed and that are packaged with protective\ncovering for storage and identified with labels describing contents.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Electrical Components, Devices, and Accessories: Listed and labeled as defined in NFPA 70, by\na qualified testing agency, and marked for intended location and application.\n",
+          "children": [
+            {
+              "title": "ASHRAE Compliance:",
+              "content": "1.\nComply with applicable requirements in ASHRAE 62.1, Section 4 - \"Outdoor Air\nQuality\"; Section 5 - \"Systems and Equipment\"; and Section 7 - \"Construction and\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Comply with NFPA 90A and NFPA 90B.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Comply with ARI 850.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Comply with UL 867.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "PART 2 - PRODUCTS",
+      "content": "2.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Description: Factory-fabricated electronic air cleaner operating by electrostatic precipitation\nprinciples.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ELECTRONIC AIR CLEANERS",
+      "content": "234300 - 3\n",
+      "children": [
+        {
+          "title": "B.",
+          "content": "Prefilter Media: [Four] [Six] alternate layers of [galvanized-steel] [aluminum] [stainless-steel],\nflat and herringbone-crimp screen.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Prefilter: Comply with requirements in Section 234100 \"Particulate Air Filtration\" for [flat]\n[pleated] [ring] panel. Size and airflow capacity shall match those of electronic air cleaners.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Final Filter: Comply with requirements in Section 234100 \"Particulate Air Filtration\" for\n[supported bag] [unsupported bag] [rigid-cell box] [V-bank cell] [self-supported pocket].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Collection Cells: Aluminum, independently supported and nested.\n1.\nIonizing Section: Alternately spaced grounded struts and charged ionizing wires.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Power Pack: Self-contained, prewired rectifying unit to convert [120] [208/240] [480]-V ac,\nsingle-phase, 60-Hz power to approximately 12,000-V dc for ionizer and 6000-V dc for\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Safety Accessories: Manual-reset safety switches and warning lights for filter plenum access\ndoors, signal lights and safety switching upstream and downstream from unit within duct, and\n",
+          "children": [
+            {
+              "title": "Collection Section Cleaning System:",
+              "content": "1.\nDetergent Reservoir Tank: [30 gal. (110 L)] [55 gal. (200 L)] with pump, motor, solenoid\nvalve, level sensor, backflow preventer, wye-strainer, and ball valve.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "Mist Eliminators: [Upstream][ and downstream] [Downstream].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "J.",
+          "content": "Controls: Programmable logic controller in remotely mounted NEMA 250, Type 12 enclosure;\nwith integral time clock and manual override.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ELECTRONIC AIR CLEANERS",
+      "content": "234300 - 4\n",
+      "children": [
+        {
+          "title": "K.",
+          "content": "Finish of Interior Surfaces: Surfaces in contact with the airstream shall comply with\nrequirements in ASHRAE 62.1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Fan: Forward curved, belt driven.\n",
+          "children": [
+            {
+              "title": "Motor:",
+              "content": "1.\nComply with NEMA designation, temperature rating, service factor, enclosure type, and\nefficiency requirements for motors specified in Section 230513 \"Common Motor\n",
+              "children": [],
+              "level": 3
+            },
+            {
+              "title": "Unusual Service Conditions:",
+              "content": "a.\nAmbient Temperature: <Insert deg F (deg C)>.\nb.\nAltitude: <Insert feet (m)> above sea level.\nc.\nHigh humidity.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: 16-gage galvanized steel with epoxy powder finish for suspended, wall, frame, or\nduct mounting.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Description: Factory-assembled, side-service housings, [with bottom drain, ]constructed of\n[galvanized steel] [aluminum] and configured for stacking, with flanges to connect to duct or\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Access Doors: [Hinged with continuous] [Continuous] gaskets on perimeter and positive-\nlocking devices.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Sealing: Incorporate positive-sealing gasket material on channels to seal top and bottom of filter\ncartridge frames to prevent bypass of unfiltered air.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ELECTRONIC AIR CLEANERS",
+      "content": "234300 - 5\n",
+      "children": [
+        {
+          "title": "D.",
+          "content": "Finish of Interior Surfaces: Surfaces in contact with the airstream shall comply with\nrequirements in ASHRAE 62.1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Framing System: [Galvanized-steel] [Aluminum] framing members with access for either\nupstream (front) or downstream (rear) filter servicing, cut to size and prepunched for assembly\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Prefilters: Incorporate a separate track[ with spring clips], removable from front[ or back].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Final Filters: Integral tracks to accommodate [particulate] [gas-phase] disposable filters.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Sealing: Factory-installed, positive-sealing device for each row of filters to ensure seal between\ngasketed filter elements to prevent bypass of unfiltered air.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Finish of Interior Surfaces: Surfaces in contact with the airstream shall comply with\nrequirements in ASHRAE 62.1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Diaphragm type, with dial and pointer in metal case, vent valves, black figures on white\nbackground, and front recalibration adjustment.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Manometer-Type Filter Gage: Molded plastic, with epoxy-coated aluminum scale, logarithmic-\ncurve tube gage, with integral leveling indicator, graduated to read from 0- to 3.0-inch wg (0 to\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Accessories: Static-pressure tips, tubing, gage connections, and mounting bracket.\n2.7\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Unit Face Dimensions: [72 by 72 inches (1828 by 1828 mm)] <Insert dimensions> nominal.\nCopyright 2010 AIA\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ELECTRONIC AIR CLEANERS",
+      "content": "234300 - 6\n",
+      "children": [
+        {
+          "title": "B.",
+          "content": "Number of Cleaner Units: <Insert number>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Unit Depth: [33 inches (825 mm)] [45 inches (1125 mm)] <Insert dimension> nominal.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Holding Frame Size: <Insert inches (mm)>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Frame Access Location: [Front] [back] [or] [side].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "System Airflow: <Insert cfm (L/s)>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Maximum or Rated Face Velocity: [500 fpm (2.5 m/s)] <Insert value>.\n",
+          "children": [
+            {
+              "title": "Power Pack:",
+              "content": "1.\nVolts: [120] [208] [230] [460] <Insert value> V.\n2.\nPhase: [Single] [Three].\n3.\nHertz: 60.\n4.\nFull-Load Amperes: <Insert value>.\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "I.",
+          "content": "Efficiency: 90 percent on particles 20 micrometers and larger at 500 fpm (2.5 m/s).\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "J.",
+          "content": "Efficiency: [85] [90] [95] percent as tested according to ASHRAE 52.1.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "K.",
+          "content": "Initial Resistance: [0.25-inch wg (63 Pa)] <Insert value>.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "L.",
+          "content": "Prefilter Type: Integral tracks to accommodate 2-inch- (50-mm-) thick disposable[ or washable]\nfilters.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "M.",
+          "content": "Final Filter Type: Integral tracks to accommodate [particulate] [gas-phase] disposable filters.\n",
+          "children": [
+            {
+              "title": "Fan Motor Electrical Characteristics:",
+              "content": "1.\nHorsepower: <Insert value>.\n2.\nVolts: [120] [208] [230] [460] <Insert value> V.\n3.\nPhase: [Single] [3].\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        },
+        {
+          "title": "O.",
+          "content": "Cleaning System: [Manual] [or] [automatic].\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "P.",
+          "content": "Reservoir Tank: [30 gal. (114 L)] [50 gal. (190 L)].\n",
+          "children": [
+            {
+              "title": "Connections:",
+              "content": "1.\nWater Supply: <Insert NPS (DN)>.\n2.\nDrain: <Insert NPS (DN)>.\nCopyright 2010 AIA\nMasterSpec Premium\n",
+              "children": [],
+              "level": 3
+            }
+          ],
+          "level": 2
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "ELECTRONIC AIR CLEANERS",
+      "content": "234300 - 7\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PART 3 - EXECUTION",
+      "content": "3.1\n",
+      "children": [
+        {
+          "title": "A.",
+          "content": "Position each filter unit with clearance for normal service and maintenance. Anchor filter holding\nframes to substrate.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Install filters in position to prevent passage of unfiltered air.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Do not operate fan system until filters (temporary or permanent) are in place. Replace temporary\nfilters used during construction and testing with new, clean filters.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Operate electronic air cleaners for 24 hours as part of startup before filters are put into operatio...\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Install filter-gage, static-pressure taps upstream and downstream from filters. Install filter gages\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "F.",
+          "content": "Install and connect water-supply and drainage piping.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "G.",
+          "content": "Coordinate filter installations with duct and air-handling-unit installations.\n3.2\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "Manufacturer's Field Service: Engage a factory-authorized service representative to inspect, test,\nand adjust components, assemblies, and equipment installation, including connections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "B.",
+          "content": "Perform tests and inspections.\n1.\nManufacturer's Field Service: Engage a factory-authorized service representative to\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "C.",
+          "content": "Tests and Inspections: Test for leakage of unfiltered air while system is operating.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "D.",
+          "content": "Air filter will be considered defective if it does not pass tests and inspections.\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "E.",
+          "content": "Prepare test and inspection reports.\n3.3\n",
+          "children": [],
+          "level": 2
+        },
+        {
+          "title": "A.",
+          "content": "After completing system installation and testing, adjusting, and balancing air-handling and air-\ndistribution systems, clean filter housings and install new prefilter and final-filter media.\n",
+          "children": [],
+          "level": 2
+        }
+      ],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: keywords",
+      "Section 'PART 1 - GENERAL' has very short content",
+      "Section 'PART 2 - PRODUCTS' has very short content",
+      "Section 'PART 3 - EXECUTION' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

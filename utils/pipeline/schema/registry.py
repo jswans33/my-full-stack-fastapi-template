@@ -40,13 +40,19 @@ class SchemaRegistry:
         # Load existing schemas
         self.schemas = self._load_schemas()
 
-    def record(self, document_data: Dict[str, Any], document_type: str) -> bool:
+    def record(
+        self,
+        document_data: Dict[str, Any],
+        document_type: str,
+        document_name: Optional[str] = None,
+    ) -> bool:
         """
         Record a document schema in the registry.
 
         Args:
             document_data: Document data to record
             document_type: Type of the document
+            document_name: Name of the document (optional)
 
         Returns:
             True if schema was recorded successfully, False otherwise
@@ -58,6 +64,10 @@ class SchemaRegistry:
             # Add metadata
             schema["document_type"] = document_type
             schema["recorded_at"] = datetime.now().isoformat()
+
+            # Add document name if provided
+            if document_name:
+                schema["document_name"] = document_name
 
             # Generate schema ID
             schema_id = self._generate_schema_id(document_type)
