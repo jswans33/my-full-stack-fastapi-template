@@ -1,0 +1,179 @@
+{
+  "id": "test_document_20250315153312",
+  "document_type": "TEST_DOCUMENT",
+  "document_name": "Test Document",
+  "recorded_at": "2025-03-15T15:33:12.518932",
+  "metadata": {
+    "title": "Test Document",
+    "author": "Test Author",
+    "date": "2023-04-01",
+    "version": "1.0",
+    "keywords": "test, schema, storage, enhancement"
+  },
+  "content_samples": [
+    {
+      "title": "Section 1: Introduction",
+      "content": "This is the introduction section with a detailed explanation of the document's purpose. This is the introduction section with a detailed explanation of the document's purpose. This is the introduction section with a detailed explanation of the document's purpose. This is the introduction section with a detailed explanation of the document's purpose. This is the introduction section with a detailed explanation of the document's purpose. ",
+      "level": 1,
+      "has_children": false,
+      "child_count": 0
+    },
+    {
+      "title": "Section 2: Methodology",
+      "content": "This section describes the methodology used in the document. This section describes the methodology used in the document. This section describes the methodology used in the document. This section describes the methodology used in the document. This section describes the methodology used in the document. ",
+      "level": 1,
+      "has_children": true,
+      "child_count": 2
+    },
+    {
+      "title": "Section 3: Results",
+      "content": "This section presents the results of the analysis. This section presents the results of the analysis. This section presents the results of the analysis. This section presents the results of the analysis. This section presents the results of the analysis. ",
+      "level": 1,
+      "has_children": false,
+      "child_count": 0
+    },
+    {
+      "title": "Section 4: Discussion",
+      "content": "This section discusses the implications of the results. This section discusses the implications of the results. This section discusses the implications of the results. This section discusses the implications of the results. This section discusses the implications of the results. ",
+      "level": 1,
+      "has_children": false,
+      "child_count": 0
+    },
+    {
+      "title": "Section 5: Conclusion",
+      "content": "This section concludes the document with a summary of findings. This section concludes the document with a summary of findings. This section concludes the document with a summary of findings. This section concludes the document with a summary of findings. This section concludes the document with a summary of findings. ",
+      "level": 1,
+      "has_children": false,
+      "child_count": 0
+    }
+  ],
+  "table_samples": [
+    {
+      "headers": [
+        "ID",
+        "Name",
+        "Value",
+        "Description"
+      ],
+      "column_count": 4,
+      "row_count": 6,
+      "data_sample": [
+        [
+          "1",
+          "Item A",
+          "10.5",
+          "First item in the table"
+        ],
+        [
+          "2",
+          "Item B",
+          "20.3",
+          "Second item in the table"
+        ],
+        [
+          "3",
+          "Item C",
+          "15.7",
+          "Third item in the table"
+        ],
+        [
+          "4",
+          "Item D",
+          "8.2",
+          "Fourth item in the table"
+        ],
+        [
+          "5",
+          "Item E",
+          "12.9",
+          "Fifth item in the table"
+        ]
+      ],
+      "detection_method": "border_detection",
+      "page": 1,
+      "border_info": {
+        "x0": 50,
+        "y0": 100,
+        "x1": 550,
+        "y1": 300,
+        "rows": 6,
+        "cols": 4
+      }
+    },
+    {
+      "headers": [
+        "Category",
+        "Subcategory",
+        "Count",
+        "Percentage"
+      ],
+      "column_count": 4,
+      "row_count": 4,
+      "data_sample": [
+        [
+          "A",
+          "A1",
+          "150",
+          "30%"
+        ],
+        [
+          "A",
+          "A2",
+          "100",
+          "20%"
+        ],
+        [
+          "B",
+          "B1",
+          "200",
+          "40%"
+        ],
+        [
+          "B",
+          "B2",
+          "50",
+          "10%"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 2,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "Date",
+        "Event",
+        "Location",
+        "Attendees"
+      ],
+      "column_count": 4,
+      "row_count": 3,
+      "data_sample": [
+        [
+          "2023-01-15",
+          "Meeting A",
+          "Room 101",
+          "10"
+        ],
+        [
+          "2023-02-20",
+          "Meeting B",
+          "Room 102",
+          "15"
+        ],
+        [
+          "2023-03-25",
+          "Meeting C",
+          "Room 103",
+          "8"
+        ]
+      ],
+      "detection_method": "layout_analysis",
+      "page": 3,
+      "border_info": {}
+    }
+  ],
+  "section_count": 6,
+  "table_count": 4,
+  "document_path": "test_document.pdf"
+}

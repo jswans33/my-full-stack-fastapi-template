@@ -1,0 +1,39 @@
+{
+  "output": {
+    "filePath": "repomix-output.md",
+    "style": "markdown",
+    "parsableStyle": true,
+    "fileSummary": true,
+    "directoryStructure": true,
+    "removeComments": false,
+    "removeEmptyLines": false,
+    "compress": false,
+    "topFilesLength": 15,
+    "showLineNumbers": false,
+    "copyToClipboard": true
+  },
+  "include": ["**/*"],
+  "ignore": {
+    "useGitignore": true,
+    "useDefaultPatterns": true,
+    "customPatterns": [
+      "uv.lock",
+      "data",
+      "*.md",
+      "tests/**",
+      "docs/**",
+      "reports/**",
+      "build/**",
+      "dist/**",
+      "node_modules/**",
+      "**/node_modules/*",
+      "**/bower_components/**"
+    ]
+  },
+  "security": {
+    "enableSecurityCheck": true
+  },
+  "tokenCount": {
+    "encoding": "o200k_base"
+  }
+}

@@ -454,17 +454,31 @@ class SchemaVisualizer:
             from collections import Counter
 
             import matplotlib.pyplot as plt
+            import numpy as np
 
             schema = self.registry.get_schema(schema_id)
             if not schema:
                 return f"Schema {schema_id} not found"
 
-            table_structure = schema.get("table_structure", [])
-            if not table_structure:
+            # Check if we have the enhanced schema structure with table_samples
+            table_samples = schema.get("table_samples", [])
+            if table_samples:
+                # Use enhanced table samples
+                tables_to_visualize = table_samples
+                self.logger.info(f"Using enhanced table samples for schema {schema_id}")
+            else:
+                # Fall back to old structure
+                table_structure = schema.get("table_structure", [])
+                if not table_structure:
+                    return f"No tables found in schema {schema_id}"
+                tables_to_visualize = table_structure
+                self.logger.info(f"Using legacy table structure for schema {schema_id}")
+
+            if not tables_to_visualize:
                 return f"No tables found in schema {schema_id}"
 
             # Extract row counts
-            row_counts = [table.get("row_count", 0) for table in table_structure]
+            row_counts = [table.get("row_count", 0) for table in tables_to_visualize]
 
             # Create base directory for visualizations
             output_dir = os.path.dirname(output_path)
@@ -508,11 +522,11 @@ class SchemaVisualizer:
 
             # 1. Table Headers Visualization
             if any(
-                "headers" in table and table["headers"] for table in table_structure
+                "headers" in table and table["headers"] for table in tables_to_visualize
             ):
                 # Collect all headers
                 all_headers = []
-                for table in table_structure:
+                for table in tables_to_visualize:
                     if "headers" in table and table["headers"]:
                         all_headers.extend(table["headers"])
 
@@ -542,7 +556,7 @@ class SchemaVisualizer:
             # 2. Column Count Visualization
             column_counts = [
                 table.get("column_count", 0)
-                for table in table_structure
+                for table in tables_to_visualize
                 if "column_count" in table
             ]
             if column_counts:
@@ -564,56 +578,156 @@ class SchemaVisualizer:
                 plt.close()
                 output_paths.append(columns_path)
 
-            # 3. Table Data Sample Visualization (if available)
+            # 3. Detection Method Visualization
+            detection_methods = [
+                table.get("detection_method", "unknown")
+                for table in tables_to_visualize
+                if "detection_method" in table
+            ]
+            if detection_methods:
+                # Count detection methods
+                method_counts = Counter(detection_methods)
+
+                plt.figure(figsize=(10, 6))
+                plt.bar(
+                    list(method_counts.keys()),
+                    list(method_counts.values()),
+                    color="lightcoral",
+                )
+                plt.title(f"Table Detection Methods in Schema: {schema_id}")
+                plt.xlabel("Detection Method")
+                plt.ylabel("Number of Tables")
+                plt.xticks(rotation=45, ha="right")
+                plt.tight_layout()
+
+                # Save additional visualization
+                methods_path = os.path.join(output_dir, f"methods_{schema_id}.png")
+                plt.savefig(methods_path, dpi=300)
+                plt.close()
+                output_paths.append(methods_path)
+
+            # 4. Table Data Sample Visualization (if available)
             tables_with_samples = [
                 table
-                for table in table_structure
-                if "data_sample" in table and table["data_sample"]
+                for table in tables_to_visualize
+                if ("data_sample" in table and table["data_sample"])
+                or ("data" in table and table["data"])
             ]
             if tables_with_samples:
-                # Create a sample table visualization (first table with samples)
-                sample_table = tables_with_samples[0]
-                headers = sample_table.get("headers", [])
-                data_sample = sample_table.get("data_sample", [])
-
-                if data_sample:
-                    plt.figure(figsize=(12, 6))
-
-                    # Create a table visualization
-                    table_data = data_sample[
-                        : min(5, len(data_sample))
-                    ]  # Limit to 5 rows
-
-                    # If we have headers, add them as the first row
-                    if headers:
-                        table_data = [headers] + table_data
-
-                    # Create the table
-                    table = plt.table(
-                        cellText=table_data,
-                        loc="center",
-                        cellLoc="center",
-                        colWidths=[0.2] * len(table_data[0])
-                        if table_data and table_data[0]
-                        else None,
+                # Create sample table visualizations (up to 3 tables)
+                for i, sample_table in enumerate(tables_with_samples[:3]):
+                    headers = sample_table.get("headers", [])
+                    # Check both data_sample and data fields
+                    data_sample = sample_table.get(
+                        "data_sample", sample_table.get("data", [])
                     )
 
-                    # Style the table
-                    table.auto_set_font_size(False)
-                    table.set_fontsize(9)
-                    table.scale(1, 1.5)
+                    if data_sample:
+                        plt.figure(figsize=(14, 8))
 
-                    # Hide axes
-                    plt.axis("off")
+                        # Create a table visualization
+                        table_data = data_sample[
+                            : min(5, len(data_sample))
+                        ]  # Limit to 5 rows
 
-                    plt.title(f"Sample Table Data from Schema: {schema_id}")
+                        # If we have headers, add them as the first row
+                        if headers:
+                            table_data = [headers] + table_data
+
+                        # Create the table
+                        table = plt.table(
+                            cellText=table_data,
+                            loc="center",
+                            cellLoc="center",
+                            colWidths=[0.2] * len(table_data[0])
+                            if table_data and table_data[0]
+                            else None,
+                        )
+
+                        # Style the table
+                        table.auto_set_font_size(False)
+                        table.set_fontsize(9)
+                        table.scale(1, 1.5)
+
+                        # Hide axes
+                        plt.axis("off")
+
+                        # Add table metadata
+                        detection_method = sample_table.get(
+                            "detection_method", "unknown"
+                        )
+                        page = sample_table.get("page", "unknown")
+                        row_count = sample_table.get("row_count", 0)
+                        column_count = sample_table.get("column_count", 0)
+
+                        plt.title(
+                            f"Table {i + 1} from Schema: {schema_id}\n"
+                            f"Method: {detection_method}, Page: {page}, "
+                            f"Rows: {row_count}, Columns: {column_count}"
+                        )
+                        plt.tight_layout()
+
+                        # Save additional visualization
+                        sample_path = os.path.join(
+                            output_dir, f"sample_{i + 1}_{schema_id}.png"
+                        )
+                        plt.savefig(sample_path, dpi=300, bbox_inches="tight")
+                        plt.close()
+                        output_paths.append(sample_path)
+
+            # 5. Border Information Visualization (if available)
+            tables_with_borders = [
+                table
+                for table in tables_to_visualize
+                if "border_info" in table and table["border_info"]
+            ]
+            if tables_with_borders:
+                # Create border visualization for the first table with border info
+                border_table = tables_with_borders[0]
+                border_info = border_table.get("border_info", {})
+
+                if border_info:
+                    plt.figure(figsize=(10, 8))
+
+                    # Extract border coordinates
+                    x0 = border_info.get("x0", 0)
+                    y0 = border_info.get("y0", 0)
+                    x1 = border_info.get("x1", 100)
+                    y1 = border_info.get("y1", 100)
+                    rows = border_info.get("rows", 0)
+                    cols = border_info.get("cols", 0)
+
+                    # Create a simple visualization of the table grid
+                    # Draw outer border
+                    plt.plot(
+                        [x0, x1, x1, x0, x0], [y0, y0, y1, y1, y0], "k-", linewidth=2
+                    )
+
+                    # Draw row lines (if we have row information)
+                    if rows > 0:
+                        row_positions = np.linspace(y0, y1, rows + 1)
+                        for y in row_positions:
+                            plt.plot([x0, x1], [y, y], "k-", linewidth=1)
+
+                    # Draw column lines (if we have column information)
+                    if cols > 0:
+                        col_positions = np.linspace(x0, x1, cols + 1)
+                        for x in col_positions:
+                            plt.plot([x, x], [y0, y1], "k-", linewidth=1)
+
+                    plt.title(
+                        f"Table Border Structure (Page {border_table.get('page', 'unknown')})"
+                    )
+                    plt.xlabel("X Position")
+                    plt.ylabel("Y Position")
+                    plt.grid(True, linestyle="--", alpha=0.7)
                     plt.tight_layout()
 
                     # Save additional visualization
-                    sample_path = os.path.join(output_dir, f"sample_{schema_id}.png")
-                    plt.savefig(sample_path, dpi=300, bbox_inches="tight")
+                    border_path = os.path.join(output_dir, f"border_{schema_id}.png")
+                    plt.savefig(border_path, dpi=300)
                     plt.close()
-                    output_paths.append(sample_path)
+                    output_paths.append(border_path)
 
             return output_paths
         except Exception as e:

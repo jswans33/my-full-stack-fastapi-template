@@ -70,8 +70,11 @@ class RuleBasedClassifier:
         # Apply configured rules
         best_match = self._get_best_match(document_data, features)
 
-        if best_match[0] == "UNKNOWN":
-            # If no specific type matched, try to determine a generic type
+        # Only use generic classification if confidence is very low
+        if (
+            best_match[0] == "UNKNOWN" or best_match[1] < 0.2
+        ):  # Lower threshold for falling back to generic
+            # If no specific type matched or confidence is very low, try to determine a generic type
             return self._classify_generic(document_data, features)
 
         return {

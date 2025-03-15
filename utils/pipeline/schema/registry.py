@@ -45,9 +45,9 @@ class SchemaRegistry:
         document_data: Dict[str, Any],
         document_type: str,
         document_name: Optional[str] = None,
-    ) -> bool:
+    ) -> str:
         """
-        Record a document schema in the registry.
+        Record a document schema in the registry with enhanced data storage.
 
         Args:
             document_data: Document data to record
@@ -55,37 +55,71 @@ class SchemaRegistry:
             document_name: Name of the document (optional)
 
         Returns:
-            True if schema was recorded successfully, False otherwise
+            Schema ID if successful, empty string otherwise
         """
         try:
-            # Extract schema from document data
-            schema = self._extract_schema(document_data)
-
-            # Add metadata
-            schema["document_type"] = document_type
-            schema["recorded_at"] = datetime.now().isoformat()
-
-            # Add document name if provided
-            if document_name:
-                schema["document_name"] = document_name
-
             # Generate schema ID
             schema_id = self._generate_schema_id(document_type)
 
-            # Save schema to storage
+            # Extract metadata
+            metadata = document_data.get("metadata", {})
+
+            # Extract content samples (up to 5 sections)
+            content_samples = []
+            for section in document_data.get("content", [])[:5]:
+                # Store title and full content (no truncation)
+                content_sample = {
+                    "title": section.get("title", ""),
+                    "content": section.get("content", ""),
+                    "level": section.get("level", 0),
+                    "has_children": bool(section.get("children")),
+                    "child_count": len(section.get("children", [])),
+                }
+                content_samples.append(content_sample)
+
+            # Extract table data samples (up to 3 tables)
+            table_samples = []
+            for table in document_data.get("tables", [])[:3]:
+                # Store table structure and sample data
+                table_sample = {
+                    "headers": table.get("headers", []),
+                    "column_count": table.get("column_count", 0),
+                    "row_count": table.get("row_count", 0),
+                    "data_sample": table.get("data", [])[:5],  # First 5 rows
+                    "detection_method": table.get("detection_method", "unknown"),
+                    "page": table.get("page", 0),
+                    "border_info": table.get("border_info", {}),
+                }
+                table_samples.append(table_sample)
+
+            # Create enhanced schema record
+            schema = {
+                "id": schema_id,
+                "document_type": document_type,
+                "document_name": document_name,
+                "recorded_at": datetime.now().isoformat(),
+                "metadata": metadata,
+                "content_samples": content_samples,
+                "table_samples": table_samples,
+                "section_count": len(document_data.get("content", [])),
+                "table_count": len(document_data.get("tables", [])),
+                "document_path": document_data.get("path", ""),
+            }
+
+            # Save schema to registry
             self._save_schema(schema_id, schema)
 
             # Update in-memory schemas
             self.schemas[schema_id] = schema
 
             self.logger.info(
-                f"Recorded schema {schema_id} for document type {document_type}"
+                f"Recorded enhanced schema {schema_id} for document type {document_type}"
             )
-            return True
+            return schema_id
 
         except Exception as e:
             self.logger.error(f"Error recording schema: {str(e)}", exc_info=True)
-            return False
+            return ""
 
     def match(self, document_data: Dict[str, Any]) -> Tuple[Optional[str], float]:
         """
@@ -213,9 +247,9 @@ class SchemaRegistry:
         content = document_data.get("content", [])
         content_structure = self._extract_content_structure(content)
 
-        # Extract table structure with headers and sample data
+        # Extract enhanced table structure with headers and sample data
         tables = document_data.get("tables", [])
-        table_structure = self._extract_table_structure(tables)
+        table_structure = self._extract_enhanced_table_structure(tables)
 
         # Build enhanced schema
         schema = {
@@ -233,9 +267,10 @@ class SchemaRegistry:
             "content_samples": [
                 {
                     "title": section.get("title", ""),
-                    "sample": section.get("content", "")[:500]
-                    if section.get("content")
-                    else "",
+                    "content": section.get("content", ""),
+                    "level": section.get("level", 0),
+                    "has_children": bool(section.get("children")),
+                    "child_count": len(section.get("children", [])),
                 }
                 for section in content[:5]  # First 5 sections
             ],
@@ -279,11 +314,11 @@ class SchemaRegistry:
 
         return structure
 
-    def _extract_table_structure(
+    def _extract_enhanced_table_structure(
         self, tables: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
         """
-        Extract enhanced structure from tables.
+        Extract enhanced structure from tables with more detailed information.
 
         Args:
             tables: List of tables
@@ -304,10 +339,11 @@ class SchemaRegistry:
                 # Enhanced structure information
                 "headers": table.get("headers", []),  # Store actual headers
                 "data_sample": table.get("data", [])[
-                    :3
-                ],  # Store sample data (first 3 rows)
+                    :5
+                ],  # Store sample data (first 5 rows)
                 "detection_method": table.get("detection_method", "unknown"),
                 "page": table.get("page", 0),
+                "border_info": table.get("border_info", {}),
             }
 
             structure.append(table_structure)
