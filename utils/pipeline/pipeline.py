@@ -40,6 +40,12 @@ class Pipeline:
         # Initialize strategy selector
         self.strategy_selector = StrategySelector(self.config)
 
+        # Print the classification configuration for debugging
+        if "classification" in self.config:
+            self.logger.info("Classification config: %s", self.config["classification"])
+        else:
+            self.logger.warning("No classification configuration found")
+
         self.logger.info("Pipeline initialized with config: %s", self.config)
 
     def run(self, input_path: str, show_progress: bool = True) -> Dict[str, Any]:
@@ -237,12 +243,13 @@ class Pipeline:
         """
         # Get classifier configuration
         classifier_config = self.config.get("classification", {})
-        classifier_type = classifier_config.get("type", "rule_based")
+        classifier_type = classifier_config.get("method", "rule_based")
 
         # Import the document classifier
         from utils.pipeline.processors.document_classifier import DocumentClassifier
 
-        classifier = DocumentClassifier(classifier_type, classifier_config)
+        # Pass the entire config to the classifier, not just the classification section
+        classifier = DocumentClassifier(classifier_type, self.config)
 
         # Perform classification
         classification = classifier.classify(validated_data)

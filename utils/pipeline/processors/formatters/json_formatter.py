@@ -41,6 +41,9 @@ class JSONFormatter(FormatterStrategy):
                 "tables": analyzed_data.get("tables", []),
                 "summary": analyzed_data.get("summary", {}),
                 "validation": analyzed_data.get("validation", {}),
+                "classification": analyzed_data.get(
+                    "classification", {}
+                ),  # Include classification information
             }
 
             return formatted_data

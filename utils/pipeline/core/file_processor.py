@@ -156,7 +156,7 @@ class FileProcessor:
         pipeline_config = {}
 
         # Copy relevant top-level keys
-        for key in ["output_format", "strategies"]:
+        for key in ["output_format", "strategies", "classification"]:
             if key in self.config:
                 pipeline_config[key] = self.config[key]
 

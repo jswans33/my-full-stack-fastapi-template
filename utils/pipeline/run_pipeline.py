@@ -65,14 +65,41 @@ def load_config(config_path: Optional[Path] = None) -> Dict:
     if config_path and config_path.exists():
         with open(config_path) as f:
             file_config = json.load(f)
-            # Deep merge configs
+            # Deep merge configs (improved to handle nested dictionaries)
             for key, value in file_config.items():
-                if isinstance(value, dict) and key in config:
-                    config[key].update(value)
+                if (
+                    isinstance(value, dict)
+                    and key in config
+                    and isinstance(config[key], dict)
+                ):
+                    # Recursively merge nested dictionaries
+                    config[key] = deep_merge(config[key], value)
                 else:
                     config[key] = value
 
     return config
+
+
+def deep_merge(dict1: Dict, dict2: Dict) -> Dict:
+    """
+    Recursively merge two dictionaries.
+
+    Args:
+        dict1: First dictionary
+        dict2: Second dictionary (values from this dict override dict1)
+
+    Returns:
+        Merged dictionary
+    """
+    result = dict1.copy()
+    for key, value in dict2.items():
+        if key in result and isinstance(result[key], dict) and isinstance(value, dict):
+            # Recursively merge nested dictionaries
+            result[key] = deep_merge(result[key], value)
+        else:
+            # Override or add the value
+            result[key] = value
+    return result
 
 
 def parse_args() -> argparse.Namespace:
@@ -283,6 +310,14 @@ def main():
 
         # Load and update configuration
         config = load_config(args.config)
+
+        # Debug output to check if classification configuration is loaded
+        if "classification" in config:
+            print("Classification configuration found:")
+            print(json.dumps(config["classification"], indent=2))
+        else:
+            print("No classification configuration found in config")
+
         config = update_config_from_args(config, args)
 
         # Check if required arguments are provided for document processing

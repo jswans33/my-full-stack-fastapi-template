@@ -36,17 +36,21 @@ The following verification documents have been created to track the status of th
 
 During our analysis, we identified several key issues:
 
-1. **Classification Override Issue**
-   - HVAC specification documents with multiple tables are being classified as "FORM" instead of "HVAC_SPECIFICATION"
-   - This occurs because the generic classification rule in `rule_based.py` classifies any document with more than 3 tables as a "FORM" with a confidence of 0.6
-   - This may override the specific HVAC classification rules
+1. **Classification Override Issue (FIXED)**
+   - HVAC specification documents with multiple tables were being classified as "FORM" instead of "HVAC_SPECIFICATION"
+   - This occurred because the generic classification rule in `rule_based.py` classified any document with more than 3 tables as a "FORM" with a confidence of 0.6
+   - This was overriding the specific HVAC classification rules
+   - Fixed by:
+     * Modifying the Pipeline class to pass the entire configuration to the DocumentClassifier
+     * Updating the RuleBasedClassifier to check document metadata for keywords
+     * Ensuring filename pattern matching works correctly
 
 2. **Table Detection Limitations**
    - Complex tables in PDF documents may not be detected correctly
    - Current implementation uses two approaches (layout analysis and text-based detection) but both have limitations
    - Enhanced table detection algorithm proposed in [ISSUE_FIXES.md](./ISSUE_FIXES.md)
 
-3. **Content Truncation**
+3. **Content Truncation (FIXED)**
    - Previous implementation limited section content to 100 characters
    - Fix has been implemented by removing the truncation
 

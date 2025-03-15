@@ -50,10 +50,18 @@ class RuleBasedClassifier:
         Returns:
             Classification result with document type, confidence, and schema pattern
         """
+        # Debug output
+        self.logger.info(f"Document metadata: {document_data.get('metadata', {})}")
+        self.logger.info(f"Document path: {document_data.get('path', '')}")
+        self.logger.info(f"Available rules: {list(self.rules_config.keys())}")
+        self.logger.info(f"Available filename patterns: {self.filename_patterns}")
+
         # Check filename patterns if path is available
         if "path" in document_data:
             filename = os.path.basename(document_data["path"])
+            self.logger.info(f"Checking filename patterns for: {filename}")
             for doc_type, pattern in self.filename_patterns.items():
+                self.logger.info(f"Checking pattern for {doc_type}: {pattern}")
                 if re.search(pattern, filename):
                     self.logger.info(
                         f"Matched filename pattern for {doc_type}: {filename}"
@@ -69,12 +77,14 @@ class RuleBasedClassifier:
 
         # Apply configured rules
         best_match = self._get_best_match(document_data, features)
+        self.logger.info(f"Best match after rule application: {best_match}")
 
         # Only use generic classification if confidence is very low
         if (
             best_match[0] == "UNKNOWN" or best_match[1] < 0.2
         ):  # Lower threshold for falling back to generic
             # If no specific type matched or confidence is very low, try to determine a generic type
+            self.logger.info("Using generic classification due to low confidence")
             return self._classify_generic(document_data, features)
 
         return {
@@ -104,10 +114,30 @@ class RuleBasedClassifier:
             confidence = 0.0
             key_features = []
 
-            # Check title keywords
-            section_titles = features.get("section_titles", [])
+            # Check metadata for keywords
+            metadata = document_data.get("metadata", {})
+            metadata_text = " ".join([str(v).lower() for v in metadata.values()])
+
+            # Check title keywords in metadata
             title_keywords = rule.get("title_keywords", [])
             if title_keywords:
+                metadata_matches = sum(
+                    1 for keyword in title_keywords if keyword.lower() in metadata_text
+                )
+                if metadata_matches > 0:
+                    title_weight = rule.get("weights", {}).get("title_match", 0.4)
+                    metadata_confidence = title_weight * (
+                        metadata_matches / len(title_keywords)
+                    )
+                    confidence += metadata_confidence
+                    key_features.append("metadata_match")
+                    self.logger.info(
+                        f"Matched {metadata_matches} metadata keywords for {doc_type}"
+                    )
+
+            # Check title keywords in section titles
+            section_titles = features.get("section_titles", [])
+            if title_keywords and section_titles:
                 matches = sum(
                     1
                     for keyword in title_keywords
