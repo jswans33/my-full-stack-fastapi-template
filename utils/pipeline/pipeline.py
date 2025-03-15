@@ -42,12 +42,13 @@ class Pipeline:
 
         self.logger.info("Pipeline initialized with config: %s", self.config)
 
-    def run(self, input_path: str) -> Dict[str, Any]:
+    def run(self, input_path: str, show_progress: bool = True) -> Dict[str, Any]:
         """
         Run the pipeline on the input document.
 
         Args:
             input_path: Path to the input document
+            show_progress: Whether to display progress bars (default: True)
 
         Returns:
             Processed output data as a dictionary
@@ -56,6 +57,46 @@ class Pipeline:
         progress = PipelineProgress()
 
         try:
+            if not show_progress:
+                # Process without progress display
+                doc_type = self._detect_document_type(input_path)
+                strategies = self.strategy_selector.get_strategies(doc_type)
+
+                # Track stage outputs
+                stages_data = {}
+                stages_data["setup"] = {"path": input_path, "type": doc_type}
+
+                # 1. Analyze document structure
+                analysis_result = self._analyze_document(
+                    input_path, strategies.analyzer
+                )
+                stages_data["analyze"] = analysis_result
+
+                # 2. Clean and normalize content
+                cleaned_data = self._clean_content(analysis_result, strategies.cleaner)
+                stages_data["clean"] = cleaned_data
+
+                # 3. Extract structured data
+                extracted_data = self._extract_data(cleaned_data, strategies.extractor)
+                stages_data["extract"] = extracted_data
+
+                # 4. Validate extracted data
+                validated_data = self._validate_data(
+                    extracted_data, strategies.validator
+                )
+                stages_data["validate"] = validated_data
+
+                # 5. Format output
+                output_format = self._get_output_format()
+                output_data = self._format_output(validated_data, output_format)
+                stages_data["format"] = output_data
+
+                # 6. Verify output structure
+                self._verify_output_structure(output_data, output_format)
+
+                return output_data
+
+            # Process with progress display
             with progress:
                 progress.start()
                 overall_task = progress.add_task("Processing document", total=6)

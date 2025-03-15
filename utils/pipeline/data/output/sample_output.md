@@ -1,6 +1,6 @@
 # Document Information
 
-- Path: C:\Repos\FCA-dashboard3\my-full-stack-fastapi-template\utils\pipeline\data\input\Brighton 27J Rocky Vista HS-AAON-Quote-3-5-2025.pdf
+- Path: C:\Repos\FCA-dashboard3\my-full-stack-fastapi-template\utils\pipeline\data\input\Quotation 79520-4 - Rocky Vista HS 100%CD (25-03-12).pdf
 - Type: 
 
 ## Metadata
@@ -8,292 +8,584 @@
 - title: 
 - author: 
 - subject: 
-- creator: Bluebeam Stapler 21.0.30.30
+- creator: Bluebeam Stapler 2018.6
 - producer: Bluebeam Brewery 5.0
-- creation_date: D:20250305093349-07'00'
-- modification_date: D:20250305093349-07'00'
+- creation_date: D:20250312124226-06'00'
+- modification_date: D:20250312124226-06'00'
 
 # Content
 
 # Introduction
 
-Western Mechanical Solutions, LLC
+Main Office ●1440 South Lipan Street ●Denver, CO  80223-3411 ●Phone: (303) 761-2291 ●Fax: (303) 761-...
 
 
-# 70 Broadway, Suite 100, Denver, CO 80203
+# 100% CD
 
-Phone: 720.210.9210 Fax: 720.210.5481
-www.westernmechanicalsolutions.com
-This message is for the exclusive use of the addressee and contains confidential, privileged, and no...
+QUOTATION  No. 79520-4
+Plans Dated: 3/6/2025
+Addenda Acknowledged: #2 Dwgs
+Project: 27J Rocky Vista High School
 
 
-# Date:
+# Architect:
 
-March 5th, 2025
+Engineer: Cator Ruma & Associates
+Qty
+Description
 
 
-# TO:
+# HYDRONIC PACKAGE
 
-US Engineering
+KN-Series Plus Condensing Cast Iron Boiler by Advanced Thermal Hydronics
+-     480V / 3 phase (KN-40+)
 
 
-# ATTN:
+# B-1, 2, 3, 4
 
-Kevin Esslinger and James Swanson
+HVAC Centrifugal Pumps by Armstrong
+-     Vertical in-line split coupled pump
+-
+Bronze fitted construction
 
 
-# RE:
+# HWP-1, 2, 3
 
-Brighton 27J Rocky Vista HS
-Pricing is based on 100% CD plans and specifications dated 2/19/2025
-Western Mechanical Solutions, LLC is pleased to offer the following equipment and services
+Unless otherwise noted, this quotation is offered as follows.  Shipments are F.O.B. point of manufac...
 
 
-# EQUIPMENT SUMMARY
+# 30 Days.  Sales and use taxes are not included.  Quotation is subject to acceptance within 30 days.  Prices quoted are firm provided release to ship is made within 30
 
-Six (6) Roof Top Units DX cooling, Hot Water heating, and Heat Wheel.
-Four (4) Roof Top Units DX cooling and Hot Water heating.
+days from date of order, not to exceed 60 days from the date of this quotation.  All quotations and ...
 
 
-# AAON ROOF TOP UNITS
+# HWP-1, 2, 3
 
-Furnish Twelve (12) AAON Packaged Roof Top VAV, SZVAV, and MAU Units.
-Tags: AHU-1,-2,-3,-4,-5,-6,-7,-8,-9,-10, MAU-1,-2 used as Basis of Design listed on plans and
+Cabinet Unit Heaters by Zehnder Rittling
+-     Model RFRC: ceiling mounted, fully recessed
+-
+2-row copper tube/aluminum fin hot water coil
 
 
-# Construction Materials:
+# CUH-B1 ~ E2
 
-•
-All Cabinet Walls, access doors, and roof shall be fabricated for double wall, impact resistant,
-rigid polyurethane foam panels.
+Unit Heaters by Zehnder Rittling
+-
+Model RH (Horizontal)
+-
+Copper tube/aluminum fin hot water coil
+-
 
 
-# Electrical Options:
+# UH-B1,C1,E1,E3
 
-•
-Electrical Options are provided in accordance with ETL standards.
-•
-Supply and exhaust or return fan motor(s) factory mounted and wired to 6 pulse Yaskawa
+Lot of Finned Tube Element Only by Zehnder Rittling
+-
+284 total feet of 3/4" copper tube/aluminum fin element ONLY
 
 
-# VFD.
+# FTR-01
 
-•
-One VFD’s to serve one supply fans.  One or two VFD’s to serve one exhaust or return fans.
-•
-Shaft Grounding kits.
+Total Net Price: $385,475.00
+(Continued on next page)
+Page: 3 of 8
+Date: March 03, 2025
+Project: 27J Rocky Vista High School
 
 
-# Fans:
+# SHEET METAL PACKAGE
 
-•
-Supply fan segment with non-overloading direct drive, unhoused, backward curved plenum
-fan wheel. Blower and motor shall be dynamically balanced and mounted on rubber isolators.
+Airius A-25-EC Air Pear destrat fan with EC motor, standard nozzle, 0-10VDC modulation and
+BACnet fan controller (Deduct $3,500 for no BACnet controller)
 
 
-# DX Cooling:
+# DF-01
 
-•
-Cooling coil segment with double sloped 304 stainless steel condensate drain pan.
-•
-Coils made with copper Tubes with aluminum fins.
+Monoxivent D series blower with (3) retractable series 4000 hose reals
+1
 
 
-# Heating:
+# EF-D10
 
-•
-Hot water Heating Coil constructed of copper tubes with aluminum fins. Coil is located in the
-reheat position downstream of the supply fan.
+Greenheck utility set exhaust fan with EC motor, NEMA-3R disconnect switch, threaded drain connectio...
 
 
-# Outside Air Option:
+# EF-A01~A09, D07, D08
 
-3/5/2025
-Western Mechanical Solutions, LLC
-Page 3 of 9
-Phone: 720.210.9210 Fax: 720.210.5481
-•
-(All AHUs) Economizer – Extruded aluminum, low leakage, aluminum gear driven,
+Greenheck downblast roof exhaust fan with roof curb, hinged curb cap, EC motor, Permatector coating,
 
 
-# Energy Recovery (AHU-1,-2,-3,-4,-6,-7):
+# EF-A11~13,B1,2,C2,3,4,D3,5,9,E1,2
 
-•
-Sensible energy recovery wheel shall be constructed of lightweight polymer and shall be
-provided without desiccant coating. Wheel shall be washable with detergent or alkaline coil
+Greenheck ceiling exhaust fan with integral backdraft damper, speed controller, isolation kit, and p...
 
 
-# Filter / Inlet:
+# EF-A14, 15
 
-•
-Unit shall include 4 inch thick, pleated panel filters with an ASRAE efficiency of 85% and a
-MERV rating of 13, upstream of the cooling coil. Unit shall also include 2 inch thick, pleated
+Greenheck upblast roof exhaust fan with UL 762 listing, ventilated roof curb, hinged curb cap, VFD r...
 
 
-# Safety Options:
+# EF-C01,D01,D02,D04
 
-•
-Remote Safety Shutdown Terminals
+Greenheck square inline fan with EC motor, motor cover, Permatector coating, companion flange, gravi...
 
 
-# Refrigeration Control:
+# EF-C05, D13, H01, H02
 
-•
+Greenheck utility set exhaust fan with spark B construction, NEMA-3R disconnect switch, threaded dra...
 
 
-# 5 Minute Time Delay Relay – Compressor Off Time
+# EF-D06, D11
 
-•
+ABB variable frequency drive with NEMA-3R enclosure, disconnect with fuses, owner training, factory
 
 
-# 20 Second Time Delay Relay – Compressor Staging Delay
+# EF-C01,D01,D02,D04, D10
 
-•
-Adjustable Compressor Lockouts on Each Circuit
-•
-Freeze Stats on Each Circuit
+Price Industries hydronic re-heat VAV terminal unit with inlet air sensor, 1/2" fiberglass insulatio...
 
 
-# Refrigeration Accessories:
+# TB-A100~TB-E145
 
-•
-Sight Glass
-•
-Variable Speed Condenser Fan – Head Pressure Control.
+Price Industries sound attenuator with galvanized steel construction, mastic filled seams, fiberglas...
 
 
-# Miscellaneous:
+# SA-1 ~ RA-10
 
-•
-Cond. Coil Guards
-•
-Base Insulation
-•
-Energy Recovery Frost controller
-•
-AHU-2 and AHU-7 include dedicated/isolated toilet exhaust connections for energy recovery.
+Price Industries grilles, registers, and diffusers with standard white finish
+751
 
 
-# Curbs:
+# A~M
 
-•
-Curb is fully gasketed between the curb top and unit bottom with the curb providing full perimeter
+(Continued on next page)
+Page: 4 of 8
+Date: March 03, 2025
+Project: 27J Rocky Vista High School
+Quotation No. 79520-4 100% CD
 
 
-# Extra Stock:
+# D
 
-•
-Spare filters - See pricing section.
+Samsung Mini Split Systems with 208/1 Voltage
+-
+(8) Air cooled Heat Pump/Cooling Only Condensing Unit rated at 208/60/1 voltage
 
 
-# Controls:
+# DX/CU-A1,A2,B2,C1,D2,E2,E3,G1
 
-•
-Factory Installed DDC Controls by Others – Controls are to be field provided and factory
-installed by others.
+Indeeco electric wall heater with thermostat, disconnect switch, and mounting frame
+6
 
 
-# Factory Provided and Field Installed by others:
+# EUH-H01
 
-•
-Supply temperature sensor is remotely installed in the duct.
-•
-Outside air hoods.
-•
-AHU-5,-8 Motorized Relief Dampers and Hoods to be located near associated unit by the
+Indeeco electric duct heater with open coil element, 0-10VDC input, disconnect switch, slip in frame...
 
 
-# Field Provided and Installed by others:
+# EHC-H01
 
-•
-Controls.
-•
-Hot Water Control Valves.
-•
-Condensate traps.
-•
-Convenience outlet requires a separate 120 volt power source
+Powered Aire air curtain with washable filters, electric heat, remote mounted control panel, time de...
 
 
-# PreFilter Option:
+# AD-F1, F2
 
-•
-Unit shall include Pre Filters 2 inch thick, pleated panel filters with an ASHRAE efficiency of
-30% and MERV rating of 8, downstream of the return and outside air openings.
+Greenheck louver with aluminum construction, channel hat frame, bird screen, and 70% Kynar finish
+3
 
 
-# Factory Provided and Field Installed by others:
+# WL-01, 02, 03
 
-•
-Supply temperature sensor is remotely installed in the duct
+Greenheck roof hood with roof curb, backdraft damper, bird screen, tie-down points, and Permatector ...
 
 
-# Field Provided and Installed by others:
+# RH-E1
 
-•
-Condensate Trap
-•
-HW controls valve shall be field supplied and field installed
-VFD and or Unit Start-Up and Operator Instruction:
+Ductsox fabric duct work with Verona NP material, pull tight suspension kit, adjustable airflow devi...
 
 
-# Warranty:
+# B-1, 2, 3, 4
 
-AAON provides first year parts warranty on the equipment detailed above.  This includes repair or
-replacement, at AAON's option, of defective warranted parts during the warranty period.  This
+Greenheck fire damper with dynamic rating, 1.5 hour fire rating, fusible link, integral sleeve, and ...
 
 
-# Clarifications/Exceptions to Specifications:
+# BALANCING VALVES
 
-•
-M-002 Rooftop Unit Schedule (Packaged) Sound attenuators are by others.
-•
-AHU-2,-3,-4,-5,-8 require multiple hot water heat connections (2 per unit).
+IMI Flow Design Balancing Valve Packages & Individual Balancing Valves:
 
 
-# DX.
+# TB
 
-•
-M-002 Makeup Air Handling Unit Schedule Note E. Coils are sized for required capacity and
-may not be 2 row.
+117
+Auto
 
 
-# Items NOT Included:
+# 2AC-YC
 
-•
-Startup of units for temporary heat or cooling.
-•
-Curb height is as submitted and does not include roof insulation
+3/4"
+$268
+$31,356
 
 
-# PRICING
+# TB
 
-TOTAL Price for the bill of material specified herein, F.O.B. factory, freight allowed and prepaid,
+2
+Auto
 
 
-# SUSTAINABLE – HEATING – COOLING
+# 1"-B
 
-720.822.8794 ph
-Your written authorization and assigned purchase order number will allow us to move forward in
+$406
+$812
 
 
-# PO # ______________
+# CUH
 
-Signature: __________________
-Date: __________________
-3/5/2025
-Western Mechanical Solutions, LLC
-Page 9 of 9
+7
+Auto
 
 
-# THIS WARRANTY AND THE MANUFACTURER’S WARRANTY(IES) CONSTITUTE BUYER’S SOLE REMEDY.  IT IS GIVEN IN LIEU OF ALL OTHER WARRANTIES.  THERE IS NO IMPLIED WARRANTY OF
+# 2AC-YC
 
-MERCHANTABILITY OR FITNESS FOR PARTICULAR PURPOSE.  No liability shall attach to Company until Compa...
+3/4"
+$268
+$1,876
 
 
-# CONSEQUENTIAL DAMAGES, WHETHER THE THEORY BE BREACH OF THIS OR ANY OTHER WARRANTY, NEGLIGENCE OR STRICT LIABILITY IN TORT.
+# UH
 
-Assignment:  Buyer may not assign or delegate its obligations under this order without Company’s pri...
+4
+Auto
+
+
+# 2AC-YC
+
+3/4"
+$268
+$1,072
+
+
+# FTR
+
+4
+Auto
+
+
+# 2AC-YC
+
+3/4"
+$268
+$1,072
+
+
+# FTR
+
+1
+Auto
+
+
+# 1"-B
+
+$406
+$406
+
+
+# FCU HW
+
+1
+Auto
+
+
+# 1"-B
+
+$406
+$406
+
+
+# AHU 1 HW
+
+1
+Auto
+
+
+# 3ACUB-YC (L)
+
+2"
+$907
+$907
+
+
+# AHU 2 HW
+
+1
+Auto
+
+
+# WB
+
+2 1/2"
+$699
+$699
+
+
+# AHU 3 HW
+
+1
+Auto
+
+
+# WB
+
+3"
+$993
+$993
+
+
+# AHU 4 HW
+
+1
+Auto
+
+
+# 2AC-YC
+
+2"
+$651
+$651
+
+
+# AHU 5 HW
+
+1
+Auto
+
+
+# WB
+
+2 1/2"
+$699
+$699
+
+
+# AHU 6 HW
+
+1
+Auto
+
+
+# 2AC-YC
+
+2"
+$651
+$651
+
+
+# AHU 7 HW
+
+1
+Auto
+
+
+# 2AC-YC
+
+1 1/2"
+$620
+$620
+
+
+# AHU 8 HW
+
+1
+Auto
+
+
+# WB
+
+2 1/2"
+$699
+$699
+
+
+# AHU 9 HW
+
+1
+Auto
+
+
+# 1"-B
+
+$406
+$406
+
+
+# AHU 10 HW
+
+1
+Auto
+
+
+# 1"-B
+
+$464
+$464
+
+
+# HWP 1
+
+1
+Manual
+
+
+# AF
+
+6"
+$1,274
+$1,274
+
+
+# HWP 2
+
+1
+Manual
+
+
+# AF
+
+6"
+$1,274
+$1,274
+
+
+# HWP 3
+
+1
+Manual
+
+
+# AF
+
+6"
+$1,274
+$1,274
+
+
+# B 1
+
+1
+Manual
+
+
+# AF
+
+4"
+$819
+$819
+
+
+# B 2
+
+1
+Manual
+
+
+# AF
+
+4"
+$819
+$819
+
+
+# B 3
+
+1
+Manual
+
+
+# AF
+
+4"
+$819
+$819
+
+
+# B 4
+
+1
+Manual
+
+
+# AF
+
+4"
+$819
+$819
+
+
+# BRANCH M111G
+
+1
+Manual
+
+
+# AF
+
+4"
+$819
+$819
+
+
+# BRANCH M111G
+
+1
+Manual
+
+
+# AF
+
+3"
+$620
+$620
+
+
+# BRANCH M111G
+
+1
+Manual
+
+
+# 1"-B
+
+$90
+$90
+
+
+# BASE BID TOTAL (FFA):
+
+$52,416
+
+
+# NOTES:
+
+1)
+The current estimated manufacturing lead-time is (3) weeks after release of order (plus transit time...
+
+
+# SHIPMENT - SHIPMENTS ARE F.O.B. POINT OF MANUFACTURE
+
+WITH FREIGHT ALLOWED. All risk of loss, damage and other
+incidence of title and ownership shall pass to the buyer upon delivery to
+
+
+# WARRANTIES OF WHATEVER KIND, ARE HEREBY DISCLAIMED
+
+BY SELLER AND EXCLUDED. Seller assumes no liability for any
+failure of buyer’s specifications to meet buyer’s requirements, nor does
+
+
+# THEREOF, EXCEPT TO THE EXTENT EXPRESSLY ABOVE
+
+PROVIDED. Seller shall have no responsibility to make any claim for
+loss, damage or injury to shipments caused by a carrier or others, after
 
 
 

@@ -1,0 +1,161 @@
+@startuml Class Diagram
+
+' Styling
+skinparam class {
+    BackgroundColor LightCyan
+    ArrowColor #666666
+    BorderColor #999999
+}
+
+' Title
+title Pipeline Class Diagram
+
+' Core Classes
+class Pipeline {
+    - config: Dict[str, Any]
+    - logger: Logger
+    - strategy_selector: StrategySelector
+    + __init__(config: Optional[Dict[str, Any]])
+    + run(input_path: str): Dict[str, Any]
+    - _detect_document_type(input_path: str): str
+    - _analyze_document(input_path: str, analyzer): Dict[str, Any]
+    - _clean_content(analysis_result: Dict[str, Any], cleaner): Dict[str, Any]
+    - _extract_data(cleaned_data: Dict[str, Any], extractor): Dict[str, Any]
+    - _validate_data(extracted_data: Dict[str, Any], validator): Dict[str, Any]
+    - _format_output(validated_data: Dict[str, Any], output_format: OutputFormat): Dict[str, Any]
+    + save_output(output_data: Dict[str, Any], output_path: str): None
+}
+
+class PipelineProgress {
+    - progress: Progress
+    + __init__()
+    + start(): None
+    + stop(): None
+    + add_task(description: str, total: Optional[float]): TaskID
+    + update(task_id: TaskID, advance: float): None
+    + display_stage_output(stage_name: str, data: Dict[str, Any], show_details: bool): None
+    + display_summary(stages_data: Dict[str, Dict[str, Any]]): None
+    + display_error(message: str): None
+    + display_success(message: str): None
+}
+
+' Document Models
+class Document {
+    + metadata: DocumentMetadata
+    + content: List[Section]
+    + tables: List[Table]
+    + schema: Schema
+    + path: str
+    + type: str
+}
+
+class DocumentMetadata {
+    + title: str
+    + author: str
+    + subject: str
+    + creator: str
+    + producer: str
+    + creation_date: str
+    + modification_date: str
+}
+
+class Section {
+    + title: str
+    + content: str
+    + children: List[Section]
+    + level: int
+}
+
+class Table {
+    + page: int
+    + table_number: int
+    + data: List[List[str]]
+    + accuracy: Optional[float]
+}
+
+class Schema {
+    + type: str
+    + title: str
+    + properties: Dict[str, Any]
+    + required: List[str]
+}
+
+' Processing Classes
+abstract class BaseProcessor {
+    # logger: Logger
+    + {abstract} process(data: Dict[str, Any]): Dict[str, Any]
+}
+
+class PDFAnalyzer {
+    + analyze(input_path: str): Dict[str, Any]
+}
+
+class PDFCleaner {
+    + clean(analysis_result: Dict[str, Any]): Dict[str, Any]
+}
+
+class PDFExtractor {
+    + extract(cleaned_data: Dict[str, Any]): Dict[str, Any]
+    - _extract_sections(doc): List[Dict[str, Any]]
+    - _extract_tables(doc): List[Dict[str, Any]]
+    - _extract_schema(sections: List[Dict[str, Any]]): Dict[str, Any]
+}
+
+class PDFValidator {
+    + validate(extracted_data: Dict[str, Any]): Dict[str, Any]
+}
+
+' Formatters
+abstract class BaseFormatter {
+    + {abstract} format(data: Dict[str, Any]): Dict[str, Any]
+    + {abstract} write(data: Dict[str, Any], path: str): None
+}
+
+class JSONFormatter {
+    + format(data: Dict[str, Any]): Dict[str, Any]
+    + write(data: Dict[str, Any], path: str): None
+}
+
+class MarkdownFormatter {
+    + format(data: Dict[str, Any]): Dict[str, Any]
+    + write(data: Dict[str, Any], path: str): None
+}
+
+' Relationships
+Pipeline --> PipelineProgress : uses
+Pipeline --> Document : processes
+Document *-- DocumentMetadata
+Document *-- "0..*" Section
+Document *-- "0..*" Table
+Document *-- Schema
+
+BaseProcessor <|-- PDFAnalyzer
+BaseProcessor <|-- PDFCleaner
+BaseProcessor <|-- PDFExtractor
+BaseProcessor <|-- PDFValidator
+
+BaseFormatter <|-- JSONFormatter
+BaseFormatter <|-- MarkdownFormatter
+
+PDFAnalyzer --> Document : creates
+PDFExtractor --> Section : creates
+PDFExtractor --> Table : creates
+PDFExtractor --> Schema : creates
+
+' Notes
+note right of Pipeline
+  Main orchestrator that coordinates
+  the document processing workflow
+end note
+
+note right of PipelineProgress
+  Provides rich terminal output
+  and progress tracking
+end note
+
+note right of Document
+  Core data model representing
+  a processed document
+end note
+
+@enduml

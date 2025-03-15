@@ -1,0 +1,275 @@
+{
+  "document": {
+    "metadata": {
+      "title": "",
+      "author": "",
+      "subject": "",
+      "creator": "Bluebeam Stapler 21.0.30.30",
+      "producer": "Bluebeam Brewery 5.0",
+      "creation_date": "D:20250305093349-07'00'",
+      "modification_date": "D:20250305093349-07'00'"
+    },
+    "path": "utils\\pipeline\\data\\input\\Brighton 27J Rocky Vista HS-AAON-Quote-3-5-2025.pdf",
+    "type": ""
+  },
+  "content": [
+    {
+      "title": "Introduction",
+      "content": "Western Mechanical Solutions, LLC\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "70 Broadway, Suite 100, Denver, CO 80203",
+      "content": "Phone: 720.210.9210 Fax: 720.210.5481\nwww.westernmechanicalsolutions.com\nThis message is for the exclusive use of the addressee and contains confidential, privileged, and no...\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "Date:",
+      "content": "March 5th, 2025\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "TO:",
+      "content": "US Engineering\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "ATTN:",
+      "content": "Kevin Esslinger and James Swanson\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "RE:",
+      "content": "Brighton 27J Rocky Vista HS\nPricing is based on 100% CD plans and specifications dated 2/19/2025\nWestern Mechanical Solutions, LLC is pleased to offer the following equipment and services\n",
+      "children": [],
+      "level": 3
+    },
+    {
+      "title": "EQUIPMENT SUMMARY",
+      "content": "Six (6) Roof Top Units DX cooling, Hot Water heating, and Heat Wheel.\nFour (4) Roof Top Units DX cooling and Hot Water heating.\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "AAON ROOF TOP UNITS",
+      "content": "Furnish Twelve (12) AAON Packaged Roof Top VAV, SZVAV, and MAU Units.\nTags: AHU-1,-2,-3,-4,-5,-6,-7,-8,-9,-10, MAU-1,-2 used as Basis of Design listed on plans and\n",
+      "children": [
+        {
+          "title": "Construction Materials:",
+          "content": "•\nAll Cabinet Walls, access doors, and roof shall be fabricated for double wall, impact resistant,\nrigid polyurethane foam panels.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Electrical Options:",
+          "content": "•\nElectrical Options are provided in accordance with ETL standards.\n•\nSupply and exhaust or return fan motor(s) factory mounted and wired to 6 pulse Yaskawa\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "VFD.",
+          "content": "•\nOne VFD’s to serve one supply fans.  One or two VFD’s to serve one exhaust or return fans.\n•\nShaft Grounding kits.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Fans:",
+          "content": "•\nSupply fan segment with non-overloading direct drive, unhoused, backward curved plenum\nfan wheel. Blower and motor shall be dynamically balanced and mounted on rubber isolators.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "DX Cooling:",
+          "content": "•\nCooling coil segment with double sloped 304 stainless steel condensate drain pan.\n•\nCoils made with copper Tubes with aluminum fins.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Heating:",
+          "content": "•\nHot water Heating Coil constructed of copper tubes with aluminum fins. Coil is located in the\nreheat position downstream of the supply fan.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Outside Air Option:",
+          "content": "3/5/2025\nWestern Mechanical Solutions, LLC\nPage 3 of 9\nPhone: 720.210.9210 Fax: 720.210.5481\n•\n(All AHUs) Economizer – Extruded aluminum, low leakage, aluminum gear driven,\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Energy Recovery (AHU-1,-2,-3,-4,-6,-7):",
+          "content": "•\nSensible energy recovery wheel shall be constructed of lightweight polymer and shall be\nprovided without desiccant coating. Wheel shall be washable with detergent or alkaline coil\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Filter / Inlet:",
+          "content": "•\nUnit shall include 4 inch thick, pleated panel filters with an ASRAE efficiency of 85% and a\nMERV rating of 13, upstream of the cooling coil. Unit shall also include 2 inch thick, pleated\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Safety Options:",
+          "content": "•\nRemote Safety Shutdown Terminals\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Refrigeration Control:",
+          "content": "•\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "5 Minute Time Delay Relay – Compressor Off Time",
+          "content": "•\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "20 Second Time Delay Relay – Compressor Staging Delay",
+          "content": "•\nAdjustable Compressor Lockouts on Each Circuit\n•\nFreeze Stats on Each Circuit\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Refrigeration Accessories:",
+          "content": "•\nSight Glass\n•\nVariable Speed Condenser Fan – Head Pressure Control.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Miscellaneous:",
+          "content": "•\nCond. Coil Guards\n•\nBase Insulation\n•\nEnergy Recovery Frost controller\n•\nAHU-2 and AHU-7 include dedicated/isolated toilet exhaust connections for energy recovery.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Curbs:",
+          "content": "•\nCurb is fully gasketed between the curb top and unit bottom with the curb providing full perimeter\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Extra Stock:",
+          "content": "•\nSpare filters - See pricing section.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Controls:",
+          "content": "•\nFactory Installed DDC Controls by Others – Controls are to be field provided and factory\ninstalled by others.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Factory Provided and Field Installed by others:",
+          "content": "•\nSupply temperature sensor is remotely installed in the duct.\n•\nOutside air hoods.\n•\nAHU-5,-8 Motorized Relief Dampers and Hoods to be located near associated unit by the\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Field Provided and Installed by others:",
+          "content": "•\nControls.\n•\nHot Water Control Valves.\n•\nCondensate traps.\n•\nConvenience outlet requires a separate 120 volt power source\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "PreFilter Option:",
+          "content": "•\nUnit shall include Pre Filters 2 inch thick, pleated panel filters with an ASHRAE efficiency of\n30% and MERV rating of 8, downstream of the return and outside air openings.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Factory Provided and Field Installed by others:",
+          "content": "•\nSupply temperature sensor is remotely installed in the duct\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Field Provided and Installed by others:",
+          "content": "•\nCondensate Trap\n•\nHW controls valve shall be field supplied and field installed\nVFD and or Unit Start-Up and Operator Instruction:\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Warranty:",
+          "content": "AAON provides first year parts warranty on the equipment detailed above.  This includes repair or\nreplacement, at AAON's option, of defective warranted parts during the warranty period.  This\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Clarifications/Exceptions to Specifications:",
+          "content": "•\nM-002 Rooftop Unit Schedule (Packaged) Sound attenuators are by others.\n•\nAHU-2,-3,-4,-5,-8 require multiple hot water heat connections (2 per unit).\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "DX.",
+          "content": "•\nM-002 Makeup Air Handling Unit Schedule Note E. Coils are sized for required capacity and\nmay not be 2 row.\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "Items NOT Included:",
+          "content": "•\nStartup of units for temporary heat or cooling.\n•\nCurb height is as submitted and does not include roof insulation\n",
+          "children": [],
+          "level": 3
+        },
+        {
+          "title": "PRICING",
+          "content": "TOTAL Price for the bill of material specified herein, F.O.B. factory, freight allowed and prepaid,\n",
+          "children": [],
+          "level": 3
+        }
+      ],
+      "level": 0
+    },
+    {
+      "title": "SUSTAINABLE – HEATING – COOLING",
+      "content": "720.822.8794 ph\nYour written authorization and assigned purchase order number will allow us to move forward in\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "PO # ______________",
+      "content": "Signature: __________________\nDate: __________________\n3/5/2025\nWestern Mechanical Solutions, LLC\nPage 9 of 9\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "THIS WARRANTY AND THE MANUFACTURER’S WARRANTY(IES) CONSTITUTE BUYER’S SOLE REMEDY.  IT IS GIVEN IN LIEU OF ALL OTHER WARRANTIES.  THERE IS NO IMPLIED WARRANTY OF",
+      "content": "MERCHANTABILITY OR FITNESS FOR PARTICULAR PURPOSE.  No liability shall attach to Company until Compa...\n",
+      "children": [],
+      "level": 0
+    },
+    {
+      "title": "CONSEQUENTIAL DAMAGES, WHETHER THE THEORY BE BREACH OF THIS OR ANY OTHER WARRANTY, NEGLIGENCE OR STRICT LIABILITY IN TORT.",
+      "content": "Assignment:  Buyer may not assign or delegate its obligations under this order without Company’s pri...\n",
+      "children": [],
+      "level": 0
+    }
+  ],
+  "tables": [],
+  "summary": {},
+  "validation": {
+    "is_valid": false,
+    "errors": [
+      "Missing required metadata: page_count"
+    ],
+    "warnings": [
+      "Missing optional metadata: title",
+      "Missing optional metadata: author",
+      "Missing optional metadata: subject",
+      "Missing optional metadata: keywords",
+      "Section 'Refrigeration Control:' has very short content",
+      "Section '5 Minute Time Delay Relay – Compressor Off Time' has very short content",
+      "No tables extracted"
+    ]
+  }
+}

@@ -4,7 +4,7 @@ Markdown formatter implementation.
 This module provides functionality for formatting extracted PDF content into Markdown.
 """
 
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 from utils.pipeline.strategies.formatter import FormatterStrategy
 from utils.pipeline.utils.logging import get_logger
@@ -50,7 +50,7 @@ class MarkdownFormatter(FormatterStrategy):
             self.logger.error(f"Error formatting PDF content: {str(e)}", exc_info=True)
             raise
 
-    def _build_markdown_content(self, sections: list) -> str:
+    def _build_markdown_content(self, sections: List[Dict[str, Any]]) -> str:
         """
         Convert sections into Markdown format.
 
@@ -63,7 +63,7 @@ class MarkdownFormatter(FormatterStrategy):
         if not sections:
             return ""
 
-        markdown = []
+        markdown_lines = []
         for section in sections:
             level = section.get("level", 0)
             title = section.get("title", "")
@@ -71,20 +71,20 @@ class MarkdownFormatter(FormatterStrategy):
 
             # Add section header with appropriate level
             if title:
-                markdown.append(f"{'#' * (level + 1)} {title}\n")
+                markdown_lines.append(f"{'#' * (level + 1)} {title}\n")
 
             # Add section content
             if content:
-                markdown.append(f"{content}\n")
+                markdown_lines.append(f"{content}\n")
 
             # Process children recursively
             children = section.get("children", [])
             if children:
-                markdown.append(self._build_markdown_content(children))
+                markdown_lines.append(self._build_markdown_content(children))
 
-        return "\n".join(markdown)
+        return "\n".join(markdown_lines)
 
-    def _format_tables(self, tables: list) -> str:
+    def _format_tables(self, tables: List[Dict[str, Any]]) -> str:
         """
         Format tables in Markdown.
 
@@ -92,25 +92,27 @@ class MarkdownFormatter(FormatterStrategy):
             tables: List of table data
 
         Returns:
-            Markdown formatted tables
+            Markdown formatted table string
         """
         if not tables:
             return ""
 
-        markdown = []
+        markdown_lines = []
         for table in tables:
             if "headers" in table and "data" in table:
                 # Add table headers
                 headers = table["headers"]
-                markdown.append("| " + " | ".join(headers) + " |")
-                markdown.append("| " + " | ".join(["---"] * len(headers)) + " |")
+                markdown_lines.append("| " + " | ".join(headers) + " |")
+                markdown_lines.append("| " + " | ".join(["---"] * len(headers)) + " |")
 
                 # Add table data
                 for row in table["data"]:
-                    markdown.append("| " + " | ".join(str(cell) for cell in row) + " |")
-                markdown.append("\n")
+                    markdown_lines.append(
+                        "| " + " | ".join(str(cell) for cell in row) + " |"
+                    )
+                markdown_lines.append("\n")
 
-        return "\n".join(markdown)
+        return "\n".join(markdown_lines)
 
     def write(self, data: Dict[str, Any], output_path: str) -> None:
         """

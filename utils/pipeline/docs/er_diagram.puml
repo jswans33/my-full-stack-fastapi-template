@@ -1,0 +1,112 @@
+@startuml ER Diagram
+
+' Styling
+!define table(x) class x << (T,#FFAAAA) >>
+!define primary_key(x) <u>x</u>
+!define foreign_key(x) #x#
+
+' Title
+title Pipeline Data Model ER Diagram
+
+' Entities
+table(Document) {
+    primary_key(id)
+    foreign_key(metadata_id)
+    path: string
+    type: string
+    created_at: timestamp
+    updated_at: timestamp
+}
+
+table(DocumentMetadata) {
+    primary_key(id)
+    title: string
+    author: string
+    subject: string
+    creator: string
+    producer: string
+    creation_date: timestamp
+    modification_date: timestamp
+}
+
+table(Section) {
+    primary_key(id)
+    foreign_key(document_id)
+    foreign_key(parent_section_id)
+    title: string
+    content: text
+    level: integer
+    sequence: integer
+}
+
+table(Table) {
+    primary_key(id)
+    foreign_key(document_id)
+    page: integer
+    table_number: integer
+    accuracy: float
+}
+
+table(TableRow) {
+    primary_key(id)
+    foreign_key(table_id)
+    row_number: integer
+}
+
+table(TableCell) {
+    primary_key(id)
+    foreign_key(row_id)
+    column_number: integer
+    content: string
+}
+
+table(Schema) {
+    primary_key(id)
+    foreign_key(document_id)
+    type: string
+    title: string
+}
+
+table(SchemaProperty) {
+    primary_key(id)
+    foreign_key(schema_id)
+    name: string
+    type: string
+    required: boolean
+}
+
+' Relationships
+Document ||--|| DocumentMetadata
+Document ||--o{ Section
+Document ||--o{ Table
+Document ||--|| Schema
+
+Section }o--|| Section : parent
+
+Table ||--o{ TableRow
+TableRow ||--o{ TableCell
+
+Schema ||--o{ SchemaProperty
+
+' Notes
+note right of Document
+  Central entity representing
+  a processed document
+end note
+
+note right of Section
+  Hierarchical structure
+  of document content
+end note
+
+note right of Table
+  Tabular data extracted
+  from documents
+end note
+
+note right of Schema
+  Document structure and
+  validation rules
+end note
+
+@enduml

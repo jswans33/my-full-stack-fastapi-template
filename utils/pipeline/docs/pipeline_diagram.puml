@@ -15,37 +15,52 @@ skinparam RectangleBackgroundColor #EEEEEE
 title Document Pipeline Architecture
 
 ' Main components
-rectangle "Input Data" as input #LightBlue {
-  file "PDF Files" as pdf
-  file "Excel Files" as excel
-  file "Word Files" as word
-  file "Text Files" as text
+rectangle "Input" as input #LightBlue {
+  file "PDF Documents" as pdf
+  note right of pdf
+    - Quotes
+    - Specifications
+    - Technical Documents
+  end note
 }
 
 rectangle "Pipeline Core" as core #LightGreen {
-  component "Pipeline Orchestrator" as pipeline
-  component "ConfigManager" as config
+  component "Pipeline" as pipeline
+  component "PipelineProgress" as progress
   component "StrategySelector" as selector
+  note right of progress
+    Rich terminal output
+    with progress tracking
+  end note
 }
 
 rectangle "Processing Stages" as stages #LightYellow {
-  component "Analyzer" as analyzer
-  component "Cleaner" as cleaner
-  component "Extractor" as extractor
-  component "Validator" as validator
+  component "PDFAnalyzer" as analyzer
+  component "PDFCleaner" as cleaner
+  component "PDFExtractor" as extractor
+  component "PDFValidator" as validator
+  note bottom of extractor
+    Extracts structured data:
+    - Sections
+    - Tables
+    - Schema
+  end note
 }
 
-rectangle "Strategies" as strategies #LightPink {
-  component "PDFStrategy" as pdfstrat
-  component "ExcelStrategy" as excelstrat
-  component "WordStrategy" as wordstrat
-  component "TextStrategy" as textstrat
+rectangle "Formatters" as formatters #LightPink {
+  component "JSONFormatter" as jsonformat
+  component "MarkdownFormatter" as mdformat
+  note bottom of formatters
+    Converts extracted data
+    to desired output format
+  end note
 }
 
 rectangle "Models" as models #LightCyan {
   component "Document" as doc
-  component "StructuredData" as structured
-  component "ValidationResult" as valresult
+  component "Section" as section
+  component "Table" as table
+  component "Schema" as schema
 }
 
 rectangle "Utilities" as utils #LightGray {
@@ -54,62 +69,50 @@ rectangle "Utilities" as utils #LightGray {
   component "ErrorHandling" as error
 }
 
-rectangle "Output Data" as output #LightBlue {
-  file "YAML Files" as yaml
-  file "JSON Files" as json
-  file "Reports" as reports
+rectangle "Output" as output #LightBlue {
+  file "JSON" as json {
+    file "Content" as content
+    file "Metadata" as metadata
+    file "Tables" as tables
+    file "Validation" as validation
+  }
+  file "Markdown" as markdown
 }
 
-' High-level flow
-input --> pipeline
+' Flow
+input --> pipeline : Input file
+pipeline --> progress : Updates progress
+pipeline --> selector : Select strategy
+selector --> stages : Configure processors
+
+' Processing flow
 pipeline --> analyzer : 1. Analyze
 analyzer --> cleaner : 2. Clean
 cleaner --> extractor : 3. Extract
 extractor --> validator : 4. Validate
-validator --> output : 5. Output
+validator --> formatters : 5. Format
+formatters --> output : 6. Save
 
 ' Component relationships
-pipeline --> config : uses
-pipeline --> selector : uses
-selector --> strategies : selects
-analyzer --> strategies : uses
-cleaner --> strategies : uses
-extractor --> strategies : uses
-validator --> models : validates
-strategies --> models : populates
-pipeline --> utils : uses
-stages --> utils : uses
-
-' Notes
-note right of pipeline
-  Orchestrates the entire pipeline flow
-  and manages the processing stages
-end note
-
-note bottom of strategies
-  Strategy pattern implementation
-  for different document formats
-end note
-
-note bottom of models
-  Data structures representing
-  documents and extracted content
-end note
-
-note bottom of utils
-  Common utilities used
-  throughout the pipeline
-end note
+stages --> models : Populates
+stages --> utils : Uses
+pipeline --> utils : Uses
+progress --> utils : Uses
 
 ' Legend
 legend right
   **Pipeline Flow**
-  1. Input data is loaded
-  2. Analyzer examines document structure
-  3. Cleaner normalizes content
-  4. Extractor pulls structured data
-  5. Validator ensures data integrity
-  6. Output is generated in desired format
+  1. Load document
+  2. Analyze structure
+  3. Clean content
+  4. Extract data
+  5. Validate schema
+  6. Format output
+  
+  **Progress Tracking**
+  - Rich terminal output
+  - Stage completion
+  - Error handling
 end legend
 
 @enduml

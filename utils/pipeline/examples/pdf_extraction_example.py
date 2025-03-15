@@ -1,10 +1,17 @@
 """
 Example script demonstrating PDF extraction pipeline usage.
+
+This example shows how to process a single PDF file using the FileProcessor
+for backward compatibility with the original example.
 """
 
+import sys
 from pathlib import Path
 
-from utils.pipeline.pipeline import Pipeline
+# Add parent directory to path to allow relative imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+from utils.pipeline.core.file_processor import FileProcessor
 from utils.pipeline.utils.progress import PipelineProgress
 
 
@@ -15,8 +22,6 @@ def main():
     try:
         # Get the current directory
         current_dir = Path(__file__).parent.parent
-
-        # TODO: Setup a runner for PDF extraction picking files and running the pipeline
 
         # Set up paths
         input_file = (
@@ -31,7 +36,7 @@ def main():
         # Display minimal setup info
         progress.display_success(f"Processing {input_file.name}")
 
-        # Initialize pipeline with configuration
+        # Initialize configuration
         config = {
             "output_format": "json",  # Default format
             "strategies": {
@@ -42,34 +47,35 @@ def main():
                     "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
                 },
             },
+            "file_processing": {
+                "output": {
+                    "formats": ["json", "markdown"],  # Support both formats
+                    "naming": {
+                        "template": "sample_output",  # Use fixed name for backward compatibility
+                    },
+                    "overwrite": True,
+                },
+            },
         }
 
-        pipeline = Pipeline(config)
+        # Initialize file processor
+        processor = FileProcessor(current_dir, output_dir, config)
 
         # Process the PDF with JSON output
         progress.display_success("Starting JSON output processing")
-        output_data = pipeline.run(str(input_file))
-
-        # Save JSON output
-        json_output = output_dir / "sample_output.json"
-        pipeline.save_output(output_data, str(json_output))
-        progress.display_success(f"JSON output saved to: {json_output.name}")
+        json_data, json_path = processor.process_single_file(input_file, "json")
+        progress.display_success(f"JSON output saved to: {Path(json_path).name}")
 
         # Process the PDF with Markdown output
         progress.display_success("Starting Markdown output processing")
-        pipeline.config["output_format"] = "markdown"
-        output_data = pipeline.run(str(input_file))
-
-        # Save Markdown output
-        md_output = output_dir / "sample_output.md"
-        pipeline.save_output(output_data, str(md_output))
-        progress.display_success(f"Markdown output saved to: {md_output.name}")
+        md_data, md_path = processor.process_single_file(input_file, "markdown")
+        progress.display_success(f"Markdown output saved to: {Path(md_path).name}")
 
         # Display final summary
         progress.display_summary(
             {
-                "JSON": {"path": str(json_output), "status": "Complete"},
-                "Markdown": {"path": str(md_output), "status": "Complete"},
+                "JSON": {"path": json_path, "status": "Complete"},
+                "Markdown": {"path": md_path, "status": "Complete"},
             }
         )
 
