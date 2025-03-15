@@ -4,6 +4,8 @@ Rule-based document classifier.
 This module provides a rule-based approach to document classification.
 """
 
+import os
+import re
 from typing import Any, Dict, List, Optional, Tuple
 
 from utils.pipeline.utils.logging import get_logger
@@ -27,14 +29,13 @@ class RuleBasedClassifier:
         self.config = config or {}
         self.logger = get_logger(__name__)
 
-        # Define document type rules
-        self.rules = [
-            self._is_proposal,
-            self._is_quotation,
-            self._is_specification,
-            self._is_invoice,
-            self._is_terms_and_conditions,
-        ]
+        # Get classification rules from config
+        self.classification_config = self.config.get("classification", {})
+        self.rules_config = self.classification_config.get("rules", {})
+        self.default_threshold = self.classification_config.get(
+            "default_threshold", 0.3
+        )
+        self.filename_patterns = self.classification_config.get("filename_patterns", {})
 
     def classify(
         self, document_data: Dict[str, Any], features: Dict[str, Any]
@@ -49,7 +50,24 @@ class RuleBasedClassifier:
         Returns:
             Classification result with document type, confidence, and schema pattern
         """
-        # Apply each rule and get the best match
+        # Check filename patterns if path is available
+        if "path" in document_data:
+            filename = os.path.basename(document_data["path"])
+            for doc_type, pattern in self.filename_patterns.items():
+                if re.search(pattern, filename):
+                    self.logger.info(
+                        f"Matched filename pattern for {doc_type}: {filename}"
+                    )
+                    return {
+                        "document_type": doc_type,
+                        "confidence": 0.8,  # High confidence for filename match
+                        "schema_pattern": self.rules_config.get(doc_type, {}).get(
+                            "schema_pattern", "standard"
+                        ),
+                        "key_features": ["filename_match"],
+                    }
+
+        # Apply configured rules
         best_match = self._get_best_match(document_data, features)
 
         if best_match[0] == "UNKNOWN":
@@ -67,7 +85,7 @@ class RuleBasedClassifier:
         self, document_data: Dict[str, Any], features: Dict[str, Any]
     ) -> Tuple[str, float, str, List[str]]:
         """
-        Apply all rules and get the best matching document type.
+        Apply all configured rules and get the best matching document type.
 
         Args:
             document_data: Processed document data
@@ -78,10 +96,60 @@ class RuleBasedClassifier:
         """
         best_match = ("UNKNOWN", 0.0, "unknown", [])
 
-        for rule in self.rules:
-            result = rule(document_data, features)
-            if result[1] > best_match[1]:
-                best_match = result
+        # Apply each configured rule
+        for doc_type, rule in self.rules_config.items():
+            confidence = 0.0
+            key_features = []
+
+            # Check title keywords
+            section_titles = features.get("section_titles", [])
+            title_keywords = rule.get("title_keywords", [])
+            if title_keywords:
+                matches = sum(
+                    1
+                    for keyword in title_keywords
+                    if any(keyword.lower() in title.lower() for title in section_titles)
+                )
+                if matches > 0:
+                    title_weight = rule.get("weights", {}).get("title_match", 0.4)
+                    confidence += title_weight * (matches / len(title_keywords))
+                    key_features.append("title_match")
+
+            # Check content keywords
+            content = " ".join(
+                [
+                    section.get("content", "")
+                    for section in document_data.get("content", [])
+                ]
+            )
+            content_keywords = rule.get("content_keywords", [])
+            if content_keywords:
+                matches = sum(
+                    1
+                    for keyword in content_keywords
+                    if keyword.lower() in content.lower()
+                )
+                if matches > 0:
+                    content_weight = rule.get("weights", {}).get("content_match", 0.3)
+                    confidence += content_weight * (matches / len(content_keywords))
+                    key_features.append("content_match")
+
+            # Check patterns
+            patterns = rule.get("patterns", [])
+            if patterns:
+                matches = sum(
+                    1 for pattern in patterns if pattern.lower() in content.lower()
+                )
+                if matches > 0:
+                    pattern_weight = rule.get("weights", {}).get("pattern_match", 0.3)
+                    confidence += pattern_weight * (matches / len(patterns))
+                    key_features.append("pattern_match")
+
+            # Check if confidence exceeds threshold
+            threshold = rule.get("threshold", 0.5)
+            if confidence > threshold and confidence > best_match[1]:
+                schema_pattern = rule.get("schema_pattern", "standard")
+                best_match = (doc_type, confidence, schema_pattern, key_features)
 
         return best_match
 
@@ -119,236 +187,7 @@ class RuleBasedClassifier:
         # Default to generic document
         return {
             "document_type": "GENERIC_DOCUMENT",
-            "confidence": 0.3,
+            "confidence": self.default_threshold,
             "schema_pattern": "unknown",
             "key_features": [],
         }
-
-    def _is_proposal(
-        self, document_data: Dict[str, Any], features: Dict[str, Any]
-    ) -> Tuple[str, float, str, List[str]]:
-        """Check if document is a proposal."""
-        confidence = 0.0
-        key_features = []
-
-        # Check for proposal indicators in section titles
-        section_titles = features.get("section_titles", [])
-        if any("proposal" in title for title in section_titles):
-            confidence += 0.4
-            key_features.append("proposal_in_title")
-
-        # Check for common proposal sections
-        if features.get("has_payment_terms", False):
-            confidence += 0.2
-            key_features.append("has_payment_terms")
-
-        if features.get("has_delivery_terms", False):
-            confidence += 0.2
-            key_features.append("has_delivery_terms")
-
-        # Check for "regarding" section which is common in proposals
-        if any("regarding" in title for title in section_titles):
-            confidence += 0.2
-            key_features.append("has_regarding_section")
-
-        # Check for company information
-        if any("company" in title for title in section_titles):
-            confidence += 0.1
-            key_features.append("has_company_section")
-
-        # Determine schema pattern
-        schema_pattern = "standard_proposal"
-        if "has_payment_terms" in key_features and "has_delivery_terms" in key_features:
-            schema_pattern = "detailed_proposal"
-
-        return ("PROPOSAL", confidence, schema_pattern, key_features)
-
-    def _is_quotation(
-        self, document_data: Dict[str, Any], features: Dict[str, Any]
-    ) -> Tuple[str, float, str, List[str]]:
-        """Check if document is a quotation."""
-        confidence = 0.0
-        key_features = []
-
-        # Check for quotation indicators in section titles
-        section_titles = features.get("section_titles", [])
-        if any(title in ["quote", "quotation", "estimate"] for title in section_titles):
-            confidence += 0.4
-            key_features.append("quote_in_title")
-
-        # Check for pricing indicators
-        if features.get("has_dollar_amounts", False):
-            confidence += 0.2
-            key_features.append("has_pricing")
-
-        if features.get("has_subtotal", False) or features.get("has_total", False):
-            confidence += 0.3
-            key_features.append("has_totals")
-
-        # Check for line items with quantities
-        if features.get("has_quantities", False):
-            confidence += 0.2
-            key_features.append("has_quantities")
-
-        # Determine schema pattern
-        schema_pattern = "basic_quotation"
-        if "has_totals" in key_features and "has_quantities" in key_features:
-            schema_pattern = "detailed_quotation"
-        if features.get("table_count", 0) > 0:
-            schema_pattern = "tabular_quotation"
-
-        return ("QUOTATION", confidence, schema_pattern, key_features)
-
-    def _is_specification(
-        self, document_data: Dict[str, Any], features: Dict[str, Any]
-    ) -> Tuple[str, float, str, List[str]]:
-        """Check if document is a technical specification."""
-        confidence = 0.0
-        key_features = []
-
-        # Check for specification indicators in section titles
-        section_titles = features.get("section_titles", [])
-        if any(
-            word in " ".join(section_titles)
-            for word in ["specification", "spec", "technical", "requirements"]
-        ):
-            confidence += 0.3
-            key_features.append("spec_in_title")
-
-        # Check for technical terms in content
-        content = document_data.get("content", [])
-        all_content = " ".join([section.get("content", "") for section in content])
-
-        technical_terms = [
-            "dimensions",
-            "capacity",
-            "performance",
-            "material",
-            "compliance",
-            "standard",
-        ]
-        if any(term in all_content.lower() for term in technical_terms):
-            confidence += 0.3
-            key_features.append("has_technical_terms")
-
-        # Check for measurements and units
-        measurement_patterns = [
-            "mm",
-            "cm",
-            "m",
-            "kg",
-            "lb",
-            "°c",
-            "°f",
-            "hz",
-            "mhz",
-            "ghz",
-            "kw",
-            "hp",
-        ]
-        if any(pattern in all_content.lower() for pattern in measurement_patterns):
-            confidence += 0.3
-            key_features.append("has_measurements")
-
-        # Determine schema pattern
-        schema_pattern = "basic_specification"
-        if "has_technical_terms" in key_features and "has_measurements" in key_features:
-            schema_pattern = "detailed_specification"
-        if features.get("table_count", 0) > 2:
-            schema_pattern = "tabular_specification"
-
-        return ("SPECIFICATION", confidence, schema_pattern, key_features)
-
-    def _is_invoice(
-        self, document_data: Dict[str, Any], features: Dict[str, Any]
-    ) -> Tuple[str, float, str, List[str]]:
-        """Check if document is an invoice."""
-        confidence = 0.0
-        key_features = []
-
-        # Check for invoice indicators in section titles
-        section_titles = features.get("section_titles", [])
-        if any(title in ["invoice", "bill", "receipt"] for title in section_titles):
-            confidence += 0.4
-            key_features.append("invoice_in_title")
-
-        # Check for invoice number
-        all_content = " ".join(
-            [section.get("content", "") for section in document_data.get("content", [])]
-        )
-        if "invoice #" in all_content.lower() or "invoice no" in all_content.lower():
-            confidence += 0.3
-            key_features.append("has_invoice_number")
-
-        # Check for pricing and totals
-        if features.get("has_dollar_amounts", False):
-            confidence += 0.2
-            key_features.append("has_pricing")
-
-        if features.get("has_subtotal", False) or features.get("has_total", False):
-            confidence += 0.2
-            key_features.append("has_totals")
-
-        # Determine schema pattern
-        schema_pattern = "basic_invoice"
-        if "has_invoice_number" in key_features and "has_totals" in key_features:
-            schema_pattern = "detailed_invoice"
-        if features.get("table_count", 0) > 0:
-            schema_pattern = "tabular_invoice"
-
-        return ("INVOICE", confidence, schema_pattern, key_features)
-
-    def _is_terms_and_conditions(
-        self, document_data: Dict[str, Any], features: Dict[str, Any]
-    ) -> Tuple[str, float, str, List[str]]:
-        """Check if document is terms and conditions."""
-        confidence = 0.0
-        key_features = []
-
-        # Check for terms indicators in section titles
-        section_titles = features.get("section_titles", [])
-        if any(
-            term in " ".join(section_titles).lower()
-            for term in ["terms", "conditions", "agreement", "contract"]
-        ):
-            confidence += 0.4
-            key_features.append("terms_in_title")
-
-        # Check for legal language
-        content = document_data.get("content", [])
-        all_content = " ".join([section.get("content", "") for section in content])
-
-        legal_terms = [
-            "shall",
-            "herein",
-            "pursuant",
-            "liability",
-            "warranty",
-            "indemnify",
-            "jurisdiction",
-        ]
-        legal_term_count = sum(1 for term in legal_terms if term in all_content.lower())
-
-        if legal_term_count >= 3:
-            confidence += 0.4
-            key_features.append("has_legal_language")
-        elif legal_term_count >= 1:
-            confidence += 0.2
-            key_features.append("has_some_legal_terms")
-
-        # Check for all-caps sections (common in legal documents)
-        caps_sections = sum(
-            1 for section in content if section.get("title", "").isupper()
-        )
-        if caps_sections >= 3:
-            confidence += 0.2
-            key_features.append("has_caps_sections")
-
-        # Determine schema pattern
-        schema_pattern = "basic_terms"
-        if "has_legal_language" in key_features:
-            schema_pattern = "detailed_terms"
-        if "has_caps_sections" in key_features:
-            schema_pattern = "formal_terms"
-
-        return ("TERMS_AND_CONDITIONS", confidence, schema_pattern, key_features)

@@ -123,3 +123,4 @@ backend/.venv/
 utils/pipeline/.venv/
 utils/pipeline/data/
 utils/pipeline/data/outputs/
+utils/pipeline/data/output/

@@ -198,32 +198,49 @@ class SchemaRegistry:
 
     def _extract_schema(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Extract schema from document data.
+        Extract enhanced schema from document data.
 
         Args:
             document_data: Document data to extract schema from
 
         Returns:
-            Schema dictionary
+            Enhanced schema dictionary with more detailed information
         """
-        # Extract metadata
+        # Extract metadata with values (not just field names)
         metadata = document_data.get("metadata", {})
 
-        # Extract content structure
+        # Extract content structure with sample content
         content = document_data.get("content", [])
         content_structure = self._extract_content_structure(content)
 
-        # Extract table structure
+        # Extract table structure with headers and sample data
         tables = document_data.get("tables", [])
         table_structure = self._extract_table_structure(tables)
 
-        # Build schema
+        # Build enhanced schema
         schema = {
+            # Basic schema information
             "metadata_fields": list(metadata.keys()),
             "content_structure": content_structure,
             "table_structure": table_structure,
             "section_count": len(content),
             "table_count": len(tables),
+            # Enhanced schema information
+            "metadata_values": {
+                k: str(v)[:500] for k, v in metadata.items()
+            },  # Store actual values (truncated for very large values)
+            # Content samples
+            "content_samples": [
+                {
+                    "title": section.get("title", ""),
+                    "sample": section.get("content", "")[:500]
+                    if section.get("content")
+                    else "",
+                }
+                for section in content[:5]  # First 5 sections
+            ],
+            # Document path for reference
+            "document_path": document_data.get("path", ""),
         }
 
         return schema
@@ -266,25 +283,33 @@ class SchemaRegistry:
         self, tables: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
         """
-        Extract structure from tables.
+        Extract enhanced structure from tables.
 
         Args:
             tables: List of tables
 
         Returns:
-            List of table structures
+            List of enhanced table structures with headers and sample data
         """
         structure = []
 
         for table in tables:
-            # Extract basic table structure
+            # Extract enhanced table structure
             table_structure = {
-                "has_headers": "headers" in table,
+                # Basic structure information
+                "has_headers": "headers" in table and bool(table.get("headers")),
                 "header_count": len(table.get("headers", [])),
                 "row_count": len(table.get("data", [])),
+                "column_count": table.get("column_count", 0),
+                # Enhanced structure information
+                "headers": table.get("headers", []),  # Store actual headers
+                "data_sample": table.get("data", [])[
+                    :3
+                ],  # Store sample data (first 3 rows)
+                "detection_method": table.get("detection_method", "unknown"),
+                "page": table.get("page", 0),
             }
 
-            # Add to structure
             structure.append(table_structure)
 
         return structure

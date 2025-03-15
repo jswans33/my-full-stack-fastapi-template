@@ -7,7 +7,7 @@ This module handles loading, validating, and merging configuration settings usin
 import os
 from enum import Enum
 from pathlib import Path
-from typing import Optional, Union
+from typing import Dict, List, Optional, Union
 
 import yaml
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -53,6 +53,118 @@ class StrategyConfig(BaseModel):
     text: Union[str, ComponentConfig] = "strategies.text"
 
 
+class DocumentTypeRule(BaseModel):
+    """Configuration for a single document type rule."""
+
+    # Keywords to look for in section titles
+    title_keywords: List[str] = Field(default_factory=list)
+
+    # Keywords to look for in document content
+    content_keywords: List[str] = Field(default_factory=list)
+
+    # Patterns to match (e.g., invoice numbers, measurements)
+    patterns: List[str] = Field(default_factory=list)
+
+    # Confidence weights for different features
+    weights: Dict[str, float] = Field(
+        default_factory=lambda: {
+            "title_match": 0.4,
+            "content_match": 0.3,
+            "pattern_match": 0.3,
+        }
+    )
+
+    # Minimum confidence threshold to classify as this type
+    threshold: float = 0.5
+
+    # Schema pattern to use for this document type
+    schema_pattern: str = "standard"
+
+
+class ClassificationConfig(BaseModel):
+    """Configuration for document classification."""
+
+    # Enable/disable classification
+    enabled: bool = True
+
+    # Default confidence threshold
+    default_threshold: float = 0.3
+
+    # Classification method (rule_based, pattern_matcher, etc.)
+    method: str = "rule_based"
+
+    # Document type rules
+    rules: Dict[str, DocumentTypeRule] = Field(
+        default_factory=lambda: {
+            "SPECIFICATION": DocumentTypeRule(
+                title_keywords=["specification", "spec", "technical", "requirements"],
+                content_keywords=[
+                    "dimensions",
+                    "capacity",
+                    "performance",
+                    "material",
+                    "compliance",
+                    "standard",
+                ],
+                patterns=[
+                    "mm",
+                    "cm",
+                    "m",
+                    "kg",
+                    "lb",
+                    "°c",
+                    "°f",
+                    "hz",
+                    "mhz",
+                    "ghz",
+                    "kw",
+                    "hp",
+                ],
+                threshold=0.4,
+                schema_pattern="detailed_specification",
+            ),
+            "INVOICE": DocumentTypeRule(
+                title_keywords=["invoice", "bill", "receipt"],
+                content_keywords=["invoice #", "invoice no", "payment", "due date"],
+                patterns=["\\$\\d+\\.\\d{2}", "total", "subtotal"],
+                threshold=0.5,
+                schema_pattern="detailed_invoice",
+            ),
+            "PROPOSAL": DocumentTypeRule(
+                title_keywords=["proposal", "offer", "quote"],
+                content_keywords=["proposed", "offer", "scope of work", "timeline"],
+                patterns=["proposed by", "submitted to", "valid for"],
+                threshold=0.5,
+                schema_pattern="detailed_proposal",
+            ),
+            "TERMS_AND_CONDITIONS": DocumentTypeRule(
+                title_keywords=["terms", "conditions", "agreement", "contract"],
+                content_keywords=[
+                    "shall",
+                    "herein",
+                    "pursuant",
+                    "liability",
+                    "warranty",
+                    "indemnify",
+                ],
+                patterns=["party", "parties", "agree", "clause", "section"],
+                threshold=0.5,
+                schema_pattern="formal_terms",
+            ),
+        }
+    )
+
+    # Filename pattern matching (optional)
+    filename_patterns: Dict[str, str] = Field(
+        default_factory=lambda: {
+            "SPECIFICATION": r"(?i)spec|specification",
+            "INVOICE": r"(?i)invoice|bill",
+            "PROPOSAL": r"(?i)proposal|offer",
+            "TERMS_AND_CONDITIONS": r"(?i)terms|conditions|agreement",
+        }
+    )
+
+
 class PipelineConfig(BaseModel):
     """Pipeline configuration model with validation."""
 
@@ -69,6 +181,10 @@ class PipelineConfig(BaseModel):
     )
     strategies: StrategyConfig = Field(
         default_factory=StrategyConfig, description="Document processing strategies"
+    )
+    classification: ClassificationConfig = Field(
+        default_factory=ClassificationConfig,
+        description="Document classification settings",
     )
 
     def __getitem__(self, key: str):

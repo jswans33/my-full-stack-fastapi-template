@@ -1,635 +1,356 @@
-# Pipeline Tool Usage Guide
+# Pipeline Usage Guide
 
-This guide provides detailed instructions on how to use the Document Pipeline Tool for processing various document formats and extracting structured data.
+This document provides instructions for using the document processing pipeline.
 
 ## Overview
 
-The Document Pipeline Tool is a modular, pipeline-based Python tool for extracting structured data from various document formats (PDF, Excel, Word) into structured formats. The pipeline follows a structured approach:
+The pipeline processes documents through several stages:
+1. **Analysis**: Extract raw content and metadata from documents
+2. **Cleaning**: Clean and normalize the extracted content
+3. **Extraction**: Extract structured data from the cleaned content
+4. **Classification**: Classify the document based on its content
+5. **Schema Recording**: Record the document schema for future reference
 
-1. **Analyze Document Structure**: Extract metadata and identify document structure
-2. **Clean and Normalize Content**: Standardize formatting and prepare data
-3. **Extract Structured Data**: Parse and structure document data
-4. **Validate Extracted Data**: Ensure data meets expected schema
-5. **Classify Document Type** (optional): Identify document type and schema pattern
-6. **Format Output**: Serialize structured data into the desired format
-7. **Verify Output Structure**: Validate the final output structure
+## Installation
 
-## Prerequisites
-
-Before using the pipeline tool, ensure you have:
+### Prerequisites
 
 - Python 3.8 or higher
-- UV package manager (recommended)
-- Required dependencies installed (see Setup section)
+- Required packages:
+  ```bash
+  pip install -r requirements.txt
+  ```
 
-## Setup
+### Optional Dependencies
 
-### Creating a Virtual Environment
-
+For PDF processing:
 ```bash
-# Navigate to the pipeline directory
-cd utils/pipeline
-
-# Create a virtual environment with UV
-uv venv
-
-# Activate the virtual environment (Windows)
-.venv\Scripts\activate
-
-# Activate the virtual environment (Unix/Linux/Mac)
-# source .venv/bin/activate
+pip install pymupdf
 ```
 
-### Installing Dependencies
-
-The project uses optional dependency groups to manage different document format processors:
-
+For Excel processing:
 ```bash
-# Install base dependencies only
-uv pip install -e .
-
-# Install specific document format processors
-uv pip install -e ".[pdf]"     # PDF processing
-uv pip install -e ".[excel]"   # Excel processing
-uv pip install -e ".[word]"    # Word processing
-
-# Install text analysis tools
-uv pip install -e ".[analysis]"
-
-# Install development tools
-uv pip install -e ".[dev]"
-
-# Install a minimal set of all document processors
-uv pip install -e ".[all]"
-
-# Install everything
-uv pip install -e ".[pdf,excel,word,analysis,dev]"
+pip install openpyxl
 ```
 
-If you encounter issues with the editable install syntax, you can install dependencies directly:
-
+For Word processing:
 ```bash
-# Install base dependencies
-uv pip install pyyaml typing-extensions
-
-# Install document processors
-uv pip install PyPDF2 pdfminer.six pymupdf pandas openpyxl python-docx
+pip install python-docx
 ```
 
 ## Basic Usage
 
-### Processing a Document
+### Command-Line Interface
 
-The simplest way to process a document is to use the `Pipeline` class directly:
-
-```python
-from utils.pipeline.pipeline import Pipeline
-
-# Initialize pipeline with default configuration
-pipeline = Pipeline()
-
-# Process a document
-result = pipeline.run("path/to/document.pdf")
-
-# Save the result to a file
-pipeline.save_output(result, "output.json")
-```
-
-### Using the Command-Line Interface
-
-For convenience, you can also use the command-line interface:
-
+Process a single file:
 ```bash
-# Process a document
-python run_pipeline.py path/to/document.pdf
-
-# Process a document and save output to a specific file
-python run_pipeline.py path/to/document.pdf --output output.json
-
-# Process a document with a specific configuration
-python run_pipeline.py path/to/document.pdf --config config/custom_config.yaml
+python -m utils.pipeline.run_pipeline --file path/to/document.pdf --output path/to/output
 ```
 
-## Configuration Options
+Process all files in a directory:
+```bash
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir
+```
 
-The pipeline can be configured using a dictionary or a YAML configuration file. Here's an example configuration:
+### Output Formats
+
+Specify output formats:
+```bash
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir --formats json,markdown
+```
+
+### Recursive Processing
+
+Process files in subdirectories:
+```bash
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir --recursive
+```
+
+### File Patterns
+
+Process only specific file types:
+```bash
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir --pattern "*.pdf"
+```
+
+## Configuration
+
+### Configuration File
+
+Create a YAML configuration file:
 
 ```yaml
-# Example configuration
-output_format: json  # or markdown
-enable_classification: true
-record_schemas: true
-match_schemas: true
+# pipeline_config.yaml
+input_dir: "data/input"
+output_dir: "data/output"
+output_format: "json"
+log_level: "INFO"
+validation_level: "basic"
 
-# Strategy configuration
 strategies:
   pdf:
-    analyzer: utils.pipeline.analyzer.pdf.PDFAnalyzer
-    cleaner: utils.pipeline.cleaner.pdf.PDFCleaner
-    extractor: utils.pipeline.processors.pdf_extractor.PDFExtractor
-    validator: utils.pipeline.processors.pdf_validator.PDFValidator
-  excel:
-    analyzer: utils.pipeline.analyzer.excel.ExcelAnalyzer
-    cleaner: utils.pipeline.cleaner.excel.ExcelCleaner
-    extractor: utils.pipeline.processors.excel_extractor.ExcelExtractor
-    validator: utils.pipeline.processors.excel_validator.ExcelValidator
-  word:
-    analyzer: utils.pipeline.analyzer.word.WordAnalyzer
-    cleaner: utils.pipeline.cleaner.word.WordCleaner
-    extractor: utils.pipeline.processors.word_extractor.WordExtractor
-    validator: utils.pipeline.processors.word_validator.WordValidator
+    analyzer: "utils.pipeline.analyzer.pdf.PDFAnalyzer"
+    cleaner: "utils.pipeline.cleaner.pdf.PDFCleaner"
+    extractor: "utils.pipeline.processors.pdf_extractor.PDFExtractor"
+    validator: "utils.pipeline.processors.pdf_validator.PDFValidator"
 
-# Classification configuration
 classification:
-  type: rule_based  # or ml_based
-  confidence_threshold: 0.7
+  enabled: true
+  method: "rule_based"
+  default_threshold: 0.3
+  
+  # Document type rules
+  rules:
+    SPECIFICATION:
+      title_keywords: ["specification", "spec", "technical", "requirements"]
+      content_keywords: ["dimensions", "capacity", "performance", "material", "compliance", "standard"]
+      patterns: ["mm", "cm", "m", "kg", "lb", "°c", "°f", "hz", "mhz", "ghz", "kw", "hp"]
+      weights:
+        title_match: 0.4
+        content_match: 0.3
+        pattern_match: 0.3
+      threshold: 0.4
+      schema_pattern: "detailed_specification"
+    
+    INVOICE:
+      title_keywords: ["invoice", "bill", "receipt"]
+      content_keywords: ["invoice #", "invoice no", "payment", "due date"]
+      patterns: ["\\$\\d+\\.\\d{2}", "total", "subtotal"]
+      threshold: 0.5
+      schema_pattern: "detailed_invoice"
+  
+  # Filename pattern matching
+  filename_patterns:
+    SPECIFICATION: "(?i)spec|specification"
+    INVOICE: "(?i)invoice|bill"
 ```
 
-To use a configuration file:
-
-```python
-import yaml
-from utils.pipeline.pipeline import Pipeline
-
-# Load configuration from file
-with open("config/custom_config.yaml", "r") as f:
-    config = yaml.safe_load(f)
-
-# Initialize pipeline with configuration
-pipeline = Pipeline(config)
-
-# Process a document
-result = pipeline.run("path/to/document.pdf")
+Use the configuration file:
+```bash
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir --config pipeline_config.yaml
 ```
 
-## Processing Different Document Types
+### Environment Variables
 
-The pipeline automatically detects the document type based on the file extension:
+You can also configure the pipeline using environment variables:
 
-- `.pdf` - PDF documents
-- `.xlsx`, `.xls` - Excel documents
-- `.docx`, `.doc` - Word documents
-- `.txt` - Text documents
-
-### PDF Documents
-
-PDF documents are processed using the PDF-specific strategies:
-
-```python
-from utils.pipeline.pipeline import Pipeline
-
-pipeline = Pipeline()
-result = pipeline.run("path/to/document.pdf")
+```bash
+export PIPELINE_LOG_LEVEL=DEBUG
+export PIPELINE_OUTPUT_FORMAT=json
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir
 ```
 
-The PDF processor extracts:
-- Metadata (title, author, subject, etc.)
-- Page information (size, rotation, content)
-- Sections (based on text formatting and structure)
-- Tables (if present)
+## Document Classification
 
-### Excel Documents
+The pipeline includes a document classification system that categorizes documents based on their content and structure. This classification is used to organize schemas and can be customized through configuration.
 
-Excel documents are processed using the Excel-specific strategies:
+### Classification Configuration
 
-```python
-from utils.pipeline.pipeline import Pipeline
+The classification system can be configured in the pipeline configuration file:
 
-pipeline = Pipeline()
-result = pipeline.run("path/to/spreadsheet.xlsx")
+```yaml
+classification:
+  # Enable/disable classification
+  enabled: true
+  
+  # Default confidence threshold
+  default_threshold: 0.3
+  
+  # Classification method (rule_based, pattern_matcher, etc.)
+  method: "rule_based"
+  
+  # Document type rules
+  rules:
+    SPECIFICATION:
+      # Keywords to look for in section titles
+      title_keywords: ["specification", "spec", "technical", "requirements"]
+      
+      # Keywords to look for in document content
+      content_keywords: ["dimensions", "capacity", "performance", "material", "compliance", "standard"]
+      
+      # Patterns to match (e.g., measurements)
+      patterns: ["mm", "cm", "m", "kg", "lb", "°c", "°f", "hz", "mhz", "ghz", "kw", "hp"]
+      
+      # Confidence weights for different features
+      weights:
+        title_match: 0.4
+        content_match: 0.3
+        pattern_match: 0.3
+      
+      # Minimum confidence threshold to classify as this type
+      threshold: 0.4
+      
+      # Schema pattern to use for this document type
+      schema_pattern: "detailed_specification"
+  
+  # Filename pattern matching (optional)
+  filename_patterns:
+    SPECIFICATION: "(?i)spec|specification"
+    INVOICE: "(?i)invoice|bill"
 ```
 
-The Excel processor extracts:
-- Worksheet information
-- Cell data
-- Tables and ranges
-- Named ranges
+### Adding Custom Document Types
 
-### Word Documents
+You can add custom document types by defining rules for them in the configuration:
 
-Word documents are processed using the Word-specific strategies:
-
-```python
-from utils.pipeline.pipeline import Pipeline
-
-pipeline = Pipeline()
-result = pipeline.run("path/to/document.docx")
+```yaml
+classification:
+  rules:
+    HVAC_SPECIFICATION:
+      title_keywords: ["hvac", "heating", "ventilation", "air conditioning"]
+      content_keywords: ["temperature", "humidity", "airflow", "ductwork", "refrigerant"]
+      patterns: ["°f", "°c", "cfm", "btu"]
+      threshold: 0.4
+      schema_pattern: "hvac_specification"
 ```
 
-The Word processor extracts:
-- Document properties
-- Paragraphs and formatting
-- Tables
-- Lists and headings
+### Filename Pattern Matching
 
-## Advanced Usage
+The classification system can also use filename patterns to help classify documents:
 
-### Customizing the Pipeline
-
-You can customize the pipeline by providing a configuration dictionary:
-
-```python
-from utils.pipeline.pipeline import Pipeline
-
-# Custom configuration
-config = {
-    "output_format": "json",
-    "enable_classification": True,
-    "record_schemas": True,
-    "strategies": {
-        "pdf": {
-            "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
-            "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
-            "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
-            "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
-        }
-    }
-}
-
-# Initialize pipeline with custom configuration
-pipeline = Pipeline(config)
-
-# Process a document
-result = pipeline.run("path/to/document.pdf")
+```yaml
+classification:
+  filename_patterns:
+    HVAC_SPECIFICATION: "(?i)hvac|heating|ventilation"
+    ELECTRICAL_SPECIFICATION: "(?i)electrical|wiring|circuit"
 ```
 
-### Batch Processing
+## Schema Management
 
-To process multiple documents in batch:
+### Analyzing Schemas
+
+Analyze existing schemas:
+```bash
+python -m utils.pipeline.run_pipeline --analyze-schemas
+```
+
+Filter by document type:
+```bash
+python -m utils.pipeline.run_pipeline --analyze-schemas --document-type SPECIFICATION
+```
+
+### Comparing Schemas
+
+Compare two schemas:
+```bash
+python -m utils.pipeline.run_pipeline --compare-schemas schema1_id schema2_id
+```
+
+### Visualizing Schemas
+
+Visualize schemas:
+```bash
+python -m utils.pipeline.run_pipeline --visualize-schemas clusters
+```
+
+For more detailed information on schema visualization, see [SCHEMA_VISUALIZATION.md](SCHEMA_VISUALIZATION.md).
+
+## Programmatic Usage
+
+You can also use the pipeline programmatically:
 
 ```python
-import os
 from utils.pipeline.pipeline import Pipeline
 
 # Initialize pipeline
 pipeline = Pipeline()
 
-# Process all PDF files in a directory
-input_dir = "path/to/documents"
-output_dir = "path/to/output"
-
-# Ensure output directory exists
-os.makedirs(output_dir, exist_ok=True)
-
-# Process each PDF file
-for filename in os.listdir(input_dir):
-    if filename.lower().endswith(".pdf"):
-        input_path = os.path.join(input_dir, filename)
-        output_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}.json")
-        
-        try:
-            # Process document
-            result = pipeline.run(input_path)
-            
-            # Save output
-            pipeline.save_output(result, output_path)
-            print(f"Processed: {filename} -> {output_path}")
-        except Exception as e:
-            print(f"Error processing {filename}: {str(e)}")
-```
-
-### Document Classification
-
-The pipeline can classify documents based on their content and structure:
-
-```python
-from utils.pipeline.pipeline import Pipeline
-
-# Enable classification in configuration
-config = {
-    "enable_classification": True,
-    "classification": {
-        "type": "rule_based",
-        "confidence_threshold": 0.7
-    }
-}
-
-# Initialize pipeline with classification enabled
-pipeline = Pipeline(config)
-
 # Process a document
-result = pipeline.run("path/to/document.pdf")
+output_data = pipeline.run("path/to/document.pdf")
 
-# Access classification results
-if "classification" in result:
-    document_type = result["classification"]["document_type"]
-    confidence = result["classification"]["confidence"]
-    print(f"Document classified as: {document_type} (confidence: {confidence})")
+# Save output
+pipeline.save_output(output_data, "path/to/output.json")
 ```
 
-### Schema Recording and Matching
+## Customization
 
-The pipeline can record document schemas and match new documents against known schemas:
+### Custom Analyzers
 
-```python
-from utils.pipeline.pipeline import Pipeline
-
-# Enable schema recording and matching in configuration
-config = {
-    "record_schemas": True,
-    "match_schemas": True
-}
-
-# Initialize pipeline with schema features enabled
-pipeline = Pipeline(config)
-
-# Process a document and record its schema
-result = pipeline.run("path/to/document.pdf")
-
-# Process another document and match against known schemas
-result2 = pipeline.run("path/to/another_document.pdf")
-
-# Access schema matching results
-if "classification" in result2 and "schema_id" in result2["classification"]:
-    schema_id = result2["classification"]["schema_id"]
-    confidence = result2["classification"]["schema_match_confidence"]
-    print(f"Document matched schema: {schema_id} (confidence: {confidence})")
-```
-
-## Extending the Pipeline
-
-### Adding a New Document Format
-
-To add support for a new document format:
-
-1. Create analyzer, cleaner, extractor, and validator classes for the new format
-2. Register the new strategies in the configuration
-
-Example for adding support for a new format:
+Create a custom analyzer:
 
 ```python
-# Create analyzer class (my_format_analyzer.py)
-class MyFormatAnalyzer:
+from utils.pipeline.analyzer.base import BaseAnalyzer
+
+class CustomAnalyzer(BaseAnalyzer):
     def analyze(self, input_path):
-        # Implementation for analyzing the new format
-        pass
-
-# Create cleaner class (my_format_cleaner.py)
-class MyFormatCleaner:
-    def clean(self, analysis_result):
-        # Implementation for cleaning the new format
-        pass
-
-# Create extractor class (my_format_extractor.py)
-class MyFormatExtractor:
-    def extract(self, cleaned_data):
-        # Implementation for extracting data from the new format
-        pass
-
-# Create validator class (my_format_validator.py)
-class MyFormatValidator:
-    def validate(self, extracted_data):
-        # Implementation for validating data from the new format
-        pass
-
-# Register the new format in configuration
-config = {
-    "strategies": {
-        "myformat": {
-            "analyzer": "path.to.my_format_analyzer.MyFormatAnalyzer",
-            "cleaner": "path.to.my_format_cleaner.MyFormatCleaner",
-            "extractor": "path.to.my_format_extractor.MyFormatExtractor",
-            "validator": "path.to.my_format_validator.MyFormatValidator",
+        # Custom analysis logic
+        return {
+            "metadata": {...},
+            "content": [...],
+            "path": input_path
         }
-    }
-}
-
-# Initialize pipeline with the new format support
-pipeline = Pipeline(config)
 ```
 
-### Customizing Output Formats
+### Custom Cleaners
 
-To add a new output format:
-
-1. Create a new formatter class that implements the required interface
-2. Register the formatter with the FormatterFactory
-
-Example for adding a new output format:
+Create a custom cleaner:
 
 ```python
-from enum import auto
-from utils.pipeline.processors.formatters.factory import FormatterFactory, OutputFormat
-from utils.pipeline.processors.formatters.base import BaseFormatter
+from utils.pipeline.cleaner.base import BaseCleaner
 
-# Add new format to OutputFormat enum
-OutputFormat.XML = auto()
+class CustomCleaner(BaseCleaner):
+    def clean(self, data):
+        # Custom cleaning logic
+        return {
+            "metadata": data["metadata"],
+            "content": [...],  # Cleaned content
+            "path": data["path"]
+        }
+```
 
-# Create XML formatter class
-class XMLFormatter(BaseFormatter):
-    def format(self, data):
-        # Implementation for formatting data as XML
-        pass
-    
-    def write(self, data, output_path):
-        # Implementation for writing XML to file
-        pass
+### Custom Extractors
 
-# Register the new formatter
-FormatterFactory.register_formatter(OutputFormat.XML, XMLFormatter)
+Create a custom extractor:
 
-# Use the new formatter
-config = {
-    "output_format": "XML"
-}
-pipeline = Pipeline(config)
-result = pipeline.run("path/to/document.pdf")
-pipeline.save_output(result, "output.xml")
+```python
+from utils.pipeline.processors.base import BaseExtractor
+
+class CustomExtractor(BaseExtractor):
+    def extract(self, cleaned_data):
+        # Custom extraction logic
+        return {
+            "metadata": cleaned_data["metadata"],
+            "sections": [...],
+            "tables": [...],
+            "path": cleaned_data["path"]
+        }
 ```
 
 ## Troubleshooting
 
 ### Common Issues
 
-#### Missing Dependencies
-
-If you encounter errors about missing modules:
-
-```
-ImportError: No module named 'pypdf'
-```
-
-Install the required dependencies:
-
-```bash
-uv pip install pypdf
-```
-
-#### File Not Found
-
-If you get a "File not found" error:
-
-```
-FileNotFoundError: [Errno 2] No such file or directory: 'path/to/document.pdf'
-```
-
-Check that the file path is correct and the file exists.
-
-#### Strategy Import Error
-
-If you see an error importing strategies:
-
-```
-ImportError: Failed to import strategy utils.pipeline.analyzer.pdf.PDFAnalyzer
-```
-
-Ensure that the strategy module exists and is correctly specified in the configuration.
-
-#### Output Directory Not Found
-
-If you get an error saving the output:
-
-```
-FileNotFoundError: [Errno 2] No such file or directory: 'path/to/output/result.json'
-```
-
-Ensure that the output directory exists:
-
-```python
-import os
-os.makedirs(os.path.dirname(output_path), exist_ok=True)
-```
+1. **File not found**: Ensure the input file or directory exists
+2. **Permission denied**: Check file permissions
+3. **Unsupported file type**: Ensure the file type is supported
+4. **Missing dependencies**: Install required packages
 
 ### Debugging
 
-To enable debug logging:
+Enable debug logging:
+```bash
+export PIPELINE_LOG_LEVEL=DEBUG
+python -m utils.pipeline.run_pipeline --file path/to/document.pdf --output path/to/output
+```
 
-```python
-import logging
-from utils.pipeline.utils.logging import setup_logging
+## Advanced Features
 
-# Set up logging with debug level
-setup_logging(level=logging.DEBUG)
+### Batch Processing
 
-# Initialize pipeline
-pipeline = Pipeline()
+Process files in batches:
+```bash
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir --batch-size 10
 ```
 
 ### Error Handling
 
-To handle errors gracefully:
-
-```python
-from utils.pipeline.pipeline import Pipeline, PipelineError
-
-pipeline = Pipeline()
-
-try:
-    result = pipeline.run("path/to/document.pdf")
-    pipeline.save_output(result, "output.json")
-    print("Document processed successfully")
-except PipelineError as e:
-    print(f"Pipeline error: {str(e)}")
-except FileNotFoundError as e:
-    print(f"File not found: {str(e)}")
-except Exception as e:
-    print(f"Unexpected error: {str(e)}")
+Continue processing on error:
+```bash
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir --continue-on-error
 ```
 
-## Examples
+### Reporting
 
-### Basic Example
-
-```python
-from utils.pipeline.pipeline import Pipeline
-
-# Initialize pipeline
-pipeline = Pipeline()
-
-# Process a PDF document
-result = pipeline.run("path/to/document.pdf")
-
-# Save the result as JSON
-pipeline.save_output(result, "output.json")
-```
-
-### Custom Configuration Example
-
-```python
-import yaml
-from utils.pipeline.pipeline import Pipeline
-
-# Load configuration from file
-with open("config/custom_config.yaml", "r") as f:
-    config = yaml.safe_load(f)
-
-# Initialize pipeline with configuration
-pipeline = Pipeline(config)
-
-# Process a document with progress display
-result = pipeline.run("path/to/document.pdf", show_progress=True)
-
-# Save the result as Markdown
-pipeline.save_output(result, "output.md")
-```
-
-### Batch Processing Example
-
-```python
-import os
-import json
-from utils.pipeline.pipeline import Pipeline
-
-# Initialize pipeline
-pipeline = Pipeline()
-
-# Process all documents in a directory
-input_dir = "path/to/documents"
-output_dir = "path/to/output"
-
-# Ensure output directory exists
-os.makedirs(output_dir, exist_ok=True)
-
-# Process each document
-for filename in os.listdir(input_dir):
-    input_path = os.path.join(input_dir, filename)
-    
-    # Skip directories
-    if os.path.isdir(input_path):
-        continue
-    
-    # Determine output format based on input file
-    _, ext = os.path.splitext(filename)
-    if ext.lower() in [".pdf", ".docx", ".xlsx"]:
-        output_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}.json")
-        
-        try:
-            # Process document
-            result = pipeline.run(input_path)
-            
-            # Save output
-            pipeline.save_output(result, output_path)
-            print(f"Processed: {filename} -> {output_path}")
-            
-            # Save summary
-            summary_path = os.path.join(output_dir, f"{os.path.splitext(filename)[0]}_summary.json")
-            with open(summary_path, "w") as f:
-                summary = {
-                    "filename": filename,
-                    "sections": len(result.get("content", [])),
-                    "tables": len(result.get("tables", [])),
-                }
-                if "classification" in result:
-                    summary["document_type"] = result["classification"]["document_type"]
-                    summary["confidence"] = result["classification"]["confidence"]
-                json.dump(summary, f, indent=2)
-            
-        except Exception as e:
-            print(f"Error processing {filename}: {str(e)}")
-```
-
-## Further Reading
-
-For more information about the pipeline architecture and design principles, see:
-
-- [Pipeline Architecture](docs/pipeline-plan.md)
-- [Schema Visualization Guide](SCHEMA_VISUALIZATION.md)
-
-For API documentation, see the docstrings in the source code:
-
-- `utils/pipeline/pipeline.py`: Main pipeline orchestrator
-- `utils/pipeline/analyzer/`: Document analyzers
-- `utils/pipeline/cleaner/`: Content cleaners
-- `utils/pipeline/processors/`: Data extractors and validators
-- `utils/pipeline/schema/`: Schema registry and visualization
-- `utils/pipeline/verify/`: Output verification
+Generate a processing report:
+```bash
+python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir --report path/to/report.json

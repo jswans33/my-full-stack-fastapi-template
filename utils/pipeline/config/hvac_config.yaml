@@ -1,0 +1,192 @@
+# HVAC Specification Pipeline Configuration
+# This configuration is optimized for processing HVAC specification documents
+
+# Basic settings
+input_dir: "data/input"
+output_dir: "data/output"
+output_format: "json"
+log_level: "INFO"
+validation_level: "basic"
+
+# Document processing strategies
+strategies:
+  pdf:
+    analyzer: "utils.pipeline.analyzer.pdf.PDFAnalyzer"
+    cleaner: "utils.pipeline.cleaner.pdf.PDFCleaner"
+    extractor: "utils.pipeline.processors.pdf_extractor.PDFExtractor"
+    validator: "utils.pipeline.processors.pdf_validator.PDFValidator"
+
+# Document classification configuration
+classification:
+  enabled: true
+  default_threshold: 0.3
+  method: "rule_based"
+  
+  # Document type rules
+  rules:
+    # HVAC Specification document type with enhanced keywords and patterns
+    HVAC_SPECIFICATION:
+      title_keywords: 
+        - "hvac"
+        - "heating"
+        - "ventilation"
+        - "air conditioning"
+        - "mechanical"
+        - "air handling"
+        - "ductwork"
+        - "refrigeration"
+        - "cooling"
+        - "thermal"
+      
+      content_keywords: 
+        - "temperature"
+        - "humidity"
+        - "airflow"
+        - "ductwork"
+        - "refrigerant"
+        - "cooling"
+        - "heating"
+        - "ventilation"
+        - "air handling unit"
+        - "ahu"
+        - "vav"
+        - "chiller"
+        - "boiler"
+        - "condenser"
+        - "evaporator"
+        - "thermostat"
+        - "diffuser"
+        - "damper"
+        - "plenum"
+        - "insulation"
+        - "filter"
+        - "air quality"
+        - "ashrae"
+      
+      patterns: 
+        - "°f"
+        - "°c"
+        - "cfm"
+        - "btu"
+        - "btuh"
+        - "ton"
+        - "kw"
+        - "hp"
+        - "psi"
+        - "inWC"
+        - "inH2O"
+        - "fpm"
+        - "rpm"
+        - "db"
+        - "wb"
+        - "rh%"
+        - "merv"
+      
+      weights:
+        title_match: 0.4
+        content_match: 0.4
+        pattern_match: 0.2
+      
+      threshold: 0.3  # Lower threshold to catch more HVAC documents
+      schema_pattern: "hvac_specification"
+    
+    # Mechanical Specification (broader category that includes HVAC)
+    MECHANICAL_SPECIFICATION:
+      title_keywords: 
+        - "mechanical"
+        - "plumbing"
+        - "piping"
+        - "equipment"
+        - "system"
+      
+      content_keywords: 
+        - "mechanical"
+        - "equipment"
+        - "system"
+        - "installation"
+        - "pipe"
+        - "duct"
+        - "valve"
+        - "pump"
+        - "fan"
+        - "motor"
+        - "control"
+        - "sensor"
+      
+      patterns: 
+        - "psi"
+        - "gpm"
+        - "rpm"
+        - "hp"
+        - "kw"
+        - "in\\."
+        - "ft\\."
+      
+      threshold: 0.4
+      schema_pattern: "mechanical_specification"
+    
+    # Electrical Specification (often related to HVAC)
+    ELECTRICAL_SPECIFICATION:
+      title_keywords: 
+        - "electrical"
+        - "power"
+        - "wiring"
+        - "circuit"
+        - "control"
+      
+      content_keywords: 
+        - "electrical"
+        - "power"
+        - "voltage"
+        - "current"
+        - "wire"
+        - "conduit"
+        - "circuit"
+        - "breaker"
+        - "panel"
+        - "motor"
+        - "controller"
+        - "disconnect"
+        - "transformer"
+      
+      patterns: 
+        - "v"
+        - "kv"
+        - "a"
+        - "ma"
+        - "kva"
+        - "kw"
+        - "hz"
+        - "ohm"
+        - "awg"
+      
+      threshold: 0.4
+      schema_pattern: "electrical_specification"
+  
+  # Filename pattern matching
+  filename_patterns:
+    HVAC_SPECIFICATION: "(?i)hvac|heating|ventilation|air.?conditioning|mechanical|ahu|vav|cooling"
+    MECHANICAL_SPECIFICATION: "(?i)mechanical|plumbing|piping|equipment"
+    ELECTRICAL_SPECIFICATION: "(?i)electrical|power|wiring|circuit|control"
+
+# File processing configuration
+file_processing:
+  input:
+    patterns: ["*.pdf"]
+    recursive: true
+    exclude_patterns: ["*_temp*", "*_backup*"]
+  
+  output:
+    formats: ["json", "markdown"]
+    structure: "hierarchical"  # Organize by document type
+    naming:
+      template: "{original_name}"
+      preserve_extension: false
+      timestamp: true
+    overwrite: true
+  
+  reporting:
+    summary: true
+    detailed: true
+    format: "json"
+    save_path: "hvac_processing_report.json"

@@ -1,203 +1,102 @@
-# Schema Visualization Guide
+# Schema Visualization
 
-This guide explains how to use the schema visualization functionality in the Document Pipeline Tool. The schema visualization features allow you to generate visual representations of document schemas, helping you understand document structures, compare schemas, and identify patterns.
+This document explains how to use the schema visualization tools to explore and understand document schemas.
 
 ## Overview
 
-The schema visualization system provides several types of visualizations:
+The schema visualization tools allow you to:
 
-1. **Clusters**: Visualizes schema similarity using dimensionality reduction (t-SNE)
-2. **Features**: Generates a heatmap comparing features across schemas
-3. **Structure**: Creates a hierarchical graph visualization of a schema's structure
-4. **Tables**: Visualizes table patterns and distributions within a schema
-
-These visualizations help you:
-- Understand document structure patterns
-- Compare different document types
-- Identify similarities between schemas
-- Analyze table usage patterns
-- Explore document hierarchies
+1. Visualize the structure of document schemas
+2. Compare schemas across different document types
+3. Explore table patterns and structures
+4. Analyze common features across schemas
 
 ## Prerequisites
 
-The visualization functionality requires several Python packages:
+The visualization tools require several Python packages:
 
 ```bash
-# Basic visualization dependencies
-uv pip install matplotlib
-
-# For cluster visualization
-uv pip install scikit-learn
-
-# For feature visualization
-uv pip install seaborn pandas
-
-# For structure visualization
-uv pip install networkx
-
-# For better structure layout (optional but recommended)
-uv pip install pygraphviz
-
-# Install all visualization dependencies
-uv pip install matplotlib scikit-learn seaborn pandas networkx pygraphviz
+pip install matplotlib numpy networkx scikit-learn seaborn pandas
 ```
 
-Note: Installing `pygraphviz` requires system-level dependencies:
-- On Windows: Install Graphviz using Chocolatey: `choco install graphviz`
-- On macOS: Install Graphviz using Homebrew: `brew install graphviz`
-- On Linux: Install Graphviz using your package manager: `apt-get install graphviz` or `yum install graphviz`
-
-## Using the Visualization Script
-
-The `visualize_schema.py` script provides a command-line interface for generating visualizations:
+For improved graph layouts, you may also want to install:
 
 ```bash
-python visualize_schema.py <visualization_type> <schema_id>
+pip install pygraphviz
 ```
 
-Where:
-- `<visualization_type>`: One of `clusters`, `features`, `structure`, or `tables`
-- `<schema_id>`: ID of the schema to visualize (not required for `clusters` visualization)
+## Command-Line Usage
 
-### Output Location
+The `visualize_schema.py` script provides a command-line interface for schema visualization:
 
-Visualizations are saved to:
+```bash
+# List all available schemas
+python -m utils.pipeline.visualize_schema list
+
+# Generate cluster visualization (all schemas)
+python -m utils.pipeline.visualize_schema clusters
+
+# Generate feature comparison (all schemas)
+python -m utils.pipeline.visualize_schema features
+
+# Generate structure visualization for a specific schema
+python -m utils.pipeline.visualize_schema structure <schema_id>
+
+# Generate table pattern visualization for a specific schema
+python -m utils.pipeline.visualize_schema tables <schema_id>
+
+# Show help
+python -m utils.pipeline.visualize_schema help
 ```
-utils/pipeline/schema/data/visualizations/
-```
-
-The script will create this directory if it doesn't exist.
 
 ## Visualization Types
 
 ### Cluster Visualization
 
-The cluster visualization uses t-SNE dimensionality reduction to plot schemas in a 2D space, showing similarities between schemas. Similar schemas appear closer together.
+The cluster visualization uses t-SNE dimensionality reduction to plot schemas in a 2D space based on their similarity. Schemas that are more similar will appear closer together. This can help identify patterns and groupings across document types.
 
-```bash
-# Visualize all schemas as clusters
-python visualize_schema.py clusters all
-```
+![Cluster Visualization Example](schema/data/visualizations/schema_clusters.png)
 
-This visualization is useful for:
-- Identifying groups of similar documents
-- Finding outliers in your document collection
-- Visualizing document type distributions
+### Feature Comparison
 
-### Feature Visualization
+The feature comparison creates a heatmap showing key features across schemas, such as:
+- Number of metadata fields
+- Section count
+- Table count
+- Average rows per table
+- Maximum depth of section hierarchy
+- Number of tables with headers
 
-The feature visualization creates a heatmap comparing various features across schemas, such as metadata field count, section count, table count, etc.
+This visualization helps identify similarities and differences in schema structure.
 
-```bash
-# Visualize features for all schemas
-python visualize_schema.py features all
-
-# Visualize features for specific schemas
-python visualize_schema.py features invoice_20250314
-```
-
-This visualization is useful for:
-- Comparing schema characteristics
-- Identifying patterns across document types
-- Analyzing feature distributions
+![Feature Comparison Example](schema/data/visualizations/schema_features.png)
 
 ### Structure Visualization
 
-The structure visualization creates a hierarchical graph showing the structure of a specific schema, including sections, subsections, and tables.
+The structure visualization creates a hierarchical graph showing the structure of a specific schema, including:
+- Metadata fields
+- Section hierarchy
+- Table information
 
-```bash
-# Visualize the structure of a specific schema
-python visualize_schema.py structure invoice_20250314
-```
+This visualization helps understand the organization of a specific document.
 
-This visualization is useful for:
-- Understanding document hierarchies
-- Analyzing section relationships
-- Exploring document organization
+![Structure Visualization Example](schema/data/visualizations/structure_example.png)
 
-### Table Visualization
+### Table Pattern Visualization
 
-The table visualization shows patterns in table usage within a schema, including distributions of table sizes and row counts.
+The table pattern visualization provides insights into table structures within a schema:
 
-```bash
-# Visualize table patterns for a specific schema
-python visualize_schema.py tables invoice_20250314
-```
+1. **Table Size Distribution**: Shows the distribution of table sizes (rows per table)
+2. **Table Size Categories**: Categorizes tables as small, medium, or large
+3. **Common Headers**: Shows the most common table headers (if available)
+4. **Column Count Distribution**: Shows the distribution of column counts
+5. **Sample Table Data**: Displays a sample of actual table data (if available)
 
-This visualization is useful for:
-- Analyzing table size distributions
-- Understanding table usage patterns
-- Identifying complex tables
-
-## Examples
-
-### Example 1: Visualizing Schema Clusters
-
-To visualize how your schemas relate to each other:
-
-```bash
-python visualize_schema.py clusters all
-```
-
-This will generate a 2D plot where each point represents a schema. Schemas with similar structures will appear closer together. Different document types are represented by different colors.
-
-The output will be saved to:
-```
-utils/pipeline/schema/data/visualizations/schema_clusters.png
-```
-
-### Example 2: Comparing Schema Features
-
-To compare features across multiple schemas:
-
-```bash
-python visualize_schema.py features all
-```
-
-This will generate a heatmap showing various features for each schema, such as metadata field count, section count, table count, etc.
-
-The output will be saved to:
-```
-utils/pipeline/schema/data/visualizations/schema_features.png
-```
-
-### Example 3: Visualizing a Schema's Structure
-
-To visualize the structure of a specific schema:
-
-```bash
-# First, list available schemas
-python -c "from utils.pipeline.schema.registry import SchemaRegistry; print('\n'.join([s['id'] for s in SchemaRegistry().list_schemas()]))"
-
-# Then visualize a specific schema
-python visualize_schema.py structure invoice_20250314
-```
-
-This will generate a hierarchical graph showing the structure of the schema, including sections, subsections, and tables.
-
-The output will be saved to:
-```
-utils/pipeline/schema/data/visualizations/structure_invoice_20250314.png
-```
-
-### Example 4: Analyzing Table Patterns
-
-To analyze table patterns in a specific schema:
-
-```bash
-python visualize_schema.py tables invoice_20250314
-```
-
-This will generate visualizations showing table size distributions and patterns.
-
-The output will be saved to:
-```
-utils/pipeline/schema/data/visualizations/tables_invoice_20250314.png
-```
+![Table Pattern Example](schema/data/visualizations/tables_example.png)
 
 ## Programmatic Usage
 
-You can also use the visualization functionality programmatically in your Python code:
+You can also use the visualization tools programmatically:
 
 ```python
 from utils.pipeline.schema.extended_registry import ExtendedSchemaRegistry
@@ -205,116 +104,51 @@ from utils.pipeline.schema.extended_registry import ExtendedSchemaRegistry
 # Initialize registry
 registry = ExtendedSchemaRegistry()
 
-# Generate visualization
-viz_path = registry.visualize(
-    visualization_type="clusters",  # or "features", "structure", "tables"
-    schema_ids=["invoice_20250314"],  # Optional for "clusters" and "features"
-    output_dir="path/to/output"  # Optional
-)
+# Generate visualizations
+output_dir = "path/to/output/directory"
 
-print(f"Visualization saved to: {viz_path}")
+# Cluster visualization
+registry.visualize("clusters", output_dir=output_dir)
+
+# Feature comparison
+registry.visualize("features", output_dir=output_dir)
+
+# Structure visualization for a specific schema
+registry.visualize("structure", ["schema_id"], output_dir=output_dir)
+
+# Table pattern visualization for a specific schema
+registry.visualize("tables", ["schema_id"], output_dir=output_dir)
 ```
+
+## Enhanced Schema Data
+
+The visualizations now take advantage of enhanced schema data, including:
+
+- Actual metadata values (not just field names)
+- Content samples from document sections
+- Table headers and sample data
+- Column counts and structure
+
+This enhanced data provides more detailed and informative visualizations, especially for table patterns.
+
+## Customizing Visualizations
+
+You can customize the visualizations by modifying the `SchemaVisualizer` class in `utils/pipeline/schema/visualizer.py`. For example, you can:
+
+- Change color schemes
+- Adjust figure sizes
+- Add new visualization types
+- Modify existing visualizations
 
 ## Troubleshooting
 
-### Missing Dependencies
+If you encounter issues with the visualizations:
 
-If you encounter errors about missing modules, install the required dependencies:
+1. **Missing dependencies**: Ensure you have installed all required packages
+2. **No schemas found**: Run the pipeline on some documents to generate schemas
+3. **Visualization errors**: Check the error message for specific issues
+4. **Empty visualizations**: Ensure the schemas contain the necessary data
 
-```bash
-uv pip install matplotlib scikit-learn seaborn pandas networkx
-```
+## Configuration
 
-### Low Perplexity Error in t-SNE
-
-If you see an error about perplexity being too high for the number of samples:
-
-```
-ValueError: perplexity must be less than n_samples
-```
-
-This means you don't have enough schemas for the default perplexity value. The code should automatically adjust the perplexity, but if you encounter this error, you need to add more schemas before using the cluster visualization.
-
-### Graphviz Not Found
-
-If you see an error about Graphviz not being found:
-
-```
-ImportError: No module named 'pygraphviz'
-```
-
-or
-
-```
-GraphViz's executables not found
-```
-
-Install Graphviz and pygraphviz:
-
-```bash
-# Install system-level Graphviz
-# Windows (with Chocolatey)
-choco install graphviz
-
-# macOS (with Homebrew)
-brew install graphviz
-
-# Linux
-apt-get install graphviz  # Debian/Ubuntu
-yum install graphviz      # CentOS/RHEL
-
-# Then install pygraphviz
-uv pip install pygraphviz
-```
-
-### No Schemas Available
-
-If you see a message like:
-
-```
-No schemas available for visualization
-```
-
-You need to record some schemas first. Use the `SchemaRegistry.record()` method to record document schemas.
-
-## Advanced Usage
-
-### Customizing Visualizations
-
-You can customize visualizations by modifying the `SchemaVisualizer` class in `utils/pipeline/schema/visualizer.py`. For example, you can change colors, plot sizes, or add additional visualization types.
-
-### Adding New Visualization Types
-
-To add a new visualization type:
-
-1. Add a new method to the `SchemaVisualizer` class
-2. Update the `visualize` method to handle the new type
-3. Update the `visualize_schema.py` script to include the new type in the usage message
-
-### Batch Processing
-
-To generate visualizations for multiple schemas at once:
-
-```python
-from utils.pipeline.schema.extended_registry import ExtendedSchemaRegistry
-import os
-
-registry = ExtendedSchemaRegistry()
-schemas = registry.list_schemas()
-output_dir = os.path.join("utils", "pipeline", "schema", "data", "visualizations")
-
-# Generate structure visualizations for all schemas
-for schema in schemas:
-    schema_id = schema["id"]
-    registry.visualize("structure", [schema_id], output_dir)
-    print(f"Generated structure visualization for {schema_id}")
-```
-
-## Further Reading
-
-For more information about the schema registry and related functionality, see:
-
-- `utils/pipeline/schema/registry.py`: Base schema registry implementation
-- `utils/pipeline/schema/extended_registry.py`: Extended registry with visualization
-- `utils/pipeline/schema/visualizer.py`: Schema visualization implementation
-- `utils/pipeline/schema/vectorizer.py`: Schema vectorization for analysis
+The schema visualization tools use the same configuration as the pipeline. You can customize the visualization behavior by modifying the pipeline configuration.

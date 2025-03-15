@@ -437,18 +437,22 @@ class SchemaVisualizer:
             )
             return f"Error visualizing schema structure: {str(e)}"
 
-    def visualize_table_patterns(self, schema_id: str, output_path: str) -> str:
+    def visualize_table_patterns(
+        self, schema_id: str, output_path: str
+    ) -> Union[str, List[str]]:
         """
-        Visualize table patterns in a schema.
+        Visualize table patterns in a schema with enhanced information.
 
         Args:
             schema_id: ID of the schema to visualize
             output_path: Path to save the visualization
 
         Returns:
-            Path to the saved visualization
+            Path(s) to the saved visualization(s)
         """
         try:
+            from collections import Counter
+
             import matplotlib.pyplot as plt
 
             schema = self.registry.get_schema(schema_id)
@@ -461,6 +465,13 @@ class SchemaVisualizer:
 
             # Extract row counts
             row_counts = [table.get("row_count", 0) for table in table_structure]
+
+            # Create base directory for visualizations
+            output_dir = os.path.dirname(output_path)
+            os.makedirs(output_dir, exist_ok=True)
+
+            # List to store all output paths
+            output_paths = [output_path]
 
             # Create histogram
             plt.figure(figsize=(12, 6))
@@ -493,7 +504,118 @@ class SchemaVisualizer:
             plt.savefig(output_path, dpi=300)
             plt.close()
 
-            return output_path
+            # Create additional visualizations if enhanced data is available
+
+            # 1. Table Headers Visualization
+            if any(
+                "headers" in table and table["headers"] for table in table_structure
+            ):
+                # Collect all headers
+                all_headers = []
+                for table in table_structure:
+                    if "headers" in table and table["headers"]:
+                        all_headers.extend(table["headers"])
+
+                if all_headers:
+                    # Count header frequency
+                    header_counts = Counter(all_headers)
+
+                    # Plot top 15 headers (or fewer if less available)
+                    top_headers = header_counts.most_common(min(15, len(header_counts)))
+
+                    plt.figure(figsize=(14, 8))
+                    plt.bar(
+                        [h[0] for h in top_headers],
+                        [h[1] for h in top_headers],
+                        color="skyblue",
+                    )
+                    plt.title(f"Common Table Headers in Schema: {schema_id}")
+                    plt.xticks(rotation=45, ha="right")
+                    plt.tight_layout()
+
+                    # Save additional visualization
+                    headers_path = os.path.join(output_dir, f"headers_{schema_id}.png")
+                    plt.savefig(headers_path, dpi=300)
+                    plt.close()
+                    output_paths.append(headers_path)
+
+            # 2. Column Count Visualization
+            column_counts = [
+                table.get("column_count", 0)
+                for table in table_structure
+                if "column_count" in table
+            ]
+            if column_counts:
+                plt.figure(figsize=(10, 6))
+                plt.hist(
+                    column_counts,
+                    bins=max(5, min(10, max(column_counts))),
+                    color="lightgreen",
+                    edgecolor="black",
+                )
+                plt.title(f"Distribution of Table Column Counts in Schema: {schema_id}")
+                plt.xlabel("Columns per Table")
+                plt.ylabel("Number of Tables")
+                plt.tight_layout()
+
+                # Save additional visualization
+                columns_path = os.path.join(output_dir, f"columns_{schema_id}.png")
+                plt.savefig(columns_path, dpi=300)
+                plt.close()
+                output_paths.append(columns_path)
+
+            # 3. Table Data Sample Visualization (if available)
+            tables_with_samples = [
+                table
+                for table in table_structure
+                if "data_sample" in table and table["data_sample"]
+            ]
+            if tables_with_samples:
+                # Create a sample table visualization (first table with samples)
+                sample_table = tables_with_samples[0]
+                headers = sample_table.get("headers", [])
+                data_sample = sample_table.get("data_sample", [])
+
+                if data_sample:
+                    plt.figure(figsize=(12, 6))
+
+                    # Create a table visualization
+                    table_data = data_sample[
+                        : min(5, len(data_sample))
+                    ]  # Limit to 5 rows
+
+                    # If we have headers, add them as the first row
+                    if headers:
+                        table_data = [headers] + table_data
+
+                    # Create the table
+                    table = plt.table(
+                        cellText=table_data,
+                        loc="center",
+                        cellLoc="center",
+                        colWidths=[0.2] * len(table_data[0])
+                        if table_data and table_data[0]
+                        else None,
+                    )
+
+                    # Style the table
+                    table.auto_set_font_size(False)
+                    table.set_fontsize(9)
+                    table.scale(1, 1.5)
+
+                    # Hide axes
+                    plt.axis("off")
+
+                    plt.title(f"Sample Table Data from Schema: {schema_id}")
+                    plt.tight_layout()
+
+                    # Save additional visualization
+                    sample_path = os.path.join(output_dir, f"sample_{schema_id}.png")
+                    plt.savefig(sample_path, dpi=300, bbox_inches="tight")
+                    plt.close()
+                    output_paths.append(sample_path)
+
+            return output_paths
         except Exception as e:
             self.logger.error(
                 f"Error visualizing table patterns: {str(e)}", exc_info=True

@@ -7,10 +7,11 @@ This module provides functionality for cleaning and normalizing PDF content.
 import re
 from typing import Any, Dict
 
+from utils.pipeline.strategies.base import CleanerStrategy
 from utils.pipeline.utils.logging import get_logger
 
 
-class PDFCleaner:
+class PDFCleaner(CleanerStrategy):
     """Cleans and normalizes PDF content."""
 
     def __init__(self):

@@ -8,10 +8,11 @@ from typing import Any, Dict
 
 import pypdf
 
+from utils.pipeline.strategies.base import AnalyzerStrategy
 from utils.pipeline.utils.logging import get_logger
 
 
-class PDFAnalyzer:
+class PDFAnalyzer(AnalyzerStrategy):
     """Analyzes PDF document structure and content."""
 
     def __init__(self):

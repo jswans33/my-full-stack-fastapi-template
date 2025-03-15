@@ -1,0 +1,230 @@
+# Example Pipeline Configuration
+# This file demonstrates the available configuration options for the pipeline
+
+# Basic settings
+input_dir: "data/input"
+output_dir: "data/output"
+output_format: "json"  # Options: json, yaml, markdown
+log_level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR, CRITICAL
+validation_level: "basic"  # Options: basic, strict, custom
+
+# Document processing strategies
+strategies:
+  pdf:
+    analyzer: "utils.pipeline.analyzer.pdf.PDFAnalyzer"
+    cleaner: "utils.pipeline.cleaner.pdf.PDFCleaner"
+    extractor: "utils.pipeline.processors.pdf_extractor.PDFExtractor"
+    validator: "utils.pipeline.processors.pdf_validator.PDFValidator"
+  excel:
+    analyzer: "utils.pipeline.analyzer.excel.ExcelAnalyzer"
+    cleaner: "utils.pipeline.cleaner.excel.ExcelCleaner"
+    extractor: "utils.pipeline.processors.excel_extractor.ExcelExtractor"
+    validator: "utils.pipeline.processors.excel_validator.ExcelValidator"
+  word:
+    analyzer: "utils.pipeline.analyzer.word.WordAnalyzer"
+    cleaner: "utils.pipeline.cleaner.word.WordCleaner"
+    extractor: "utils.pipeline.processors.word_extractor.WordExtractor"
+    validator: "utils.pipeline.processors.word_validator.WordValidator"
+  text:
+    analyzer: "utils.pipeline.analyzer.text.TextAnalyzer"
+    cleaner: "utils.pipeline.cleaner.text.TextCleaner"
+    extractor: "utils.pipeline.processors.text_extractor.TextExtractor"
+    validator: "utils.pipeline.processors.text_validator.TextValidator"
+
+# Document classification configuration
+classification:
+  # Enable/disable classification
+  enabled: true
+  
+  # Default confidence threshold
+  default_threshold: 0.3
+  
+  # Classification method (rule_based, pattern_matcher, etc.)
+  method: "rule_based"
+  
+  # Document type rules
+  rules:
+    # Specification document type
+    SPECIFICATION:
+      # Keywords to look for in section titles
+      title_keywords: 
+        - "specification"
+        - "spec"
+        - "technical"
+        - "requirements"
+        - "section"
+      
+      # Keywords to look for in document content
+      content_keywords: 
+        - "dimensions"
+        - "capacity"
+        - "performance"
+        - "material"
+        - "compliance"
+        - "standard"
+        - "installation"
+        - "quality"
+      
+      # Patterns to match (e.g., measurements)
+      patterns: 
+        - "mm"
+        - "cm"
+        - "m"
+        - "kg"
+        - "lb"
+        - "°c"
+        - "°f"
+        - "hz"
+        - "mhz"
+        - "ghz"
+        - "kw"
+        - "hp"
+      
+      # Confidence weights for different features
+      weights:
+        title_match: 0.4
+        content_match: 0.3
+        pattern_match: 0.3
+      
+      # Minimum confidence threshold to classify as this type
+      threshold: 0.4
+      
+      # Schema pattern to use for this document type
+      schema_pattern: "detailed_specification"
+    
+    # HVAC Specification document type
+    HVAC_SPECIFICATION:
+      title_keywords: 
+        - "hvac"
+        - "heating"
+        - "ventilation"
+        - "air conditioning"
+        - "mechanical"
+      content_keywords: 
+        - "temperature"
+        - "humidity"
+        - "airflow"
+        - "ductwork"
+        - "refrigerant"
+        - "cooling"
+        - "heating"
+      patterns: 
+        - "°f"
+        - "°c"
+        - "cfm"
+        - "btu"
+      threshold: 0.4
+      schema_pattern: "hvac_specification"
+    
+    # Invoice document type
+    INVOICE:
+      title_keywords: 
+        - "invoice"
+        - "bill"
+        - "receipt"
+      content_keywords: 
+        - "invoice #"
+        - "invoice no"
+        - "payment"
+        - "due date"
+        - "amount due"
+        - "bill to"
+      patterns: 
+        - "\\$\\d+\\.\\d{2}"
+        - "total"
+        - "subtotal"
+        - "tax"
+      weights:
+        title_match: 0.4
+        content_match: 0.4
+        pattern_match: 0.2
+      threshold: 0.5
+      schema_pattern: "detailed_invoice"
+    
+    # Proposal document type
+    PROPOSAL:
+      title_keywords: 
+        - "proposal"
+        - "offer"
+        - "quote"
+      content_keywords: 
+        - "proposed"
+        - "offer"
+        - "scope of work"
+        - "timeline"
+        - "project"
+      patterns: 
+        - "proposed by"
+        - "submitted to"
+        - "valid for"
+        - "\\$\\d+\\.\\d{2}"
+      threshold: 0.5
+      schema_pattern: "detailed_proposal"
+    
+    # Terms and Conditions document type
+    TERMS_AND_CONDITIONS:
+      title_keywords: 
+        - "terms"
+        - "conditions"
+        - "agreement"
+        - "contract"
+      content_keywords: 
+        - "shall"
+        - "herein"
+        - "pursuant"
+        - "liability"
+        - "warranty"
+        - "indemnify"
+        - "jurisdiction"
+      patterns: 
+        - "party"
+        - "parties"
+        - "agree"
+        - "clause"
+        - "section"
+      threshold: 0.5
+      schema_pattern: "formal_terms"
+  
+  # Filename pattern matching (optional)
+  filename_patterns:
+    SPECIFICATION: "(?i)spec|specification"
+    HVAC_SPECIFICATION: "(?i)hvac|heating|ventilation"
+    INVOICE: "(?i)invoice|bill|receipt"
+    PROPOSAL: "(?i)proposal|offer|quote"
+    TERMS_AND_CONDITIONS: "(?i)terms|conditions|agreement|contract"
+
+# File processing configuration
+file_processing:
+  # Input configuration
+  input:
+    patterns: ["*.pdf", "*.docx", "*.xlsx", "*.txt"]
+    recursive: false
+    exclude_patterns: ["*_temp*", "*_backup*"]
+    max_files: 0  # 0 means no limit
+  
+  # Output configuration
+  output:
+    formats: ["json", "markdown"]
+    structure: "flat"  # Options: flat, hierarchical, mirror
+    naming:
+      template: "{original_name}_{format}"
+      preserve_extension: false
+      timestamp: false
+    overwrite: true
+  
+  # Processing configuration
+  processing:
+    batch_size: 10
+    parallel: false
+    continue_on_error: true
+    error_handling:
+      log_level: "error"
+      retry_count: 0
+      retry_delay: 1
+  
+  # Reporting configuration
+  reporting:
+    summary: true
+    detailed: true
+    format: "json"
+    save_path: "processing_report.json"

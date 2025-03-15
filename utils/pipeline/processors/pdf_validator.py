@@ -6,10 +6,11 @@ This module provides functionality for validating extracted PDF data.
 
 from typing import Any, Dict
 
+from utils.pipeline.strategies.base import ValidatorStrategy
 from utils.pipeline.utils.logging import get_logger
 
 
-class PDFValidator:
+class PDFValidator(ValidatorStrategy):
     """Validates extracted PDF data."""
 
     def __init__(self):

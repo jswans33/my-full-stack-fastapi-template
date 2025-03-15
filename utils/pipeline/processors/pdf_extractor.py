@@ -7,12 +7,13 @@ This module provides functionality for extracting structured data from PDF conte
 import re
 from typing import Any, Dict, List
 
-import fitz
+import fitz  # PyMuPDF
 
+from utils.pipeline.strategies.base import ExtractorStrategy
 from utils.pipeline.utils.logging import get_logger
 
 
-class PDFExtractor:
+class PDFExtractor(ExtractorStrategy):
     """Extracts structured data from PDF content."""
 
     def __init__(self):
@@ -151,13 +152,8 @@ class PDFExtractor:
                     # Start new section
                     current_section = {"title": line, "content": ""}
                 else:
-                    # Add to current section content with size limit and no terminal output
-                    if (
-                        len(current_section["content"]) < 100
-                    ):  # Further reduce content size
-                        current_section["content"] += (
-                            line[:100] + "...\n" if len(line) > 100 else line + "\n"
-                        )
+                    # Add to current section content WITHOUT truncation
+                    current_section["content"] += line + "\n"
 
         # Add the last section
         if current_section["content"]:
@@ -167,36 +163,130 @@ class PDFExtractor:
 
     def _extract_tables(self, doc) -> List[Dict[str, Any]]:
         """
-        Extract tables from the PDF document.
+        Extract tables from the PDF document with improved structure detection.
 
         Args:
             doc: PyMuPDF document
 
         Returns:
-            List of extracted tables
+            List of extracted tables with structure
         """
         tables = []
 
         try:
-            # Simple table detection using PyMuPDF
+            # Use PyMuPDF's improved table detection
             for page_num, page in enumerate(doc):
-                text = page.get_text("text")
-                # Look for common table indicators
-                if any(pattern in text for pattern in ["TABLE", "Table", "|", "+"]):
-                    # Extract text blocks that might be tables
-                    blocks = page.get_text("blocks")
-                    for i, block in enumerate(blocks):
-                        if (
-                            len(block[4].split("\n")) > 2
-                        ):  # More than 2 lines might be a table
-                            tables.append(
-                                {
-                                    "page": page_num + 1,
-                                    "table_number": len(tables) + 1,
-                                    "data": block[4].split("\n"),
-                                    "accuracy": None,
-                                }
-                            )
+                # First try to detect tables using layout analysis
+                try:
+                    # Get blocks that might be tables
+                    blocks = page.get_text("dict")["blocks"]
+
+                    for block in blocks:
+                        # Check if block has multiple lines (potential table)
+                        if "lines" in block and len(block["lines"]) > 2:
+                            table_data = []
+                            headers = []
+
+                            # Process rows
+                            for row_idx, line in enumerate(block["lines"]):
+                                if "spans" not in line:
+                                    continue
+
+                                row_data = [span["text"] for span in line["spans"]]
+
+                                # First row might be headers
+                                if row_idx == 0 and any(
+                                    cell.isupper() for cell in row_data if cell
+                                ):
+                                    headers = row_data
+                                else:
+                                    table_data.append(row_data)
+
+                            # Only add if we have actual data
+                            if table_data:
+                                # Add table with structure
+                                tables.append(
+                                    {
+                                        "page": page_num + 1,
+                                        "table_number": len(tables) + 1,
+                                        "headers": headers,
+                                        "data": table_data,
+                                        "column_count": len(headers)
+                                        if headers
+                                        else (
+                                            max(len(row) for row in table_data)
+                                            if table_data
+                                            else 0
+                                        ),
+                                        "row_count": len(table_data),
+                                        "detection_method": "layout_analysis",
+                                    }
+                                )
+                except Exception as layout_error:
+                    self.logger.warning(f"Layout analysis failed: {str(layout_error)}")
+
+                # Fallback to text-based table detection
+                if not any(table["page"] == page_num + 1 for table in tables):
+                    text = page.get_text("text")
+
+                    # Look for common table indicators
+                    if any(pattern in text for pattern in ["TABLE", "Table", "|", "+"]):
+                        # Try to detect table structure from text
+                        lines = text.split("\n")
+                        table_start = -1
+                        table_end = -1
+
+                        # Find table boundaries
+                        for i, line in enumerate(lines):
+                            if "TABLE" in line.upper() and table_start == -1:
+                                table_start = i
+                            elif table_start != -1 and not line.strip():
+                                # Empty line might indicate end of table
+                                if i > table_start + 2:  # At least 2 rows
+                                    table_end = i
+                                    break
+
+                        # If we found a table
+                        if table_start != -1 and table_end != -1:
+                            table_lines = lines[table_start:table_end]
+
+                            # Try to detect headers and data
+                            headers = []
+                            data = []
+
+                            # First non-empty line after title might be headers
+                            for i, line in enumerate(table_lines):
+                                if i > 0 and line.strip():  # Skip title
+                                    # Split by common delimiters
+                                    cells = re.split(r"\s{2,}|\t|\|", line)
+                                    cells = [
+                                        cell.strip() for cell in cells if cell.strip()
+                                    ]
+
+                                    if not headers and any(
+                                        cell.isupper() for cell in cells
+                                    ):
+                                        headers = cells
+                                    else:
+                                        data.append(cells)
+
+                            # Add table with structure
+                            if data:  # Only add if we have data
+                                tables.append(
+                                    {
+                                        "page": page_num + 1,
+                                        "table_number": len(tables) + 1,
+                                        "headers": headers,
+                                        "data": data,
+                                        "column_count": len(headers)
+                                        if headers
+                                        else (
+                                            max(len(row) for row in data) if data else 0
+                                        ),
+                                        "row_count": len(data),
+                                        "detection_method": "text_analysis",
+                                    }
+                                )
         except Exception as e:
             self.logger.warning(f"Error during table extraction: {str(e)}")
             # Continue processing even if table extraction fails

@@ -6,10 +6,11 @@ This module provides functionality for formatting validated PDF data for output.
 
 from typing import Any, Dict
 
+from utils.pipeline.strategies.base import FormatterStrategy
 from utils.pipeline.utils.logging import get_logger
 
 
-class PDFFormatter:
+class PDFFormatter(FormatterStrategy):
     """Formats validated PDF data for output."""
 
     def __init__(self):
