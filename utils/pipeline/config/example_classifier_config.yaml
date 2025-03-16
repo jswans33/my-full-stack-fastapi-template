@@ -1,0 +1,106 @@
+# Example configuration for document classification system
+
+# Global classification settings
+enable_classification: true
+record_schemas: true
+match_schemas: true
+
+# Ensemble configuration
+ensemble:
+  voting_method: weighted_average  # weighted_average, majority, consensus
+  minimum_confidence: 0.45  # Lowered to account for real-world uncertainty
+  classifier_weights:
+    rule_based: 0.45
+    pattern_matcher: 0.45
+    ml_based: 0.1
+  default_weight: 0.3
+
+# Individual classifier configurations
+classifiers:
+  rule_based:
+    name: "Rule-Based Classifier"
+    version: "1.0.0"
+    description: "Classifies documents using predefined rules"
+    supported_types:
+      - PROPOSAL
+      - QUOTATION
+      - SPECIFICATION
+      - INVOICE
+      - TERMS_AND_CONDITIONS
+    classification:
+      default_threshold: 0.3
+      rules:
+        PROPOSAL:
+          title_keywords: ["proposal", "project", "system upgrade"]
+          content_keywords: ["scope", "phases", "payment", "delivery"]
+          patterns: ["payment terms", "delivery schedule", "executive summary"]
+          weights:
+            title_match: 0.4
+            content_match: 0.3
+            pattern_match: 0.3
+          threshold: 0.4  # Lowered threshold since we have more specific patterns
+          schema_pattern: "standard_proposal"
+        QUOTATION:
+          title_keywords: ["quote", "quotation", "estimate"]
+          content_keywords: ["price", "cost", "total"]
+          patterns: ["$", "subtotal", "tax"]
+          weights:
+            title_match: 0.3
+            content_match: 0.4
+            pattern_match: 0.3
+          threshold: 0.6
+          schema_pattern: "standard_quotation"
+      filename_patterns:
+        PROPOSAL: ".*proposal.*\\.pdf"
+        QUOTATION: ".*quote.*\\.pdf"
+
+  pattern_matcher:
+    name: "Pattern Matcher"
+    version: "1.0.0"
+    description: "Classifies documents using pattern matching"
+    patterns:
+      - name: "PROPOSAL"
+        schema_pattern: "standard_proposal"
+        required_features: ["has_payment_terms", "has_delivery_terms"]
+        optional_features: ["has_dollar_amounts", "has_quantities"]
+        section_patterns: [
+          "executive summary",
+          "scope of work",
+          "payment terms",
+          "delivery schedule"
+        ]
+        content_patterns: [
+          "proposal",
+          "project",
+          "phases",
+          "scope",
+          "payment",
+          "delivery"
+        ]
+
+      - name: "QUOTATION"
+        schema_pattern: "standard_quotation"
+        required_features: ["has_dollar_amounts"]
+        optional_features: ["has_subtotal", "has_total", "has_quantities"]
+        section_patterns: ["quote", "pricing", "subtotal", "total"]
+        content_patterns: ["quote", "price", "cost", "amount", "$"]
+
+  ml_based:
+    name: "ML-Based Classifier"
+    version: "1.0.0"
+    description: "Classifies documents using machine learning"
+    model:
+      confidence_threshold: 0.7
+      feature_weights:
+        section_density: 0.3
+        table_density: 0.2
+        avg_section_length: 0.2
+        metadata_completeness: 0.3
+      # model_path: "path/to/trained/model"  # For real ML implementation
+
+# Schema matching configuration
+schema_matching:
+  confidence_threshold: 0.7
+  match_strategy: "structure_and_content"  # structure, content, or structure_and_content
+  structure_weight: 0.6
+  content_weight: 0.4

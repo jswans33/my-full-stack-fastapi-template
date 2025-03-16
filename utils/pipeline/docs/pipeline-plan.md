@@ -10,9 +10,16 @@ The tool follows a structured pipeline approach:
 
 - **Preflight Validation:** Validates document structure and extracts initial metadata.
 - **Preprocessing:** Normalizes formatting and initial data preparation.
-- **Data Extraction:** Parses and structures document data according to CSI MasterFormat standards.
+- **Document Classification:** Identifies document types using multiple classification strategies.
+- **Data Extraction:** Parses and structures document data based on identified type.
 - **YAML Formatting & Output:** Serializes structured data into a YAML schema.
 - **Verification & Reporting:** Validates extracted data accuracy, completeness, and generates reports.
+
+The classification system employs multiple strategies and ensemble methods:
+- Rule-based classification using configurable patterns and rules
+- Pattern matching based on document structure and content
+- Machine learning based classification (extensible)
+- Weighted voting system for combining classifier results
 
 ## **3. System Architecture**
 
@@ -79,6 +86,25 @@ ExtractorPipeline
 │
 ├── DocumentPreprocessor
 │   └─ preprocess(file_path) -> PreprocessedDocument
+│
+├── ClassifierStrategy (interface)
+│   ├─ classify(document_data, features) -> Dict[str, Any]
+│   ├─ get_supported_types() -> List[str]
+│   └─ get_classifier_info() -> Dict[str, Any]
+│   ├── RuleBasedClassifier
+│   ├── PatternMatcherClassifier
+│   └── MLBasedClassifier
+│
+├── ClassifierFactory
+│   ├─ register_classifier(name, classifier_class, config)
+│   ├─ create_classifier(name, config) -> ClassifierStrategy
+│   └─ get_available_classifiers() -> List[Dict[str, Any]]
+│
+├── EnsembleManager
+│   ├─ combine_results(classifications) -> Dict[str, Any]
+│   ├─ _weighted_average_vote(classifications) -> Dict[str, Any]
+│   ├─ _majority_vote(classifications) -> Dict[str, Any]
+│   └─ _consensus_vote(classifications) -> Dict[str, Any]
 │
 ├── ExtractionStrategy (interface)
 │   └─ extract(preprocessed_data) -> RawData

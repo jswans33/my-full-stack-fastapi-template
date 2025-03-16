@@ -6,10 +6,10 @@ This module provides a pattern matching approach to document classification.
 
 from typing import Any, Dict, List, Optional
 
-from utils.pipeline.utils.logging import get_logger
+from utils.pipeline.strategies.classifier_strategy import BaseClassifier
 
 
-class PatternMatcherClassifier:
+class PatternMatcherClassifier(BaseClassifier):
     """
     Classifies documents using pattern matching.
 
@@ -17,15 +17,14 @@ class PatternMatcherClassifier:
     based on their structure, content, and metadata.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
         """
         Initialize the pattern matcher classifier.
 
         Args:
             config: Configuration dictionary for the classifier
         """
-        self.config = config or {}
-        self.logger = get_logger(__name__)
+        super().__init__(config=config)
 
         # Define document patterns
         self.patterns = self._load_patterns()
@@ -63,6 +62,15 @@ class PatternMatcherClassifier:
                 "schema_pattern": "unknown",
                 "key_features": [],
             }
+
+    def get_supported_types(self) -> List[str]:
+        """
+        Get the document types supported by this classifier.
+
+        Returns:
+            List of supported document type identifiers
+        """
+        return [pattern["name"] for pattern in self.patterns]
 
     def _load_patterns(self) -> List[Dict[str, Any]]:
         """

@@ -1,103 +1,136 @@
 """
-Example script demonstrating document classification functionality.
+Example usage of the document classification system.
+
+This script demonstrates how to:
+1. Configure and initialize the classification system
+2. Register custom classifiers
+3. Classify documents using multiple strategies
+4. Use ensemble classification
 """
 
-from pathlib import Path
+import os
+import sys
+from typing import Any, Dict
 
-from utils.pipeline.pipeline import Pipeline
-from utils.pipeline.utils.progress import PipelineProgress
+import yaml
+
+# Add the root directory to Python path
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+sys.path.insert(0, root_dir)
+
+from utils.pipeline.processors.classifiers.ml_based import MLBasedClassifier
+from utils.pipeline.processors.document_classifier import DocumentClassifier
+
+
+def load_config() -> Dict[str, Any]:
+    """Load classification configuration from YAML file."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(
+        script_dir, "..", "config", "example_classifier_config.yaml"
+    )
+    print(f"Loading config from: {config_path}")
+    try:
+        with open(config_path, "r") as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        print(f"Error loading config: {str(e)}")
+        return {}
 
 
 def main():
-    """Run document classification example."""
-    progress = PipelineProgress()
+    # Load configuration
+    config = load_config()
 
-    try:
-        # Get the current directory
-        current_dir = Path(__file__).parent.parent
+    # Initialize document classifier
+    classifier = DocumentClassifier(config)
 
-        # Set up paths
-        input_dir = current_dir / "data" / "input"
-        output_dir = current_dir / "data" / "output"
-        output_dir.mkdir(parents=True, exist_ok=True)
+    # Register additional ML-based classifier
+    classifier.add_classifier(
+        "ml_based",
+        MLBasedClassifier,
+        config.get("classifiers", {}).get("ml_based", {}),
+    )
 
-        # Display minimal setup info
-        progress.display_success(f"Processing files from {input_dir}")
-
-        # Initialize pipeline with configuration
-        config = {
-            "output_format": "json",  # Default format
-            "enable_classification": True,  # Enable document classification
-            "record_schemas": True,  # Record schemas for future matching
-            "match_schemas": True,  # Match against known schemas
-            "classification": {
-                "type": "rule_based",  # Use rule-based classifier
-                "confidence_threshold": 0.6,  # Minimum confidence threshold
+    # Example document data
+    document_data = {
+        "metadata": {
+            "title": "Project Proposal - System Upgrade",
+            "author": "John Smith",
+            "date": "2025-03-15",
+        },
+        "content": [
+            {
+                "title": "Executive Summary",
+                "content": "This proposal outlines our approach to upgrading...",
             },
-            "strategies": {
-                "pdf": {
-                    "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
-                    "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
-                    "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
-                    "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
-                },
+            {
+                "title": "Scope of Work",
+                "content": "The project will be completed in three phases...",
             },
-        }
+            {
+                "title": "Payment Terms",
+                "content": "Payment schedule: 30% upfront, 40% at milestone...",
+            },
+            {
+                "title": "Delivery Schedule",
+                "content": "Phase 1 will be delivered within 4 weeks...",
+            },
+        ],
+        "tables": [
+            {
+                "title": "Cost Breakdown",
+                "headers": ["Item", "Cost"],
+                "rows": [
+                    ["Phase 1", "$50,000"],
+                    ["Phase 2", "$75,000"],
+                    ["Phase 3", "$60,000"],
+                ],
+            }
+        ],
+    }
 
-        pipeline = Pipeline(config)
+    # Classify document
+    result = classifier.classify(document_data)
 
-        # Process all PDF files in the input directory
-        for pdf_file in input_dir.glob("*.pdf"):
-            progress.display_success(f"Processing {pdf_file.name}")
+    # Print classification results
+    print("\nDocument Classification Results:")
+    print("-" * 30)
+    print(f"Document Type: {result['document_type']}")
+    print(f"Confidence: {result['confidence']:.2f}")
+    print(f"Schema Pattern: {result['schema_pattern']}")
+    print("\nKey Features:")
+    for feature in result.get("key_features", []):
+        print(f"- {feature}")
 
-            # Process the PDF with JSON output
-            output_data = pipeline.run(str(pdf_file))
+    print("\nClassifiers Used:")
+    for classifier_name in result.get("classifiers", []):
+        print(f"- {classifier_name}")
 
-            # Save JSON output
-            json_output = output_dir / f"{pdf_file.stem}.json"
-            pipeline.save_output(output_data, str(json_output))
-            progress.display_success(f"JSON output saved to: {json_output.name}")
+    # Example of updating classifier configuration
+    new_config = {
+        "name": "ML-Based Classifier",
+        "version": "1.0.1",
+        "model": {
+            "confidence_threshold": 0.8,  # Increased threshold
+            "feature_weights": {
+                "section_density": 0.4,  # Adjusted weights
+                "table_density": 0.3,
+                "avg_section_length": 0.2,
+                "metadata_completeness": 0.1,
+            },
+        },
+    }
+    classifier.update_classifier_config("ml_based", new_config)
 
-            # Process the PDF with Markdown output
-            pipeline.config["output_format"] = "markdown"
-            output_data = pipeline.run(str(pdf_file))
-
-            # Save Markdown output
-            md_output = output_dir / f"{pdf_file.stem}.md"
-            pipeline.save_output(output_data, str(md_output))
-            progress.display_success(f"Markdown output saved to: {md_output.name}")
-
-            # Display classification results
-            if "classification" in output_data:
-                classification = output_data["classification"]
-                progress.display_success(
-                    f"Document classified as: {classification['document_type']} "
-                    f"(confidence: {classification['confidence']:.2f})"
-                )
-                progress.display_success(
-                    f"Schema pattern: {classification['schema_pattern']}"
-                )
-                progress.display_success(
-                    f"Key features: {', '.join(classification['key_features'])}"
-                )
-
-            # Reset output format for next file
-            pipeline.config["output_format"] = "json"
-
-        # Display final summary
-        progress.display_success("Processing complete!")
-        progress.display_success(
-            f"Files Processed: {len(list(input_dir.glob('*.pdf')))}"
-        )
-        progress.display_success(
-            f"Outputs Generated: {len(list(output_dir.glob('*.*')))}"
-        )
-        progress.display_success("Classification: Enabled")
-        progress.display_success("Schema Recording: Enabled")
-
-    except Exception as e:
-        progress.display_error(f"Error processing documents: {e}")
-        raise
+    # Get information about available classifiers
+    print("\nAvailable Classifiers:")
+    print("-" * 30)
+    for info in classifier.get_available_classifiers():
+        print(f"\nClassifier: {info['name']}")
+        print(f"Supported Types: {', '.join(info['supported_types'])}")
+        if info["has_config"]:
+            print("Has Custom Configuration: Yes")
+        print(f"Info: {info['info']}")
 
 
 if __name__ == "__main__":

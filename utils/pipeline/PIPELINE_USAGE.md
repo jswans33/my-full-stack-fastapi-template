@@ -142,51 +142,70 @@ python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to
 
 ## Document Classification
 
-The pipeline includes a document classification system that categorizes documents based on their content and structure. This classification is used to organize schemas and can be customized through configuration.
+The pipeline includes an advanced document classification system that uses multiple strategies and ensemble methods to categorize documents. This classification is used to organize schemas and can be customized through configuration.
 
 ### Classification Configuration
 
 The classification system can be configured in the pipeline configuration file:
 
 ```yaml
-classification:
-  # Enable/disable classification
-  enabled: true
-  
-  # Default confidence threshold
-  default_threshold: 0.3
-  
-  # Classification method (rule_based, pattern_matcher, etc.)
-  method: "rule_based"
-  
-  # Document type rules
-  rules:
-    SPECIFICATION:
-      # Keywords to look for in section titles
-      title_keywords: ["specification", "spec", "technical", "requirements"]
-      
-      # Keywords to look for in document content
-      content_keywords: ["dimensions", "capacity", "performance", "material", "compliance", "standard"]
-      
-      # Patterns to match (e.g., measurements)
-      patterns: ["mm", "cm", "m", "kg", "lb", "°c", "°f", "hz", "mhz", "ghz", "kw", "hp"]
-      
-      # Confidence weights for different features
-      weights:
-        title_match: 0.4
-        content_match: 0.3
-        pattern_match: 0.3
-      
-      # Minimum confidence threshold to classify as this type
-      threshold: 0.4
-      
-      # Schema pattern to use for this document type
-      schema_pattern: "detailed_specification"
-  
-  # Filename pattern matching (optional)
-  filename_patterns:
-    SPECIFICATION: "(?i)spec|specification"
-    INVOICE: "(?i)invoice|bill"
+# Global classification settings
+enable_classification: true
+record_schemas: true
+match_schemas: true
+
+# Ensemble configuration
+ensemble:
+  voting_method: weighted_average  # weighted_average, majority, consensus
+  minimum_confidence: 0.45
+  classifier_weights:
+    rule_based: 0.45
+    pattern_matcher: 0.45
+    ml_based: 0.1
+  default_weight: 0.3
+
+# Individual classifier configurations
+classifiers:
+  rule_based:
+    name: "Rule-Based Classifier"
+    version: "1.0.0"
+    description: "Classifies documents using predefined rules"
+    classification:
+      rules:
+        SPECIFICATION:
+          title_keywords: ["specification", "spec", "technical"]
+          content_keywords: ["dimensions", "performance", "material"]
+          patterns: ["mm", "cm", "°c", "hz"]
+          weights:
+            title_match: 0.4
+            content_match: 0.3
+            pattern_match: 0.3
+          threshold: 0.4
+          schema_pattern: "detailed_specification"
+
+  pattern_matcher:
+    name: "Pattern Matcher"
+    version: "1.0.0"
+    description: "Classifies documents using pattern matching"
+    patterns:
+      - name: "SPECIFICATION"
+        schema_pattern: "detailed_specification"
+        required_features: ["has_measurements", "has_technical_terms"]
+        optional_features: ["has_tables", "has_diagrams"]
+        section_patterns: ["specifications", "requirements", "standards"]
+        content_patterns: ["dimensions", "material", "performance"]
+
+  ml_based:
+    name: "ML-Based Classifier"
+    version: "1.0.0"
+    description: "Classifies documents using machine learning"
+    model:
+      confidence_threshold: 0.7
+      feature_weights:
+        section_density: 0.3
+        table_density: 0.2
+        avg_section_length: 0.2
+        metadata_completeness: 0.3
 ```
 
 ### Adding Custom Document Types
@@ -314,6 +333,71 @@ class CustomExtractor(BaseExtractor):
             "tables": [...],
             "path": cleaned_data["path"]
         }
+```
+
+### Custom Classifiers
+
+Create a custom classifier:
+
+```python
+from utils.pipeline.strategies.classifier_strategy import BaseClassifier
+from typing import Any, Dict, List, Optional
+
+class CustomClassifier(BaseClassifier):
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
+        super().__init__(config=config)
+        # Initialize custom classifier (e.g., load ML model)
+        self.model = self._load_model()
+
+    def classify(
+        self, document_data: Dict[str, Any], features: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        # Implement classification logic
+        prediction = self.model.predict(features)
+        return {
+            "document_type": prediction.doc_type,
+            "confidence": prediction.confidence,
+            "schema_pattern": f"custom_{prediction.doc_type.lower()}",
+            "key_features": prediction.features
+        }
+
+    def get_supported_types(self) -> List[str]:
+        return ["TYPE_A", "TYPE_B", "TYPE_C"]
+
+    def _load_model(self):
+        # Load your custom model (e.g., from a file)
+        model_path = self.config.get("model", {}).get("path")
+        return YourModelClass.load(model_path)
+
+# Register the classifier
+from utils.pipeline.processors.document_classifier import DocumentClassifier
+
+classifier = DocumentClassifier(config)
+classifier.add_classifier(
+    "custom",
+    CustomClassifier,
+    {
+        "name": "Custom ML Classifier",
+        "version": "1.0.0",
+        "description": "Custom ML-based document classifier",
+        "model": {
+            "path": "path/to/model",
+            "confidence_threshold": 0.7
+        }
+    }
+)
+```
+
+Add the classifier to the ensemble configuration:
+
+```yaml
+ensemble:
+  voting_method: weighted_average
+  classifier_weights:
+    rule_based: 0.3
+    pattern_matcher: 0.3
+    custom: 0.4  # Give more weight to your custom classifier
+  minimum_confidence: 0.45
 ```
 
 ## Troubleshooting

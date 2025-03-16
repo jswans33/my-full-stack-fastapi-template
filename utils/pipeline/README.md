@@ -8,9 +8,16 @@ The pipeline tool follows a structured approach:
 
 - **Validation:** Validates document structure and extracts initial metadata
 - **Preprocessing:** Normalizes formatting and prepares data
-- **Data Extraction:** Parses and structures document data
+- **Classification:** Identifies document types using multiple classification strategies
+- **Data Extraction:** Parses and structures document data based on document type
 - **Output Formatting:** Serializes structured data into the desired format
 - **Verification & Reporting:** Validates extraction accuracy and generates reports
+
+The classification system supports:
+- Multiple classification strategies (rule-based, pattern matching, ML-based)
+- Ensemble classification with weighted voting
+- Extensible classifier architecture
+- Configuration-driven behavior
 
 ## Directory Structure
 
@@ -137,6 +144,56 @@ config = {
         "json": "strategies.json_strategy.JSONExtractionStrategy"
     }
 }
+```
+
+### Adding a New Classifier
+
+1. Create a new classifier in the `processors/classifiers` directory
+2. Inherit from BaseClassifier and implement the required methods
+3. Register the classifier in the configuration
+
+Example:
+
+```python
+# processors/classifiers/custom_classifier.py
+from utils.pipeline.strategies.classifier_strategy import BaseClassifier
+
+class CustomClassifier(BaseClassifier):
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
+        super().__init__(config=config)
+        # Initialize custom classifier
+
+    def classify(self, document_data: Dict[str, Any], features: Dict[str, Any]) -> Dict[str, Any]:
+        # Implement classification logic
+        return {
+            "document_type": "CUSTOM_TYPE",
+            "confidence": 0.8,
+            "schema_pattern": "custom_pattern",
+            "key_features": ["feature1", "feature2"]
+        }
+
+    def get_supported_types(self) -> List[str]:
+        return ["CUSTOM_TYPE"]
+
+# In your configuration
+config = {
+    "classifiers": {
+        "custom": {
+            "name": "Custom Classifier",
+            "version": "1.0.0",
+            "description": "Custom document classifier",
+            # Add classifier-specific configuration
+        }
+    },
+    "ensemble": {
+        "classifier_weights": {
+            "custom": 0.3  # Add weight for ensemble voting
+        }
+    }
+}
+
+# Register at runtime
+classifier.add_classifier("custom", CustomClassifier, config["classifiers"]["custom"])
 ```
 
 ## Development

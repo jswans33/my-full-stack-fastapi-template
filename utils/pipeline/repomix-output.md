@@ -38,6 +38,7 @@ The content is organized as follows:
 
 # Directory Structure
 ```
+__init__.py
 .repomixignore
 analyzer/__init__.py
 analyzer/pdf.py
@@ -49,6 +50,7 @@ config/document_types/invoice.yaml
 config/enhanced_markdown_config_v2.json
 config/enhanced_markdown_config.json
 config/environments/development.yaml
+config/example_classifier_config.yaml
 config/example_config.yaml
 config/hvac_config.json
 config/hvac_config.yaml
@@ -57,6 +59,7 @@ config/migrations/invoice_1.0.0_to_1.1.0.yaml
 config/migrations/invoice_v1_to_v2.yaml
 config/models/__init__.py
 config/models/base.py
+config/models/change_event.py
 config/models/document_type.py
 config/models/environment.py
 config/models/processor.py
@@ -64,6 +67,7 @@ config/models/schema.py
 config/providers/__init__.py
 config/providers/base.py
 config/providers/env.py
+config/providers/file_watcher.py
 config/providers/file.py
 config/README.md
 config/schema_registry.yaml
@@ -74,14 +78,18 @@ core/file_processor.py
 examples/batch_processing_example.py
 examples/config_example.py
 examples/config.yaml
+examples/config/app_config.yaml
 examples/document_classification_example.py
 examples/pdf_extraction_example.py
+examples/runtime_updates_example.py
 examples/schema_analysis_example.py
 examples/schema_migration_example.py
 examples/schema_registry_example.py
 models/models.py
 pipeline.py
+processors/__init__.py
 processors/classifiers/__init__.py
+processors/classifiers/ml_based.py
 processors/classifiers/pattern_matcher.py
 processors/classifiers/rule_based.py
 processors/document_classifier.py
@@ -102,6 +110,8 @@ run_tests.py
 schema/__init__.py
 schema/analyzer.py
 schema/data/schemas/hvac_specification_20250315171953.json
+schema/data/schemas/invoice_20250315221257.json
+schema/data/schemas/invoice_20250315221447.json
 schema/data/schemas/test_document_20250315153312.json
 schema/enhanced_registry.py
 schema/extended_registry.py
@@ -114,6 +124,9 @@ schema/visualizer.py
 setup_pytest_env.py
 strategies/__init__.py
 strategies/base.py
+strategies/classifier_factory.py
+strategies/classifier_strategy.py
+strategies/ensemble_manager.py
 strategies/formatter.py
 utils/logging.py
 utils/progress.py
@@ -125,6 +138,11 @@ visualize_schema.py
 ```
 
 # Files
+
+## File: __init__.py
+````python
+"""Pipeline package."""
+````
 
 ## File: .repomixignore
 ````
@@ -989,6 +1007,116 @@ overrides:
         debug_mode: true
 ````
 
+## File: config/example_classifier_config.yaml
+````yaml
+# Example configuration for document classification system
+
+# Global classification settings
+enable_classification: true
+record_schemas: true
+match_schemas: true
+
+# Ensemble configuration
+ensemble:
+  voting_method: weighted_average  # weighted_average, majority, consensus
+  minimum_confidence: 0.45  # Lowered to account for real-world uncertainty
+  classifier_weights:
+    rule_based: 0.45
+    pattern_matcher: 0.45
+    ml_based: 0.1
+  default_weight: 0.3
+
+# Individual classifier configurations
+classifiers:
+  rule_based:
+    name: "Rule-Based Classifier"
+    version: "1.0.0"
+    description: "Classifies documents using predefined rules"
+    supported_types:
+      - PROPOSAL
+      - QUOTATION
+      - SPECIFICATION
+      - INVOICE
+      - TERMS_AND_CONDITIONS
+    classification:
+      default_threshold: 0.3
+      rules:
+        PROPOSAL:
+          title_keywords: ["proposal", "project", "system upgrade"]
+          content_keywords: ["scope", "phases", "payment", "delivery"]
+          patterns: ["payment terms", "delivery schedule", "executive summary"]
+          weights:
+            title_match: 0.4
+            content_match: 0.3
+            pattern_match: 0.3
+          threshold: 0.4  # Lowered threshold since we have more specific patterns
+          schema_pattern: "standard_proposal"
+        QUOTATION:
+          title_keywords: ["quote", "quotation", "estimate"]
+          content_keywords: ["price", "cost", "total"]
+          patterns: ["$", "subtotal", "tax"]
+          weights:
+            title_match: 0.3
+            content_match: 0.4
+            pattern_match: 0.3
+          threshold: 0.6
+          schema_pattern: "standard_quotation"
+      filename_patterns:
+        PROPOSAL: ".*proposal.*\\.pdf"
+        QUOTATION: ".*quote.*\\.pdf"
+
+  pattern_matcher:
+    name: "Pattern Matcher"
+    version: "1.0.0"
+    description: "Classifies documents using pattern matching"
+    patterns:
+      - name: "PROPOSAL"
+        schema_pattern: "standard_proposal"
+        required_features: ["has_payment_terms", "has_delivery_terms"]
+        optional_features: ["has_dollar_amounts", "has_quantities"]
+        section_patterns: [
+          "executive summary",
+          "scope of work",
+          "payment terms",
+          "delivery schedule"
+        ]
+        content_patterns: [
+          "proposal",
+          "project",
+          "phases",
+          "scope",
+          "payment",
+          "delivery"
+        ]
+
+      - name: "QUOTATION"
+        schema_pattern: "standard_quotation"
+        required_features: ["has_dollar_amounts"]
+        optional_features: ["has_subtotal", "has_total", "has_quantities"]
+        section_patterns: ["quote", "pricing", "subtotal", "total"]
+        content_patterns: ["quote", "price", "cost", "amount", "$"]
+
+  ml_based:
+    name: "ML-Based Classifier"
+    version: "1.0.0"
+    description: "Classifies documents using machine learning"
+    model:
+      confidence_threshold: 0.7
+      feature_weights:
+        section_density: 0.3
+        table_density: 0.2
+        avg_section_length: 0.2
+        metadata_completeness: 0.3
+      # model_path: "path/to/trained/model"  # For real ML implementation
+
+# Schema matching configuration
+schema_matching:
+  confidence_threshold: 0.7
+  match_strategy: "structure_and_content"  # structure, content, or structure_and_content
+  structure_weight: 0.6
+  content_weight: 0.4
+````
+
 ## File: config/example_config.yaml
 ````yaml
 # Example Pipeline Configuration
@@ -1606,9 +1734,15 @@ Configuration manager.
 This module provides the central configuration management service.
 """
 
-from typing import Any, Callable, Dict, List, Tuple
+from datetime import datetime
+from typing import Any, Callable, Dict, List, Optional, Tuple
 
+from utils.pipeline.config.models.change_event import (
+    ConfigurationChangeEvent,
+    ConfigurationChangeListener,
+)
 from utils.pipeline.config.providers.base import ConfigurationProvider
+from utils.pipeline.config.providers.file import FileConfigurationProvider
 
 
 class ConfigurationManager:
@@ -1618,12 +1752,20 @@ class ConfigurationManager:
     Manages configuration providers and provides access to configuration.
     """
 
-    def __init__(self):
-        """Initialize the configuration manager."""
+    def __init__(self, max_history: int = 100, auto_reload: bool = False):
+        """
+        Initialize the configuration manager.
+
+        Args:
+            max_history: Maximum number of change events to keep in history
+        """
         self.providers: List[Tuple[ConfigurationProvider, int]] = []
         self.configs: Dict[str, Dict[str, Any]] = {}
         self.cache: Dict[str, Dict[str, Any]] = {}
-        self.listeners: Dict[str, List[Callable]] = {}
+        self.listeners: List[ConfigurationChangeListener] = []
+        self.change_history: List[ConfigurationChangeEvent] = []
+        self.max_history = max_history
+        self.auto_reload = auto_reload
 
     def register_provider(
         self, provider: ConfigurationProvider, priority: int = 0
@@ -1640,6 +1782,56 @@ class ConfigurationManager:
 
         # Clear cache
         self.cache = {}
+
+    def enable_auto_reload(self) -> None:
+        """Enable hot-reloading for all providers that support it."""
+        self.auto_reload = True
+        for provider, _ in self.providers:
+            if isinstance(provider, FileConfigurationProvider):
+                provider.enable_hot_reload = True
+                # Set up hot-reloading
+                provider.register_change_callback(self._handle_config_reload)
+                provider.start_watching()
+
+    def disable_auto_reload(self) -> None:
+        """Disable hot-reloading for all providers."""
+        self.auto_reload = False
+        for provider, _ in self.providers:
+            if isinstance(provider, FileConfigurationProvider):
+                provider.stop_watching()
+                provider.enable_hot_reload = False
+
+    def _handle_config_reload(self, config_name: str) -> None:
+        """
+        Handle configuration reload events.
+
+        Args:
+            config_name: Name of the configuration that changed
+        """
+        try:
+            # Get current config before reload
+            old_config = self.get_config(config_name, use_cache=True)
+
+            # Clear cache to force reload
+            if config_name in self.cache:
+                del self.cache[config_name]
+
+            # Load new configuration
+            new_config = self.get_config(config_name, use_cache=False)
+
+            # Track change
+            event = self._track_change(
+                config_name=config_name,
+                old_config=old_config,
+                new_config=new_config,
+                change_type="reload",
+            )
+
+            # Notify listeners
+            self._notify_listeners(event)
+
+        except Exception as e:
+            print(f"Error handling configuration reload: {str(e)}")
 
     def get_config(self, config_name: str, use_cache: bool = True) -> Dict[str, Any]:
         """
@@ -1695,22 +1887,32 @@ class ConfigurationManager:
 
         return merged_config
 
-    def update_configuration(self, config_name: str, updates: Dict[str, Any]) -> bool:
+    def update_configuration(
+        self,
+        config_name: str,
+        updates: Dict[str, Any],
+        change_type: str = "update",
+        provider_id: Optional[str] = None,
+        user: Optional[str] = None,
+    ) -> bool:
         """
         Update configuration at runtime.
 
         Args:
             config_name: Name of the configuration to update
             updates: Configuration updates
+            change_type: Type of change being made
+            provider_id: ID of the provider triggering the change
+            user: User making the change
 
         Returns:
             True if successful, False otherwise
         """
         # Get current configuration
-        config = self.get_config(config_name, use_cache=False)
+        old_config = self.get_config(config_name, use_cache=False)
 
         # Apply updates
-        updated_config = self._deep_merge(config, updates)
+        updated_config = self._deep_merge(old_config, updates)
 
         # Store updated configuration
         self.configs[config_name] = updated_config
@@ -1726,38 +1928,134 @@ class ConfigurationManager:
             if provider.save_config(config_name, updated_config):
                 success = True
 
-        # Notify listeners
-        self._notify_listeners(config_name, updated_config)
+        if success:
+            # Track change
+            event = self._track_change(
+                config_name=config_name,
+                old_config=old_config,
+                new_config=updated_config,
+                change_type=change_type,
+                provider_id=provider_id,
+                user=user,
+            )
+
+            # Notify listeners
+            self._notify_listeners(event)
 
         return success
 
-    def register_listener(self, config_name: str, callback: Callable) -> None:
+    def register_listener(
+        self,
+        callback: Callable[[ConfigurationChangeEvent], None],
+        config_patterns: Optional[List[str]] = None,
+        change_types: Optional[List[str]] = None,
+    ) -> None:
         """
         Register a listener for configuration changes.
 
         Args:
-            config_name: Name of the configuration to listen for
-            callback: Callback function to call when configuration changes
+            callback: Function to call when configuration changes
+            config_patterns: List of configuration name patterns to listen for
+            change_types: List of change types to listen for
         """
-        if config_name not in self.listeners:
-            self.listeners[config_name] = []
+        listener = ConfigurationChangeListener(
+            callback=callback,
+            config_patterns=config_patterns or [],
+            change_types=change_types or [],
+        )
+        self.listeners.append(listener)
 
-        self.listeners[config_name].append(callback)
+    def unregister_listener(
+        self, callback: Callable[[ConfigurationChangeEvent], None]
+    ) -> None:
+        """
+        Unregister a configuration change listener.
 
-    def _notify_listeners(self, config_name: str, config: Dict[str, Any]) -> None:
+        Args:
+            callback: Callback function to unregister
+        """
+        self.listeners = [l for l in self.listeners if l.callback != callback]
+
+    def get_change_history(
+        self,
+        config_name: Optional[str] = None,
+        change_type: Optional[str] = None,
+        limit: Optional[int] = None,
+    ) -> List[ConfigurationChangeEvent]:
+        """
+        Get configuration change history.
+
+        Args:
+            config_name: Filter by configuration name
+            change_type: Filter by change type
+            limit: Maximum number of events to return
+
+        Returns:
+            List of configuration change events
+        """
+        events = self.change_history
+
+        if config_name:
+            events = [e for e in events if e.config_name == config_name]
+        if change_type:
+            events = [e for e in events if e.change_type == change_type]
+        if limit:
+            events = events[-limit:]
+
+        return events
+
+    def _track_change(
+        self,
+        config_name: str,
+        old_config: Dict[str, Any],
+        new_config: Dict[str, Any],
+        change_type: str,
+        provider_id: Optional[str] = None,
+        user: Optional[str] = None,
+    ) -> ConfigurationChangeEvent:
+        """
+        Track a configuration change.
+
+        Args:
+            config_name: Name of the configuration that changed
+            old_config: Previous configuration
+            new_config: New configuration
+            change_type: Type of change
+            provider_id: ID of the provider that triggered the change
+            user: User who made the change
+
+        Returns:
+            Configuration change event
+        """
+        event = ConfigurationChangeEvent(
+            timestamp=datetime.now(),
+            config_name=config_name,
+            provider_id=provider_id or "unknown",
+            old_value=old_config,
+            new_value=new_config,
+            change_type=change_type,
+            user=user,
+        )
+
+        self.change_history.append(event)
+        if len(self.change_history) > self.max_history:
+            self.change_history.pop(0)
+
+        return event
+
+    def _notify_listeners(self, event: ConfigurationChangeEvent) -> None:
         """
         Notify listeners of configuration changes.
 
         Args:
-            config_name: Name of the configuration that changed
-            config: New configuration
+            event: Configuration change event
         """
-        if config_name in self.listeners:
-            for callback in self.listeners[config_name]:
+        for listener in self.listeners:
+            if listener.matches(event):
                 try:
-                    callback(config_name, config)
+                    listener.notify(event)
                 except Exception as e:
-                    # Log error
+                    # Log error but don't propagate
                     print(f"Error notifying listener: {str(e)}")
 
     def _deep_merge(
@@ -1792,40 +2090,31 @@ class ConfigurationManager:
 
 ## File: config/migrations/invoice_1.0.0_to_1.1.0.yaml
 ````yaml
-name: invoice_v1_to_v1_1
-source_version: "1.0.0"
-target_version: "1.1.0"
-description: "Update invoice schema to support additional payment fields"
-
-# Fields to add in the new version
+name: invoice_1.0.0_to_1.1.0
+source_version: 1.0.0
+target_version: 1.1.0
+description: Update invoice schema to support additional payment fields
 add_fields:
-  - name: payment_method
-    path: payment.method
-    type: string
-    required: true
-    description: "Method of payment (e.g., credit_card, bank_transfer)"
-    validation: "value in ['credit_card', 'bank_transfer', 'cash', 'check']"
-  
-  - name: payment_status
-    path: payment.status
-    type: string
-    required: true
-    description: "Current status of the payment"
-    default: "pending"
-    validation: "value in ['pending', 'processing', 'completed', 'failed']"
-
-# Fields to remove in the new version
+- name: payment_method
+  path: payment.method
+  type: string
+  required: true
+  description: Method of payment (e.g., credit_card, bank_transfer)
+  validation: value in ['credit_card', 'bank_transfer', 'cash', 'check']
+- name: payment_status
+  path: payment.status
+  type: string
+  required: true
+  description: Current status of the payment
+  default: pending
+  validation: value in ['pending', 'processing', 'completed', 'failed']
 remove_fields:
-  - payment_type  # Old field being replaced by payment_method
-
-# Fields to rename in the new version
+- payment_type
 rename_fields:
   transaction_id: payment_reference_id
-
-# Field transformations to apply
 transform_fields:
-  amount: "convert_to_decimal"  # Example transformer that ensures amount is decimal
-  currency: "normalize_currency_code"  # Example transformer that standardizes currency codes
+  amount: convert_to_decimal
+  currency: normalize_currency_code
 ````
 
 ## File: config/migrations/invoice_v1_to_v2.yaml
@@ -1984,6 +2273,120 @@ class BaseConfig(BaseModel):
                 raise ValueError("Version parts must be integers")
 
         return v
+````
+
+## File: config/models/change_event.py
+````python
+"""
+Configuration change event models.
+
+This module provides models for tracking configuration changes.
+"""
+
+from dataclasses import dataclass
+from datetime import datetime
+from typing import Any, Callable, Dict, Optional
+
+
+@dataclass
+class ConfigurationChangeEvent:
+    """
+    Represents a configuration change event.
+
+    Attributes:
+        timestamp: When the change occurred
+        config_name: Name of the configuration that changed
+        provider_id: ID of the provider that triggered the change
+        old_value: Previous configuration value
+        new_value: New configuration value
+        change_type: Type of change (update, reload, etc.)
+        user: User who made the change (if applicable)
+    """
+
+    timestamp: datetime
+    config_name: str
+    provider_id: str
+    old_value: Dict[str, Any]
+    new_value: Dict[str, Any]
+    change_type: str
+    user: Optional[str] = None
+
+    def get_changes(self) -> Dict[str, Dict[str, Any]]:
+        """
+        Get a dictionary of changes between old and new values.
+
+        Returns:
+            Dictionary with 'added', 'modified', and 'removed' keys
+        """
+        changes = {"added": {}, "modified": {}, "removed": {}}
+
+        # Find added and modified keys
+        for key, new_val in self.new_value.items():
+            if key not in self.old_value:
+                changes["added"][key] = new_val
+            elif self.old_value[key] != new_val:
+                changes["modified"][key] = {"old": self.old_value[key], "new": new_val}
+
+        # Find removed keys
+        for key in self.old_value:
+            if key not in self.new_value:
+                changes["removed"][key] = self.old_value[key]
+
+        return changes
+
+
+@dataclass
+class ConfigurationChangeListener:
+    """
+    Configuration change listener interface.
+
+    Attributes:
+        callback: Function to call when configuration changes
+        config_patterns: List of configuration name patterns to listen for
+        change_types: List of change types to listen for
+    """
+
+    callback: Callable[[ConfigurationChangeEvent], None]
+    config_patterns: list[str]
+    change_types: list[str]
+
+    def matches(self, event: ConfigurationChangeEvent) -> bool:
+        """
+        Check if this listener should handle the given event.
+
+        Args:
+            event: Configuration change event
+
+        Returns:
+            True if the listener should handle the event
+        """
+        # Check if change type matches
+        if self.change_types and event.change_type not in self.change_types:
+            return False
+
+        # Check if config name matches any patterns
+        if self.config_patterns:
+            import fnmatch
+
+            return any(
+                fnmatch.fnmatch(event.config_name, pattern)
+                for pattern in self.config_patterns
+            )
+
+        return True
+
+    def notify(self, event: ConfigurationChangeEvent) -> None:
+        """
+        Notify the listener of a configuration change.
+
+        Args:
+            event: Configuration change event
+        """
+        try:
+            self.callback(event)
+        except Exception as e:
+            # Log error but don't propagate
+            print(f"Error in configuration change listener: {str(e)}")
 ````
 
 ## File: config/models/document_type.py
@@ -2499,6 +2902,150 @@ class EnvironmentConfigurationProvider(ConfigurationProvider):
         return value
 ````
 
+## File: config/providers/file_watcher.py
+````python
+"""
+File system watcher for configuration files.
+
+This module provides functionality for monitoring configuration files for changes
+and triggering automatic reloads.
+"""
+
+from datetime import datetime
+from pathlib import Path
+from threading import Event
+from typing import Callable, Dict, Optional, Set
+
+from watchdog.events import FileModifiedEvent, FileSystemEventHandler
+from watchdog.observers import Observer
+
+
+class ConfigFileEventHandler(FileSystemEventHandler):
+    """
+    Event handler for configuration file changes.
+
+    Attributes:
+        callback: Function to call when a file changes
+        watched_files: Set of files being watched
+    """
+
+    def __init__(
+        self, callback: Callable[[str], None], watched_files: Set[str]
+    ) -> None:
+        """
+        Initialize the event handler.
+
+        Args:
+            callback: Function to call when a file changes
+            watched_files: Set of files to watch
+        """
+        self.callback = callback
+        self.watched_files = watched_files
+        self._last_events: Dict[str, datetime] = {}
+
+    def on_modified(self, event: FileModifiedEvent) -> None:
+        """
+        Handle file modification events.
+
+        Args:
+            event: File system event
+        """
+        if not event.is_directory:
+            file_path = str(Path(event.src_path).resolve())
+            if file_path in self.watched_files:
+                # Check if we've already handled this event recently
+                now = datetime.now()
+                if file_path in self._last_events:
+                    # Skip if less than 1 second since last event
+                    if (now - self._last_events[file_path]).total_seconds() < 1:
+                        return
+
+                self._last_events[file_path] = now
+                self.callback(file_path)
+
+
+class FileSystemWatcher:
+    """
+    Watches configuration files for changes and triggers reloads.
+
+    Attributes:
+        watched_files: Set of files being watched
+        observer: File system observer
+        event_handler: Configuration file event handler
+        stop_event: Event to signal the watcher to stop
+    """
+
+    def __init__(self) -> None:
+        """Initialize the file system watcher."""
+        self.watched_files: Set[str] = set()
+        self.observer: Optional[Observer] = None
+        self.event_handler: Optional[ConfigFileEventHandler] = None
+        self.stop_event = Event()
+
+    def start(self, callback: Callable[[str], None]) -> None:
+        """
+        Start watching for file changes.
+
+        Args:
+            callback: Function to call when a file changes
+        """
+        if self.observer:
+            return
+
+        self.event_handler = ConfigFileEventHandler(callback, self.watched_files)
+        self.observer = Observer()
+
+        # Start watching each unique directory
+        watched_dirs = {str(Path(f).parent) for f in self.watched_files}
+        for directory in watched_dirs:
+            self.observer.schedule(self.event_handler, directory, recursive=False)
+
+        self.observer.start()
+
+    def stop(self) -> None:
+        """Stop watching for file changes."""
+        if self.observer:
+            self.stop_event.set()
+            self.observer.stop()
+            self.observer.join()
+            self.observer = None
+            self.event_handler = None
+            self.stop_event.clear()
+
+    def watch_file(self, file_path: str) -> None:
+        """
+        Add a file to watch.
+
+        Args:
+            file_path: Path to the file to watch
+        """
+        resolved_path = str(Path(file_path).resolve())
+        self.watched_files.add(resolved_path)
+
+        # If observer is running, update it
+        if self.observer and self.event_handler:
+            directory = str(Path(resolved_path).parent)
+            self.observer.schedule(self.event_handler, directory, recursive=False)
+
+    def unwatch_file(self, file_path: str) -> None:
+        """
+        Remove a file from watching.
+
+        Args:
+            file_path: Path to the file to stop watching
+        """
+        resolved_path = str(Path(file_path).resolve())
+        self.watched_files.discard(resolved_path)
+
+        # If no more files in a directory, unschedule it
+        if self.observer and self.event_handler:
+            directory = str(Path(resolved_path).parent)
+            if not any(str(Path(f).parent) == directory for f in self.watched_files):
+                for watch in self.observer.watches.copy():
+                    if watch.path == directory:
+                        self.observer.unschedule(watch)
+````
+
 ## File: config/providers/file.py
 ````python
 """
@@ -2510,11 +3057,12 @@ This module provides a configuration provider that loads configuration from file
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 import yaml
 
 from utils.pipeline.config.providers.base import ConfigurationProvider
+from utils.pipeline.config.providers.file_watcher import FileSystemWatcher
 
 
 class FileConfigurationProvider(ConfigurationProvider):
@@ -2525,7 +3073,10 @@ class FileConfigurationProvider(ConfigurationProvider):
     """
 
     def __init__(
-        self, base_dirs: List[str], file_extensions: Optional[List[str]] = None
+        self,
+        base_dirs: List[str],
+        file_extensions: Optional[List[str]] = None,
+        enable_hot_reload: bool = False,
     ):
         """
         Initialize the provider.
@@ -2541,92 +3092,125 @@ class FileConfigurationProvider(ConfigurationProvider):
         for base_dir in self.base_dirs:
             os.makedirs(base_dir, exist_ok=True)
 
-    def _resolve_lookup_paths(self, config_name: str) -> List[Path]:
+        # Initialize file watcher
+        self.enable_hot_reload = enable_hot_reload
+        self.file_watcher = FileSystemWatcher() if enable_hot_reload else None
+        self.change_callbacks: List[Callable[[str], None]] = []
+
+    def start_watching(self) -> None:
+        """Start watching for configuration file changes."""
+        if self.enable_hot_reload and self.file_watcher:
+            self.file_watcher.start(self._on_file_changed)
+
+    def stop_watching(self) -> None:
+        """Stop watching for configuration file changes."""
+        if self.file_watcher:
+            self.file_watcher.stop()
+
+    def register_change_callback(self, callback: Callable[[str], None]) -> None:
         """
-        Resolve configuration paths, supporting glob patterns.
+        Register a callback for configuration changes.
+
+        Args:
+            callback: Function to call when a configuration changes
+        """
+        self.change_callbacks.append(callback)
+
+    def _on_file_changed(self, file_path: str) -> None:
+        """
+        Handle configuration file changes.
+
+        Args:
+            file_path: Path to the changed file
+        """
+        # Get config name from file path
+        config_name = str(Path(file_path).relative_to(self.base_dirs[0]))
+
+        # Notify callbacks
+        for callback in self.change_callbacks:
+            try:
+                callback(config_name)
+            except Exception as e:
+                print(f"Error in configuration change callback: {str(e)}")
+
+    def _resolve_lookup_path(self, config_name: str) -> Optional[Path]:
+        """
+        Resolve configuration path.
 
         Args:
             config_name: Name of the configuration to resolve
 
         Returns:
-            List of resolved paths
+            Resolved path if found, None otherwise
         """
         config_path = Path(config_name)
-        resolved_paths = []
 
-        # Check if config_name contains glob pattern
-        if any(c in config_name for c in "*?[]"):
-            # Handle glob pattern
-            for base_dir in self.base_dirs:
-                try:
-                    # Use glob to find matching files
-                    pattern_path = base_dir / config_path
-                    resolved_paths.extend(
-                        Path(p) for p in pattern_path.parent.glob(pattern_path.name)
-                    )
-                except Exception:
-                    continue
-        else:
-            # Handle regular path
-            if config_path.is_absolute():
-                if config_path.exists():
-                    resolved_paths.append(config_path)
-            else:
-                # Try each base directory
-                for base_dir in self.base_dirs:
-                    # Try with provided name
-                    candidate = base_dir / config_path
+        # If already absolute or includes base_dir
+        if config_path.is_absolute():
+            return config_path if config_path.exists() else None
+
+        # Try each base_dir and extension combination
+        for base_dir in self.base_dirs:
+            base_dir = Path(base_dir)
+            # Try with provided name
+            candidate = base_dir / config_path
+            if candidate.exists():
+                return candidate
+
+            # Try with extensions if no extension provided
+            if not config_path.suffix:
+                for ext in self.file_extensions:
+                    candidate = base_dir / f"{config_name}{ext}"
                     if candidate.exists():
-                        resolved_paths.append(candidate)
-                        continue
+                        return candidate
 
-                    # Try with extensions if no extension provided
-                    if not config_path.suffix:
-                        for ext in self.file_extensions:
-                            candidate = base_dir / f"{config_name}{ext}"
-                            if candidate.exists():
-                                resolved_paths.append(candidate)
-                                break
-
-        return resolved_paths
+        return None
 
     def get_config(self, config_name: str) -> Dict[str, Any]:
         """
         Get configuration by name.
 
         Args:
-            config_name: Name of the configuration to load. Can be a relative path
-                         or a full path that includes one of the base directories.
-                         Supports glob patterns for loading multiple configurations.
+            config_name: Name of the configuration to load
 
         Returns:
             Configuration dictionary or empty dict if not found
         """
-        paths = self._resolve_lookup_paths(config_name)
+        # Handle glob patterns
+        if any(c in config_name for c in "*?[]"):
+            merged_config = {}
+            for base_dir in self.base_dirs:
+                base_dir = Path(base_dir)
+                try:
+                    # Split path into directory and pattern
+                    config_path = Path(config_name.replace("/", os.sep))
+                    search_dir = base_dir / config_path.parent
+                    pattern = config_path.name
 
-        if not paths:
-            # If no paths found and no extension provided, try default path
-            if not Path(config_name).suffix:
-                default_path = (
-                    self.base_dirs[0] / f"{config_name}{self.file_extensions[0]}"
-                )
-                paths = [default_path]
+                    # Search for files matching pattern
+                    if search_dir.exists():
+                        print(f"Searching in {search_dir} for {pattern}")
+                        for path in search_dir.glob(pattern):
+                            print(f"Found file: {path}")
+                            if path.is_file():
+                                config_data = self._load_file(path)
+                                if config_data:
+                                    print(f"Loaded config: {config_data}")
+                                    merged_config[path.stem] = config_data
+                except Exception as e:
+                    print(f"Error searching for {config_name} in {base_dir}: {e}")
+                    continue
+            return merged_config
 
-        # For glob patterns, merge all matching configurations
-        merged_config = {}
-        for path in paths:
-            if path.exists():
-                config_data = self._load_file(path)
-                # Use filename without extension as the key for the configuration
-                config_key = path.stem
-                if config_data:
-                    merged_config[config_key] = config_data
+        # Handle single file
+        file_path = self._resolve_lookup_path(config_name)
+        if file_path and file_path.exists():
+            # Add file to watcher if hot reload is enabled
+            if self.enable_hot_reload and self.file_watcher:
+                self.file_watcher.watch_file(str(file_path))
+            return self._load_file(file_path) or {}
 
-        # If not a glob pattern, return the single configuration directly
-        if not any(c in config_name for c in "*?[]"):
-            return next(iter(merged_config.values())) if merged_config else {}
-
-        return merged_config
+        return {}
 
     def supports_config(self, config_name: str) -> bool:
         """
@@ -2640,8 +3224,8 @@ class FileConfigurationProvider(ConfigurationProvider):
         Returns:
             True if provider supports this configuration, False otherwise
         """
-        paths = self._resolve_lookup_paths(config_name)
-        return bool(paths and any(p.exists() for p in paths))
+        file_path = self._resolve_lookup_path(config_name)
+        return file_path is not None and file_path.exists()
 
     def save_config(self, config_name: str, config_data: Dict[str, Any]) -> bool:
         """
@@ -2655,12 +3239,13 @@ class FileConfigurationProvider(ConfigurationProvider):
         Returns:
             True if successful, False otherwise
         """
-        paths = self._resolve_lookup_paths(config_name)
-        if paths:
-            file_path = paths[0]  # Use first matching path
-        else:
+        file_path = self._resolve_lookup_path(config_name)
+        if not file_path:
             # Use default path if no matches found
             file_path = self.base_dirs[0] / f"{config_name}{self.file_extensions[0]}"
+            # Add new file to watcher if hot reload is enabled
+            if self.enable_hot_reload and self.file_watcher:
+                self.file_watcher.watch_file(str(file_path))
 
         # Ensure directory exists
         os.makedirs(file_path.parent, exist_ok=True)
@@ -3861,108 +4446,152 @@ strategies:
   text: strategies.text
 ````
 
+## File: examples/config/app_config.yaml
+````yaml
+feature_flags:
+  dark_mode: true
+  beta_features: false
+  new_feature: true
+logging:
+  level: info
+  format: json
+````
+
 ## File: examples/document_classification_example.py
 ````python
 """
-Example script demonstrating document classification functionality.
+Example usage of the document classification system.
+
+This script demonstrates how to:
+1. Configure and initialize the classification system
+2. Register custom classifiers
+3. Classify documents using multiple strategies
+4. Use ensemble classification
 """
 
-from pathlib import Path
+import os
+import sys
+from typing import Any, Dict
 
-from utils.pipeline.pipeline import Pipeline
-from utils.pipeline.utils.progress import PipelineProgress
+import yaml
+
+# Add the root directory to Python path
+root_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../.."))
+sys.path.insert(0, root_dir)
+
+from utils.pipeline.processors.classifiers.ml_based import MLBasedClassifier
+from utils.pipeline.processors.document_classifier import DocumentClassifier
+
+
+def load_config() -> Dict[str, Any]:
+    """Load classification configuration from YAML file."""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    config_path = os.path.join(
+        script_dir, "..", "config", "example_classifier_config.yaml"
+    )
+    print(f"Loading config from: {config_path}")
+    try:
+        with open(config_path, "r") as f:
+            return yaml.safe_load(f)
+    except Exception as e:
+        print(f"Error loading config: {str(e)}")
+        return {}
 
 
 def main():
-    """Run document classification example."""
-    progress = PipelineProgress()
+    # Load configuration
+    config = load_config()
 
-    try:
-        # Get the current directory
-        current_dir = Path(__file__).parent.parent
+    # Initialize document classifier
+    classifier = DocumentClassifier(config)
 
-        # Set up paths
-        input_dir = current_dir / "data" / "input"
-        output_dir = current_dir / "data" / "output"
-        output_dir.mkdir(parents=True, exist_ok=True)
+    # Register additional ML-based classifier
+    classifier.add_classifier(
+        "ml_based",
+        MLBasedClassifier,
+        config.get("classifiers", {}).get("ml_based", {}),
+    )
 
-        # Display minimal setup info
-        progress.display_success(f"Processing files from {input_dir}")
-
-        # Initialize pipeline with configuration
-        config = {
-            "output_format": "json",  # Default format
-            "enable_classification": True,  # Enable document classification
-            "record_schemas": True,  # Record schemas for future matching
-            "match_schemas": True,  # Match against known schemas
-            "classification": {
-                "type": "rule_based",  # Use rule-based classifier
-                "confidence_threshold": 0.6,  # Minimum confidence threshold
+    # Example document data
+    document_data = {
+        "metadata": {
+            "title": "Project Proposal - System Upgrade",
+            "author": "John Smith",
+            "date": "2025-03-15",
+        },
+        "content": [
+            {
+                "title": "Executive Summary",
+                "content": "This proposal outlines our approach to upgrading...",
             },
-            "strategies": {
-                "pdf": {
-                    "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
-                    "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
-                    "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
-                    "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
-                },
+            {
+                "title": "Scope of Work",
+                "content": "The project will be completed in three phases...",
             },
-        }
+            {
+                "title": "Payment Terms",
+                "content": "Payment schedule: 30% upfront, 40% at milestone...",
+            },
+            {
+                "title": "Delivery Schedule",
+                "content": "Phase 1 will be delivered within 4 weeks...",
+            },
+        ],
+        "tables": [
+            {
+                "title": "Cost Breakdown",
+                "headers": ["Item", "Cost"],
+                "rows": [
+                    ["Phase 1", "$50,000"],
+                    ["Phase 2", "$75,000"],
+                    ["Phase 3", "$60,000"],
+                ],
+            }
+        ],
+    }
 
-        pipeline = Pipeline(config)
+    # Classify document
+    result = classifier.classify(document_data)
 
-        # Process all PDF files in the input directory
-        for pdf_file in input_dir.glob("*.pdf"):
-            progress.display_success(f"Processing {pdf_file.name}")
+    # Print classification results
+    print("\nDocument Classification Results:")
+    print("-" * 30)
+    print(f"Document Type: {result['document_type']}")
+    print(f"Confidence: {result['confidence']:.2f}")
+    print(f"Schema Pattern: {result['schema_pattern']}")
+    print("\nKey Features:")
+    for feature in result.get("key_features", []):
+        print(f"- {feature}")
 
-            # Process the PDF with JSON output
-            output_data = pipeline.run(str(pdf_file))
+    print("\nClassifiers Used:")
+    for classifier_name in result.get("classifiers", []):
+        print(f"- {classifier_name}")
 
-            # Save JSON output
-            json_output = output_dir / f"{pdf_file.stem}.json"
-            pipeline.save_output(output_data, str(json_output))
-            progress.display_success(f"JSON output saved to: {json_output.name}")
+    # Example of updating classifier configuration
+    new_config = {
+        "name": "ML-Based Classifier",
+        "version": "1.0.1",
+        "model": {
+            "confidence_threshold": 0.8,  # Increased threshold
+            "feature_weights": {
+                "section_density": 0.4,  # Adjusted weights
+                "table_density": 0.3,
+                "avg_section_length": 0.2,
+                "metadata_completeness": 0.1,
+            },
+        },
+    }
+    classifier.update_classifier_config("ml_based", new_config)
 
-            # Process the PDF with Markdown output
-            pipeline.config["output_format"] = "markdown"
-            output_data = pipeline.run(str(pdf_file))
-
-            # Save Markdown output
-            md_output = output_dir / f"{pdf_file.stem}.md"
-            pipeline.save_output(output_data, str(md_output))
-            progress.display_success(f"Markdown output saved to: {md_output.name}")
-
-            # Display classification results
-            if "classification" in output_data:
-                classification = output_data["classification"]
-                progress.display_success(
-                    f"Document classified as: {classification['document_type']} "
-                    f"(confidence: {classification['confidence']:.2f})"
-                )
-                progress.display_success(
-                    f"Schema pattern: {classification['schema_pattern']}"
-                )
-                progress.display_success(
-                    f"Key features: {', '.join(classification['key_features'])}"
-                )
-
-            # Reset output format for next file
-            pipeline.config["output_format"] = "json"
-
-        # Display final summary
-        progress.display_success("Processing complete!")
-        progress.display_success(
-            f"Files Processed: {len(list(input_dir.glob('*.pdf')))}"
-        )
-        progress.display_success(
-            f"Outputs Generated: {len(list(output_dir.glob('*.*')))}"
-        )
-        progress.display_success("Classification: Enabled")
-        progress.display_success("Schema Recording: Enabled")
-
-    except Exception as e:
-        progress.display_error(f"Error processing documents: {e}")
-        raise
+    # Get information about available classifiers
+    print("\nAvailable Classifiers:")
+    print("-" * 30)
+    for info in classifier.get_available_classifiers():
+        print(f"\nClassifier: {info['name']}")
+        print(f"Supported Types: {', '.join(info['supported_types'])}")
+        if info["has_config"]:
+            print("Has Custom Configuration: Yes")
+        print(f"Info: {info['info']}")
 
 
 if __name__ == "__main__":
@@ -4055,6 +4684,135 @@ def main():
     except Exception as e:
         progress.display_error(f"Error processing PDF: {e}")
         raise
+
+
+if __name__ == "__main__":
+    main()
+````
+
+## File: examples/runtime_updates_example.py
+````python
+"""
+Example demonstrating runtime configuration updates and hot-reloading.
+
+This script shows how to:
+1. Set up configuration with hot-reloading
+2. Register change listeners
+3. Update configuration at runtime
+4. Monitor configuration changes
+"""
+
+import time
+from pathlib import Path
+
+from utils.pipeline.config.manager import ConfigurationManager
+from utils.pipeline.config.models.change_event import ConfigurationChangeEvent
+from utils.pipeline.config.providers.file import FileConfigurationProvider
+
+# Example configuration files
+CONFIG_DIR = Path(__file__).parent / "config"
+CONFIG_DIR.mkdir(exist_ok=True)
+
+# Create example configuration file
+APP_CONFIG = CONFIG_DIR / "app_config.yaml"
+APP_CONFIG.write_text("""
+feature_flags:
+  dark_mode: false
+  beta_features: false
+  
+logging:
+  level: info
+  format: json
+""")
+
+
+def print_config_changes(event: ConfigurationChangeEvent) -> None:
+    """Print configuration changes."""
+    print(f"\nConfiguration changed: {event.config_name}")
+    print(f"Change type: {event.change_type}")
+    print(f"Timestamp: {event.timestamp}")
+
+    changes = event.get_changes()
+    if changes["added"]:
+        print("\nAdded:")
+        for key, value in changes["added"].items():
+            print(f"  {key}: {value}")
+
+    if changes["modified"]:
+        print("\nModified:")
+        for key, changes in changes["modified"].items():
+            print(f"  {key}:")
+            print(f"    From: {changes['old']}")
+            print(f"    To:   {changes['new']}")
+
+    if changes["removed"]:
+        print("\nRemoved:")
+        for key, value in changes["removed"].items():
+            print(f"  {key}: {value}")
+
+
+def main() -> None:
+    """Run the example."""
+    # Create configuration manager with hot-reloading enabled
+    config_manager = ConfigurationManager(auto_reload=True)
+
+    # Create file provider with hot-reloading
+    file_provider = FileConfigurationProvider(
+        base_dirs=[str(CONFIG_DIR)], enable_hot_reload=True
+    )
+
+    # Register provider
+    config_manager.register_provider(file_provider)
+
+    # Register change listener for all YAML files
+    config_manager.register_listener(
+        callback=print_config_changes,
+        config_patterns=["*.yaml"],
+        change_types=["update", "reload"],
+    )
+
+    # Load initial configuration
+    config = config_manager.get_config("app_config.yaml")
+    print("\nInitial configuration:")
+    print(config)
+
+    # Update configuration
+    print("\nUpdating configuration...")
+    config_manager.update_configuration(
+        config_name="app_config.yaml",
+        updates={"feature_flags": {"dark_mode": True, "new_feature": True}},
+        change_type="update",
+        user="admin",
+    )
+
+    # Get updated configuration
+    config = config_manager.get_config("app_config.yaml")
+    print("\nUpdated configuration:")
+    print(config)
+
+    # Show change history
+    print("\nChange history:")
+    history = config_manager.get_change_history(config_name="app_config.yaml", limit=5)
+    for event in history:
+        print(f"\n{event.timestamp}: {event.change_type}")
+        print(f"Changed by: {event.user or 'unknown'}")
+        changes = event.get_changes()
+        if changes["modified"]:
+            print("Modified values:")
+            for key, change in changes["modified"].items():
+                print(f"  {key}: {change['old']} -> {change['new']}")
+
+    print(
+        "\nWatching for file changes. Edit app_config.yaml to see hot-reloading in action."
+    )
+    print("Press Ctrl+C to exit.")
+
+    try:
+        while True:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        print("\nStopping configuration manager...")
+        config_manager.disable_auto_reload()
 
 
 if __name__ == "__main__":
@@ -4212,9 +4970,11 @@ This example shows how to:
 """
 
 from decimal import Decimal
+from pathlib import Path
 from typing import Any
 
 from utils.pipeline.config import config_manager
+from utils.pipeline.config.providers.file import FileConfigurationProvider
 from utils.pipeline.schema.enhanced_registry import EnhancedSchemaRegistry
 
 
@@ -4269,20 +5029,118 @@ def main():
     for schema_id, schema in registry.schemas.items():
         print(f"  {schema_id}: {schema.get('name')} v{schema.get('schema_version')}")
 
-    # Print discovery paths
-    print("\nDiscovery paths:")
-    discovery_paths = registry.config.get("discovery", {}).get("paths", [])
-    print(f"  {discovery_paths}")
+    # Print registry config
+    print("\nRegistry config:")
+    print(f"  Config: {registry.config}")
+    print(f"  Discovery paths: {registry.config.get('discovery', {}).get('paths', [])}")
+    print(f"  Storage path: {registry.config.get('storage', {}).get('path', '')}")
+
+    # Try to discover schemas
+    print("\nTrying to discover schemas:")
+    for path in registry.config.get("discovery", {}).get("paths", []):
+        print(f"\nChecking path: {path}")
+        patterns = registry.config.get("discovery", {}).get(
+            "patterns", ["*.yaml", "*.yml", "*.json"]
+        )
+        for pattern in patterns:
+            print(f"  Pattern: {pattern}")
+            pattern_path = f"{path}/{pattern}"
+            print(f"  Looking for: {pattern_path}")
+            # Try to list files directly
+            search_dir = Path(path)
+            if search_dir.exists():
+                print(f"  Directory exists: {search_dir}")
+                for file_path in search_dir.glob(pattern):
+                    print(f"  Found file: {file_path}")
+                    if file_path.is_file():
+                        print(f"  Loading file: {file_path}")
+                        # Load the file
+                        schema_data = config_manager.get_config(
+                            str(file_path.relative_to(search_dir.parent))
+                        )
+                        print(f"  Data: {schema_data}")
+                        if schema_data:
+                            # Add to version history if it's a schema
+                            schema_name = schema_data.get("name")
+                            schema_version = schema_data.get("schema_version")
+                            if schema_name and schema_version:
+                                if schema_name not in registry.schema_versions:
+                                    registry.schema_versions[schema_name] = {}
+                                registry.schema_versions[schema_name][
+                                    schema_version
+                                ] = schema_data
+                                print(
+                                    f"  Added to version history: {schema_name} v{schema_version}"
+                                )
+
+                            # Test migration configuration if it's a migration
+                            if (
+                                "source_version" in schema_data
+                                and "target_version" in schema_data
+                                and "name" in schema_data
+                            ):
+                                migration_name = schema_data["name"]
+                                print(
+                                    f"  Found migration configuration: {migration_name}"
+                                )
+                                # Extract schema name from migration name
+                                if migration_name.startswith("invoice_"):
+                                    schema_name = "invoice"
+                                    # Try to load it through the migrator
+                                    migration_config = (
+                                        registry.migrator.get_migration_config(
+                                            schema_name,
+                                            schema_data["source_version"],
+                                            schema_data["target_version"],
+                                        )
+                                    )
+                                    if migration_config:
+                                        print("  Migration config loaded successfully")
+                                    else:
+                                        print("  Failed to load migration config")
+                                        # Try to add the migration configuration directly
+                                        # Save the migration configuration with the correct name
+                                        migration_path = f"migrations/{schema_name}_{schema_data['source_version']}_to_{schema_data['target_version']}"
+                                        print(
+                                            f"  Adding migration config at: {migration_path}"
+                                        )
+                                        provider = next(
+                                            provider
+                                            for provider, _ in config_manager.providers
+                                            if isinstance(
+                                                provider, FileConfigurationProvider
+                                            )
+                                        )
+                                        # Update the name to match the path
+                                        schema_data["name"] = (
+                                            f"{schema_name}_{schema_data['source_version']}_to_{schema_data['target_version']}"
+                                        )
+                                        provider.save_config(
+                                            migration_path, schema_data
+                                        )
 
     # Try to load the schema directly
     print("\nTrying to load schema directly:")
-    schema_data = config_manager.get_config("utils/pipeline/config/schemas/invoice_v1")
-    if schema_data:
-        print(
-            f"  Schema loaded: {schema_data.get('name')} v{schema_data.get('schema_version')}"
-        )
-    else:
-        print("  Failed to load schema")
+    file_provider = next(
+        provider
+        for provider, _ in config_manager.providers
+        if isinstance(provider, FileConfigurationProvider)
+    )
+    for base_dir in file_provider.base_dirs:
+        print(f"  Checking base dir: {base_dir}")
+        schema_path = base_dir / "schemas" / "invoice_v1.yaml"
+        print(f"  Looking for: {schema_path}")
+        if schema_path.exists():
+            print(f"  Found schema at: {schema_path}")
+            schema_data = config_manager.get_config("schemas/invoice_v1")
+            if schema_data:
+                print(
+                    f"  Schema loaded: {schema_data.get('name')} v{schema_data.get('schema_version')}"
+                )
+            else:
+                print("  Failed to load schema")
+        else:
+            print("  Schema not found")
 
     # Migrate schema from v1.0.0 to v1.1.0
     success = registry.migrate_schema("invoice", "1.0.0", "1.1.0")
@@ -5140,13 +5998,235 @@ class PipelineError(Exception):
     pass
 ````
 
+## File: processors/__init__.py
+````python
+"""Processors package."""
+````
+
 ## File: processors/classifiers/__init__.py
 ````python
-"""
-Document classifiers package.
+"""Classifiers package."""
+````
 
-This package contains various document classification strategies.
+## File: processors/classifiers/ml_based.py
+````python
 """
+ML-based document classifier.
+
+This module provides a machine learning based approach to document classification.
+This is an example implementation showing how to extend the classification system
+with new classifier types.
+"""
+
+from typing import Any, Dict, List, Optional
+
+import numpy as np
+
+from utils.pipeline.strategies.classifier_strategy import BaseClassifier
+
+
+class MLBasedClassifier(BaseClassifier):
+    """
+    Classifies documents using machine learning.
+
+    This classifier uses a pre-trained model to identify document types
+    based on their features and content. This is an example implementation
+    showing how to integrate ML models into the classification system.
+    """
+
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
+        """
+        Initialize the ML-based classifier.
+
+        Args:
+            config: Configuration dictionary for the classifier
+        """
+        super().__init__(config=config)
+
+        # Load ML model configuration
+        self.model_config = self.config.get("model", {})
+        self.confidence_threshold = self.model_config.get("confidence_threshold", 0.7)
+        self.feature_weights = self.model_config.get("feature_weights", {})
+
+        # In a real implementation, you would load your trained model here
+        # self.model = load_model(self.model_config.get("model_path"))
+
+        # For this example, we'll use a simple feature-based approach
+        self.document_types = [
+            "PROPOSAL",
+            "QUOTATION",
+            "SPECIFICATION",
+            "INVOICE",
+            "TERMS_AND_CONDITIONS",
+        ]
+
+    def classify(
+        self, document_data: Dict[str, Any], features: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Classify the document using ML-based approach.
+
+        Args:
+            document_data: Processed document data
+            features: Extracted features from the document
+
+        Returns:
+            Classification result with document type, confidence, and schema pattern
+        """
+        try:
+            # Extract ML features
+            ml_features = self._extract_ml_features(document_data, features)
+
+            # In a real implementation, you would use your model to predict
+            # prediction = self.model.predict(ml_features)
+
+            # For this example, we'll use a simple scoring mechanism
+            scores = self._calculate_scores(ml_features)
+
+            # Normalize scores to [0,1] range
+            scores = scores / np.sum(scores) if np.sum(scores) > 0 else scores
+
+            # Get best matching type
+            best_type_idx = np.argmax(scores)
+            confidence = float(scores[best_type_idx])  # Convert from numpy float
+            doc_type = self.document_types[best_type_idx]
+
+            if confidence < self.confidence_threshold or np.sum(scores) == 0:
+                return {
+                    "document_type": "UNKNOWN",
+                    "confidence": confidence,
+                    "schema_pattern": "unknown",
+                    "key_features": list(ml_features.keys()),
+                }
+
+            return {
+                "document_type": doc_type,
+                "confidence": confidence,
+                "schema_pattern": f"ml_{doc_type.lower()}",
+                "key_features": list(ml_features.keys()),
+            }
+
+        except Exception as e:
+            self.logger.error(f"Error in ML classification: {str(e)}", exc_info=True)
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": 0.0,
+                "schema_pattern": "unknown",
+                "key_features": [],
+            }
+
+    def get_supported_types(self) -> List[str]:
+        """
+        Get the document types supported by this classifier.
+
+        Returns:
+            List of supported document type identifiers
+        """
+        return self.document_types
+
+    def _extract_ml_features(
+        self, document_data: Dict[str, Any], features: Dict[str, Any]
+    ) -> Dict[str, float]:
+        """
+        Extract features for ML classification.
+
+        Args:
+            document_data: Processed document data
+            features: Base features from document
+
+        Returns:
+            Dictionary of ML-specific features
+        """
+        ml_features = {}
+
+        # Structure features
+        ml_features["section_density"] = features["section_count"] / max(
+            len(
+                " ".join(
+                    [s.get("content", "") for s in document_data.get("content", [])]
+                )
+            ),
+            1,
+        )
+        ml_features["table_density"] = features["table_count"] / max(
+            features["section_count"], 1
+        )
+
+        # Content features
+        all_content = " ".join(
+            [s.get("content", "") for s in document_data.get("content", [])]
+        )
+        ml_features["avg_section_length"] = len(all_content) / max(
+            features["section_count"], 1
+        )
+
+        # Metadata completeness
+        metadata = document_data.get("metadata", {})
+        ml_features["metadata_completeness"] = (
+            len(metadata) / 10
+        )  # Normalize by expected fields
+
+        # Feature presence
+        ml_features["has_payment_terms"] = float(
+            features.get("has_payment_terms", False)
+        )
+        ml_features["has_delivery_terms"] = float(
+            features.get("has_delivery_terms", False)
+        )
+        ml_features["has_dollar_amounts"] = float(
+            features.get("has_dollar_amounts", False)
+        )
+        ml_features["has_quantities"] = float(features.get("has_quantities", False))
+
+        return ml_features
+
+    def _calculate_scores(self, features: Dict[str, float]) -> np.ndarray:
+        """
+        Calculate classification scores for each document type.
+
+        Args:
+            features: Extracted ML features
+
+        Returns:
+            Array of scores for each document type
+        """
+        scores = np.zeros(len(self.document_types))
+
+        # Example scoring logic (in a real implementation, this would use a trained model)
+        for i, doc_type in enumerate(self.document_types):
+            if doc_type == "PROPOSAL":
+                scores[i] = (
+                    features["has_payment_terms"] * 0.3
+                    + features["has_delivery_terms"] * 0.3
+                    + features["section_density"] * 0.2
+                    + features["metadata_completeness"] * 0.2
+                )
+            elif doc_type == "QUOTATION":
+                scores[i] = (
+                    features["has_dollar_amounts"] * 0.4
+                    + features["has_quantities"] * 0.3
+                    + features["table_density"] * 0.3
+                )
+            elif doc_type == "SPECIFICATION":
+                scores[i] = (
+                    features["section_density"] * 0.4
+                    + features["avg_section_length"] * 0.3
+                    + features["metadata_completeness"] * 0.3
+                )
+            elif doc_type == "INVOICE":
+                scores[i] = (
+                    features["has_dollar_amounts"] * 0.5
+                    + features["table_density"] * 0.3
+                    + features["metadata_completeness"] * 0.2
+                )
+            elif doc_type == "TERMS_AND_CONDITIONS":
+                scores[i] = (
+                    features["section_density"] * 0.3
+                    + features["avg_section_length"] * 0.4
+                    + features["metadata_completeness"] * 0.3
+                )
+
+        return scores
 ````
 
 ## File: processors/classifiers/pattern_matcher.py
@@ -5159,10 +6239,10 @@ This module provides a pattern matching approach to document classification.
 
 from typing import Any, Dict, List, Optional
 
-from utils.pipeline.utils.logging import get_logger
+from utils.pipeline.strategies.classifier_strategy import BaseClassifier
 
 
-class PatternMatcherClassifier:
+class PatternMatcherClassifier(BaseClassifier):
     """
     Classifies documents using pattern matching.
 
@@ -5170,15 +6250,14 @@ class PatternMatcherClassifier:
     based on their structure, content, and metadata.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
         """
         Initialize the pattern matcher classifier.
 
         Args:
             config: Configuration dictionary for the classifier
         """
-        self.config = config or {}
-        self.logger = get_logger(__name__)
+        super().__init__(config=config)
 
         # Define document patterns
         self.patterns = self._load_patterns()
@@ -5216,6 +6295,15 @@ class PatternMatcherClassifier:
                 "schema_pattern": "unknown",
                 "key_features": [],
             }
+
+    def get_supported_types(self) -> List[str]:
+        """
+        Get the document types supported by this classifier.
+
+        Returns:
+            List of supported document type identifiers
+        """
+        return [pattern["name"] for pattern in self.patterns]
 
     def _load_patterns(self) -> List[Dict[str, Any]]:
         """
@@ -5435,14 +6523,12 @@ Rule-based document classifier.
 This module provides a rule-based approach to document classification.
 """
 
-import os
-import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
-from utils.pipeline.utils.logging import get_logger
+from utils.pipeline.strategies.classifier_strategy import BaseClassifier
 
 
-class RuleBasedClassifier:
+class RuleBasedClassifier(BaseClassifier):
     """
     Classifies documents using a rule-based approach.
 
@@ -5450,15 +6536,14 @@ class RuleBasedClassifier:
     based on their structure, content, and metadata.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
         """
         Initialize the rule-based classifier.
 
         Args:
             config: Configuration dictionary for the classifier
         """
-        self.config = config or {}
-        self.logger = get_logger(__name__)
+        super().__init__(config=config)
 
         # Get classification rules from config
         self.classification_config = self.config.get("classification", {})
@@ -5481,39 +6566,11 @@ class RuleBasedClassifier:
         Returns:
             Classification result with document type, confidence, and schema pattern
         """
-        # Debug output
-        self.logger.info(f"Document metadata: {document_data.get('metadata', {})}")
-        self.logger.info(f"Document path: {document_data.get('path', '')}")
-        self.logger.info(f"Available rules: {list(self.rules_config.keys())}")
-        self.logger.info(f"Available filename patterns: {self.filename_patterns}")
-
-        # Check filename patterns if path is available
-        if "path" in document_data:
-            filename = os.path.basename(document_data["path"])
-            self.logger.info(f"Checking filename patterns for: {filename}")
-            for doc_type, pattern in self.filename_patterns.items():
-                self.logger.info(f"Checking pattern for {doc_type}: {pattern}")
-                if re.search(pattern, filename):
-                    self.logger.info(
-                        f"Matched filename pattern for {doc_type}: {filename}"
-                    )
-                    return {
-                        "document_type": doc_type,
-                        "confidence": 0.8,  # High confidence for filename match
-                        "schema_pattern": self.rules_config.get(doc_type, {}).get(
-                            "schema_pattern", "standard"
-                        ),
-                        "key_features": ["filename_match"],
-                    }
-
         # Apply configured rules
         best_match = self._get_best_match(document_data, features)
-        self.logger.info(f"Best match after rule application: {best_match}")
 
         # Only use generic classification if confidence is very low
-        if (
-            best_match[0] == "UNKNOWN" or best_match[1] < 0.2
-        ):  # Lower threshold for falling back to generic
+        if best_match[0] == "UNKNOWN" or best_match[1] < 0.2:
             # If no specific type matched or confidence is very low, try to determine a generic type
             self.logger.info("Using generic classification due to low confidence")
             return self._classify_generic(document_data, features)
@@ -5525,9 +6582,18 @@ class RuleBasedClassifier:
             "key_features": best_match[3],
         }
 
+    def get_supported_types(self) -> List[str]:
+        """
+        Get the document types supported by this classifier.
+
+        Returns:
+            List of supported document type identifiers
+        """
+        return list(self.rules_config.keys())
+
     def _get_best_match(
         self, document_data: Dict[str, Any], features: Dict[str, Any]
-    ) -> Tuple[str, float, str, List[str]]:
+    ) -> tuple[str, float, str, List[str]]:
         """
         Apply all configured rules and get the best matching document type.
 
@@ -5562,9 +6628,6 @@ class RuleBasedClassifier:
                     )
                     confidence += metadata_confidence
                     key_features.append("metadata_match")
-                    self.logger.info(
-                        f"Matched {metadata_matches} metadata keywords for {doc_type}"
-                    )
 
             # Check title keywords in section titles
             section_titles = features.get("section_titles", [])
@@ -5665,8 +6728,10 @@ Document classifier module.
 This module provides functionality for classifying documents based on their structure and content.
 """
 
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
+from utils.pipeline.strategies.classifier_factory import ClassifierFactory
+from utils.pipeline.strategies.ensemble_manager import EnsembleManager
 from utils.pipeline.utils.logging import get_logger
 
 
@@ -5674,49 +6739,52 @@ class DocumentClassifier:
     """
     Classifies documents based on their structure and content patterns.
 
-    This classifier analyzes the document structure to identify patterns that match
-    known document types such as proposals, quotations, specifications, etc.
+    This classifier uses multiple classification strategies and ensemble methods
+    to identify document types such as proposals, quotations, specifications, etc.
     """
 
     def __init__(
         self,
-        classifier_type: str = "rule_based",
         config: Optional[Dict[str, Any]] = None,
     ):
         """
         Initialize the document classifier.
 
         Args:
-            classifier_type: Type of classifier to use (rule_based, pattern_matcher, etc.)
             config: Configuration dictionary for the classifier
         """
-        self.classifier_type = classifier_type
         self.config = config or {}
         self.logger = get_logger(__name__)
 
-        # Initialize classifier strategy based on type
-        if classifier_type == "rule_based":
-            from utils.pipeline.processors.classifiers.rule_based import (
-                RuleBasedClassifier,
-            )
+        # Initialize factory and ensemble manager
+        self.factory = ClassifierFactory()
+        self.ensemble_manager = EnsembleManager(self.config.get("ensemble", {}))
 
-            self.classifier_strategy = RuleBasedClassifier(self.config)
-        elif classifier_type == "pattern_matcher":
-            from utils.pipeline.processors.classifiers.pattern_matcher import (
-                PatternMatcherClassifier,
-            )
+        # Register default classifiers
+        self._register_default_classifiers()
 
-            self.classifier_strategy = PatternMatcherClassifier(self.config)
-        else:
-            # Default to rule-based
-            from utils.pipeline.processors.classifiers.rule_based import (
-                RuleBasedClassifier,
-            )
+    def _register_default_classifiers(self) -> None:
+        """Register the default set of classifiers."""
+        # Import default classifiers
+        from utils.pipeline.processors.classifiers.pattern_matcher import (
+            PatternMatcherClassifier,
+        )
+        from utils.pipeline.processors.classifiers.rule_based import RuleBasedClassifier
 
-            self.classifier_strategy = RuleBasedClassifier(self.config)
-            self.logger.warning(
-                f"Unknown classifier type: {classifier_type}, using rule_based"
-            )
+        # Register with default configs from main config
+        classifier_configs = self.config.get("classifiers", {})
+
+        self.factory.register_classifier(
+            "rule_based",
+            RuleBasedClassifier,
+            classifier_configs.get("rule_based", {}),
+        )
+
+        self.factory.register_classifier(
+            "pattern_matcher",
+            PatternMatcherClassifier,
+            classifier_configs.get("pattern_matcher", {}),
+        )
 
     def classify(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -5731,16 +6799,41 @@ class DocumentClassifier:
         self.logger.info("Classifying document")
 
         try:
-            # Extract features from document
+            # Extract common features
             features = self._extract_features(document_data)
 
-            # Classify document using strategy
-            classification = self.classifier_strategy.classify(document_data, features)
+            # Get all registered classifiers
+            classifier_info = self.factory.get_available_classifiers()
+
+            # Collect results from all classifiers
+            classification_results = []
+            for info in classifier_info:
+                try:
+                    classifier = self.factory.create_classifier(info["name"])
+                    result = classifier.classify(document_data, features)
+
+                    # Add classifier name to result
+                    result["classifier_name"] = info["name"]
+                    classification_results.append(result)
+
+                    self.logger.info(
+                        f"Classifier {info['name']} result: {result['document_type']} "
+                        f"(confidence: {result['confidence']})"
+                    )
+                except Exception as e:
+                    self.logger.error(
+                        f"Error using classifier {info['name']}: {str(e)}",
+                        exc_info=True,
+                    )
+
+            # Combine results using ensemble manager
+            final_result = self.ensemble_manager.combine_results(classification_results)
 
             self.logger.info(
-                f"Document classified as: {classification['document_type']} with confidence: {classification['confidence']}"
+                f"Final classification: {final_result['document_type']} "
+                f"(confidence: {final_result['confidence']})"
             )
-            return classification
+            return final_result
 
         except Exception as e:
             self.logger.error(f"Error classifying document: {str(e)}", exc_info=True)
@@ -5750,6 +6843,8 @@ class DocumentClassifier:
                 "confidence": 0.0,
                 "schema_pattern": "unknown",
                 "key_features": [],
+                "classifiers": [],
+                "error": str(e),
             }
 
     def _extract_features(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -5803,6 +6898,50 @@ class DocumentClassifier:
         features["table_count"] = len(tables)
 
         return features
+
+    def add_classifier(
+        self, name: str, classifier_class: Any, config: Optional[Dict[str, Any]] = None
+    ) -> None:
+        """
+        Add a new classifier to the system.
+
+        Args:
+            name: Unique identifier for the classifier
+            classifier_class: The classifier class to add
+            config: Optional configuration for the classifier
+        """
+        self.factory.register_classifier(name, classifier_class, config)
+        self.logger.info(f"Added classifier: {name}")
+
+    def remove_classifier(self, name: str) -> None:
+        """
+        Remove a classifier from the system.
+
+        Args:
+            name: Name of the classifier to remove
+        """
+        self.factory.remove_classifier(name)
+        self.logger.info(f"Removed classifier: {name}")
+
+    def update_classifier_config(self, name: str, config: Dict[str, Any]) -> None:
+        """
+        Update the configuration for a classifier.
+
+        Args:
+            name: Name of the classifier to update
+            config: New configuration dictionary
+        """
+        self.factory.update_classifier_config(name, config)
+        self.logger.info(f"Updated configuration for classifier: {name}")
+
+    def get_available_classifiers(self) -> List[Dict[str, Any]]:
+        """
+        Get information about all registered classifiers.
+
+        Returns:
+            List of classifier information dictionaries
+        """
+        return self.factory.get_available_classifiers()
 ````
 
 ## File: processors/formatters/enhanced_markdown_formatter.py
@@ -8908,6 +10047,7 @@ dependencies = [
     "camelot-py[cv]>=0.11.0",  # table extraction
     "opencv-python-headless>=4.9.0.80",  # for camelot
     "ghostscript>=0.7",  # for camelot
+    "watchdog>=3.0.0",  # for file system monitoring
 ]
 requires-python = ">=3.9"
 
@@ -10054,6 +11194,115 @@ class SchemaAnalyzer:
 }
 ````
 
+## File: schema/data/schemas/invoice_20250315221257.json
+````json
+{
+  "version": "1.0",
+  "description": "Invoice document schema version 1.0.0",
+  "created_at":
+````
+
+## File: schema/data/schemas/invoice_20250315221447.json
+````json
+{
+  "version": "1.0",
+  "description": "Invoice document schema version 1.0.0",
+  "created_at": "2025-03-15T22:14:47.750123",
+  "updated_at": "2025-03-15T22:14:47.750123",
+  "name": "invoice",
+  "document_type": "invoice",
+  "schema_version": "1.1.0",
+  "inherits": null,
+  "fields": [
+    {
+      "version": "1.0",
+      "description": "Unique invoice identifier",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "invoice_number",
+      "path": "invoice_number",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "len(value) > 0"
+    },
+    {
+      "version": "1.0",
+      "description": "Transaction identifier",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "payment_reference_id",
+      "path": "transaction_id",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "len(value) > 0"
+    },
+    {
+      "version": "1.0",
+      "description": "Invoice amount",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "amount",
+      "path": "amount",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "float(value) > 0"
+    },
+    {
+      "version": "1.0",
+      "description": "Currency code",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "currency",
+      "path": "currency",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "len(value) > 0"
+    },
+    {
+      "version": "1.0",
+      "description": "Method of payment (e.g., credit_card, bank_transfer)",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "payment_method",
+      "path": "payment.method",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "value in ['credit_card', 'bank_transfer', 'cash', 'check']"
+    },
+    {
+      "version": "1.0",
+      "description": "Current status of the payment",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "payment_status",
+      "path": "payment.status",
+      "type": "string",
+      "required": true,
+      "default": "pending",
+      "validation": "value in ['pending', 'processing', 'completed', 'failed']"
+    }
+  ],
+  "validations": [
+    {
+      "version": "1.0",
+      "description": "Ensure amount is a valid number",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "valid_amount",
+      "condition": "isinstance(float(amount), float)",
+      "message": "Amount must be a valid number",
+      "level": "error"
+    }
+  ],
+  "metadata": {}
+}
+````
+
 ## File: schema/data/schemas/test_document_20250315153312.json
 ````json
 {
@@ -10991,7 +12240,7 @@ class SchemaMigrator:
         try:
             # Construct migration config path
             config_path = (
-                f"migrations/{schema_name}_{source_version}_to_{target_version}"
+                f"migrations/{schema_name}_{source_version}_to_{target_version}.yaml"
             )
 
             # Get migration configuration
@@ -11175,8 +12424,19 @@ This module provides functionality for managing document schemas.
 import json
 import os
 from datetime import datetime
+from json import JSONEncoder
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+
+class CustomJSONEncoder(JSONEncoder):
+    """Custom JSON encoder that handles datetime objects."""
+
+    def default(self, obj: Any) -> Any:
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
 
 from utils.pipeline.utils.logging import get_logger
 
@@ -11396,7 +12656,7 @@ class SchemaRegistry:
         file_path = self.storage_dir / f"{schema_id}.json"
 
         with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(schema, f, indent=2, ensure_ascii=False)
+            json.dump(schema, f, indent=2, ensure_ascii=False, cls=CustomJSONEncoder)
 
     def _extract_schema(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -12726,9 +13986,7 @@ if __name__ == "__main__":
 
 ## File: strategies/__init__.py
 ````python
-"""
-Strategy pattern implementations for document processing.
-"""
+"""Strategies package."""
 ````
 
 ## File: strategies/base.py
@@ -12827,6 +14085,599 @@ class FormatterStrategy(ABC):
             Formatted output data
         """
         pass
+````
+
+## File: strategies/classifier_factory.py
+````python
+"""
+Factory for creating and managing document classifiers.
+
+This module provides a factory class for registering, creating, and managing
+document classifier implementations.
+"""
+
+from typing import Any, Dict, List, Optional, Type
+
+from utils.pipeline.strategies.classifier_strategy import ClassifierStrategy
+from utils.pipeline.utils.logging import get_logger
+
+
+class ClassifierFactory:
+    """
+    Factory for creating and managing document classifiers.
+
+    This factory:
+    - Maintains registry of available classifiers
+    - Handles classifier instantiation
+    - Manages classifier configurations
+    - Provides discovery of available classifiers
+    """
+
+    def __init__(self):
+        """Initialize the classifier factory."""
+        self._registered_classifiers: Dict[str, Type[ClassifierStrategy]] = {}
+        self._classifier_configs: Dict[str, Dict[str, Any]] = {}
+        self.logger = get_logger(__name__)
+
+    def register_classifier(
+        self,
+        name: str,
+        classifier_class: Type[ClassifierStrategy],
+        config: Optional[Dict[str, Any]] = None,
+    ) -> None:
+        """
+        Register a new classifier implementation.
+
+        Args:
+            name: Unique identifier for the classifier
+            classifier_class: The classifier class to register
+            config: Optional configuration for the classifier
+        """
+        if name in self._registered_classifiers:
+            self.logger.warning(f"Overwriting existing classifier registration: {name}")
+
+        self._registered_classifiers[name] = classifier_class
+        if config:
+            self._classifier_configs[name] = config
+
+        self.logger.info(f"Registered classifier: {name}")
+
+    def create_classifier(
+        self, name: str, config: Optional[Dict[str, Any]] = None
+    ) -> ClassifierStrategy:
+        """
+        Create an instance of a registered classifier.
+
+        Args:
+            name: Name of the classifier to create
+            config: Optional configuration override
+
+        Returns:
+            Instance of the requested classifier
+
+        Raises:
+            ValueError: If classifier name is not registered
+        """
+        if name not in self._registered_classifiers:
+            raise ValueError(f"No classifier registered with name: {name}")
+
+        # Merge configs, with provided config taking precedence
+        classifier_config = self._classifier_configs.get(name, {}).copy()
+        if config:
+            classifier_config.update(config)
+
+        # Get and instantiate the classifier class with keyword-only arguments
+        classifier_class = self._registered_classifiers[name]
+        return classifier_class(config=classifier_config)
+
+    def get_available_classifiers(self) -> List[Dict[str, Any]]:
+        """
+        Get information about all registered classifiers.
+
+        Returns:
+            List of classifier information dictionaries
+        """
+        classifiers = []
+        for name, classifier_class in self._registered_classifiers.items():
+            try:
+                # Get base config for this classifier
+                config = self._classifier_configs.get(name, {})
+
+                # Create classifier instance using the class
+                classifier = self.create_classifier(name, config)
+
+                # Get classifier metadata
+                classifiers.append(
+                    {
+                        "name": name,
+                        "info": classifier.get_classifier_info(),
+                        "supported_types": classifier.get_supported_types(),
+                        "has_config": name in self._classifier_configs,
+                    }
+                )
+            except Exception as e:
+                self.logger.error(f"Error getting classifier info for {name}: {str(e)}")
+                # Add basic info for failed classifier
+                classifiers.append(
+                    {
+                        "name": name,
+                        "info": {"error": str(e)},
+                        "supported_types": [],
+                        "has_config": name in self._classifier_configs,
+                    }
+                )
+
+        return classifiers
+
+    def remove_classifier(self, name: str) -> None:
+        """
+        Remove a registered classifier.
+
+        Args:
+            name: Name of the classifier to remove
+        """
+        if name in self._registered_classifiers:
+            del self._registered_classifiers[name]
+            self._classifier_configs.pop(name, None)
+            self.logger.info(f"Removed classifier registration: {name}")
+        else:
+            self.logger.warning(f"Attempted to remove unregistered classifier: {name}")
+
+    def update_classifier_config(self, name: str, config: Dict[str, Any]) -> None:
+        """
+        Update the configuration for a registered classifier.
+
+        Args:
+            name: Name of the classifier to update
+            config: New configuration dictionary
+
+        Raises:
+            ValueError: If classifier name is not registered
+        """
+        if name not in self._registered_classifiers:
+            raise ValueError(f"No classifier registered with name: {name}")
+
+        self._classifier_configs[name] = config
+        self.logger.info(f"Updated configuration for classifier: {name}")
+````
+
+## File: strategies/classifier_strategy.py
+````python
+"""
+Classifier strategy interface and base implementation.
+
+This module defines the interface for document classifiers and provides a base
+implementation with common functionality.
+"""
+
+from abc import ABC, abstractmethod
+from typing import Any, Dict, List, Optional
+
+from utils.pipeline.utils.logging import get_logger
+
+
+class ClassifierStrategy(ABC):
+    """Interface defining the contract for document classifiers."""
+
+    @abstractmethod
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None) -> None:
+        """
+        Initialize the classifier.
+
+        Args:
+            config: Configuration dictionary for the classifier. Must be passed as a keyword argument.
+        """
+        pass
+
+    @abstractmethod
+    def classify(
+        self, document_data: Dict[str, Any], features: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Classify a document based on its data and features.
+
+        Args:
+            document_data: The document data to classify
+            features: Extracted features from the document
+
+        Returns:
+            Classification result containing document type, confidence, etc.
+        """
+        pass
+
+    @abstractmethod
+    def get_supported_types(self) -> List[str]:
+        """
+        Get the document types supported by this classifier.
+
+        Returns:
+            List of supported document type identifiers
+        """
+        pass
+
+    @abstractmethod
+    def get_classifier_info(self) -> Dict[str, Any]:
+        """
+        Get information about this classifier implementation.
+
+        Returns:
+            Dictionary containing classifier metadata
+        """
+        pass
+
+
+class BaseClassifier(ClassifierStrategy):
+    """
+    Base implementation of the ClassifierStrategy interface.
+
+    Provides common functionality for document classifiers including:
+    - Configuration management
+    - Feature extraction
+    - Logging
+    - Error handling
+    """
+
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
+        """
+        Initialize the base classifier.
+
+        Args:
+            config: Configuration dictionary for the classifier. Must be passed as a keyword argument.
+        """
+        self.config = config or {}
+        self.logger = get_logger(__name__)
+        self._validate_config()
+
+    def _validate_config(self) -> None:
+        """Validate the classifier configuration."""
+        # Base configuration requirements
+        required_fields = ["name", "version"]
+        for field in required_fields:
+            if field not in self.config:
+                self.logger.warning(f"Missing required config field: {field}")
+                self.config[field] = "unknown"
+
+    def _extract_features(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Extract common features from document data.
+
+        Args:
+            document_data: The document data to extract features from
+
+        Returns:
+            Dictionary of extracted features
+        """
+        features = {}
+
+        # Extract metadata features
+        metadata = document_data.get("metadata", {})
+        features["has_title"] = bool(metadata.get("title"))
+        features["has_author"] = bool(metadata.get("author"))
+        features["creator"] = metadata.get("creator", "")
+        features["producer"] = metadata.get("producer", "")
+
+        # Extract content features
+        content = document_data.get("content", [])
+        features["section_count"] = len(content)
+
+        # Extract section titles
+        section_titles = [
+            section.get("title", "").lower()
+            for section in content
+            if section.get("title")
+        ]
+        features["section_titles"] = section_titles
+
+        # Extract table information
+        tables = document_data.get("tables", [])
+        features["table_count"] = len(tables)
+
+        return features
+
+    def get_classifier_info(self) -> Dict[str, Any]:
+        """
+        Get information about this classifier implementation.
+
+        Returns:
+            Dictionary containing classifier metadata
+        """
+        return {
+            "name": self.config.get("name", "unknown"),
+            "version": self.config.get("version", "unknown"),
+            "description": self.config.get("description", ""),
+            "supported_types": self.get_supported_types(),
+            "config_schema": self.config.get("config_schema", {}),
+        }
+
+    def get_supported_types(self) -> List[str]:
+        """
+        Get the document types supported by this classifier.
+
+        Returns:
+            List of supported document type identifiers
+        """
+        return self.config.get("supported_types", [])
+
+    @abstractmethod
+    def classify(
+        self, document_data: Dict[str, Any], features: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Classify a document based on its data and features.
+
+        This method must be implemented by concrete classifier classes.
+
+        Args:
+            document_data: The document data to classify
+            features: Extracted features from the document
+
+        Returns:
+            Classification result containing document type, confidence, etc.
+        """
+        pass
+````
+
+## File: strategies/ensemble_manager.py
+````python
+"""
+Ensemble manager for combining results from multiple classifiers.
+
+This module provides functionality for weighted voting and result aggregation
+from multiple document classifiers.
+"""
+
+from collections import defaultdict
+from typing import Any, Dict, List, Optional
+
+from utils.pipeline.utils.logging import get_logger
+
+
+class EnsembleManager:
+    """
+    Manages ensemble classification by combining results from multiple classifiers.
+
+    Features:
+    - Weighted voting system
+    - Multiple voting methods (weighted average, majority, consensus)
+    - Feature aggregation
+    - Confidence calculation
+    """
+
+    def __init__(self, config: Optional[Dict[str, Any]] = None):
+        """
+        Initialize the ensemble manager.
+
+        Args:
+            config: Configuration dictionary for ensemble behavior
+        """
+        self.config = config or {}
+        self.logger = get_logger(__name__)
+
+        # Set default configuration
+        self.voting_method = self.config.get("voting_method", "weighted_average")
+        self.minimum_confidence = self.config.get("minimum_confidence", 0.65)
+        self.classifier_weights = self.config.get("classifier_weights", {})
+        self.default_weight = self.config.get("default_weight", 0.3)
+
+    def combine_results(self, classifications: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Combine classification results using the configured voting method.
+
+        Args:
+            classifications: List of classification results from different classifiers
+
+        Returns:
+            Combined classification result
+        """
+        if not classifications:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": 0.0,
+                "schema_pattern": "unknown",
+                "key_features": [],
+                "classifiers": [],
+            }
+
+        # Use appropriate voting method
+        if self.voting_method == "weighted_average":
+            return self._weighted_average_vote(classifications)
+        elif self.voting_method == "majority":
+            return self._majority_vote(classifications)
+        elif self.voting_method == "consensus":
+            return self._consensus_vote(classifications)
+        else:
+            self.logger.warning(
+                f"Unknown voting method: {self.voting_method}, using weighted average"
+            )
+            return self._weighted_average_vote(classifications)
+
+    def _weighted_average_vote(
+        self, classifications: List[Dict[str, Any]]
+    ) -> Dict[str, Any]:
+        """
+        Combine results using weighted average voting.
+
+        Args:
+            classifications: List of classification results
+
+        Returns:
+            Combined classification result
+        """
+        # Track votes and confidences for each document type
+        type_votes = defaultdict(float)
+        type_features = defaultdict(set)
+        type_schemas = defaultdict(set)
+        classifiers_used = []
+
+        # Calculate weighted votes
+        total_weight = 0
+        for result in classifications:
+            doc_type = result["document_type"]
+            confidence = result["confidence"]
+            classifier_name = result.get("classifier_name", "unknown")
+
+            # Get weight for this classifier
+            weight = self.classifier_weights.get(classifier_name, self.default_weight)
+            total_weight += weight
+
+            # Add weighted vote
+            type_votes[doc_type] += confidence * weight
+
+            # Collect features and schema patterns
+            type_features[doc_type].update(result.get("key_features", []))
+            type_schemas[doc_type].add(result.get("schema_pattern", "unknown"))
+            classifiers_used.append(classifier_name)
+
+        if not total_weight:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": 0.0,
+                "schema_pattern": "unknown",
+                "key_features": [],
+                "classifiers": classifiers_used,
+            }
+
+        # Normalize votes and find winner
+        best_type = max(type_votes.items(), key=lambda x: x[1])
+        normalized_confidence = best_type[1] / total_weight
+
+        # Only use type if confidence meets minimum threshold
+        if normalized_confidence < self.minimum_confidence:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": normalized_confidence,
+                "schema_pattern": "unknown",
+                "key_features": [],
+                "classifiers": classifiers_used,
+            }
+
+        return {
+            "document_type": best_type[0],
+            "confidence": normalized_confidence,
+            "schema_pattern": list(type_schemas[best_type[0]])[
+                0
+            ],  # Use first schema pattern
+            "key_features": list(type_features[best_type[0]]),
+            "classifiers": classifiers_used,
+        }
+
+    def _majority_vote(self, classifications: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Combine results using simple majority voting.
+
+        Args:
+            classifications: List of classification results
+
+        Returns:
+            Combined classification result
+        """
+        # Count votes for each document type
+        type_votes = defaultdict(int)
+        type_confidences = defaultdict(list)
+        type_features = defaultdict(set)
+        type_schemas = defaultdict(set)
+        classifiers_used = []
+
+        for result in classifications:
+            doc_type = result["document_type"]
+            confidence = result["confidence"]
+            classifier_name = result.get("classifier_name", "unknown")
+
+            type_votes[doc_type] += 1
+            type_confidences[doc_type].append(confidence)
+            type_features[doc_type].update(result.get("key_features", []))
+            type_schemas[doc_type].add(result.get("schema_pattern", "unknown"))
+            classifiers_used.append(classifier_name)
+
+        # Find type with most votes
+        max_votes = max(type_votes.values())
+        winners = [t for t, v in type_votes.items() if v == max_votes]
+
+        if len(winners) > 1:
+            # Break tie using average confidence
+            winner = max(
+                winners,
+                key=lambda t: sum(type_confidences[t]) / len(type_confidences[t]),
+            )
+        else:
+            winner = winners[0]
+
+        # Calculate final confidence
+        confidence = sum(type_confidences[winner]) / len(type_confidences[winner])
+
+        if confidence < self.minimum_confidence:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": confidence,
+                "schema_pattern": "unknown",
+                "key_features": [],
+                "classifiers": classifiers_used,
+            }
+
+        return {
+            "document_type": winner,
+            "confidence": confidence,
+            "schema_pattern": list(type_schemas[winner])[0],  # Use first schema pattern
+            "key_features": list(type_features[winner]),
+            "classifiers": classifiers_used,
+        }
+
+    def _consensus_vote(self, classifications: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """
+        Combine results requiring full consensus.
+
+        Args:
+            classifications: List of classification results
+
+        Returns:
+            Combined classification result
+        """
+        # Check if all classifiers agree
+        doc_types = {c["document_type"] for c in classifications}
+        if len(doc_types) != 1:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": 0.0,
+                "schema_pattern": "unknown",
+                "key_features": [],
+                "classifiers": [
+                    c.get("classifier_name", "unknown") for c in classifications
+                ],
+            }
+
+        # Get agreed type
+        doc_type = doc_types.pop()
+
+        # Combine features and calculate average confidence
+        all_features = set()
+        total_confidence = 0
+        schema_patterns = set()
+        classifiers_used = []
+
+        for result in classifications:
+            all_features.update(result.get("key_features", []))
+            total_confidence += result["confidence"]
+            schema_patterns.add(result.get("schema_pattern", "unknown"))
+            classifiers_used.append(result.get("classifier_name", "unknown"))
+
+        confidence = total_confidence / len(classifications)
+
+        if confidence < self.minimum_confidence:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": confidence,
+                "schema_pattern": "unknown",
+                "key_features": [],
+                "classifiers": classifiers_used,
+            }
+
+        return {
+            "document_type": doc_type,
+            "confidence": confidence,
+            "schema_pattern": list(schema_patterns)[0],  # Use first schema pattern
+            "key_features": list(all_features),
+            "classifiers": classifiers_used,
+        }
 ````
 
 ## File: strategies/formatter.py

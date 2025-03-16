@@ -4,14 +4,12 @@ Rule-based document classifier.
 This module provides a rule-based approach to document classification.
 """
 
-import os
-import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
-from utils.pipeline.utils.logging import get_logger
+from utils.pipeline.strategies.classifier_strategy import BaseClassifier
 
 
-class RuleBasedClassifier:
+class RuleBasedClassifier(BaseClassifier):
     """
     Classifies documents using a rule-based approach.
 
@@ -19,15 +17,14 @@ class RuleBasedClassifier:
     based on their structure, content, and metadata.
     """
 
-    def __init__(self, config: Optional[Dict[str, Any]] = None):
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
         """
         Initialize the rule-based classifier.
 
         Args:
             config: Configuration dictionary for the classifier
         """
-        self.config = config or {}
-        self.logger = get_logger(__name__)
+        super().__init__(config=config)
 
         # Get classification rules from config
         self.classification_config = self.config.get("classification", {})
@@ -50,39 +47,11 @@ class RuleBasedClassifier:
         Returns:
             Classification result with document type, confidence, and schema pattern
         """
-        # Debug output
-        self.logger.info(f"Document metadata: {document_data.get('metadata', {})}")
-        self.logger.info(f"Document path: {document_data.get('path', '')}")
-        self.logger.info(f"Available rules: {list(self.rules_config.keys())}")
-        self.logger.info(f"Available filename patterns: {self.filename_patterns}")
-
-        # Check filename patterns if path is available
-        if "path" in document_data:
-            filename = os.path.basename(document_data["path"])
-            self.logger.info(f"Checking filename patterns for: {filename}")
-            for doc_type, pattern in self.filename_patterns.items():
-                self.logger.info(f"Checking pattern for {doc_type}: {pattern}")
-                if re.search(pattern, filename):
-                    self.logger.info(
-                        f"Matched filename pattern for {doc_type}: {filename}"
-                    )
-                    return {
-                        "document_type": doc_type,
-                        "confidence": 0.8,  # High confidence for filename match
-                        "schema_pattern": self.rules_config.get(doc_type, {}).get(
-                            "schema_pattern", "standard"
-                        ),
-                        "key_features": ["filename_match"],
-                    }
-
         # Apply configured rules
         best_match = self._get_best_match(document_data, features)
-        self.logger.info(f"Best match after rule application: {best_match}")
 
         # Only use generic classification if confidence is very low
-        if (
-            best_match[0] == "UNKNOWN" or best_match[1] < 0.2
-        ):  # Lower threshold for falling back to generic
+        if best_match[0] == "UNKNOWN" or best_match[1] < 0.2:
             # If no specific type matched or confidence is very low, try to determine a generic type
             self.logger.info("Using generic classification due to low confidence")
             return self._classify_generic(document_data, features)
@@ -94,9 +63,18 @@ class RuleBasedClassifier:
             "key_features": best_match[3],
         }
 
+    def get_supported_types(self) -> List[str]:
+        """
+        Get the document types supported by this classifier.
+
+        Returns:
+            List of supported document type identifiers
+        """
+        return list(self.rules_config.keys())
+
     def _get_best_match(
         self, document_data: Dict[str, Any], features: Dict[str, Any]
-    ) -> Tuple[str, float, str, List[str]]:
+    ) -> tuple[str, float, str, List[str]]:
         """
         Apply all configured rules and get the best matching document type.
 
@@ -131,9 +109,6 @@ class RuleBasedClassifier:
                     )
                     confidence += metadata_confidence
                     key_features.append("metadata_match")
-                    self.logger.info(
-                        f"Matched {metadata_matches} metadata keywords for {doc_type}"
-                    )
 
             # Check title keywords in section titles
             section_titles = features.get("section_titles", [])

@@ -1,3 +1,1 @@
-"""
-Strategy pattern implementations for document processing.
-"""
+"""Strategies package."""

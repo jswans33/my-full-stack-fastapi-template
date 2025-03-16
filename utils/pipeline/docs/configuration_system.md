@@ -84,6 +84,77 @@ rules:
     action: "warn"
 ```
 
+### Classification Configuration
+
+Classification configurations define how documents are classified using multiple strategies. Example:
+
+```yaml
+# Global classification settings
+enable_classification: true
+record_schemas: true
+match_schemas: true
+
+# Ensemble configuration
+ensemble:
+  voting_method: weighted_average
+  minimum_confidence: 0.45
+  classifier_weights:
+    rule_based: 0.45
+    pattern_matcher: 0.45
+    ml_based: 0.1
+
+# Individual classifier configurations
+classifiers:
+  rule_based:
+    name: "Rule-Based Classifier"
+    version: "1.0.0"
+    description: "Classifies documents using predefined rules"
+    classification:
+      rules:
+        PROPOSAL:
+          title_keywords: ["proposal", "project"]
+          content_keywords: ["scope", "phases"]
+          patterns: ["payment terms", "delivery schedule"]
+          weights:
+            title_match: 0.4
+            content_match: 0.3
+            pattern_match: 0.3
+          threshold: 0.4
+
+  pattern_matcher:
+    name: "Pattern Matcher"
+    version: "1.0.0"
+    description: "Classifies documents using pattern matching"
+    patterns:
+      - name: "PROPOSAL"
+        schema_pattern: "standard_proposal"
+        required_features: ["has_payment_terms", "has_delivery_terms"]
+        optional_features: ["has_dollar_amounts", "has_quantities"]
+        section_patterns: ["executive summary", "scope of work"]
+        content_patterns: ["proposal", "project", "phases"]
+```
+
+### Classifier Configuration Validation
+
+The configuration system provides validation for classifier configurations using Pydantic models:
+
+```python
+from utils.pipeline.config import ClassifierConfig, EnsembleConfig
+
+# Load and validate classifier configuration
+classifier_config = load_config("classifiers/rule_based")
+validated_config = ClassifierConfig(**classifier_config)
+
+# Load and validate ensemble configuration
+ensemble_config = load_config("ensemble")
+validated_ensemble = EnsembleConfig(**ensemble_config)
+
+# Access validated fields
+print(f"Classifier: {validated_config.name}")
+print(f"Supported types: {validated_config.supported_types}")
+print(f"Voting method: {validated_ensemble.voting_method}")
+```
+
 ### Schema Configuration
 
 Schema configurations define how to extract and validate data from documents. Example:
