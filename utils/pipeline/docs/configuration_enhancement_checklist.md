@@ -13,10 +13,10 @@
 - [x] Create EnvironmentConfig model for overrides
 
 ## Phase 3: Schema Registry Integration
-- [ ] Enhance SchemaRegistry to use ConfigurationManager
-- [ ] Add schema versioning support
-- [ ] Implement schema inheritance
-- [ ] Add schema discovery from configuration
+- [x] Enhance SchemaRegistry to use ConfigurationManager
+- [x] Add schema versioning support
+- [x] Implement schema inheritance
+- [x] Add schema discovery from configuration
 
 ## Phase 4: Schema Migration
 - [ ] Create migration configuration models

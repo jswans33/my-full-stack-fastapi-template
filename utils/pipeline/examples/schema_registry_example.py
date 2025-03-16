@@ -50,7 +50,7 @@ def example_load_schemas() -> None:
     """Example of loading schemas from configuration."""
     print_separator("Loading Schemas")
 
-    # Create enhanced schema registry
+    # Create enhanced schema registry with configuration manager
     registry = EnhancedSchemaRegistry(config_manager)
 
     # List all schemas
@@ -65,7 +65,7 @@ def example_schema_versions() -> None:
     """Example of accessing schema versions."""
     print_separator("Schema Versions")
 
-    # Create enhanced schema registry
+    # Create enhanced schema registry with configuration manager
     registry = EnhancedSchemaRegistry(config_manager)
 
     # Get schema by name and version
@@ -87,7 +87,7 @@ def example_schema_inheritance() -> None:
     """Example of schema inheritance."""
     print_separator("Schema Inheritance")
 
-    # Create enhanced schema registry
+    # Create enhanced schema registry with configuration manager
     registry = EnhancedSchemaRegistry(config_manager)
 
     # Get parent schema
@@ -107,7 +107,7 @@ def example_schema_migration() -> None:
     """Example of schema migration."""
     print_separator("Schema Migration")
 
-    # Create enhanced schema registry
+    # Create enhanced schema registry with configuration manager
     registry = EnhancedSchemaRegistry(config_manager)
 
     # Get schema to migrate
@@ -142,7 +142,7 @@ def example_save_schema() -> None:
     """Example of saving a schema configuration."""
     print_separator("Saving Schema")
 
-    # Create enhanced schema registry
+    # Create enhanced schema registry with configuration manager
     registry = EnhancedSchemaRegistry(config_manager)
 
     # Create a new schema

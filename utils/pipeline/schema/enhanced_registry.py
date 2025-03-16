@@ -65,44 +65,71 @@ class EnhancedSchemaRegistry(ExtendedSchemaRegistry):
         Args:
             path: Path to discover schemas in
         """
-        # Get all schema configurations
-        schema_configs = self.config_manager.get_config(path)
+        # Get list of files in directory
+        try:
+            # Get all files in directory that match patterns
+            patterns = self.config.get("discovery", {}).get(
+                "patterns", ["*.yaml", "*.yml", "*.json"]
+            )
+            for pattern in patterns:
+                # Construct full pattern path
+                pattern_path = f"{path}/{pattern}"
 
-        if not schema_configs:
-            self.logger.warning(f"No schema configurations found in path: {path}")
-            return
+                # Get configurations for all matching files
+                matching_configs = self.config_manager.get_config(pattern_path)
 
-        # Process each schema configuration
-        for schema_name, schema_config in schema_configs.items():
-            try:
-                # Validate schema configuration
-                schema = SchemaConfig(**schema_config)
+                if matching_configs:
+                    # Process each schema configuration
+                    for schema_name, schema_config in matching_configs.items():
+                        try:
+                            # Load individual schema file
+                            schema_path = f"{path}/{schema_name}"
+                            schema_data = self.config_manager.get_config(schema_path)
 
-                # Generate schema ID
-                schema_id = self._generate_schema_id(schema.name)
+                            if not schema_data:
+                                self.logger.warning(
+                                    f"Empty schema configuration: {schema_path}"
+                                )
+                                continue
 
-                # Convert to dictionary
-                schema_dict = schema.model_dump()
+                            # Validate schema configuration
+                            schema = SchemaConfig(**schema_data)
 
-                # Add to schemas
-                self.schemas[schema_id] = schema_dict
+                            # Generate schema ID
+                            schema_id = self._generate_schema_id(schema.name)
 
-                # Add to version history
-                if schema.name not in self.schema_versions:
-                    self.schema_versions[schema.name] = {}
+                            # Convert to dictionary
+                            schema_dict = schema.model_dump()
 
-                self.schema_versions[schema.name][schema.schema_version] = schema_dict
+                            # Add to schemas
+                            self.schemas[schema_id] = schema_dict
 
-                # Record inheritance relationship if specified
-                if schema.inherits:
-                    self.schema_inheritance[schema.name] = schema.inherits
+                            # Add to version history
+                            if schema.name not in self.schema_versions:
+                                self.schema_versions[schema.name] = {}
 
-                self.logger.info(
-                    f"Loaded schema {schema.name} version {schema.schema_version}"
-                )
+                            self.schema_versions[schema.name][schema.schema_version] = (
+                                schema_dict
+                            )
 
-            except Exception as e:
-                self.logger.error(f"Error loading schema {schema_name}: {str(e)}")
+                            # Record inheritance relationship if specified
+                            if schema.inherits:
+                                self.schema_inheritance[schema.name] = schema.inherits
+
+                            self.logger.info(
+                                f"Loaded schema {schema.name} version {schema.schema_version}"
+                            )
+
+                        except Exception as e:
+                            self.logger.error(
+                                f"Error loading schema {schema_name}: {str(e)}"
+                            )
+
+            if not self.schemas:
+                self.logger.warning(f"No schema configurations found in path: {path}")
+
+        except Exception as e:
+            self.logger.error(f"Error discovering schemas in {path}: {str(e)}")
 
     def _process_schema_inheritance(self) -> None:
         """Process schema inheritance relationships."""

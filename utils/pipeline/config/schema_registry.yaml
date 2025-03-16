@@ -13,7 +13,7 @@ storage:
 
 # Discovery settings
 discovery:
-  # Paths to discover schemas from
+  # Paths to discover schemas from (relative to base config directory)
   paths:
     - "schemas"
     - "document_types"

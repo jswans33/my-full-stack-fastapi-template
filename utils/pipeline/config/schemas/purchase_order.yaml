@@ -1,0 +1,39 @@
+version: '1.0'
+description: Purchase order schema
+created_at: 2025-03-15 21:27:29.959523
+updated_at: 2025-03-15 21:27:29.959523
+name: purchase_order
+document_type: PURCHASE_ORDER
+schema_version: '1.0'
+inherits: financial_document
+fields:
+- version: '1.0'
+  description: Purchase order number
+  created_at: 2025-03-15 21:27:29.959523
+  updated_at: 2025-03-15 21:27:29.959523
+  name: po_number
+  path: metadata.po_number
+  type: string
+  required: true
+  default: null
+  validation: null
+- version: '1.0'
+  description: Order date
+  created_at: 2025-03-15 21:27:29.959523
+  updated_at: 2025-03-15 21:27:29.959523
+  name: order_date
+  path: metadata.order_date
+  type: date
+  required: true
+  default: null
+  validation: null
+validations:
+- version: '1.0'
+  description: null
+  created_at: 2025-03-15 21:27:29.959523
+  updated_at: 2025-03-15 21:27:29.959523
+  name: validate_po_number
+  condition: po_number.startswith('PO-')
+  message: Purchase order number must start with 'PO-'
+  level: error
+metadata: {}
