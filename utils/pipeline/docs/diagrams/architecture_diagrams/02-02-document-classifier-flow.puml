@@ -1,0 +1,51 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Document_Classifier_Flow
+!include <archimate/Archimate>
+
+' Define components
+rectangle "Document Data" as DocData
+rectangle "DocumentClassifier" as Classifier
+rectangle "Feature Extraction" as Features
+rectangle "ClassifierFactory" as Factory
+rectangle "Classifier Selection" as Selection
+rectangle "RuleBasedClassifier" as RuleClassifier
+rectangle "PatternMatcherClassifier" as PatternClassifier
+rectangle "MLBasedClassifier" as MLClassifier
+rectangle "EnsembleManager" as Ensemble
+rectangle "Classification Result" as Result
+
+' Define data flow
+DocData --> Classifier
+Classifier --> Features : "extract features"
+Features --> Factory : "features"
+Factory --> Selection : "available classifiers"
+
+Selection --> RuleClassifier : "if rules applicable"
+Selection --> PatternClassifier : "if patterns applicable"
+Selection --> MLClassifier : "if ML model applicable"
+
+RuleClassifier --> Ensemble : "rule results"
+PatternClassifier --> Ensemble : "pattern results"
+MLClassifier --> Ensemble : "ML model results"
+
+Ensemble --> Result : "weighted combined result"
+
+' Add notes
+note right of Features
+  Extracts relevant features
+  from document data
+end note
+
+note right of Factory
+  Creates appropriate classifier
+  instances based on config
+end note
+
+note right of Ensemble
+  Combines results from multiple
+  classifiers using weighted voting
+end note
+
+@enduml

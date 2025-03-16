@@ -1,0 +1,33 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Formatter_DataFlow
+!include <archimate/Archimate>
+
+' Define components
+rectangle "Validated Document Data" as ValidData
+rectangle "Pipeline Configuration" as Config
+rectangle "FormatterFactory" as Factory
+rectangle "Formatter Selection" as Selection
+rectangle "JSON Formatter" as JSON
+rectangle "Markdown Formatter" as Markdown 
+rectangle "Enhanced Markdown Formatter" as Enhanced
+rectangle "Formatted Output" as Output
+rectangle "File System" as FileSystem
+
+' Define data flow
+ValidData --> Factory
+Config --> Factory : "output_format"
+Factory --> Selection
+
+Selection --> JSON : "if JSON"
+Selection --> Markdown : "if MARKDOWN"
+Selection --> Enhanced : "if ENHANCED_MARKDOWN"
+
+JSON --> Output : "JSON structure"
+Markdown --> Output : "Markdown text"
+Enhanced --> Output : "Enhanced Markdown"
+
+Output --> FileSystem : "write()" 
+
+@enduml

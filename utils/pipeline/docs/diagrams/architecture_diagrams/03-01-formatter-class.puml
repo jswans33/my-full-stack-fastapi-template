@@ -1,0 +1,72 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Formatter_ClassDiagram
+skinparam classAttributeIconSize 0
+
+class FormatterFactory {
+  -_registered_formatters: Dict
+  -_formatter_configs: Dict
+  -logger: Logger
+  +__init__()
+  +register_formatter(name: str, formatter_class: Type, config: Dict)
+  +create_formatter(name: str, config: Dict): FormatterStrategy
+  +get_available_formatters(): List[Dict]
+  +remove_formatter(name: str)
+  +update_formatter_config(name: str, config: Dict)
+}
+
+interface FormatterStrategy {
+  {abstract} +__init__(config: Dict)
+  {abstract} +format(document_data: Dict): Any
+  {abstract} +get_output_type(): str
+  {abstract} +get_formatter_info(): Dict
+}
+
+abstract BaseFormatter {
+  #config: Dict
+  #logger: Logger
+  +__init__(config: Dict)
+  #_validate_config()
+  +get_formatter_info(): Dict
+  +get_output_type(): str
+  {abstract} +format(document_data: Dict): Any
+}
+
+class JSONFormatter {
+  -indent: int
+  -pretty_print: bool
+  +__init__(config: Dict)
+  +format(document_data: Dict): str
+  -_apply_json_transformations(data: Dict): Dict
+  +get_output_type(): str
+}
+
+class MarkdownFormatter {
+  -template: str
+  -include_metadata: bool
+  +__init__(config: Dict)
+  +format(document_data: Dict): str
+  -_generate_markdown_sections(data: Dict): List[str]
+  +get_output_type(): str
+}
+
+class EnhancedMarkdownFormatter {
+  -template: str
+  -include_metadata: bool
+  -include_toc: bool
+  -syntax_highlighting: bool
+  +__init__(config: Dict)
+  +format(document_data: Dict): str
+  -_generate_enhanced_sections(data: Dict): List[str]
+  -_generate_toc(sections: List[Dict]): str
+  +get_output_type(): str
+}
+
+FormatterFactory --> FormatterStrategy
+FormatterStrategy <|-- BaseFormatter
+BaseFormatter <|-- JSONFormatter
+BaseFormatter <|-- MarkdownFormatter
+BaseFormatter <|-- EnhancedMarkdownFormatter
+
+@enduml

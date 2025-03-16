@@ -1,0 +1,49 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Complete_Pipeline_Flow
+!include <archimate/Archimate>
+
+' Define main components
+rectangle "Input Document" as Input
+rectangle "CLI/API Interface" as Interface
+rectangle "File Processor" as FileProcessor
+rectangle "Document Classifier" as Classifier
+rectangle "Schema Registry" as SchemaRegistry
+rectangle "Strategy Selector" as StrategySelector
+rectangle "Formatter" as Formatter
+rectangle "Output Verifier" as Verifier
+rectangle "Processed Output" as Output
+
+' Define data flow
+Input --> Interface : "raw document"
+Interface --> FileProcessor : "document path"
+FileProcessor --> Classifier : "document data"
+Classifier --> SchemaRegistry : "validate schema"
+SchemaRegistry --> StrategySelector : "validated data"
+StrategySelector --> Formatter : "processing strategy"
+Formatter --> Verifier : "formatted output"
+Verifier --> Output : "verified output"
+
+' Add notes
+note right of Classifier
+  Determines document type 
+  and structure
+end note
+
+note right of StrategySelector
+  Selects appropriate processing 
+  strategy based on document type
+end note
+
+note right of Formatter
+  Converts processed data into 
+  desired output format (JSON, MD, etc.)
+end note
+
+note right of Verifier
+  Ensures output meets expected 
+  structure and format requirements
+end note
+
+@enduml

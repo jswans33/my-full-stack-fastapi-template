@@ -1,0 +1,53 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Verifier_DataFlow
+!include <archimate/Archimate>
+
+' Define components
+rectangle "Formatted Output" as Output
+rectangle "Expected Schema" as Schema
+rectangle "VerifierFactory" as Factory
+rectangle "Verifier Selection" as Selection
+rectangle "JSONTreeVerifier" as JSONVerifier
+rectangle "MarkdownVerifier" as MDVerifier
+rectangle "Verification Process" as Process
+rectangle "Verification Result" as Result
+rectangle "Pipeline" as Pipeline
+
+' Define data flow
+Output --> Factory : "formatted content"
+Schema --> Factory : "expected structure"
+Factory --> Selection : "create verifier"
+
+Selection --> JSONVerifier : "if JSON format"
+Selection --> MDVerifier : "if Markdown format"
+
+JSONVerifier --> Process : "verify JSON structure"
+MDVerifier --> Process : "verify Markdown sections"
+
+Process --> Result : "validation results"
+Result --> Pipeline : "verification outcome"
+
+' Add notes
+note right of Factory
+  Creates appropriate verifier
+  based on output format
+end note
+
+note right of JSONVerifier
+  Validates JSON against
+  expected schema
+end note
+
+note right of MDVerifier
+  Validates Markdown content
+  contains required sections
+end note
+
+note right of Result
+  Contains validation status,
+  errors, and warnings
+end note
+
+@enduml

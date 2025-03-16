@@ -1,0 +1,114 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Pipeline_Architecture
+' Main components
+[CLI] as CLI
+[API] as API
+[FileProcessor] as FileProcessor
+[Pipeline] as Pipeline
+[StrategySelector] as StrategySelector
+[DocumentClassifier] as DocumentClassifier
+[SchemaRegistry] as SchemaRegistry
+[FormatterFactory] as FormatterFactory
+[VerifierFactory] as VerifierFactory
+
+' Classifier components
+package "ClassifierFactory" {
+  [register_classifier()] as CF_Register
+  [create_classifier()] as CF_Create
+}
+
+package "ClassifierStrategies" {
+  interface "ClassifierStrategy" as CS_Interface
+  [BaseClassifier] as CS_Base
+  [RuleBasedClassifier] as CS_Rule
+  [PatternMatcherClassifier] as CS_Pattern
+  [MLBasedClassifier] as CS_ML
+}
+
+package "Formatters" {
+  [JSONFormatter] as F_JSON
+  [MarkdownFormatter] as F_Markdown
+  [EnhancedMarkdownFormatter] as F_Enhanced
+}
+
+package "Verifiers" {
+  [JSONTreeVerifier] as V_JSON
+  [MarkdownVerifier] as V_Markdown
+}
+
+' Relationships
+CLI --> FileProcessor
+API --> FileProcessor
+FileProcessor --> Pipeline
+
+Pipeline --> StrategySelector
+Pipeline --> DocumentClassifier
+Pipeline --> FormatterFactory
+Pipeline --> VerifierFactory
+
+DocumentClassifier --> ClassifierFactory
+DocumentClassifier --> SchemaRegistry
+
+ClassifierFactory --> ClassifierStrategies
+CS_Interface <|-- CS_Base
+CS_Base <|-- CS_Rule
+CS_Base <|-- CS_Pattern
+CS_Base <|-- CS_ML
+
+FormatterFactory --> Formatters
+VerifierFactory --> Verifiers
+
+database "Input Document" as Input
+database "Processed Output" as Output
+
+Input --> FileProcessor
+Pipeline --> Output
+
+' Enhanced notes with cross-references
+note top of CLI
+  Entry point for command-line processing
+  See diagram 01-02 for complete data flow
+end note
+
+note top of API
+  Entry point for programmatic integration
+  See diagram 01-02 for complete data flow
+end note
+
+note right of DocumentClassifier
+  Determines document type using multiple strategies
+  For detailed structure, see diagrams:
+  - 02-01: Class diagram
+  - 02-02: Classification flow
+  - 02-03: Component diagram
+end note
+
+note right of SchemaRegistry
+  Manages document schemas and validates documents
+  For detailed structure, see diagrams:
+  - 05-01: Class diagram
+  - 05-02: Schema validation flow
+end note
+
+note right of FormatterFactory
+  Creates formatters for various output formats
+  For details, see diagrams:
+  - 03-01: Class diagram
+  - 03-02: Formatter flow
+end note
+
+note right of VerifierFactory
+  Creates verifiers for output validation
+  For details, see diagrams:
+  - 04-01: Class diagram
+  - 04-02: Verification flow
+end note
+
+note bottom of Pipeline
+  Core orchestration component
+  For PDF-specific processing see diagrams:
+  - 06-01 through 06-04
+end note
+@enduml

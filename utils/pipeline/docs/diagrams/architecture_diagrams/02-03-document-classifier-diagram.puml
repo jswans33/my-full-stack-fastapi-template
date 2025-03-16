@@ -1,0 +1,41 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Document_Classifier_Diagram
+!include <archimate/Archimate>
+
+' Define components for the document classifier
+rectangle "Document Data" as DocData
+rectangle "Document Classifier" as Classifier
+rectangle "Feature Detection" as Features
+rectangle "Document Schema" as Schema
+rectangle "Classification Output" as Output
+
+' Define relationships
+DocData --> Features : "extract features"
+Features --> Classifier : "analyze features"
+Classifier --> Schema : "match against known schemas"
+Schema --> Output : "generate classification"
+
+' Add notes
+note right of Features
+  Extracts metadata, layout, 
+  content patterns, and keywords
+end note
+
+note right of Classifier
+  Applies multiple classification 
+  strategies in ensemble
+end note
+
+note right of Schema
+  Validates document structure
+  against known schema types
+end note
+
+note right of Output
+  Classification with confidence
+  scores and extracted data
+end note
+
+@enduml

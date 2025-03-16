@@ -1,0 +1,69 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Verifier_ClassDiagram
+skinparam classAttributeIconSize 0
+
+class VerifierFactory {
+  -_registered_verifiers: Dict
+  -_verifier_configs: Dict
+  -logger: Logger
+  +__init__()
+  +register_verifier(name: str, verifier_class: Type, config: Dict)
+  +create_verifier(name: str, config: Dict): VerifierStrategy
+  +get_available_verifiers(): List[Dict]
+  +remove_verifier(name: str)
+  +update_verifier_config(name: str, config: Dict)
+}
+
+interface VerifierStrategy {
+  {abstract} +__init__(config: Dict)
+  {abstract} +verify(formatted_output: Any, expected_schema: Dict): VerificationResult
+  {abstract} +get_supported_formats(): List[str]
+  {abstract} +get_verifier_info(): Dict
+}
+
+abstract BaseVerifier {
+  #config: Dict
+  #logger: Logger
+  +__init__(config: Dict)
+  #_validate_config()
+  +get_verifier_info(): Dict
+  +get_supported_formats(): List[str]
+  {abstract} +verify(formatted_output: Any, expected_schema: Dict): VerificationResult
+}
+
+class JSONTreeVerifier {
+  -schema_validator: SchemaValidator
+  +__init__(config: Dict)
+  +verify(formatted_output: Any, expected_schema: Dict): VerificationResult
+  -_validate_json_structure(json_data: Dict, schema: Dict): List[str]
+  +get_supported_formats(): List[str]
+}
+
+class MarkdownVerifier {
+  -required_sections: List[str]
+  -section_regex: Dict
+  +__init__(config: Dict)
+  +verify(formatted_output: Any, expected_schema: Dict): VerificationResult
+  -_verify_sections(markdown: str, expected_sections: List[str]): List[str]
+  +get_supported_formats(): List[str]
+}
+
+class VerificationResult {
+  +is_valid: bool
+  +errors: List[str]
+  +warnings: List[str]
+  +__init__(is_valid: bool, errors: List[str], warnings: List[str])
+  +add_error(error: str)
+  +add_warning(warning: str)
+}
+
+VerifierFactory --> VerifierStrategy
+VerifierStrategy <|-- BaseVerifier
+BaseVerifier <|-- JSONTreeVerifier
+BaseVerifier <|-- MarkdownVerifier
+JSONTreeVerifier ..> VerificationResult
+MarkdownVerifier ..> VerificationResult
+
+@enduml

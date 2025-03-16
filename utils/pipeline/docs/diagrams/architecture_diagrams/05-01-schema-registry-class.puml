@@ -1,0 +1,61 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml SchemaRegistry_ClassDiagram
+skinparam classAttributeIconSize 0
+
+class SchemaRegistry {
+  -schemas: Dict
+  -schema_store: SchemaStore
+  -schema_validator: SchemaValidator
+  -logger: Logger
+  +__init__(config: Dict)
+  +register_schema(name: str, schema: Dict)
+  +get_schema(name: str): Dict
+  +validate_document(document: Dict, schema_name: str): ValidationResult
+  +find_matching_schema(document: Dict): Tuple[str, Dict]
+  +update_schema(name: str, schema: Dict)
+  +remove_schema(name: str)
+  +list_schemas(): List[str]
+}
+
+class SchemaStore {
+  -storage_path: str
+  -logger: Logger
+  +__init__(config: Dict)
+  +load_schemas(): Dict
+  +save_schema(name: str, schema: Dict)
+  +delete_schema(name: str)
+  +get_schema(name: str): Dict
+  +list_schemas(): List[str]
+  -_ensure_storage_dir()
+}
+
+class SchemaValidator {
+  -validation_rules: Dict
+  -logger: Logger
+  +__init__(config: Dict)
+  +validate(document: Dict, schema: Dict): ValidationResult
+  +compare_schemas(schema1: Dict, schema2: Dict): float
+  -_validate_required_fields(document: Dict, schema: Dict): List[str]
+  -_validate_field_types(document: Dict, schema: Dict): List[str]
+}
+
+class ValidationResult {
+  +is_valid: bool
+  +errors: List[str]
+  +warnings: List[str]
+  +matched_fields: int
+  +total_fields: int
+  +confidence: float
+  +__init__(is_valid: bool, errors: List[str], warnings: List[str], matched_fields: int, total_fields: int)
+  +add_error(error: str)
+  +add_warning(warning: str)
+  +calculate_confidence()
+}
+
+SchemaRegistry --> SchemaStore
+SchemaRegistry --> SchemaValidator
+SchemaValidator ..> ValidationResult
+
+@enduml

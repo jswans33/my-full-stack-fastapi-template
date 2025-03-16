@@ -1,0 +1,133 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml PDF_Classification_Decision
+!include <archimate/Archimate>
+
+skinparam backgroundColor white
+skinparam ActivityBackgroundColor #FEFECE
+skinparam ActivityBorderColor #A80036
+skinparam ActivityDiamondBackgroundColor #FEFECE
+skinparam ActivityDiamondBorderColor #A80036
+skinparam ArrowColor #A80036
+
+' Title with diagram cross-reference
+title PDF Document Classification Decision Flow (06-04)
+caption Related diagrams: 02-01, 02-02, 06-02, 06-03
+
+|PDF Document|
+start
+:Extract Text Content;
+note right
+  Uses specialized PDF extraction libraries
+  See component diagram 06-03
+end note
+:Extract Document Metadata;
+:Analyze Document Layout;
+note right
+  Layout patterns are crucial for
+  accurate classification
+end note
+:Extract Form Fields (if any);
+:Identify Images & Figures;
+
+|Feature Analysis|
+:Generate Text Features;
+note right
+  Text features include keywords, phrases,
+  text density, and semantic patterns
+end note
+:Generate Layout Features;
+:Generate Metadata Features;
+note right
+  Metadata includes creation date, author,
+  PDF structure, security settings
+end note
+:Combine Feature Sets;
+note right
+  Combined features are used by all
+  classifier strategies in 02-01
+end note
+
+|Classification Logic|
+if (Template Matching Score > Threshold?) then (yes)
+  :Classify by Template Match;
+  note right: Fastest and most reliable method
+elseif (Contains Form Fields?) then (yes)
+  :Classify as Form Document;
+  if (Known Form Type?) then (yes)
+    :Apply Specific Form Template;
+    note right: Templates managed in schema registry (05-01)
+  else (no)
+    :Mark as Generic Form;
+  endif
+elseif (Has Official Letterhead/Logo?) then (yes)
+  :Classify as Official Document;
+  note right
+    Logo detection uses image recognition
+    components in 06-03
+  end note
+  if (Contains Specific Header Keywords?) then (yes)
+    :Sub-Classify by Department/Agency;
+  endif
+elseif (Contains Tables/Financial Data?) then (yes)
+  :Classify as Financial/Report Document;
+  if (Contains Balance Sheet Structure?) then (yes)
+    :Sub-Classify as Financial Statement;
+  elseif (Contains Tabular Time Series?) then (yes)
+    :Sub-Classify as Periodic Report;
+  endif
+elseif (ML Classifier Confidence > 85%?) then (yes)
+  :Apply ML Classification;
+  note right
+    ML models are selected based on
+    document features, see 02-01
+  end note
+else (no)
+  if (Keyword Match Score > Threshold?) then (yes)
+    :Apply Keyword-Based Classification;
+  else (no)
+    :Mark as Unclassified/Needs Review;
+    note right: Manual classification required
+  endif
+endif
+
+|Result Processing|
+:Combine Classification Results;
+note right
+  Ensemble techniques weigh results
+  from multiple classifiers (02-01)
+end note
+:Calculate Confidence Scores;
+:Select Best Classification;
+:Validate Against Schema Registry;
+note right
+  Schema validation ensures the document
+  matches expected structure (05-02)
+end note
+
+|Output|
+:Generate Classification Report;
+:Tag Document with Classification;
+:Extract Structured Data Based on Type;
+note right
+  Extraction pattern depends on
+  document classification
+end note
+stop
+
+legend right
+  Classification Strategies Priority:
+  1. Template Matching
+  2. Form Structure
+  3. Document Layout/Official Markers
+  4. Content-based Analysis (Tables, Financial)
+  5. ML Classification
+  6. Keyword Analysis
+  7. Manual Review (fallback)
+  
+  For component details, see 06-03
+  For sequence details, see 06-02
+endlegend
+
+@enduml

@@ -1,0 +1,56 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml SchemaRegistry_DataFlow
+!include <archimate/Archimate>
+
+' Define components
+rectangle "Document Data" as DocData
+rectangle "SchemaRegistry" as Registry
+rectangle "Schema Search" as Search
+rectangle "SchemaValidator" as Validator
+rectangle "SchemaStore" as Store
+rectangle "Known Schemas" as KnownSchemas
+rectangle "New Schema" as NewSchema
+rectangle "Validation Result" as Result
+rectangle "Pipeline" as Pipeline
+
+' Define data flow
+DocData --> Registry : "document structure"
+Registry --> Search : "find matching schema"
+
+Search --> Store : "retrieve schemas"
+Store --> KnownSchemas : "load existing schemas"
+KnownSchemas --> Search : "available schemas"
+
+Search --> Validator : "compare document to schemas"
+Validator --> Result : "validation results"
+
+' Alternative flow
+Search --> NewSchema : "if no matching schema"
+NewSchema --> Store : "register new schema"
+
+Result --> Pipeline : "validation outcome"
+
+' Add notes
+note right of Search
+  Tries to match document structure
+  against known schemas
+end note
+
+note right of Validator
+  Validates document against schema
+  and calculates confidence score
+end note
+
+note right of NewSchema
+  Created when document doesn't
+  match any existing schema
+end note
+
+note right of Result
+  Contains validation status,
+  errors, warnings, and confidence
+end note
+
+@enduml

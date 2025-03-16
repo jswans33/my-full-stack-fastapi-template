@@ -1,0 +1,157 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml PDF_Classifier_Components
+skinparam componentStyle uml2
+skinparam component {
+  BorderColor #678DB2
+  BackgroundColor #FFFFFF
+  ArrowColor #678DB2
+}
+
+' Title with diagram cross-references
+title PDF Document Classifier Components (06-03)
+caption Related diagrams: 02-01, 06-02, 06-04
+
+package "PDF Processing Pipeline" {
+  [CLI/API Interface] as Interface
+  [PDF File Processor] as FileProcessor
+  note bottom of Interface
+    Entry point for document processing
+    See 01-01 for overall architecture
+  end note
+  
+  package "PDF Document Classifier" {
+    [Feature Extractor] as FeatureExtractor
+    [Text Analyzer] as TextAnalyzer
+    [Layout Analyzer] as LayoutAnalyzer
+    [Metadata Extractor] as MetadataExtractor
+    [Image Recognizer] as ImageRecognizer
+    note bottom of FeatureExtractor
+      Core component that drives PDF analysis
+      Corresponds to _extract_features() in 02-01
+    end note
+    
+    package "Classification Strategies" {
+      [Template Matcher] as TemplateMatcher
+      [Keyword Classifier] as KeywordClassifier
+      [Header/Footer Analyzer] as HeaderFooter
+      [ML Document Classifier] as MLClassifier
+      [Form Field Detector] as FormDetector
+      note right of TemplateMatcher
+        Most efficient classification method
+        For decision logic see 06-04
+      end note
+      note bottom of MLClassifier
+        Uses trained models for classification
+        Based on BaseClassifier in 02-01
+      end note
+    }
+    
+    [Ensemble Manager] as EnsembleManager
+    [Classification Result Manager] as ResultManager
+    note bottom of EnsembleManager
+      Implements weighted voting algorithm
+      See EnsembleManager class in 02-01
+    end note
+  }
+  
+  package "Document Schema Registry" {
+    [Schema Validator] as SchemaValidator
+    [Document Types Database] as DocTypeDB
+    note right of SchemaValidator
+      Validates document against schema
+      See schema registry flow in 05-02
+    end note
+  }
+  
+  package "Normalization & Output" {
+    [Data Normalizer] as Normalizer
+    [JSON Formatter] as JSONFormatter
+    [Structured Text Formatter] as TextFormatter
+    note bottom of Normalizer
+      Normalizes extracted data based on type
+      Prepares for formatting (see 03-02)
+    end note
+  }
+  
+  database "PDF Templates" as Templates
+  database "Classification Models" as Models
+  database "Processed Results" as Results
+}
+
+' Main flow
+Interface --> FileProcessor
+FileProcessor --> FeatureExtractor
+FeatureExtractor --> TextAnalyzer
+FeatureExtractor --> LayoutAnalyzer
+FeatureExtractor --> MetadataExtractor
+FeatureExtractor --> ImageRecognizer
+
+TextAnalyzer --> KeywordClassifier
+LayoutAnalyzer --> TemplateMatcher
+LayoutAnalyzer --> FormDetector
+MetadataExtractor --> HeaderFooter
+TextAnalyzer --> MLClassifier
+ImageRecognizer --> MLClassifier
+
+KeywordClassifier --> EnsembleManager
+TemplateMatcher --> EnsembleManager
+HeaderFooter --> EnsembleManager
+MLClassifier --> EnsembleManager
+FormDetector --> EnsembleManager
+
+EnsembleManager --> ResultManager
+ResultManager --> SchemaValidator
+SchemaValidator --> DocTypeDB
+
+ResultManager --> Normalizer
+Normalizer --> JSONFormatter
+Normalizer --> TextFormatter
+
+JSONFormatter --> Results
+TextFormatter --> Results
+
+' External dependencies
+TemplateMatcher --> Templates : "uses"
+MLClassifier --> Models : "uses"
+
+' Notes
+note right of FeatureExtractor
+  Extracts text, layout, metadata, and images
+  from PDF documents for classification
+  
+  This is the first step in the PDF
+  processing sequence (06-02)
+end note
+
+note right of EnsembleManager
+  Combines results from multiple classifiers
+  with weighted voting to improve accuracy
+  
+  Priority logic detailed in 06-04
+end note
+
+note right of Templates
+  Contains known document templates
+  and their characteristic features
+  
+  Templates can be managed by
+  administrators (see 06-01)
+end note
+
+note right of Models
+  Trained ML models for document
+  classification and field extraction
+  
+  These implement MLBasedClassifier
+  from diagram 02-01
+end note
+
+note bottom of Results
+  Final output that can be exported
+  through various formatters (03-01)
+  and verified (04-01)
+end note
+
+@enduml

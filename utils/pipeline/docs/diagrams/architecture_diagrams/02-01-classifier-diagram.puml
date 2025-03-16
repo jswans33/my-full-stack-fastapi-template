@@ -1,0 +1,94 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml DocumentClassifier_ClassDiagram
+skinparam classAttributeIconSize 0
+
+class DocumentClassifier {
+  -config: Dict
+  -logger: Logger
+  -factory: ClassifierFactory
+  -ensemble_manager: EnsembleManager
+  +__init__(config: Dict)
+  +classify(document_data: Dict): Dict
+  -_extract_features(document_data: Dict): Dict
+  +add_classifier(name: str, classifier_class: Any, config: Dict)
+  +remove_classifier(name: str)
+  +update_classifier_config(name: str, config: Dict)
+  +get_available_classifiers(): List[Dict]
+}
+
+class ClassifierFactory {
+  -_registered_classifiers: Dict
+  -_classifier_configs: Dict
+  -logger: Logger
+  +__init__()
+  +register_classifier(name: str, classifier_class: Type, config: Dict)
+  +create_classifier(name: str, config: Dict): ClassifierStrategy
+  +get_available_classifiers(): List[Dict]
+  +remove_classifier(name: str)
+  +update_classifier_config(name: str, config: Dict)
+}
+
+interface ClassifierStrategy {
+  {abstract} +__init__(config: Dict)
+  {abstract} +classify(document_data: Dict, features: Dict): Dict
+  {abstract} +get_supported_types(): List[str]
+  {abstract} +get_classifier_info(): Dict
+}
+
+abstract BaseClassifier {
+  #config: Dict
+  #logger: Logger
+  +__init__(config: Dict)
+  #_validate_config()
+  #_extract_features(document_data: Dict): Dict
+  +get_classifier_info(): Dict
+  +get_supported_types(): List[str]
+  {abstract} +classify(document_data: Dict, features: Dict): Dict
+}
+
+class RuleBasedClassifier {
+  -rules: List
+  +__init__(config: Dict)
+  +classify(document_data: Dict, features: Dict): Dict
+  -_apply_rules(features: Dict): Dict
+  +get_supported_types(): List[str]
+}
+
+class PatternMatcherClassifier {
+  -patterns: Dict
+  +__init__(config: Dict)
+  +classify(document_data: Dict, features: Dict): Dict
+  -_match_patterns(document_data: Dict): Dict
+  +get_supported_types(): List[str]
+}
+
+class MLBasedClassifier {
+  -model: Any
+  -vectorizer: Any
+  +__init__(config: Dict)
+  +classify(document_data: Dict, features: Dict): Dict
+  -_prepare_features(features: Dict): Array
+  -_load_model()
+  +get_supported_types(): List[str]
+}
+
+class EnsembleManager {
+  -config: Dict
+  -logger: Logger
+  +__init__(config: Dict)
+  +combine_results(results: List[Dict]): Dict
+  -_weighted_voting(results: List[Dict]): Dict
+}
+
+DocumentClassifier --> ClassifierFactory
+DocumentClassifier --> EnsembleManager
+ClassifierFactory --> ClassifierStrategy
+
+ClassifierStrategy <|-- BaseClassifier
+BaseClassifier <|-- RuleBasedClassifier
+BaseClassifier <|-- PatternMatcherClassifier
+BaseClassifier <|-- MLBasedClassifier
+
+@enduml

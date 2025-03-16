@@ -1,0 +1,87 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml PDF_Processing_Sequence
+skinparam sequenceArrowThickness 2
+skinparam roundcorner 5
+skinparam maxmessagesize 100
+skinparam sequenceParticipant underline
+
+actor "User" as User
+participant "Pipeline Interface" as Interface
+participant "FileProcessor" as FileProcessor
+participant "PDFExtractor" as PDFExtractor
+participant "DocumentClassifier" as Classifier
+participant "SchemaRegistry" as Registry
+participant "DataNormalizer" as Normalizer
+participant "FormatterFactory" as Formatter
+participant "OutputVerifier" as Verifier
+database "Storage" as Storage
+
+== Initialization ==
+User -> Interface: Submit PDF document
+activate Interface
+Interface -> FileProcessor: process(pdfFile)
+activate FileProcessor
+
+== PDF Extraction ==
+FileProcessor -> PDFExtractor: extractContent(pdfFile)
+activate PDFExtractor
+PDFExtractor --> FileProcessor: rawTextContent, metadata
+deactivate PDFExtractor
+
+== Document Classification ==
+FileProcessor -> Classifier: classify(rawTextContent, metadata)
+activate Classifier
+Classifier -> Classifier: extractFeatures()
+Classifier -> Classifier: applyClassifiers()
+Classifier --> FileProcessor: documentType, confidence
+deactivate Classifier
+
+== Schema Validation ==
+FileProcessor -> Registry: getSchema(documentType)
+activate Registry
+Registry --> FileProcessor: documentSchema
+deactivate Registry
+
+FileProcessor -> Registry: validateDocument(rawTextContent, documentSchema)
+activate Registry
+Registry --> FileProcessor: validationResult
+deactivate Registry
+
+== Data Normalization ==
+FileProcessor -> Normalizer: normalize(rawTextContent, documentType)
+activate Normalizer
+Normalizer -> Normalizer: applyNormalizationRules()
+Normalizer --> FileProcessor: structuredData
+deactivate Normalizer
+
+== Output Formatting ==
+FileProcessor -> Formatter: createFormatter(outputFormat)
+activate Formatter
+Formatter --> FileProcessor: formatterInstance
+deactivate Formatter
+
+FileProcessor -> Formatter: format(structuredData)
+activate Formatter
+Formatter --> FileProcessor: formattedOutput
+deactivate Formatter
+
+== Output Verification ==
+FileProcessor -> Verifier: verify(formattedOutput, documentSchema)
+activate Verifier
+Verifier --> FileProcessor: verificationResult
+deactivate Verifier
+
+== Completion ==
+FileProcessor -> Storage: save(formattedOutput, documentType)
+activate Storage
+Storage --> FileProcessor: storageId
+deactivate Storage
+
+FileProcessor --> Interface: processingResult
+deactivate FileProcessor
+Interface --> User: displayResults(processingResult)
+deactivate Interface
+
+@enduml
