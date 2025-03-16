@@ -4,11 +4,11 @@ Enhanced schema registry module.
 This module extends the SchemaRegistry with configuration integration, versioning, and inheritance.
 """
 
-from datetime import datetime
 from typing import Any, Dict, Optional
 
 from utils.pipeline.config import ConfigurationManager, SchemaConfig
 from utils.pipeline.schema.extended_registry import ExtendedSchemaRegistry
+from utils.pipeline.schema.migrator import SchemaMigrator
 
 
 class EnhancedSchemaRegistry(ExtendedSchemaRegistry):
@@ -42,6 +42,9 @@ class EnhancedSchemaRegistry(ExtendedSchemaRegistry):
 
         # Schema inheritance relationships
         self.schema_inheritance: Dict[str, str] = {}
+
+        # Initialize schema migrator
+        self.migrator = SchemaMigrator(config_manager)
 
         # Load schemas from configuration
         self.load_schemas_from_config()
@@ -258,68 +261,35 @@ class EnhancedSchemaRegistry(ExtendedSchemaRegistry):
             True if successful, False otherwise
         """
         try:
-            # Get migration configuration
-            migration_config = self.config_manager.get_config(
-                f"migrations/{schema_name}_{source_version}_to_{target_version}"
-            )
-
-            if not migration_config:
-                self.logger.error(
-                    f"Migration configuration not found for {schema_name} "
-                    f"from {source_version} to {target_version}"
-                )
-                return False
-
             # Get source schema
             source_schema = self.get_schema_version(schema_name, source_version)
-
             if not source_schema:
                 self.logger.error(
                     f"Source schema {schema_name} version {source_version} not found"
                 )
                 return False
 
-            # Create new schema based on source schema
-            target_schema = source_schema.copy()
-            target_schema["schema_version"] = target_version
-            target_schema["updated_at"] = datetime.now().isoformat()
+            # Convert to SchemaConfig
+            source_config = SchemaConfig(**source_schema)
 
-            # Apply field additions
-            for field in migration_config.get("add_fields", []):
-                target_schema.setdefault("fields", []).append(field)
+            # Migrate schema using migrator
+            migrated_schema = self.migrator.migrate_schema(
+                source_config, target_version
+            )
 
-            # Apply field removals
-            if "remove_fields" in migration_config:
-                target_schema["fields"] = [
-                    field
-                    for field in target_schema.get("fields", [])
-                    if field["name"] not in migration_config["remove_fields"]
-                ]
-
-            # Apply field renames
-            if "rename_fields" in migration_config:
-                for field in target_schema.get("fields", []):
-                    if field["name"] in migration_config["rename_fields"]:
-                        field["name"] = migration_config["rename_fields"][field["name"]]
-
-            # Apply field transformations
-            if "transform_fields" in migration_config:
-                # Field transformations would require executing code from the configuration
-                # This is a placeholder for a more complex implementation
-                self.logger.warning(
-                    "Field transformations are not fully implemented yet"
-                )
+            if not migrated_schema:
+                return False
 
             # Add to version history
             if schema_name not in self.schema_versions:
                 self.schema_versions[schema_name] = {}
 
+            # Convert back to dictionary
+            target_schema = migrated_schema.model_dump()
             self.schema_versions[schema_name][target_version] = target_schema
 
-            # Generate schema ID
+            # Generate schema ID and update schemas
             schema_id = self._generate_schema_id(schema_name)
-
-            # Add to schemas
             self.schemas[schema_id] = target_schema
 
             # Save schema to storage
@@ -328,7 +298,6 @@ class EnhancedSchemaRegistry(ExtendedSchemaRegistry):
             self.logger.info(
                 f"Migrated schema {schema_name} from {source_version} to {target_version}"
             )
-
             return True
 
         except Exception as e:

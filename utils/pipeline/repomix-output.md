@@ -45,17 +45,40 @@ cleaner/__init__.py
 cleaner/pdf.py
 config/__init__.py
 config/config.py
+config/document_types/invoice.yaml
 config/enhanced_markdown_config_v2.json
 config/enhanced_markdown_config.json
+config/environments/development.yaml
 config/example_config.yaml
 config/hvac_config.json
 config/hvac_config.yaml
+config/manager.py
+config/migrations/invoice_1.0.0_to_1.1.0.yaml
+config/migrations/invoice_v1_to_v2.yaml
+config/models/__init__.py
+config/models/base.py
+config/models/document_type.py
+config/models/environment.py
+config/models/processor.py
+config/models/schema.py
+config/providers/__init__.py
+config/providers/base.py
+config/providers/env.py
+config/providers/file.py
+config/README.md
+config/schema_registry.yaml
+config/schemas/financial_document.yaml
+config/schemas/invoice_v1.yaml
+config/schemas/purchase_order.yaml
 core/file_processor.py
 examples/batch_processing_example.py
+examples/config_example.py
 examples/config.yaml
 examples/document_classification_example.py
 examples/pdf_extraction_example.py
 examples/schema_analysis_example.py
+examples/schema_migration_example.py
+examples/schema_registry_example.py
 models/models.py
 pipeline.py
 processors/classifiers/__init__.py
@@ -80,8 +103,10 @@ schema/__init__.py
 schema/analyzer.py
 schema/data/schemas/hvac_specification_20250315171953.json
 schema/data/schemas/test_document_20250315153312.json
+schema/enhanced_registry.py
 schema/extended_registry.py
 schema/matchers.py
+schema/migrator.py
 schema/registry.py
 schema/templates/__init__.py
 schema/vectorizer.py
@@ -378,12 +403,90 @@ class PDFCleaner(CleanerStrategy):
 """
 Configuration module for the pipeline.
 
-This module provides functions for loading and managing configuration settings.
+This module provides functions and classes for loading and managing configuration settings.
 """
 
-from .config import PipelineConfig, load_config
+# Legacy configuration (for backward compatibility)
+from .config import PipelineConfig
+from .config import load_config as load_legacy_config
 
-__all__ = ["load_config", "PipelineConfig"]
+# New configuration system
+from .manager import ConfigurationManager
+from .models.base import BaseConfig
+from .models.document_type import DocumentField, DocumentRule, DocumentTypeConfig
+from .models.environment import EnvironmentConfig
+from .models.processor import ProcessorComponentConfig, ProcessorConfig
+from .models.schema import SchemaConfig, SchemaField, SchemaMigration, SchemaValidation
+from .providers.base import ConfigurationProvider
+from .providers.env import EnvironmentConfigurationProvider
+from .providers.file import FileConfigurationProvider
+
+
+def create_configuration_manager() -> ConfigurationManager:
+    """
+    Create a new configuration manager with default providers.
+
+    Returns:
+        Configured ConfigurationManager instance
+    """
+    manager = ConfigurationManager()
+
+    # Register file provider (highest priority)
+    file_provider = FileConfigurationProvider(
+        base_dirs=["utils/pipeline/config", "config"]
+    )
+    manager.register_provider(file_provider, priority=100)
+
+    # Register environment provider (lower priority)
+    env_provider = EnvironmentConfigurationProvider(prefix="PIPELINE_")
+    manager.register_provider(env_provider, priority=50)
+
+    return manager
+
+
+# Default configuration manager instance
+config_manager = create_configuration_manager()
+
+
+def load_config(config_name: str) -> dict:
+    """
+    Load configuration by name using the default configuration manager.
+
+    Args:
+        config_name: Name of the configuration to load
+
+    Returns:
+        Configuration dictionary
+    """
+    return config_manager.get_config(config_name)
+
+
+__all__ = [
+    # Legacy configuration
+    "PipelineConfig",
+    "load_legacy_config",
+    # Configuration manager
+    "ConfigurationManager",
+    "config_manager",
+    "load_config",
+    "create_configuration_manager",
+    # Configuration providers
+    "ConfigurationProvider",
+    "FileConfigurationProvider",
+    "EnvironmentConfigurationProvider",
+    # Configuration models
+    "BaseConfig",
+    "DocumentField",
+    "DocumentRule",
+    "DocumentTypeConfig",
+    "EnvironmentConfig",
+    "ProcessorComponentConfig",
+    "ProcessorConfig",
+    "SchemaConfig",
+    "SchemaField",
+    "SchemaValidation",
+    "SchemaMigration",
+]
 ````
 
 ## File: config/config.py
@@ -739,6 +842,36 @@ def _merge_configs(base: dict, override: dict) -> dict:
     return result
 ````
 
+## File: config/document_types/invoice.yaml
+````yaml
+name: INVOICE
+document_type: INVOICE
+schema_version: '1.0'
+description: Invoice document type configuration
+created_at: '2025-03-15T20:45:00Z'
+updated_at: '2025-03-15T20:45:00Z'
+fields:
+- name: payment_method
+  path: metadata.payment_method
+  type: string
+  required: false
+  description: Payment method
+rules:
+- name: validate_total
+  description: Validate that total = subtotal + tax
+  condition: total_amount == subtotal + tax_amount
+  action: warn
+  priority: 1
+- name: validate_dates
+  description: Validate that due date is after invoice date
+  condition: due_date > invoice_date
+  action: warn
+  priority: 2
+metadata:
+  category: financial
+  priority: high
+````
+
 ## File: config/enhanced_markdown_config_v2.json
 ````json
 {
@@ -819,6 +952,41 @@ def _merge_configs(base: dict, override: dict) -> dict:
     }
   }
 }
+````
+
+## File: config/environments/development.yaml
+````yaml
+name: development
+version: "1.0"
+description: "Development environment configuration"
+created_at: "2025-03-15T20:45:00Z"
+updated_at: "2025-03-15T20:45:00Z"
+
+overrides:
+  # Override pipeline settings for development
+  pipeline:
+    log_level: "DEBUG"
+    validation_level: "basic"
+    output_format: "yaml"
+  
+  # Override schema settings for development
+  schemas:
+    invoice_standard:
+      validations:
+        # Disable some validations in development
+        - name: validate_line_items
+          level: "warning"  # Downgrade from error to warning
+  
+  # Override processor settings for development
+  processors:
+    pdf:
+      parameters:
+        debug_mode: true
+        extract_images: true
+    
+    excel:
+      parameters:
+        debug_mode: true
 ````
 
 ## File: config/example_config.yaml
@@ -1428,6 +1596,1404 @@ file_processing:
     detailed: true
     format: "json"
     save_path: "hvac_processing_report.json"
+````
+
+## File: config/manager.py
+````python
+"""
+Configuration manager.
+
+This module provides the central configuration management service.
+"""
+
+from typing import Any, Callable, Dict, List, Tuple
+
+from utils.pipeline.config.providers.base import ConfigurationProvider
+
+
+class ConfigurationManager:
+    """
+    Configuration manager.
+
+    Manages configuration providers and provides access to configuration.
+    """
+
+    def __init__(self):
+        """Initialize the configuration manager."""
+        self.providers: List[Tuple[ConfigurationProvider, int]] = []
+        self.configs: Dict[str, Dict[str, Any]] = {}
+        self.cache: Dict[str, Dict[str, Any]] = {}
+        self.listeners: Dict[str, List[Callable]] = {}
+
+    def register_provider(
+        self, provider: ConfigurationProvider, priority: int = 0
+    ) -> None:
+        """
+        Register a configuration provider.
+
+        Args:
+            provider: Configuration provider to register
+            priority: Provider priority (higher priority providers override lower priority ones)
+        """
+        self.providers.append((provider, priority))
+        self.providers.sort(key=lambda x: x[1], reverse=True)
+
+        # Clear cache
+        self.cache = {}
+
+    def get_config(self, config_name: str, use_cache: bool = True) -> Dict[str, Any]:
+        """
+        Get configuration by name.
+
+        Args:
+            config_name: Name of the configuration to load
+            use_cache: Whether to use cached configuration
+
+        Returns:
+            Configuration dictionary
+        """
+        # Check cache
+        if use_cache and config_name in self.cache:
+            return self.cache[config_name]
+
+        # Check if configuration is already loaded
+        if config_name in self.configs:
+            config = self.configs[config_name]
+        else:
+            # Load configuration from providers
+            config = self.load_configuration(config_name)
+
+            # Store configuration
+            self.configs[config_name] = config
+
+        # Cache configuration
+        self.cache[config_name] = config
+
+        return config
+
+    def load_configuration(self, config_name: str) -> Dict[str, Any]:
+        """
+        Load configuration from providers.
+
+        Args:
+            config_name: Name of the configuration to load
+
+        Returns:
+            Configuration dictionary
+        """
+        merged_config = {}
+
+        # Load from providers in priority order
+        for provider, _ in self.providers:
+            # Check if provider supports this configuration
+            if provider.supports_config(config_name):
+                # Get configuration from provider
+                provider_config = provider.get_config(config_name)
+
+                # Merge with existing configuration
+                merged_config = self._deep_merge(merged_config, provider_config)
+
+        return merged_config
+
+    def update_configuration(self, config_name: str, updates: Dict[str, Any]) -> bool:
+        """
+        Update configuration at runtime.
+
+        Args:
+            config_name: Name of the configuration to update
+            updates: Configuration updates
+
+        Returns:
+            True if successful, False otherwise
+        """
+        # Get current configuration
+        config = self.get_config(config_name, use_cache=False)
+
+        # Apply updates
+        updated_config = self._deep_merge(config, updates)
+
+        # Store updated configuration
+        self.configs[config_name] = updated_config
+
+        # Clear cache
+        if config_name in self.cache:
+            del self.cache[config_name]
+
+        # Save configuration to providers
+        success = False
+        for provider, _ in self.providers:
+            # Try to save configuration
+            if provider.save_config(config_name, updated_config):
+                success = True
+
+        # Notify listeners
+        self._notify_listeners(config_name, updated_config)
+
+        return success
+
+    def register_listener(self, config_name: str, callback: Callable) -> None:
+        """
+        Register a listener for configuration changes.
+
+        Args:
+            config_name: Name of the configuration to listen for
+            callback: Callback function to call when configuration changes
+        """
+        if config_name not in self.listeners:
+            self.listeners[config_name] = []
+
+        self.listeners[config_name].append(callback)
+
+    def _notify_listeners(self, config_name: str, config: Dict[str, Any]) -> None:
+        """
+        Notify listeners of configuration changes.
+
+        Args:
+            config_name: Name of the configuration that changed
+            config: New configuration
+        """
+        if config_name in self.listeners:
+            for callback in self.listeners[config_name]:
+                try:
+                    callback(config_name, config)
+                except Exception as e:
+                    # Log error
+                    print(f"Error notifying listener: {str(e)}")
+
+    def _deep_merge(
+        self, base: Dict[str, Any], override: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Deep merge two dictionaries.
+
+        Args:
+            base: Base dictionary
+            override: Dictionary to override base
+
+        Returns:
+            Merged dictionary
+        """
+        result = base.copy()
+
+        for key, value in override.items():
+            if (
+                key in result
+                and isinstance(result[key], dict)
+                and isinstance(value, dict)
+            ):
+                # Recursively merge dictionaries
+                result[key] = self._deep_merge(result[key], value)
+            else:
+                # Override or add value
+                result[key] = value
+
+        return result
+````
+
+## File: config/migrations/invoice_1.0.0_to_1.1.0.yaml
+````yaml
+name: invoice_v1_to_v1_1
+source_version: "1.0.0"
+target_version: "1.1.0"
+description: "Update invoice schema to support additional payment fields"
+
+# Fields to add in the new version
+add_fields:
+  - name: payment_method
+    path: payment.method
+    type: string
+    required: true
+    description: "Method of payment (e.g., credit_card, bank_transfer)"
+    validation: "value in ['credit_card', 'bank_transfer', 'cash', 'check']"
+  
+  - name: payment_status
+    path: payment.status
+    type: string
+    required: true
+    description: "Current status of the payment"
+    default: "pending"
+    validation: "value in ['pending', 'processing', 'completed', 'failed']"
+
+# Fields to remove in the new version
+remove_fields:
+  - payment_type  # Old field being replaced by payment_method
+
+# Fields to rename in the new version
+rename_fields:
+  transaction_id: payment_reference_id
+
+# Field transformations to apply
+transform_fields:
+  amount: "convert_to_decimal"  # Example transformer that ensures amount is decimal
+  currency: "normalize_currency_code"  # Example transformer that standardizes currency codes
+````
+
+## File: config/migrations/invoice_v1_to_v2.yaml
+````yaml
+source_version: "1.0"
+target_version: "2.0"
+version: "1.0"
+description: "Migration from invoice schema v1 to v2"
+created_at: "2025-03-15T20:45:00Z"
+updated_at: "2025-03-15T20:45:00Z"
+
+# Fields to add in v2
+add_fields:
+  - name: payment_terms
+    path: "metadata.payment_terms"
+    type: string
+    required: false
+    description: "Payment terms (e.g., Net 30)"
+  
+  - name: currency
+    path: "metadata.currency"
+    type: string
+    required: false
+    description: "Currency code (e.g., USD)"
+    default: "USD"
+  
+  - name: discount_amount
+    path: "metadata.discount_amount"
+    type: decimal
+    required: false
+    description: "Discount amount"
+    validation: "is_decimal() and value >= 0"
+
+# Fields to remove in v2
+remove_fields:
+  - "customer_address"  # Split into separate fields
+
+# Fields to rename in v2
+rename_fields:
+  subtotal: "subtotal_amount"  # More consistent naming
+
+# Field transformations
+transform_fields:
+  # Split customer_address into separate fields
+  customer_address: |
+    parts = value.split(',')
+    if len(parts) >= 3:
+        return {
+            'customer_street': parts[0].strip(),
+            'customer_city': parts[1].strip(),
+            'customer_state': parts[2].strip(),
+            'customer_zip': parts[3].strip() if len(parts) > 3 else ''
+        }
+    else:
+        return {
+            'customer_street': value,
+            'customer_city': '',
+            'customer_state': '',
+            'customer_zip': ''
+        }
+  
+  # Update validation for total_amount
+  total_amount: |
+    return {
+        'total_amount': value,
+        'validation': 'is_decimal() and value >= 0 and value == (subtotal_amount + tax_amount - discount_amount)'
+    }
+````
+
+## File: config/models/__init__.py
+````python
+"""
+Configuration models package.
+
+This package contains Pydantic models for configuration validation.
+"""
+````
+
+## File: config/models/base.py
+````python
+"""
+Base configuration model.
+
+This module provides the base configuration model with version tracking.
+"""
+
+from datetime import datetime
+from typing import Any, Dict, Optional
+
+from pydantic import BaseModel, Field, field_validator
+
+
+class BaseConfig(BaseModel):
+    """
+    Base configuration model.
+
+    All configuration models should inherit from this class.
+    """
+
+    version: str = Field(default="1.0", description="Configuration version")
+    description: Optional[str] = Field(
+        default=None, description="Configuration description"
+    )
+    created_at: datetime = Field(
+        default_factory=datetime.now, description="Creation timestamp"
+    )
+    updated_at: datetime = Field(
+        default_factory=datetime.now, description="Last update timestamp"
+    )
+
+    def update(self, updates: Dict[str, Any]) -> "BaseConfig":
+        """
+        Update configuration with new values.
+
+        Args:
+            updates: Dictionary with updates
+
+        Returns:
+            Updated configuration
+        """
+        # Create a copy of the current data
+        data = self.model_dump()
+
+        # Apply updates
+        for key, value in updates.items():
+            if key in data:
+                data[key] = value
+
+        # Update timestamp
+        data["updated_at"] = datetime.now()
+
+        # Create new instance
+        return self.__class__(**data)
+
+    @field_validator("version")
+    def validate_version(cls, v: str) -> str:
+        """
+        Validate version format.
+
+        Args:
+            v: Version string
+
+        Returns:
+            Validated version string
+        """
+        # Check if version is in format x.y or x.y.z
+        parts = v.split(".")
+        if len(parts) not in [2, 3]:
+            raise ValueError("Version must be in format x.y or x.y.z")
+
+        # Check if all parts are integers
+        for part in parts:
+            try:
+                int(part)
+            except ValueError:
+                raise ValueError("Version parts must be integers")
+
+        return v
+````
+
+## File: config/models/document_type.py
+````python
+"""
+Document type configuration model.
+
+This module provides the document type configuration model with inheritance support.
+"""
+
+from typing import Dict, List, Optional
+
+from pydantic import Field, field_validator
+
+from utils.pipeline.config.models.base import BaseConfig
+
+
+class DocumentField(BaseConfig):
+    """Configuration for a document field."""
+
+    name: str = Field(..., description="Field name")
+    type: str = Field(..., description="Field type")
+    required: bool = Field(default=False, description="Whether the field is required")
+    description: Optional[str] = Field(default=None, description="Field description")
+    default: Optional[str] = Field(default=None, description="Default value")
+    patterns: List[str] = Field(
+        default_factory=list, description="Regex patterns for validation"
+    )
+    min_length: Optional[int] = Field(default=None, description="Minimum length")
+    max_length: Optional[int] = Field(default=None, description="Maximum length")
+    min_value: Optional[float] = Field(default=None, description="Minimum value")
+    max_value: Optional[float] = Field(default=None, description="Maximum value")
+    enum_values: List[str] = Field(default_factory=list, description="Allowed values")
+
+
+class DocumentRule(BaseConfig):
+    """Configuration for a document rule."""
+
+    name: str = Field(..., description="Rule name")
+    description: Optional[str] = Field(default=None, description="Rule description")
+    condition: str = Field(..., description="Rule condition")
+    action: str = Field(..., description="Rule action")
+    priority: int = Field(default=0, description="Rule priority")
+
+
+class DocumentTypeConfig(BaseConfig):
+    """Configuration for a document type."""
+
+    name: str = Field(..., description="Document type name")
+    inherits: Optional[str] = Field(default=None, description="Parent document type")
+    fields: List[DocumentField] = Field(
+        default_factory=list, description="Document fields"
+    )
+    rules: List[DocumentRule] = Field(
+        default_factory=list, description="Document rules"
+    )
+    metadata: Dict[str, str] = Field(
+        default_factory=dict, description="Document metadata"
+    )
+
+    @field_validator("name")
+    def validate_name(cls, v: str) -> str:
+        """
+        Validate document type name.
+
+        Args:
+            v: Document type name
+
+        Returns:
+            Validated document type name
+        """
+        # Check if name is not empty
+        if not v.strip():
+            raise ValueError("Document type name cannot be empty")
+
+        # Check if name contains only allowed characters
+        if not all(c.isalnum() or c in "_-" for c in v):
+            raise ValueError(
+                "Document type name can only contain alphanumeric characters, underscores, and hyphens"
+            )
+
+        return v
+````
+
+## File: config/models/environment.py
+````python
+"""
+Environment configuration model.
+
+This module provides the environment configuration model for environment-specific settings.
+"""
+
+from typing import Any, Dict, Optional
+
+from pydantic import Field, field_validator
+
+from utils.pipeline.config.models.base import BaseConfig
+
+
+class EnvironmentConfig(BaseConfig):
+    """Configuration for an environment."""
+
+    name: str = Field(..., description="Environment name")
+    description: Optional[str] = Field(
+        default=None, description="Environment description"
+    )
+    overrides: Dict[str, Any] = Field(
+        default_factory=dict, description="Configuration overrides"
+    )
+
+    @field_validator("name")
+    def validate_name(cls, v: str) -> str:
+        """
+        Validate environment name.
+
+        Args:
+            v: Environment name
+
+        Returns:
+            Validated environment name
+        """
+        # Check if name is not empty
+        if not v.strip():
+            raise ValueError("Environment name cannot be empty")
+
+        # Check if name contains only allowed characters
+        if not all(c.isalnum() or c in "_-" for c in v):
+            raise ValueError(
+                "Environment name can only contain alphanumeric characters, underscores, and hyphens"
+            )
+
+        return v
+````
+
+## File: config/models/processor.py
+````python
+"""
+Processor configuration model.
+
+This module provides the processor configuration model for document processing components.
+"""
+
+from typing import Any, Dict, List, Optional
+
+from pydantic import Field, field_validator
+
+from utils.pipeline.config.models.base import BaseConfig
+
+
+class ProcessorComponentConfig(BaseConfig):
+    """Configuration for a processor component."""
+
+    name: str = Field(..., description="Component name")
+    class_path: str = Field(..., description="Component class path")
+    parameters: Dict[str, Any] = Field(
+        default_factory=dict, description="Component parameters"
+    )
+
+    @field_validator("class_path")
+    def validate_class_path(cls, v: str) -> str:
+        """
+        Validate component class path.
+
+        Args:
+            v: Component class path
+
+        Returns:
+            Validated component class path
+        """
+        # Check if class path is not empty
+        if not v.strip():
+            raise ValueError("Component class path cannot be empty")
+
+        # Check if class path contains at least one dot
+        if "." not in v:
+            raise ValueError("Component class path must be in format 'module.class'")
+
+        return v
+
+
+class ProcessorConfig(BaseConfig):
+    """Configuration for a document processor."""
+
+    name: str = Field(..., description="Processor name")
+    description: Optional[str] = Field(
+        default=None, description="Processor description"
+    )
+    document_types: List[str] = Field(
+        default_factory=list, description="Supported document types"
+    )
+    components: Dict[str, ProcessorComponentConfig] = Field(
+        default_factory=dict, description="Processor components"
+    )
+    parameters: Dict[str, Any] = Field(
+        default_factory=dict, description="Processor parameters"
+    )
+
+    @field_validator("name")
+    def validate_name(cls, v: str) -> str:
+        """
+        Validate processor name.
+
+        Args:
+            v: Processor name
+
+        Returns:
+            Validated processor name
+        """
+        # Check if name is not empty
+        if not v.strip():
+            raise ValueError("Processor name cannot be empty")
+
+        # Check if name contains only allowed characters
+        if not all(c.isalnum() or c in "_-" for c in v):
+            raise ValueError(
+                "Processor name can only contain alphanumeric characters, underscores, and hyphens"
+            )
+
+        return v
+````
+
+## File: config/models/schema.py
+````python
+"""
+Schema configuration model.
+
+This module provides the schema configuration model with validation support.
+"""
+
+from typing import Dict, List, Optional
+
+from pydantic import Field, field_validator
+
+from utils.pipeline.config.models.base import BaseConfig
+
+
+class SchemaField(BaseConfig):
+    """Configuration for a schema field."""
+
+    name: str = Field(..., description="Field name")
+    path: str = Field(..., description="Field path in document")
+    type: str = Field(..., description="Field type")
+    required: bool = Field(default=False, description="Whether the field is required")
+    description: Optional[str] = Field(default=None, description="Field description")
+    default: Optional[str] = Field(default=None, description="Default value")
+    validation: Optional[str] = Field(default=None, description="Validation expression")
+
+
+class SchemaValidation(BaseConfig):
+    """Configuration for schema validation."""
+
+    name: str = Field(..., description="Validation name")
+    description: Optional[str] = Field(
+        default=None, description="Validation description"
+    )
+    condition: str = Field(..., description="Validation condition")
+    message: str = Field(..., description="Validation message")
+    level: str = Field(default="error", description="Validation level")
+
+
+class SchemaConfig(BaseConfig):
+    """Configuration for a schema."""
+
+    name: str = Field(..., description="Schema name")
+    document_type: str = Field(..., description="Document type")
+    schema_version: str = Field(..., description="Schema version")
+    inherits: Optional[str] = Field(default=None, description="Parent schema name")
+    fields: List[SchemaField] = Field(default_factory=list, description="Schema fields")
+    validations: List[SchemaValidation] = Field(
+        default_factory=list, description="Schema validations"
+    )
+    metadata: Dict[str, str] = Field(
+        default_factory=dict, description="Schema metadata"
+    )
+
+    @field_validator("name")
+    def validate_name(cls, v: str) -> str:
+        """
+        Validate schema name.
+
+        Args:
+            v: Schema name
+
+        Returns:
+            Validated schema name
+        """
+        # Check if name is not empty
+        if not v.strip():
+            raise ValueError("Schema name cannot be empty")
+
+        # Check if name contains only allowed characters
+        if not all(c.isalnum() or c in "_-" for c in v):
+            raise ValueError(
+                "Schema name can only contain alphanumeric characters, underscores, and hyphens"
+            )
+
+        return v
+
+
+class SchemaMigration(BaseConfig):
+    """Configuration for schema migration."""
+
+    source_version: str = Field(..., description="Source schema version")
+    target_version: str = Field(..., description="Target schema version")
+    add_fields: List[SchemaField] = Field(
+        default_factory=list, description="Fields to add"
+    )
+    remove_fields: List[str] = Field(
+        default_factory=list, description="Fields to remove"
+    )
+    rename_fields: Dict[str, str] = Field(
+        default_factory=dict, description="Fields to rename"
+    )
+    transform_fields: Dict[str, str] = Field(
+        default_factory=dict, description="Field transformations"
+    )
+````
+
+## File: config/providers/__init__.py
+````python
+"""
+Configuration providers package.
+
+This package contains providers for loading configuration from different sources.
+"""
+````
+
+## File: config/providers/base.py
+````python
+"""
+Base configuration provider.
+
+This module defines the base class for configuration providers.
+"""
+
+from abc import ABC, abstractmethod
+from typing import Any, Dict
+
+
+class ConfigurationProvider(ABC):
+    """
+    Abstract base class for configuration providers.
+
+    Configuration providers are responsible for loading configuration
+    from different sources (files, environment variables, databases, etc.).
+    """
+
+    @abstractmethod
+    def get_config(self, config_name: str) -> Dict[str, Any]:
+        """
+        Get configuration by name.
+
+        Args:
+            config_name: Name of the configuration to load
+
+        Returns:
+            Configuration dictionary or empty dict if not found
+        """
+        pass
+
+    @abstractmethod
+    def supports_config(self, config_name: str) -> bool:
+        """
+        Check if provider supports this configuration.
+
+        Args:
+            config_name: Name of the configuration to check
+
+        Returns:
+            True if provider supports this configuration, False otherwise
+        """
+        pass
+
+    @abstractmethod
+    def save_config(self, config_name: str, config_data: Dict[str, Any]) -> bool:
+        """
+        Save configuration.
+
+        Args:
+            config_name: Name of the configuration to save
+            config_data: Configuration data to save
+
+        Returns:
+            True if successful, False otherwise
+        """
+        pass
+````
+
+## File: config/providers/env.py
+````python
+"""
+Environment configuration provider.
+
+This module provides a configuration provider that loads configuration from environment variables.
+"""
+
+import os
+from typing import Any, Dict
+
+from utils.pipeline.config.providers.base import ConfigurationProvider
+
+
+class EnvironmentConfigurationProvider(ConfigurationProvider):
+    """
+    Environment-based configuration provider.
+
+    Loads configuration from environment variables.
+    """
+
+    def __init__(self, prefix: str = "PIPELINE_"):
+        """
+        Initialize the provider.
+
+        Args:
+            prefix: Prefix for environment variables (default: "PIPELINE_")
+        """
+        self.prefix = prefix
+
+    def get_config(self, config_name: str) -> Dict[str, Any]:
+        """
+        Get configuration by name.
+
+        Args:
+            config_name: Name of the configuration to load
+
+        Returns:
+            Configuration dictionary or empty dict if not found
+        """
+        # Convert config_name to environment variable prefix
+        env_prefix = (
+            f"{self.prefix}{config_name.upper().replace('/', '_').replace('.', '_')}_"
+        )
+
+        # Get all environment variables with this prefix
+        config = {}
+        for key, value in os.environ.items():
+            if key.startswith(env_prefix):
+                # Remove prefix from key
+                config_key = key[len(env_prefix) :].lower()
+
+                # Add to configuration
+                config[config_key] = self._parse_value(value)
+
+        return config
+
+    def supports_config(self, config_name: str) -> bool:
+        """
+        Check if provider supports this configuration.
+
+        Args:
+            config_name: Name of the configuration to check
+
+        Returns:
+            True if provider supports this configuration, False otherwise
+        """
+        # Convert config_name to environment variable prefix
+        env_prefix = (
+            f"{self.prefix}{config_name.upper().replace('/', '_').replace('.', '_')}_"
+        )
+
+        # Check if any environment variables have this prefix
+        for key in os.environ:
+            if key.startswith(env_prefix):
+                return True
+
+        return False
+
+    def save_config(self, config_name: str, config_data: Dict[str, Any]) -> bool:
+        """
+        Save configuration.
+
+        Environment variables cannot be saved, so this always returns False.
+
+        Args:
+            config_name: Name of the configuration to save
+            config_data: Configuration data to save
+
+        Returns:
+            Always False
+        """
+        # Environment variables cannot be saved
+        return False
+
+    def _parse_value(self, value: str) -> Any:
+        """
+        Parse environment variable value.
+
+        Args:
+            value: Value to parse
+
+        Returns:
+            Parsed value
+        """
+        # Try to parse as boolean
+        if value.lower() in ["true", "yes", "1"]:
+            return True
+        elif value.lower() in ["false", "no", "0"]:
+            return False
+
+        # Try to parse as integer
+        try:
+            return int(value)
+        except ValueError:
+            pass
+
+        # Try to parse as float
+        try:
+            return float(value)
+        except ValueError:
+            pass
+
+        # Return as string
+        return value
+````
+
+## File: config/providers/file.py
+````python
+"""
+File configuration provider.
+
+This module provides a configuration provider that loads configuration from files.
+"""
+
+import json
+import os
+from pathlib import Path
+from typing import Any, Dict, List, Optional
+
+import yaml
+
+from utils.pipeline.config.providers.base import ConfigurationProvider
+
+
+class FileConfigurationProvider(ConfigurationProvider):
+    """
+    File-based configuration provider.
+
+    Loads configuration from YAML or JSON files.
+    """
+
+    def __init__(
+        self, base_dirs: List[str], file_extensions: Optional[List[str]] = None
+    ):
+        """
+        Initialize the provider.
+
+        Args:
+            base_dirs: List of base directories to search for configuration files
+            file_extensions: List of file extensions to consider (default: ['.yaml', '.yml', '.json'])
+        """
+        self.base_dirs = [Path(d) for d in base_dirs]
+        self.file_extensions = file_extensions or [".yaml", ".yml", ".json"]
+
+        # Ensure base directories exist
+        for base_dir in self.base_dirs:
+            os.makedirs(base_dir, exist_ok=True)
+
+    def _resolve_lookup_paths(self, config_name: str) -> List[Path]:
+        """
+        Resolve configuration paths, supporting glob patterns.
+
+        Args:
+            config_name: Name of the configuration to resolve
+
+        Returns:
+            List of resolved paths
+        """
+        config_path = Path(config_name)
+        resolved_paths = []
+
+        # Check if config_name contains glob pattern
+        if any(c in config_name for c in "*?[]"):
+            # Handle glob pattern
+            for base_dir in self.base_dirs:
+                try:
+                    # Use glob to find matching files
+                    pattern_path = base_dir / config_path
+                    resolved_paths.extend(
+                        Path(p) for p in pattern_path.parent.glob(pattern_path.name)
+                    )
+                except Exception:
+                    continue
+        else:
+            # Handle regular path
+            if config_path.is_absolute():
+                if config_path.exists():
+                    resolved_paths.append(config_path)
+            else:
+                # Try each base directory
+                for base_dir in self.base_dirs:
+                    # Try with provided name
+                    candidate = base_dir / config_path
+                    if candidate.exists():
+                        resolved_paths.append(candidate)
+                        continue
+
+                    # Try with extensions if no extension provided
+                    if not config_path.suffix:
+                        for ext in self.file_extensions:
+                            candidate = base_dir / f"{config_name}{ext}"
+                            if candidate.exists():
+                                resolved_paths.append(candidate)
+                                break
+
+        return resolved_paths
+
+    def get_config(self, config_name: str) -> Dict[str, Any]:
+        """
+        Get configuration by name.
+
+        Args:
+            config_name: Name of the configuration to load. Can be a relative path
+                         or a full path that includes one of the base directories.
+                         Supports glob patterns for loading multiple configurations.
+
+        Returns:
+            Configuration dictionary or empty dict if not found
+        """
+        paths = self._resolve_lookup_paths(config_name)
+
+        if not paths:
+            # If no paths found and no extension provided, try default path
+            if not Path(config_name).suffix:
+                default_path = (
+                    self.base_dirs[0] / f"{config_name}{self.file_extensions[0]}"
+                )
+                paths = [default_path]
+
+        # For glob patterns, merge all matching configurations
+        merged_config = {}
+        for path in paths:
+            if path.exists():
+                config_data = self._load_file(path)
+                # Use filename without extension as the key for the configuration
+                config_key = path.stem
+                if config_data:
+                    merged_config[config_key] = config_data
+
+        # If not a glob pattern, return the single configuration directly
+        if not any(c in config_name for c in "*?[]"):
+            return next(iter(merged_config.values())) if merged_config else {}
+
+        return merged_config
+
+    def supports_config(self, config_name: str) -> bool:
+        """
+        Check if provider supports this configuration.
+
+        Args:
+            config_name: Name of the configuration to check. Can be a relative path
+                         or a full path that includes one of the base directories.
+                         Supports glob patterns.
+
+        Returns:
+            True if provider supports this configuration, False otherwise
+        """
+        paths = self._resolve_lookup_paths(config_name)
+        return bool(paths and any(p.exists() for p in paths))
+
+    def save_config(self, config_name: str, config_data: Dict[str, Any]) -> bool:
+        """
+        Save configuration.
+
+        Args:
+            config_name: Name of the configuration to save. Can be a relative path
+                         or a full path that includes one of the base directories.
+            config_data: Configuration data to save
+
+        Returns:
+            True if successful, False otherwise
+        """
+        paths = self._resolve_lookup_paths(config_name)
+        if paths:
+            file_path = paths[0]  # Use first matching path
+        else:
+            # Use default path if no matches found
+            file_path = self.base_dirs[0] / f"{config_name}{self.file_extensions[0]}"
+
+        # Ensure directory exists
+        os.makedirs(file_path.parent, exist_ok=True)
+
+        try:
+            # Save configuration
+            self._save_file(file_path, config_data)
+            return True
+        except Exception as e:
+            # Log error
+            print(f"Error saving configuration: {str(e)}")
+            return False
+
+    def _load_file(self, file_path: Path) -> Dict[str, Any]:
+        """
+        Load configuration from file.
+
+        Args:
+            file_path: Path to the configuration file
+
+        Returns:
+            Configuration dictionary
+        """
+        # Open file
+        with open(file_path, "r", encoding="utf-8") as f:
+            # Check file extension
+            if file_path.suffix in [".yaml", ".yml"]:
+                # Load YAML
+                return yaml.safe_load(f) or {}
+            elif file_path.suffix == ".json":
+                # Load JSON
+                return json.load(f)
+            else:
+                # Unsupported file extension
+                return {}
+
+    def _save_file(self, file_path: Path, config_data: Dict[str, Any]) -> None:
+        """
+        Save configuration to file.
+
+        Args:
+            file_path: Path to the configuration file
+            config_data: Configuration data to save
+        """
+        # Open file
+        with open(file_path, "w", encoding="utf-8") as f:
+            # Check file extension
+            if file_path.suffix in [".yaml", ".yml"]:
+                # Save YAML
+                yaml.dump(config_data, f, default_flow_style=False, sort_keys=False)
+            elif file_path.suffix == ".json":
+                # Save JSON
+                json.dump(config_data, f, indent=2, ensure_ascii=False)
+            else:
+                # Unsupported file extension
+                raise ValueError(f"Unsupported file extension: {file_path.suffix}")
+````
+
+## File: config/README.md
+````markdown
+# Enhanced Configuration System
+
+This directory contains the enhanced configuration management system for the document processing pipeline.
+
+## Overview
+
+The enhanced configuration system provides a flexible, modular approach to managing configuration settings for the document processing pipeline. It supports:
+
+- Loading configuration from multiple sources (files, environment variables, etc.)
+- Validating configuration using Pydantic models
+- Merging configuration from different sources with priority handling
+- Environment-specific configuration overrides
+- Schema versioning and migration
+- Runtime configuration updates
+
+## Directory Structure
+
+```
+config/
+├── __init__.py                # Package initialization
+├── manager.py                 # ConfigurationManager implementation
+├── providers/                 # Configuration providers
+│   ├── __init__.py
+│   ├── base.py                # Provider base class
+│   ├── file.py                # File-based provider
+│   └── env.py                 # Environment provider
+├── models/                    # Configuration models
+│   ├── __init__.py
+│   ├── base.py                # Base configuration model
+│   ├── document_type.py       # Document type configuration
+│   ├── schema.py              # Schema configuration
+│   ├── processor.py           # Processor configuration
+│   └── environment.py         # Environment configuration
+├── document_types/            # Document type configurations
+│   └── invoice.yaml           # Example invoice document type
+├── schemas/                   # Schema configurations
+│   └── invoice_v1.yaml        # Example invoice schema
+├── environments/              # Environment-specific configurations
+│   └── development.yaml       # Example development environment
+└── migrations/                # Schema migration configurations
+    └── invoice_v1_to_v2.yaml  # Example schema migration
+```
+
+## Quick Start
+
+```python
+from utils.pipeline.config import load_config, DocumentTypeConfig
+
+# Load document type configuration
+invoice_config = load_config("document_types/invoice")
+
+# Validate using Pydantic model
+document_type = DocumentTypeConfig(**invoice_config)
+
+# Access validated fields
+print(f"Document type: {document_type.name}")
+print(f"Fields: {len(document_type.fields)}")
+```
+
+## Documentation
+
+For more detailed information, see the following documentation:
+
+- [Configuration System Guide](../docs/configuration_system.md): Comprehensive guide to the configuration system
+- [Configuration Enhancement Checklist](../docs/configuration_enhancement_checklist.md): Implementation checklist
+- [Configuration Enhancement Summary](../docs/configuration_enhancement_summary.md): Summary of completed and remaining work
+
+## Examples
+
+See the [config_example.py](../examples/config_example.py) script for examples of using the configuration system.
+````
+
+## File: config/schema_registry.yaml
+````yaml
+name: pipeline_schema_registry
+version: "1.0.0"
+description: "Schema registry configuration"
+
+# Schema discovery configuration
+discovery:
+  paths:
+    - utils/pipeline/config/schemas
+    - utils/pipeline/config/migrations
+  patterns:
+    - "*.yaml"
+    - "*.yml"
+    - "*.json"
+
+# Storage configuration
+storage:
+  type: file
+  path: utils/pipeline/config/schemas
+
+# Validation configuration
+validation:
+  strict: true
+  allow_unknown: false
+````
+
+## File: config/schemas/financial_document.yaml
+````yaml
+name: financial_document
+document_type: FINANCIAL_DOCUMENT
+schema_version: "1.0"
+description: "Base financial document schema configuration"
+created_at: "2025-03-15T20:45:00Z"
+updated_at: "2025-03-15T20:45:00Z"
+
+fields:
+  - name: document_id
+    path: "metadata.document_id"
+    type: string
+    required: true
+    description: "Unique document identifier"
+    validation: "len(value) > 0"
+
+  - name: document_date
+    path: "metadata.document_date"
+    type: date
+    required: true
+    description: "Document date"
+    validation: "is_date()"
+
+  - name: amount
+    path: "metadata.amount"
+    type: decimal
+    required: true
+    description: "Document amount"
+    validation: "is_decimal() and value >= 0"
+
+  - name: currency
+    path: "metadata.currency"
+    type: string
+    required: false
+    description: "Currency code (e.g., USD)"
+    default: "USD"
+    validation: "len(value) == 3"
+
+  - name: issuer_name
+    path: "metadata.issuer_name"
+    type: string
+    required: true
+    description: "Issuer name"
+    validation: "len(value) > 0"
+
+  - name: issuer_address
+    path: "metadata.issuer_address"
+    type: string
+    required: false
+    description: "Issuer address"
+
+  - name: recipient_name
+    path: "metadata.recipient_name"
+    type: string
+    required: false
+    description: "Recipient name"
+
+  - name: recipient_address
+    path: "metadata.recipient_address"
+    type: string
+    required: false
+    description: "Recipient address"
+
+validations:
+  - name: validate_amount
+    description: "Validate that amount is positive"
+    condition: "amount > 0"
+    message: "Amount must be positive"
+    level: "error"
+
+  - name: validate_currency
+    description: "Validate that currency is a valid code"
+    condition: "currency in ['USD', 'EUR', 'GBP', 'CAD', 'AUD', 'JPY']"
+    message: "Currency must be a valid code"
+    level: "warning"
+
+metadata:
+  schema_type: "base"
+  target_format: "json"
+````
+
+## File: config/schemas/invoice_v1.yaml
+````yaml
+name: invoice
+document_type: invoice
+schema_version: "1.0.0"
+description: "Invoice document schema version 1.0.0"
+
+fields:
+  - name: invoice_number
+    path: invoice_number
+    type: string
+    required: true
+    description: "Unique invoice identifier"
+    validation: "len(value) > 0"
+
+  - name: payment_type
+    path: payment_type
+    type: string
+    required: true
+    description: "Type of payment (legacy field)"
+    validation: "value in ['credit', 'debit', 'cash']"
+
+  - name: transaction_id
+    path: transaction_id
+    type: string
+    required: true
+    description: "Transaction identifier"
+    validation: "len(value) > 0"
+
+  - name: amount
+    path: amount
+    type: string
+    required: true
+    description: "Invoice amount"
+    validation: "float(value) > 0"
+
+  - name: currency
+    path: currency
+    type: string
+    required: true
+    description: "Currency code"
+    validation: "len(value) > 0"
+
+validations:
+  - name: valid_amount
+    description: "Ensure amount is a valid number"
+    condition: "isinstance(float(amount), float)"
+    message: "Amount must be a valid number"
+    level: "error"
+````
+
+## File: config/schemas/purchase_order.yaml
+````yaml
+version: '1.0'
+description: Purchase order schema
+created_at: 2025-03-15 21:27:29.959523
+updated_at: 2025-03-15 21:27:29.959523
+name: purchase_order
+document_type: PURCHASE_ORDER
+schema_version: '1.0'
+inherits: financial_document
+fields:
+- version: '1.0'
+  description: Purchase order number
+  created_at: 2025-03-15 21:27:29.959523
+  updated_at: 2025-03-15 21:27:29.959523
+  name: po_number
+  path: metadata.po_number
+  type: string
+  required: true
+  default: null
+  validation: null
+- version: '1.0'
+  description: Order date
+  created_at: 2025-03-15 21:27:29.959523
+  updated_at: 2025-03-15 21:27:29.959523
+  name: order_date
+  path: metadata.order_date
+  type: date
+  required: true
+  default: null
+  validation: null
+validations:
+- version: '1.0'
+  description: null
+  created_at: 2025-03-15 21:27:29.959523
+  updated_at: 2025-03-15 21:27:29.959523
+  name: validate_po_number
+  condition: po_number.startswith('PO-')
+  message: Purchase order number must start with 'PO-'
+  level: error
+metadata: {}
 ````
 
 ## File: core/file_processor.py
@@ -2113,6 +3679,169 @@ if __name__ == "__main__":
     main()
 ````
 
+## File: examples/config_example.py
+````python
+"""
+Configuration system example.
+
+This script demonstrates how to use the enhanced configuration system.
+"""
+
+import json
+from pathlib import Path
+
+from ..config import (
+    ConfigurationManager,
+    DocumentTypeConfig,
+    FileConfigurationProvider,
+    config_manager,
+    load_config,
+)
+
+
+def print_separator(title: str) -> None:
+    """Print a separator with a title."""
+    print("\n" + "=" * 80)
+    print(f" {title} ".center(80, "="))
+    print("=" * 80 + "\n")
+
+
+def example_load_config() -> None:
+    """Example of loading configuration using the default configuration manager."""
+    print_separator("Loading Configuration")
+
+    # Load document type configuration
+    print("Loading document type configuration:")
+    invoice_config = load_config("document_types/invoice")
+    print(json.dumps(invoice_config, indent=2))
+
+    # Load schema configuration
+    print("\nLoading schema configuration:")
+    schema_config = load_config("schemas/invoice_v1")
+    print(json.dumps(schema_config, indent=2))
+
+    # Load environment configuration
+    print("\nLoading environment configuration:")
+    env_config = load_config("environments/development")
+    print(json.dumps(env_config, indent=2))
+
+    # Load migration configuration
+    print("\nLoading migration configuration:")
+    migration_config = load_config("migrations/invoice_v1_to_v2")
+    print(json.dumps(migration_config, indent=2))
+
+
+def example_validate_config() -> None:
+    """Example of validating configuration using Pydantic models."""
+    print_separator("Validating Configuration")
+
+    # Load document type configuration
+    invoice_config = load_config("document_types/invoice")
+
+    # Validate using Pydantic model
+    try:
+        document_type = DocumentTypeConfig(**invoice_config)
+        print(f"Document type '{document_type.name}' is valid")
+        print(f"Fields: {len(document_type.fields)}")
+        print(f"Rules: {len(document_type.rules)}")
+
+        # Access specific fields
+        for field in document_type.fields:
+            print(f"Field: {field.name} ({field.type}), Required: {field.required}")
+
+    except Exception as e:
+        print(f"Error validating document type: {str(e)}")
+
+
+def example_environment_overrides() -> None:
+    """Example of applying environment-specific overrides."""
+    print_separator("Environment Overrides")
+
+    # Load base configuration
+    base_config = load_config("schemas/invoice_v1")
+    print("Base configuration:")
+    print(json.dumps(base_config, indent=2))
+
+    # Load environment configuration
+    env_config = load_config("environments/development")
+
+    # Get schema overrides from environment
+    schema_overrides = (
+        env_config.get("overrides", {}).get("schemas", {}).get("invoice_standard", {})
+    )
+    print("\nEnvironment overrides:")
+    print(json.dumps(schema_overrides, indent=2))
+
+    # Apply overrides
+    merged_config = config_manager._deep_merge(base_config, schema_overrides)
+    print("\nMerged configuration:")
+    print(json.dumps(merged_config, indent=2))
+
+
+def example_custom_config_manager() -> None:
+    """Example of creating a custom configuration manager."""
+    print_separator("Custom Configuration Manager")
+
+    # Create a custom configuration manager
+    custom_manager = ConfigurationManager()
+
+    # Register a file provider with a custom directory
+    custom_dir = Path(__file__).parent.parent / "config"
+    file_provider = FileConfigurationProvider(base_dirs=[str(custom_dir)])
+    custom_manager.register_provider(file_provider)
+
+    # Load configuration using the custom manager
+    invoice_config = custom_manager.get_config("document_types/invoice")
+    print("Invoice configuration loaded from custom manager:")
+    print(json.dumps(invoice_config, indent=2))
+
+
+def example_runtime_updates() -> None:
+    """Example of updating configuration at runtime."""
+    print_separator("Runtime Updates")
+
+    # Load document type configuration
+    invoice_config = load_config("document_types/invoice")
+    print("Original configuration:")
+    print(json.dumps(invoice_config, indent=2))
+
+    # Update configuration at runtime
+    updates = {
+        "fields": [
+            {
+                "name": "payment_method",
+                "type": "string",
+                "required": False,
+                "description": "Payment method",
+            }
+        ]
+    }
+
+    # Apply updates
+    config_manager.update_configuration("document_types/invoice", updates)
+
+    # Load updated configuration
+    updated_config = load_config("document_types/invoice")
+    print("\nUpdated configuration:")
+    print(json.dumps(updated_config, indent=2))
+
+
+def main() -> None:
+    """Run the configuration examples."""
+    print_separator("Configuration System Examples")
+
+    # Run examples
+    example_load_config()
+    example_validate_config()
+    example_environment_overrides()
+    example_custom_config_manager()
+    example_runtime_updates()
+
+
+if __name__ == "__main__":
+    main()
+````
+
 ## File: examples/config.yaml
 ````yaml
 input_dir: data/tests/pdf
@@ -2464,6 +4193,331 @@ def main():
         import traceback
 
         traceback.print_exc()
+
+
+if __name__ == "__main__":
+    main()
+````
+
+## File: examples/schema_migration_example.py
+````python
+"""
+Example demonstrating schema migration functionality.
+
+This example shows how to:
+1. Define migration configurations
+2. Register custom field transformers
+3. Execute schema migrations
+4. Transform data between schema versions
+"""
+
+from decimal import Decimal
+from typing import Any
+
+from utils.pipeline.config import config_manager
+from utils.pipeline.schema.enhanced_registry import EnhancedSchemaRegistry
+
+
+def convert_to_decimal(value: Any) -> Decimal:
+    """Convert a value to Decimal."""
+    return Decimal(str(value))
+
+
+def normalize_currency_code(code: str) -> str:
+    """Normalize currency code to uppercase 3-letter code."""
+    code = code.upper().strip()
+    if len(code) != 3:
+        raise ValueError(f"Invalid currency code: {code}")
+    return code
+
+
+def main():
+    """Run the schema migration example."""
+    # Use the default configuration manager
+
+    # Initialize schema registry
+    registry = EnhancedSchemaRegistry(config_manager)
+
+    # Get the migrator instance
+    migrator = registry.migrator
+
+    # Register custom field transformers
+    migrator.register_field_transformer("convert_to_decimal", convert_to_decimal)
+    migrator.register_field_transformer(
+        "normalize_currency_code", normalize_currency_code
+    )
+
+    # Example invoice data in version 1.0.0
+    invoice_v1 = {
+        "invoice_number": "INV-001",
+        "payment_type": "credit",  # Old field to be removed
+        "transaction_id": "TXN123",  # Field to be renamed
+        "amount": "99.99",  # Field to be transformed to Decimal
+        "currency": "usd",  # Field to be normalized
+    }
+
+    print("\nOriginal invoice data (v1.0.0):")
+    print(invoice_v1)
+
+    # Print available schemas
+    print("\nAvailable schemas:")
+    for schema_name, versions in registry.schema_versions.items():
+        print(f"  {schema_name}: {list(versions.keys())}")
+
+    # Print loaded schemas
+    print("\nLoaded schemas:")
+    for schema_id, schema in registry.schemas.items():
+        print(f"  {schema_id}: {schema.get('name')} v{schema.get('schema_version')}")
+
+    # Print discovery paths
+    print("\nDiscovery paths:")
+    discovery_paths = registry.config.get("discovery", {}).get("paths", [])
+    print(f"  {discovery_paths}")
+
+    # Try to load the schema directly
+    print("\nTrying to load schema directly:")
+    schema_data = config_manager.get_config("utils/pipeline/config/schemas/invoice_v1")
+    if schema_data:
+        print(
+            f"  Schema loaded: {schema_data.get('name')} v{schema_data.get('schema_version')}"
+        )
+    else:
+        print("  Failed to load schema")
+
+    # Migrate schema from v1.0.0 to v1.1.0
+    success = registry.migrate_schema("invoice", "1.0.0", "1.1.0")
+    if not success:
+        print("Schema migration failed!")
+        return
+
+    # Transform data using the migrated schema
+    transformed_data = migrator.transform_data(invoice_v1, "invoice", "1.0.0", "1.1.0")
+
+    if transformed_data:
+        print("\nTransformed invoice data (v1.1.0):")
+        print(transformed_data)
+
+        # Verify transformations
+        assert "payment_type" not in transformed_data  # Removed field
+        assert transformed_data["payment_reference_id"] == "TXN123"  # Renamed field
+        assert isinstance(transformed_data["amount"], Decimal)  # Transformed to Decimal
+        assert transformed_data["currency"] == "USD"  # Normalized currency code
+    else:
+        print("Data transformation failed!")
+
+
+if __name__ == "__main__":
+    main()
+````
+
+## File: examples/schema_registry_example.py
+````python
+"""
+Enhanced schema registry example.
+
+This script demonstrates how to use the enhanced schema registry.
+"""
+
+from typing import Any, Dict, Optional
+
+from utils.pipeline.config import config_manager
+from utils.pipeline.schema.enhanced_registry import EnhancedSchemaRegistry
+
+
+def print_separator(title: str) -> None:
+    """Print a separator with a title."""
+    print("\n" + "=" * 80)
+    print(f" {title} ".center(80, "="))
+    print("=" * 80 + "\n")
+
+
+def print_schema(schema: Optional[Dict[str, Any]]) -> None:
+    """Print a schema in a readable format."""
+    if not schema:
+        print("Schema not found")
+        return
+
+    print(f"Name: {schema.get('name')}")
+    print(f"Document Type: {schema.get('document_type')}")
+    print(f"Version: {schema.get('schema_version')}")
+
+    if schema.get("inherits"):
+        print(f"Inherits: {schema.get('inherits')}")
+
+    print(f"Fields: {len(schema.get('fields', []))}")
+    print(f"Validations: {len(schema.get('validations', []))}")
+
+    print("\nFields:")
+    for field in schema.get("fields", []):
+        print(
+            f"  - {field.get('name')} ({field.get('type')}): {field.get('description')}"
+        )
+
+    print("\nValidations:")
+    for validation in schema.get("validations", []):
+        print(
+            f"  - {validation.get('name')}: {validation.get('message')} ({validation.get('level')})"
+        )
+
+
+def example_load_schemas() -> None:
+    """Example of loading schemas from configuration."""
+    print_separator("Loading Schemas")
+
+    # Create enhanced schema registry with configuration manager
+    registry = EnhancedSchemaRegistry(config_manager)
+
+    # List all schemas
+    schemas = registry.list_schemas()
+    print(f"Loaded {len(schemas)} schemas:")
+
+    for schema in schemas:
+        print(f"- {schema.get('name')} (version {schema.get('schema_version')})")
+
+
+def example_schema_versions() -> None:
+    """Example of accessing schema versions."""
+    print_separator("Schema Versions")
+
+    # Create enhanced schema registry with configuration manager
+    registry = EnhancedSchemaRegistry(config_manager)
+
+    # Get schema by name and version
+    schema_name = "invoice_standard"
+
+    # Get latest version
+    latest_schema = registry.get_schema_version(schema_name, "latest")
+    print(f"Latest version of {schema_name}:")
+    print_schema(latest_schema)
+
+    # Get specific version
+    version = "1.0"
+    specific_schema = registry.get_schema_version(schema_name, version)
+    print(f"\nVersion {version} of {schema_name}:")
+    print_schema(specific_schema)
+
+
+def example_schema_inheritance() -> None:
+    """Example of schema inheritance."""
+    print_separator("Schema Inheritance")
+
+    # Create enhanced schema registry with configuration manager
+    registry = EnhancedSchemaRegistry(config_manager)
+
+    # Get parent schema
+    parent_name = "financial_document"
+    parent_schema = registry.get_schema_version(parent_name, "latest")
+    print(f"Parent schema {parent_name}:")
+    print_schema(parent_schema)
+
+    # Get child schema
+    child_name = "invoice_standard"
+    child_schema = registry.get_schema_version(child_name, "latest")
+    print(f"\nChild schema {child_name} (inherits from {parent_name}):")
+    print_schema(child_schema)
+
+
+def example_schema_migration() -> None:
+    """Example of schema migration."""
+    print_separator("Schema Migration")
+
+    # Create enhanced schema registry with configuration manager
+    registry = EnhancedSchemaRegistry(config_manager)
+
+    # Get schema to migrate
+    schema_name = "invoice_standard"
+    source_version = "1.0"
+    target_version = "2.0"
+
+    # Get source schema
+    source_schema = registry.get_schema_version(schema_name, source_version)
+    print(f"Source schema {schema_name} version {source_version}:")
+    print_schema(source_schema)
+
+    # Migrate schema
+    success = registry.migrate_schema(schema_name, source_version, target_version)
+
+    if success:
+        print(
+            f"\nSuccessfully migrated {schema_name} from {source_version} to {target_version}"
+        )
+
+        # Get target schema
+        target_schema = registry.get_schema_version(schema_name, target_version)
+        print(f"\nTarget schema {schema_name} version {target_version}:")
+        print_schema(target_schema)
+    else:
+        print(
+            f"\nFailed to migrate {schema_name} from {source_version} to {target_version}"
+        )
+
+
+def example_save_schema() -> None:
+    """Example of saving a schema configuration."""
+    print_separator("Saving Schema")
+
+    # Create enhanced schema registry with configuration manager
+    registry = EnhancedSchemaRegistry(config_manager)
+
+    # Create a new schema
+    schema = {
+        "name": "purchase_order",
+        "document_type": "PURCHASE_ORDER",
+        "schema_version": "1.0",
+        "inherits": "financial_document",
+        "description": "Purchase order schema",
+        "fields": [
+            {
+                "name": "po_number",
+                "path": "metadata.po_number",
+                "type": "string",
+                "required": True,
+                "description": "Purchase order number",
+            },
+            {
+                "name": "order_date",
+                "path": "metadata.order_date",
+                "type": "date",
+                "required": True,
+                "description": "Order date",
+            },
+        ],
+        "validations": [
+            {
+                "name": "validate_po_number",
+                "condition": "po_number.startswith('PO-')",
+                "message": "Purchase order number must start with 'PO-'",
+                "level": "error",
+            }
+        ],
+    }
+
+    # Save schema
+    success = registry.save_schema_config(schema)
+
+    if success:
+        print(f"Successfully saved schema {schema['name']}")
+
+        # Get saved schema
+        saved_schema = registry.get_schema_version(
+            schema["name"], schema["schema_version"]
+        )
+        print("\nSaved schema:")
+        print_schema(saved_schema)
+    else:
+        print(f"Failed to save schema {schema['name']}")
+
+
+def main() -> None:
+    """Run the schema registry examples."""
+    print_separator("Enhanced Schema Registry Examples")
+
+    # Run examples
+    example_load_schemas()
+    example_schema_versions()
+    example_schema_inheritance()
+    example_schema_migration()
+    example_save_schema()
 
 
 if __name__ == "__main__":
@@ -8183,6 +10237,351 @@ class SchemaAnalyzer:
 }
 ````
 
+## File: schema/enhanced_registry.py
+````python
+"""
+Enhanced schema registry module.
+
+This module extends the SchemaRegistry with configuration integration, versioning, and inheritance.
+"""
+
+from typing import Any, Dict, Optional
+
+from utils.pipeline.config import ConfigurationManager, SchemaConfig
+from utils.pipeline.schema.extended_registry import ExtendedSchemaRegistry
+from utils.pipeline.schema.migrator import SchemaMigrator
+
+
+class EnhancedSchemaRegistry(ExtendedSchemaRegistry):
+    """
+    Enhanced registry for document schemas with configuration integration.
+
+    This class extends ExtendedSchemaRegistry with:
+    1. Configuration manager integration
+    2. Schema versioning support
+    3. Schema inheritance
+    4. Schema discovery from configuration
+    """
+
+    def __init__(self, config_manager: ConfigurationManager):
+        """
+        Initialize the enhanced schema registry.
+
+        Args:
+            config_manager: Configuration manager instance
+        """
+        self.config_manager = config_manager
+
+        # Get registry configuration
+        registry_config = config_manager.get_config("schema_registry")
+
+        # Initialize base registry
+        super().__init__(registry_config)
+
+        # Version history for schemas
+        self.schema_versions: Dict[str, Dict[str, Dict[str, Any]]] = {}
+
+        # Schema inheritance relationships
+        self.schema_inheritance: Dict[str, str] = {}
+
+        # Initialize schema migrator
+        self.migrator = SchemaMigrator(config_manager)
+
+        # Load schemas from configuration
+        self.load_schemas_from_config()
+
+    def load_schemas_from_config(self) -> None:
+        """Load schemas from configuration."""
+        # Get schema discovery paths from configuration
+        discovery_paths = self.config.get("discovery", {}).get("paths", [])
+
+        # Discover schemas in each path
+        for path in discovery_paths:
+            self._discover_schemas(path)
+
+        # Process schema inheritance
+        self._process_schema_inheritance()
+
+    def _discover_schemas(self, path: str) -> None:
+        """
+        Discover schemas in the specified path.
+
+        Args:
+            path: Path to discover schemas in
+        """
+        # Get list of files in directory
+        try:
+            # Get all files in directory that match patterns
+            patterns = self.config.get("discovery", {}).get(
+                "patterns", ["*.yaml", "*.yml", "*.json"]
+            )
+            for pattern in patterns:
+                # Construct full pattern path
+                pattern_path = f"{path}/{pattern}"
+
+                # Get configurations for all matching files
+                matching_configs = self.config_manager.get_config(pattern_path)
+
+                if matching_configs:
+                    # Process each schema configuration
+                    for schema_name, schema_config in matching_configs.items():
+                        try:
+                            # Load individual schema file
+                            schema_path = f"{path}/{schema_name}"
+                            schema_data = self.config_manager.get_config(schema_path)
+
+                            if not schema_data:
+                                self.logger.warning(
+                                    f"Empty schema configuration: {schema_path}"
+                                )
+                                continue
+
+                            # Validate schema configuration
+                            schema = SchemaConfig(**schema_data)
+
+                            # Generate schema ID
+                            schema_id = self._generate_schema_id(schema.name)
+
+                            # Convert to dictionary
+                            schema_dict = schema.model_dump()
+
+                            # Add to schemas
+                            self.schemas[schema_id] = schema_dict
+
+                            # Add to version history
+                            if schema.name not in self.schema_versions:
+                                self.schema_versions[schema.name] = {}
+
+                            self.schema_versions[schema.name][schema.schema_version] = (
+                                schema_dict
+                            )
+
+                            # Record inheritance relationship if specified
+                            if schema.inherits:
+                                self.schema_inheritance[schema.name] = schema.inherits
+
+                            self.logger.info(
+                                f"Loaded schema {schema.name} version {schema.schema_version}"
+                            )
+
+                        except Exception as e:
+                            self.logger.error(
+                                f"Error loading schema {schema_name}: {str(e)}"
+                            )
+
+            if not self.schemas:
+                self.logger.warning(f"No schema configurations found in path: {path}")
+
+        except Exception as e:
+            self.logger.error(f"Error discovering schemas in {path}: {str(e)}")
+
+    def _process_schema_inheritance(self) -> None:
+        """Process schema inheritance relationships."""
+        # Process each schema with inheritance
+        for schema_name, parent_name in self.schema_inheritance.items():
+            try:
+                # Get latest versions of schema and parent
+                schema = self.get_schema_version(schema_name, "latest")
+                parent = self.get_schema_version(parent_name, "latest")
+
+                if not schema or not parent:
+                    self.logger.warning(
+                        f"Cannot process inheritance for {schema_name}: "
+                        f"schema or parent {parent_name} not found"
+                    )
+                    continue
+
+                # Merge parent fields into schema
+                self._merge_schema_fields(schema, parent)
+
+                # Update schema in registry
+                schema_id = next(
+                    (
+                        k
+                        for k, v in self.schemas.items()
+                        if v.get("name") == schema_name
+                    ),
+                    None,
+                )
+
+                if schema_id:
+                    self.schemas[schema_id] = schema
+
+                    # Update version history
+                    self.schema_versions[schema_name][schema["schema_version"]] = schema
+
+                self.logger.info(
+                    f"Processed inheritance for {schema_name} from {parent_name}"
+                )
+
+            except Exception as e:
+                self.logger.error(
+                    f"Error processing inheritance for {schema_name}: {str(e)}"
+                )
+
+    def _merge_schema_fields(
+        self, schema: Dict[str, Any], parent: Dict[str, Any]
+    ) -> None:
+        """
+        Merge parent fields into schema.
+
+        Args:
+            schema: Schema to merge fields into
+            parent: Parent schema to merge fields from
+        """
+        # Get existing field names in schema
+        schema_field_names = {field["name"] for field in schema.get("fields", [])}
+
+        # Add parent fields that don't exist in schema
+        for parent_field in parent.get("fields", []):
+            if parent_field["name"] not in schema_field_names:
+                schema.setdefault("fields", []).append(parent_field.copy())
+
+        # Get existing validation names in schema
+        schema_validation_names = {
+            validation["name"] for validation in schema.get("validations", [])
+        }
+
+        # Add parent validations that don't exist in schema
+        for parent_validation in parent.get("validations", []):
+            if parent_validation["name"] not in schema_validation_names:
+                schema.setdefault("validations", []).append(parent_validation.copy())
+
+    def get_schema_version(
+        self, schema_name: str, version: str = "latest"
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Get a specific version of a schema.
+
+        Args:
+            schema_name: Name of the schema
+            version: Version of the schema, or "latest" for the latest version
+
+        Returns:
+            Schema dictionary or None if not found
+        """
+        # Check if schema exists
+        if schema_name not in self.schema_versions:
+            return None
+
+        # Get version history
+        versions = self.schema_versions[schema_name]
+
+        if not versions:
+            return None
+
+        # Get latest version if requested
+        if version == "latest":
+            # Sort versions by semantic version
+            sorted_versions = sorted(
+                versions.keys(),
+                key=lambda v: [int(x) for x in v.split(".")],
+                reverse=True,
+            )
+
+            if not sorted_versions:
+                return None
+
+            return versions[sorted_versions[0]]
+
+        # Get specific version
+        return versions.get(version)
+
+    def migrate_schema(
+        self, schema_name: str, source_version: str, target_version: str
+    ) -> bool:
+        """
+        Migrate a schema from source version to target version.
+
+        Args:
+            schema_name: Name of the schema
+            source_version: Source version
+            target_version: Target version
+
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            # Get source schema
+            source_schema = self.get_schema_version(schema_name, source_version)
+            if not source_schema:
+                self.logger.error(
+                    f"Source schema {schema_name} version {source_version} not found"
+                )
+                return False
+
+            # Convert to SchemaConfig
+            source_config = SchemaConfig(**source_schema)
+
+            # Migrate schema using migrator
+            migrated_schema = self.migrator.migrate_schema(
+                source_config, target_version
+            )
+
+            if not migrated_schema:
+                return False
+
+            # Add to version history
+            if schema_name not in self.schema_versions:
+                self.schema_versions[schema_name] = {}
+
+            # Convert back to dictionary
+            target_schema = migrated_schema.model_dump()
+            self.schema_versions[schema_name][target_version] = target_schema
+
+            # Generate schema ID and update schemas
+            schema_id = self._generate_schema_id(schema_name)
+            self.schemas[schema_id] = target_schema
+
+            # Save schema to storage
+            self._save_schema(schema_id, target_schema)
+
+            self.logger.info(
+                f"Migrated schema {schema_name} from {source_version} to {target_version}"
+            )
+            return True
+
+        except Exception as e:
+            self.logger.error(
+                f"Error migrating schema {schema_name} from {source_version} "
+                f"to {target_version}: {str(e)}",
+                exc_info=True,
+            )
+            return False
+
+    def save_schema_config(self, schema: Dict[str, Any]) -> bool:
+        """
+        Save schema configuration.
+
+        Args:
+            schema: Schema dictionary
+
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            # Validate schema
+            schema_config = SchemaConfig(**schema)
+
+            # Save to configuration
+            result = self.config_manager.update_configuration(
+                f"schemas/{schema_config.name}", schema_config.model_dump()
+            )
+
+            if result:
+                self.logger.info(f"Saved schema configuration for {schema_config.name}")
+            else:
+                self.logger.error(
+                    f"Failed to save schema configuration for {schema_config.name}"
+                )
+
+            return result
+
+        except Exception as e:
+            self.logger.error(f"Error saving schema configuration: {str(e)}")
+            return False
+````
+
 ## File: schema/extended_registry.py
 ````python
 """
@@ -8517,6 +10916,252 @@ class SchemaMatcherFactory:
         else:
             # Default to structure matcher
             return StructureMatcher(config)
+````
+
+## File: schema/migrator.py
+````python
+"""
+Schema migration module.
+
+This module provides functionality for migrating between schema versions.
+"""
+
+import logging
+from datetime import datetime
+from typing import Any, Callable, Dict, List, Optional
+
+from utils.pipeline.config import ConfigurationManager
+from utils.pipeline.config.models.schema import SchemaConfig, SchemaMigration
+
+
+class SchemaMigrator:
+    """
+    Handles schema migrations between versions.
+
+    This class provides functionality for:
+    1. Loading and validating migration configurations
+    2. Executing schema migrations
+    3. Converting data between schema versions
+    4. Tracking migration history
+    """
+
+    def __init__(self, config_manager: ConfigurationManager):
+        """
+        Initialize the schema migrator.
+
+        Args:
+            config_manager: Configuration manager instance
+        """
+        self.config_manager = config_manager
+        self.logger = logging.getLogger(__name__)
+
+        # Migration history tracking
+        self.migration_history: Dict[str, List[Dict[str, Any]]] = {}
+
+        # Custom field transformers
+        self.field_transformers: Dict[str, Callable] = {}
+
+    def register_field_transformer(
+        self, name: str, transformer: Callable[[Any], Any]
+    ) -> None:
+        """
+        Register a custom field transformation function.
+
+        Args:
+            name: Name of the transformer
+            transformer: Function that transforms field values
+        """
+        self.field_transformers[name] = transformer
+        self.logger.info(f"Registered field transformer: {name}")
+
+    def get_migration_config(
+        self, schema_name: str, source_version: str, target_version: str
+    ) -> Optional[SchemaMigration]:
+        """
+        Get migration configuration between versions.
+
+        Args:
+            schema_name: Name of the schema
+            source_version: Source schema version
+            target_version: Target schema version
+
+        Returns:
+            Migration configuration if found, None otherwise
+        """
+        try:
+            # Construct migration config path
+            config_path = (
+                f"migrations/{schema_name}_{source_version}_to_{target_version}"
+            )
+
+            # Get migration configuration
+            config_data = self.config_manager.get_config(config_path)
+
+            if not config_data:
+                self.logger.warning(f"Migration configuration not found: {config_path}")
+                return None
+
+            # Validate configuration
+            return SchemaMigration(**config_data)
+
+        except Exception as e:
+            self.logger.error(f"Error loading migration configuration: {str(e)}")
+            return None
+
+    def migrate_schema(
+        self,
+        schema: SchemaConfig,
+        target_version: str,
+        migration_config: Optional[SchemaMigration] = None,
+    ) -> Optional[SchemaConfig]:
+        """
+        Migrate a schema to a target version.
+
+        Args:
+            schema: Source schema configuration
+            target_version: Target schema version
+            migration_config: Optional pre-loaded migration configuration
+
+        Returns:
+            Migrated schema configuration if successful, None otherwise
+        """
+        try:
+            # Get migration configuration if not provided
+            if not migration_config:
+                migration_config = self.get_migration_config(
+                    schema.name,
+                    schema.schema_version,
+                    target_version,
+                )
+
+                if not migration_config:
+                    return None
+
+            # Create new schema based on source
+            migrated_schema = SchemaConfig(
+                **{
+                    **schema.model_dump(),
+                    "schema_version": target_version,
+                }
+            )
+
+            # Apply field additions
+            for field in migration_config.add_fields:
+                if not any(f.name == field.name for f in migrated_schema.fields):
+                    migrated_schema.fields.append(field)
+
+            # Apply field removals
+            if migration_config.remove_fields:
+                migrated_schema.fields = [
+                    field
+                    for field in migrated_schema.fields
+                    if field.name not in migration_config.remove_fields
+                ]
+
+            # Apply field renames
+            if migration_config.rename_fields:
+                for field in migrated_schema.fields:
+                    if field.name in migration_config.rename_fields:
+                        field.name = migration_config.rename_fields[field.name]
+
+            # Track migration in history
+            self._record_migration(
+                schema.name,
+                schema.schema_version,
+                target_version,
+            )
+
+            return migrated_schema
+
+        except Exception as e:
+            self.logger.error(f"Error migrating schema: {str(e)}")
+            return None
+
+    def transform_data(
+        self,
+        data: Dict[str, Any],
+        schema_name: str,
+        source_version: str,
+        target_version: str,
+    ) -> Optional[Dict[str, Any]]:
+        """
+        Transform data from source schema version to target version.
+
+        Args:
+            data: Source data to transform
+            schema_name: Name of the schema
+            source_version: Source schema version
+            target_version: Target schema version
+
+        Returns:
+            Transformed data if successful, None otherwise
+        """
+        try:
+            # Get migration configuration
+            migration_config = self.get_migration_config(
+                schema_name, source_version, target_version
+            )
+
+            if not migration_config:
+                return None
+
+            # Create copy of data for transformation
+            transformed_data = data.copy()
+
+            # Apply field removals
+            for field in migration_config.remove_fields:
+                transformed_data.pop(field, None)
+
+            # Apply field renames
+            for old_name, new_name in migration_config.rename_fields.items():
+                if old_name in transformed_data:
+                    transformed_data[new_name] = transformed_data.pop(old_name)
+
+            # Apply field transformations
+            for (
+                field_name,
+                transformer_name,
+            ) in migration_config.transform_fields.items():
+                if field_name in transformed_data:
+                    transformer = self.field_transformers.get(transformer_name)
+                    if transformer:
+                        try:
+                            transformed_data[field_name] = transformer(
+                                transformed_data[field_name]
+                            )
+                        except Exception as e:
+                            self.logger.error(
+                                f"Error transforming field {field_name}: {str(e)}"
+                            )
+                            return None
+
+            return transformed_data
+
+        except Exception as e:
+            self.logger.error(f"Error transforming data: {str(e)}")
+            return None
+
+    def _record_migration(
+        self, schema_name: str, source_version: str, target_version: str
+    ) -> None:
+        """
+        Record a migration in the history.
+
+        Args:
+            schema_name: Name of the schema
+            source_version: Source schema version
+            target_version: Target schema version
+        """
+        if schema_name not in self.migration_history:
+            self.migration_history[schema_name] = []
+
+        self.migration_history[schema_name].append(
+            {
+                "source_version": source_version,
+                "target_version": target_version,
+                "timestamp": datetime.now().isoformat(),
+            }
+        )
 ````
 
 ## File: schema/registry.py

@@ -1,0 +1,97 @@
+{
+  "version": "1.0",
+  "description": "Invoice document schema version 1.0.0",
+  "created_at": "2025-03-15T22:14:47.750123",
+  "updated_at": "2025-03-15T22:14:47.750123",
+  "name": "invoice",
+  "document_type": "invoice",
+  "schema_version": "1.1.0",
+  "inherits": null,
+  "fields": [
+    {
+      "version": "1.0",
+      "description": "Unique invoice identifier",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "invoice_number",
+      "path": "invoice_number",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "len(value) > 0"
+    },
+    {
+      "version": "1.0",
+      "description": "Transaction identifier",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "payment_reference_id",
+      "path": "transaction_id",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "len(value) > 0"
+    },
+    {
+      "version": "1.0",
+      "description": "Invoice amount",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "amount",
+      "path": "amount",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "float(value) > 0"
+    },
+    {
+      "version": "1.0",
+      "description": "Currency code",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "currency",
+      "path": "currency",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "len(value) > 0"
+    },
+    {
+      "version": "1.0",
+      "description": "Method of payment (e.g., credit_card, bank_transfer)",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "payment_method",
+      "path": "payment.method",
+      "type": "string",
+      "required": true,
+      "default": null,
+      "validation": "value in ['credit_card', 'bank_transfer', 'cash', 'check']"
+    },
+    {
+      "version": "1.0",
+      "description": "Current status of the payment",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "payment_status",
+      "path": "payment.status",
+      "type": "string",
+      "required": true,
+      "default": "pending",
+      "validation": "value in ['pending', 'processing', 'completed', 'failed']"
+    }
+  ],
+  "validations": [
+    {
+      "version": "1.0",
+      "description": "Ensure amount is a valid number",
+      "created_at": "2025-03-15T22:14:47.750123",
+      "updated_at": "2025-03-15T22:14:47.750123",
+      "name": "valid_amount",
+      "condition": "isinstance(float(amount), float)",
+      "message": "Amount must be a valid number",
+      "level": "error"
+    }
+  ],
+  "metadata": {}
+}

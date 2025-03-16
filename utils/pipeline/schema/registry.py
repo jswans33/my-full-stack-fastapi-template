@@ -7,8 +7,19 @@ This module provides functionality for managing document schemas.
 import json
 import os
 from datetime import datetime
+from json import JSONEncoder
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
+
+
+class CustomJSONEncoder(JSONEncoder):
+    """Custom JSON encoder that handles datetime objects."""
+
+    def default(self, obj: Any) -> Any:
+        if isinstance(obj, datetime):
+            return obj.isoformat()
+        return super().default(obj)
+
 
 from utils.pipeline.utils.logging import get_logger
 
@@ -228,7 +239,7 @@ class SchemaRegistry:
         file_path = self.storage_dir / f"{schema_id}.json"
 
         with open(file_path, "w", encoding="utf-8") as f:
-            json.dump(schema, f, indent=2, ensure_ascii=False)
+            json.dump(schema, f, indent=2, ensure_ascii=False, cls=CustomJSONEncoder)
 
     def _extract_schema(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
         """

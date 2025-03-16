@@ -1,0 +1,25 @@
+name: invoice_1.0.0_to_1.1.0
+source_version: 1.0.0
+target_version: 1.1.0
+description: Update invoice schema to support additional payment fields
+add_fields:
+- name: payment_method
+  path: payment.method
+  type: string
+  required: true
+  description: Method of payment (e.g., credit_card, bank_transfer)
+  validation: value in ['credit_card', 'bank_transfer', 'cash', 'check']
+- name: payment_status
+  path: payment.status
+  type: string
+  required: true
+  description: Current status of the payment
+  default: pending
+  validation: value in ['pending', 'processing', 'completed', 'failed']
+remove_fields:
+- payment_type
+rename_fields:
+  transaction_id: payment_reference_id
+transform_fields:
+  amount: convert_to_decimal
+  currency: normalize_currency_code
