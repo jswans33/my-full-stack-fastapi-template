@@ -42,6 +42,7 @@ class DocumentClassifier:
     def _register_default_classifiers(self) -> None:
         """Register the default set of classifiers."""
         # Import default classifiers
+        from utils.pipeline.processors.classifiers.ml_based import MLBasedClassifier
         from utils.pipeline.processors.classifiers.pattern_matcher import (
             PatternMatcherClassifier,
         )
@@ -60,6 +61,12 @@ class DocumentClassifier:
             "pattern_matcher",
             PatternMatcherClassifier,
             classifier_configs.get("pattern_matcher", {}),
+        )
+
+        self.factory.register_classifier(
+            "ml_based",
+            MLBasedClassifier,
+            classifier_configs.get("ml_based", {}),
         )
 
     def classify(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -166,7 +173,21 @@ class DocumentClassifier:
 
         # Check for pricing patterns in content
         all_content = " ".join([section.get("content", "") for section in content])
-        features["has_dollar_amounts"] = "$" in all_content
+
+        # Check for dollar amounts in content and tables
+        has_dollar_in_content = "$" in all_content
+
+        # Check tables for dollar amounts
+        has_dollar_in_tables = False
+        tables = document_data.get("tables", [])
+        for table in tables:
+            for row in table.get("rows", []):
+                for cell in row:
+                    if isinstance(cell, str) and "$" in cell:
+                        has_dollar_in_tables = True
+                        break
+
+        features["has_dollar_amounts"] = has_dollar_in_content or has_dollar_in_tables
         features["has_quantities"] = any(word.isdigit() for word in all_content.split())
 
         # Check for tables

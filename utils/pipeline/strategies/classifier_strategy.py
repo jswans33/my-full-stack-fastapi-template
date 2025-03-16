@@ -89,8 +89,15 @@ class BaseClassifier(ClassifierStrategy):
         required_fields = ["name", "version"]
         for field in required_fields:
             if field not in self.config:
-                self.logger.warning(f"Missing required config field: {field}")
-                self.config[field] = "unknown"
+                # Check if the field is in a nested config structure
+                if (
+                    "classification" in self.config
+                    and field in self.config["classification"]
+                ):
+                    self.config[field] = self.config["classification"][field]
+                else:
+                    self.logger.warning(f"Missing required config field: {field}")
+                    self.config[field] = "unknown"
 
     def _extract_features(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
         """

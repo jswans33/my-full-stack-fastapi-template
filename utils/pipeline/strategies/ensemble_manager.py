@@ -82,6 +82,33 @@ class EnsembleManager:
         Returns:
             Combined classification result
         """
+        # Special case for empty documents
+        if not classifications:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": 0.0,
+                "schema_pattern": "unknown",
+                "key_features": [],
+                "classifiers": [],
+            }
+
+        # Check if all classifiers returned UNKNOWN with low confidence
+        all_unknown = all(
+            result["document_type"] == "UNKNOWN" and result["confidence"] < 0.1
+            for result in classifications
+        )
+        if all_unknown:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": 0.0,
+                "schema_pattern": "unknown",
+                "key_features": [],
+                "classifiers": [
+                    result.get("classifier_name", "unknown")
+                    for result in classifications
+                ],
+            }
+
         # Track votes and confidences for each document type
         type_votes = defaultdict(float)
         type_features = defaultdict(set)
