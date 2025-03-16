@@ -1,0 +1,84 @@
+@startuml Classification System - Class Diagram
+
+' Define interfaces and abstract classes
+interface ClassifierStrategy {
+    +classify(document_data: Dict, features: Dict): Dict
+    +get_supported_types(): List[str]
+    +get_classifier_info(): Dict
+}
+
+abstract class BaseClassifier {
+    #config: Dict
+    #logger: Logger
+    +{abstract} classify(document_data: Dict, features: Dict): Dict
+    +{abstract} get_supported_types(): List[str]
+    #_validate_config()
+    #_extract_features(document_data: Dict): Dict
+}
+
+' Define concrete classes
+class RuleBasedClassifier {
+    -rules_config: Dict
+    -default_threshold: float
+    +classify(document_data: Dict, features: Dict): Dict
+    -_get_best_match(document_data: Dict, features: Dict): Tuple
+    -_classify_generic(document_data: Dict, features: Dict): Dict
+}
+
+class PatternMatcherClassifier {
+    -patterns: Dict
+    -required_features: List[str]
+    -optional_features: List[str]
+    +classify(document_data: Dict, features: Dict): Dict
+    -_match_patterns(document_data: Dict): float
+    -_check_features(features: Dict): float
+}
+
+class MLBasedClassifier {
+    -model_config: Dict
+    -confidence_threshold: float
+    -feature_weights: Dict
+    +classify(document_data: Dict, features: Dict): Dict
+    -_extract_ml_features(document_data: Dict, features: Dict): Dict
+    -_calculate_scores(features: Dict): ndarray
+}
+
+class ClassifierFactory {
+    -registered_classifiers: Dict
+    +register_classifier(name: str, classifier_class: Type, config: Dict)
+    +create_classifier(name: str, config: Dict): ClassifierStrategy
+    +get_available_classifiers(): List[Dict]
+}
+
+class EnsembleManager {
+    -voting_method: str
+    -classifier_weights: Dict
+    -minimum_confidence: float
+    +combine_results(classifications: List[Dict]): Dict
+    -_weighted_average_vote(classifications: List[Dict]): Dict
+    -_majority_vote(classifications: List[Dict]): Dict
+    -_consensus_vote(classifications: List[Dict]): Dict
+}
+
+class DocumentClassifier {
+    -config: Dict
+    -classifiers: Dict
+    -ensemble: EnsembleManager
+    +add_classifier(name: str, classifier_class: Type, config: Dict)
+    +classify(document_data: Dict): Dict
+    +update_classifier_config(name: str, config: Dict)
+    +get_available_classifiers(): List[Dict]
+}
+
+' Define relationships
+ClassifierStrategy <|.. BaseClassifier
+BaseClassifier <|-- RuleBasedClassifier
+BaseClassifier <|-- PatternMatcherClassifier
+BaseClassifier <|-- MLBasedClassifier
+
+DocumentClassifier --> ClassifierFactory: uses
+DocumentClassifier --> EnsembleManager: uses
+ClassifierFactory --> ClassifierStrategy: creates
+EnsembleManager --> ClassifierStrategy: uses results from
+
+@enduml

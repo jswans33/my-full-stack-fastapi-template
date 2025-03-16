@@ -4,7 +4,6 @@ Main pipeline orchestrator module.
 This module provides the core pipeline functionality for document processing.
 """
 
-import importlib
 import os
 from typing import Any, Dict, Optional
 
@@ -241,15 +240,11 @@ class Pipeline:
         Returns:
             Classification result with document type, confidence, and schema pattern
         """
-        # Get classifier configuration
-        classifier_config = self.config.get("classification", {})
-        classifier_type = classifier_config.get("method", "rule_based")
-
         # Import the document classifier
         from utils.pipeline.processors.document_classifier import DocumentClassifier
 
-        # Pass the entire config to the classifier, not just the classification section
-        classifier = DocumentClassifier(classifier_type, self.config)
+        # Create classifier with config
+        classifier = DocumentClassifier(config=self.config)
 
         # Perform classification
         classification = classifier.classify(validated_data)
@@ -264,8 +259,7 @@ class Pipeline:
         self, document_data: Dict[str, Any], classification: Dict[str, Any]
     ) -> None:
         """
-
-                Match document against known schemas and update classification.
+        Match document against known schemas and update classification.
 
         Args:
             document_data: Document data to match
@@ -326,6 +320,8 @@ class Pipeline:
             return "word"
         elif ext == ".txt":
             return "text"
+        elif ext == ".json":
+            return "json"
         else:
             # Default to generic type
             return "generic"

@@ -1,0 +1,51 @@
+@startuml Classification System - Workflow
+
+skinparam ActivityBackgroundColor LightBlue
+skinparam ActivityBorderColor DarkBlue
+skinparam ArrowColor DarkBlue
+
+|Document Classifier|
+start
+:Receive document data;
+:Extract initial features;
+
+|Classifier Factory|
+:Create configured classifiers;
+
+|Rule-Based Classifier|
+:Apply rule-based classification;
+:Calculate confidence score;
+
+|Pattern Matcher|
+:Match document patterns;
+:Check required features;
+:Calculate pattern score;
+
+|ML-Based Classifier|
+:Extract ML features;
+:Apply ML model;
+:Calculate prediction score;
+
+|Ensemble Manager|
+:Collect all classification results;
+:Apply classifier weights;
+
+if (Voting method?) then (weighted average)
+  :Calculate weighted average;
+else (majority/consensus)
+  :Count votes per type;
+endif
+
+:Select final document type;
+
+if (Confidence > threshold?) then (yes)
+  :Return classification result;
+else (no)
+  :Return UNKNOWN type;
+endif
+
+|Document Classifier|
+:Record classification result;
+stop
+
+@enduml
