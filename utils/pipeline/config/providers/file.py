@@ -7,11 +7,12 @@ This module provides a configuration provider that loads configuration from file
 import json
 import os
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Callable, Dict, List, Optional
 
 import yaml
 
 from utils.pipeline.config.providers.base import ConfigurationProvider
+from utils.pipeline.config.providers.file_watcher import FileSystemWatcher
 
 
 class FileConfigurationProvider(ConfigurationProvider):
@@ -22,7 +23,10 @@ class FileConfigurationProvider(ConfigurationProvider):
     """
 
     def __init__(
-        self, base_dirs: List[str], file_extensions: Optional[List[str]] = None
+        self,
+        base_dirs: List[str],
+        file_extensions: Optional[List[str]] = None,
+        enable_hot_reload: bool = False,
     ):
         """
         Initialize the provider.
@@ -37,6 +41,47 @@ class FileConfigurationProvider(ConfigurationProvider):
         # Ensure base directories exist
         for base_dir in self.base_dirs:
             os.makedirs(base_dir, exist_ok=True)
+
+        # Initialize file watcher
+        self.enable_hot_reload = enable_hot_reload
+        self.file_watcher = FileSystemWatcher() if enable_hot_reload else None
+        self.change_callbacks: List[Callable[[str], None]] = []
+
+    def start_watching(self) -> None:
+        """Start watching for configuration file changes."""
+        if self.enable_hot_reload and self.file_watcher:
+            self.file_watcher.start(self._on_file_changed)
+
+    def stop_watching(self) -> None:
+        """Stop watching for configuration file changes."""
+        if self.file_watcher:
+            self.file_watcher.stop()
+
+    def register_change_callback(self, callback: Callable[[str], None]) -> None:
+        """
+        Register a callback for configuration changes.
+
+        Args:
+            callback: Function to call when a configuration changes
+        """
+        self.change_callbacks.append(callback)
+
+    def _on_file_changed(self, file_path: str) -> None:
+        """
+        Handle configuration file changes.
+
+        Args:
+            file_path: Path to the changed file
+        """
+        # Get config name from file path
+        config_name = str(Path(file_path).relative_to(self.base_dirs[0]))
+
+        # Notify callbacks
+        for callback in self.change_callbacks:
+            try:
+                callback(config_name)
+            except Exception as e:
+                print(f"Error in configuration change callback: {str(e)}")
 
     def _resolve_lookup_path(self, config_name: str) -> Optional[Path]:
         """
@@ -110,6 +155,9 @@ class FileConfigurationProvider(ConfigurationProvider):
         # Handle single file
         file_path = self._resolve_lookup_path(config_name)
         if file_path and file_path.exists():
+            # Add file to watcher if hot reload is enabled
+            if self.enable_hot_reload and self.file_watcher:
+                self.file_watcher.watch_file(str(file_path))
             return self._load_file(file_path) or {}
 
         return {}
@@ -145,6 +193,9 @@ class FileConfigurationProvider(ConfigurationProvider):
         if not file_path:
             # Use default path if no matches found
             file_path = self.base_dirs[0] / f"{config_name}{self.file_extensions[0]}"
+            # Add new file to watcher if hot reload is enabled
+            if self.enable_hot_reload and self.file_watcher:
+                self.file_watcher.watch_file(str(file_path))
 
         # Ensure directory exists
         os.makedirs(file_path.parent, exist_ok=True)

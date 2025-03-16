@@ -14,6 +14,7 @@ dependencies = [
     "camelot-py[cv]>=0.11.0",  # table extraction
     "opencv-python-headless>=4.9.0.80",  # for camelot
     "ghostscript>=0.7",  # for camelot
+    "watchdog>=3.0.0",  # for file system monitoring
 ]
 requires-python = ">=3.9"
 

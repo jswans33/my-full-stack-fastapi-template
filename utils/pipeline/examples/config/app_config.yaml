@@ -1,0 +1,7 @@
+feature_flags:
+  dark_mode: true
+  beta_features: false
+  new_feature: true
+logging:
+  level: info
+  format: json
