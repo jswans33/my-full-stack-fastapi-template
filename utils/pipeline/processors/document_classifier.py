@@ -42,6 +42,9 @@ class DocumentClassifier:
     def _register_default_classifiers(self) -> None:
         """Register the default set of classifiers."""
         # Import default classifiers
+        from utils.pipeline.processors.classifiers.keyword_analyzer import (
+            KeywordAnalyzerClassifier,
+        )
         from utils.pipeline.processors.classifiers.ml_based import MLBasedClassifier
         from utils.pipeline.processors.classifiers.pattern_matcher import (
             PatternMatcherClassifier,
@@ -67,6 +70,12 @@ class DocumentClassifier:
             "ml_based",
             MLBasedClassifier,
             classifier_configs.get("ml_based", {}),
+        )
+
+        self.factory.register_classifier(
+            "keyword_analyzer",
+            KeywordAnalyzerClassifier,
+            classifier_configs.get("keyword_analyzer", {}),
         )
 
     def classify(self, document_data: Dict[str, Any]) -> Dict[str, Any]:

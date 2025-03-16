@@ -1,0 +1,313 @@
+# HVAC Document Classification Configuration
+
+# Global classification settings
+enable_classification: true
+record_schemas: true
+match_schemas: true
+
+# Ensemble configuration
+ensemble:
+  voting_method: weighted_average
+  minimum_confidence: 0.45
+  classifier_weights:
+    rule_based: 0.25
+    pattern_matcher: 0.25
+    ml_based: 0.1
+    keyword_analyzer: 0.4  # Higher weight for the specialized analyzer
+  default_weight: 0.3
+
+# Individual classifier configurations
+classifiers:
+  # New keyword analyzer configuration
+  keyword_analyzer:
+    name: "HVAC Document Analyzer"
+    version: "1.0.0"
+    description: "Specialized analyzer for HVAC documents"
+    
+    keyword_analysis:
+      threshold: 0.4  # Lower threshold to catch more documents
+      
+      # Define keyword groups (semantically related terms)
+      keyword_groups:
+        # General HVAC terminology
+        hvac_general:
+          - "hvac"
+          - "heating"
+          - "ventilation"
+          - "air conditioning"
+          - "cooling"
+          - "refrigeration"
+          - "air handling"
+          - "climate control"
+          - "thermal comfort"
+        
+        # Heating-specific terms
+        heating_terms:
+          - "boiler"
+          - "furnace"
+          - "heat pump"
+          - "radiant"
+          - "hot water"
+          - "steam"
+          - "combustion"
+          - "burner"
+          - "thermal"
+          - "btu"
+          - "thermostat"
+        
+        # Cooling-specific terms
+        cooling_terms:
+          - "chiller"
+          - "condenser"
+          - "evaporator"
+          - "refrigerant"
+          - "compressor"
+          - "cooling tower"
+          - "air-cooled"
+          - "water-cooled"
+          - "ton"
+          - "eer"
+          - "seer"
+        
+        # Ventilation-specific terms
+        ventilation_terms:
+          - "duct"
+          - "damper"
+          - "diffuser"
+          - "grille"
+          - "register"
+          - "plenum"
+          - "exhaust"
+          - "supply air"
+          - "return air"
+          - "fresh air"
+          - "makeup air"
+          - "air changes"
+          - "cfm"
+          - "fpm"
+        
+        # Control systems
+        control_terms:
+          - "control"
+          - "sensor"
+          - "thermostat"
+          - "humidistat"
+          - "actuator"
+          - "valve"
+          - "vfd"
+          - "variable frequency drive"
+          - "bms"
+          - "building management system"
+          - "automation"
+        
+        # Equipment and components
+        equipment_terms:
+          - "fan"
+          - "pump"
+          - "motor"
+          - "coil"
+          - "filter"
+          - "hepa"
+          - "heat exchanger"
+          - "economizer"
+          - "vav"
+          - "variable air volume"
+          - "ahu"
+          - "air handling unit"
+          - "rtu"
+          - "rooftop unit"
+        
+        # Design and performance
+        design_terms:
+          - "design"
+          - "specification"
+          - "requirement"
+          - "performance"
+          - "efficiency"
+          - "capacity"
+          - "load"
+          - "sizing"
+          - "calculation"
+          - "pressure drop"
+          - "static pressure"
+          - "velocity"
+        
+        # Standards and codes
+        standards_terms:
+          - "ashrae"
+          - "standard"
+          - "code"
+          - "regulation"
+          - "compliance"
+          - "certification"
+          - "rating"
+          - "energy star"
+          - "leed"
+          - "ahri"
+          - "amca"
+          - "smacna"
+          - "nfpa"
+        
+        # Measurement units
+        measurement_terms:
+          - "temperature"
+          - "humidity"
+          - "pressure"
+          - "flow"
+          - "velocity"
+          - "degree"
+          - "fahrenheit"
+          - "celsius"
+          - "psi"
+          - "pascal"
+          - "cfm"
+          - "cubic feet per minute"
+          - "fpm"
+          - "feet per minute"
+          - "btu"
+          - "british thermal unit"
+          - "watt"
+          - "kilowatt"
+          - "ton"
+      
+      # Define phrase patterns (regular expressions)
+      phrase_patterns:
+        # Temperature patterns
+        temperature_patterns:
+          - "\\d+\\s*degrees\\s*[fc]"
+          - "\\d+\\s*°\\s*[fc]"
+          - "\\d+\\s*deg\\s*[fc]"
+        
+        # Air flow patterns
+        airflow_patterns:
+          - "\\d+\\s*cfm"
+          - "\\d+\\s*cubic\\s*feet\\s*per\\s*minute"
+          - "\\d+\\s*fpm"
+          - "\\d+\\s*feet\\s*per\\s*minute"
+        
+        # Pressure patterns
+        pressure_patterns:
+          - "\\d+\\s*psi"
+          - "\\d+\\s*inches\\s*(of\\s*)?water"
+          - "\\d+\\s*pa"
+          - "\\d+\\s*pascal"
+        
+        # Capacity patterns
+        capacity_patterns:
+          - "\\d+\\s*btu"
+          - "\\d+\\s*ton"
+          - "\\d+\\s*kw"
+          - "\\d+\\s*kilowatt"
+        
+        # Requirement patterns
+        requirement_patterns:
+          - "shall\\s+\\w+"
+          - "must\\s+\\w+"
+          - "required\\s+to\\s+\\w+"
+          - "minimum\\s+\\w+"
+          - "maximum\\s+\\w+"
+        
+        # Table reference patterns
+        table_patterns:
+          - "table\\s+\\d+"
+          - "table\\s+[a-z0-9]+-\\d+"
+          - "figure\\s+\\d+"
+      
+      # Define contextual rules
+      contextual_rules:
+        # HVAC general sections
+        hvac_general_sections:
+          - section_keyword: "hvac"
+            content_keywords: ["system", "equipment", "design"]
+          - section_keyword: "mechanical"
+            content_keywords: ["hvac", "system", "equipment"]
+        
+        # Heating sections
+        heating_sections:
+          - section_keyword: "heating"
+            content_keywords: ["boiler", "furnace", "hot water", "steam"]
+          - section_keyword: "boiler"
+            content_keywords: ["heating", "hot water", "steam"]
+        
+        # Cooling sections
+        cooling_sections:
+          - section_keyword: "cooling"
+            content_keywords: ["chiller", "refrigeration", "condenser"]
+          - section_keyword: "refrigeration"
+            content_keywords: ["cooling", "chiller", "compressor"]
+        
+        # Ventilation sections
+        ventilation_sections:
+          - section_keyword: "ventilation"
+            content_keywords: ["air", "flow", "duct", "fan"]
+          - section_keyword: "air distribution"
+            content_keywords: ["duct", "diffuser", "grille"]
+          - section_keyword: "duct"
+            content_keywords: ["air", "distribution", "ventilation"]
+        
+        # Control sections
+        control_sections:
+          - section_keyword: "control"
+            content_keywords: ["system", "sensor", "thermostat"]
+          - section_keyword: "building management"
+            content_keywords: ["control", "automation", "monitor"]
+        
+        # Design sections
+        design_sections:
+          - section_keyword: "design"
+            content_keywords: ["criteria", "requirement", "calculation"]
+          - section_keyword: "specification"
+            content_keywords: ["requirement", "standard", "compliance"]
+        
+        # Standard sections
+        standard_sections:
+          - section_keyword: "standard"
+            content_keywords: ["compliance", "code", "regulation"]
+          - section_keyword: "code"
+            content_keywords: ["compliance", "standard", "requirement"]
+      
+      # Define document types
+      document_types:
+        # HVAC Manual/Guide
+        HVAC_MANUAL:
+          schema_pattern: "hvac_manual"
+          keyword_groups: ["hvac_general", "heating_terms", "cooling_terms", "ventilation_terms", "equipment_terms"]
+          phrase_patterns: ["temperature_patterns", "airflow_patterns", "pressure_patterns", "capacity_patterns"]
+          contextual_rules: ["hvac_general_sections", "heating_sections", "cooling_sections", "ventilation_sections"]
+          weights:
+            keywords: 0.4
+            phrases: 0.3
+            context: 0.3
+        
+        # HVAC Specification
+        HVAC_SPECIFICATION:
+          schema_pattern: "hvac_specification"
+          keyword_groups: ["hvac_general", "design_terms", "standards_terms", "measurement_terms"]
+          phrase_patterns: ["requirement_patterns", "temperature_patterns", "airflow_patterns", "pressure_patterns"]
+          contextual_rules: ["design_sections", "standard_sections"]
+          weights:
+            keywords: 0.3
+            phrases: 0.4
+            context: 0.3
+        
+        # HVAC Design Guide
+        HVAC_DESIGN_GUIDE:
+          schema_pattern: "hvac_design_guide"
+          keyword_groups: ["design_terms", "hvac_general", "standards_terms"]
+          phrase_patterns: ["requirement_patterns", "table_patterns"]
+          contextual_rules: ["design_sections", "hvac_general_sections"]
+          weights:
+            keywords: 0.4
+            phrases: 0.2
+            context: 0.4
+        
+        # HVAC Standard
+        HVAC_STANDARD:
+          schema_pattern: "hvac_standard"
+          keyword_groups: ["standards_terms", "design_terms", "measurement_terms"]
+          phrase_patterns: ["requirement_patterns", "table_patterns"]
+          contextual_rules: ["standard_sections"]
+          weights:
+            keywords: 0.3
+            phrases: 0.4
+            context: 0.3

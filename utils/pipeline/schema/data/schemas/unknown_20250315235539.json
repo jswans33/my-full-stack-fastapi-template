@@ -1,0 +1,101 @@
+{
+  "id": "unknown_20250315235539",
+  "document_type": "UNKNOWN",
+  "document_name": "Engineering Standards Manual Ch. 6, D30 HVAC",
+  "recorded_at": "2025-03-15T23:55:39.152671",
+  "metadata": {
+    "title": "Engineering Standards Manual Ch. 6, D30 HVAC",
+    "author": "169689",
+    "subject": "HVAC",
+    "creator": "Acrobat PDFMaker 10.1 for Word",
+    "producer": "Adobe PDF Library 10.0",
+    "creation_date": "D:20140929103132-06'00'",
+    "modification_date": "D:20140929103138-06'00'"
+  },
+  "content_samples": [],
+  "table_samples": [
+    {
+      "headers": [
+        "D30 HVAC, Heating, Cooling, HVAC Distribution, and TAB"
+      ],
+      "column_count": 1,
+      "row_count": 60,
+      "data_sample": [
+        [
+          "D30GEN"
+        ],
+        [
+          "ADDITIONAL GENERAL HVAC REQUIREMENTS .......................................................... 4"
+        ],
+        [
+          "1.0"
+        ],
+        [
+          "Codes and Standards ......................................................................................................................... 4"
+        ],
+        [
+          "2.0"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 1,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "electrical resistance heating requirements."
+      ],
+      "column_count": 1,
+      "row_count": 13,
+      "data_sample": [
+        [
+          "Charles Dupre"
+        ],
+        [
+          "ES-DE"
+        ],
+        [
+          "Larry Goen,"
+        ],
+        [
+          "CENG"
+        ],
+        [
+          "5"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 2,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "presented in the format of the 1993 ASHRAE Fundamentals Handbook, Load and Energy"
+      ],
+      "column_count": 1,
+      "row_count": 4,
+      "data_sample": [
+        [
+          "Calculations Division, Weather Data Chapter 24.",
+          "Refer to ASHRAE Handbook for"
+        ],
+        [
+          "explanation of columns and acronyms.",
+          "[Guidance: 1994-2003 data (both I-P and S-I"
+        ],
+        [
+          "unit) for energy usage predictions (not sizing) is available from the Mechanical POC or"
+        ],
+        [
+          "directly from LANL Calculation 00-0000-CALC-M-0006.]."
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 6,
+      "border_info": {}
+    }
+  ],
+  "section_count": 0,
+  "table_count": 12,
+  "document_path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\tests\\pdf\\sample.pdf"
+}
