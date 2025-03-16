@@ -78,6 +78,7 @@ run_pipeline.py
 run_tests.py
 schema/__init__.py
 schema/analyzer.py
+schema/data/schemas/hvac_specification_20250315171953.json
 schema/data/schemas/test_document_20250315153312.json
 schema/extended_registry.py
 schema/matchers.py
@@ -1597,6 +1598,8 @@ class FileProcessor:
             "classification",
             "use_enhanced_markdown",
             "markdown_options",
+            "record_schemas",
+            "enable_classification",
         ]:
             if key in self.config:
                 pipeline_config[key] = self.config[key]
@@ -7971,6 +7974,30 @@ class SchemaAnalyzer:
             if max(table_count1, table_count2) > 0
             else 1.0,
         }
+````
+
+## File: schema/data/schemas/hvac_specification_20250315171953.json
+````json
+{
+  "id": "hvac_specification_20250315171953",
+  "document_type": "HVAC_SPECIFICATION",
+  "document_name": "SECTION 232500 - HVAC WATER TREATMENT",
+  "recorded_at": "2025-03-15T17:19:53.849594",
+  "metadata": {
+    "title": "SECTION 232500 - HVAC WATER TREATMENT",
+    "author": "ARCOM, Inc.",
+    "subject": "HVAC WATER TREATMENT",
+    "creator": "Microsoft Office Word",
+    "producer": "Aspose.Words for .NET 24.11.1",
+    "creation_date": "D:20131216234100Z",
+    "modification_date": "D:20250314221816-06'00'"
+  },
+  "content_samples": [],
+  "table_samples": [],
+  "section_count": 0,
+  "table_count": 0,
+  "document_path": "utils\\pipeline\\data\\input\\MF-SPECS_232500 FL - HVAC WATER TREATMENT.pdf"
+}
 ````
 
 ## File: schema/data/schemas/test_document_20250315153312.json

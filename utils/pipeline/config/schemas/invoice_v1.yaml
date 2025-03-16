@@ -1,0 +1,92 @@
+name: invoice_standard
+document_type: INVOICE
+version: "1.0"
+schema_version: "1.0"
+description: "Standard invoice schema configuration"
+created_at: "2025-03-15T20:45:00Z"
+updated_at: "2025-03-15T20:45:00Z"
+
+fields:
+  - name: invoice_number
+    path: "metadata.invoice_number"
+    type: string
+    required: true
+    description: "Invoice number"
+    validation: "regex('^(INV-\\d+|Invoice #\\d+)$')"
+
+  - name: invoice_date
+    path: "metadata.invoice_date"
+    type: date
+    required: true
+    description: "Invoice date"
+    validation: "is_date()"
+
+  - name: due_date
+    path: "metadata.due_date"
+    type: date
+    required: false
+    description: "Payment due date"
+    validation: "is_date() and value > invoice_date"
+
+  - name: total_amount
+    path: "metadata.total_amount"
+    type: decimal
+    required: true
+    description: "Total invoice amount"
+    validation: "is_decimal() and value >= 0"
+
+  - name: tax_amount
+    path: "metadata.tax_amount"
+    type: decimal
+    required: false
+    description: "Tax amount"
+    validation: "is_decimal() and value >= 0"
+
+  - name: subtotal
+    path: "metadata.subtotal"
+    type: decimal
+    required: false
+    description: "Subtotal amount before tax"
+    validation: "is_decimal() and value >= 0"
+
+  - name: vendor_name
+    path: "metadata.vendor_name"
+    type: string
+    required: true
+    description: "Vendor name"
+    validation: "len(value) > 0"
+
+  - name: vendor_address
+    path: "metadata.vendor_address"
+    type: string
+    required: false
+    description: "Vendor address"
+
+  - name: customer_name
+    path: "metadata.customer_name"
+    type: string
+    required: false
+    description: "Customer name"
+
+  - name: customer_address
+    path: "metadata.customer_address"
+    type: string
+    required: false
+    description: "Customer address"
+
+validations:
+  - name: validate_total
+    description: "Validate that total = subtotal + tax"
+    condition: "abs(total_amount - (subtotal + tax_amount)) < 0.01"
+    message: "Total amount does not match subtotal + tax"
+    level: "warning"
+
+  - name: validate_line_items
+    description: "Validate that line items exist"
+    condition: "len(line_items) > 0"
+    message: "Invoice must have at least one line item"
+    level: "error"
+
+metadata:
+  schema_type: "extraction"
+  target_format: "json"

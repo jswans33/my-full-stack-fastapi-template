@@ -1,0 +1,63 @@
+source_version: "1.0"
+target_version: "2.0"
+version: "1.0"
+description: "Migration from invoice schema v1 to v2"
+created_at: "2025-03-15T20:45:00Z"
+updated_at: "2025-03-15T20:45:00Z"
+
+# Fields to add in v2
+add_fields:
+  - name: payment_terms
+    path: "metadata.payment_terms"
+    type: string
+    required: false
+    description: "Payment terms (e.g., Net 30)"
+  
+  - name: currency
+    path: "metadata.currency"
+    type: string
+    required: false
+    description: "Currency code (e.g., USD)"
+    default: "USD"
+  
+  - name: discount_amount
+    path: "metadata.discount_amount"
+    type: decimal
+    required: false
+    description: "Discount amount"
+    validation: "is_decimal() and value >= 0"
+
+# Fields to remove in v2
+remove_fields:
+  - "customer_address"  # Split into separate fields
+
+# Fields to rename in v2
+rename_fields:
+  subtotal: "subtotal_amount"  # More consistent naming
+
+# Field transformations
+transform_fields:
+  # Split customer_address into separate fields
+  customer_address: |
+    parts = value.split(',')
+    if len(parts) >= 3:
+        return {
+            'customer_street': parts[0].strip(),
+            'customer_city': parts[1].strip(),
+            'customer_state': parts[2].strip(),
+            'customer_zip': parts[3].strip() if len(parts) > 3 else ''
+        }
+    else:
+        return {
+            'customer_street': value,
+            'customer_city': '',
+            'customer_state': '',
+            'customer_zip': ''
+        }
+  
+  # Update validation for total_amount
+  total_amount: |
+    return {
+        'total_amount': value,
+        'validation': 'is_decimal() and value >= 0 and value == (subtotal_amount + tax_amount - discount_amount)'
+    }

@@ -1,0 +1,24 @@
+name: INVOICE
+version: '1.0'
+description: Invoice document type configuration
+created_at: '2025-03-15T20:45:00Z'
+updated_at: '2025-03-15T20:45:00Z'
+fields:
+- name: payment_method
+  type: string
+  required: false
+  description: Payment method
+rules:
+- name: validate_total
+  description: Validate that total = subtotal + tax
+  condition: total_amount == subtotal + tax_amount
+  action: warn
+  priority: 1
+- name: validate_dates
+  description: Validate that due date is after invoice date
+  condition: due_date > invoice_date
+  action: warn
+  priority: 2
+metadata:
+  category: financial
+  priority: high

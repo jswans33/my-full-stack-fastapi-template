@@ -1,0 +1,31 @@
+name: development
+version: "1.0"
+description: "Development environment configuration"
+created_at: "2025-03-15T20:45:00Z"
+updated_at: "2025-03-15T20:45:00Z"
+
+overrides:
+  # Override pipeline settings for development
+  pipeline:
+    log_level: "DEBUG"
+    validation_level: "basic"
+    output_format: "yaml"
+  
+  # Override schema settings for development
+  schemas:
+    invoice_standard:
+      validations:
+        # Disable some validations in development
+        - name: validate_line_items
+          level: "warning"  # Downgrade from error to warning
+  
+  # Override processor settings for development
+  processors:
+    pdf:
+      parameters:
+        debug_mode: true
+        extract_images: true
+    
+    excel:
+      parameters:
+        debug_mode: true

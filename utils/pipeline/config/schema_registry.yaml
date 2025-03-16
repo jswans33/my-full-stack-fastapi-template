@@ -1,0 +1,50 @@
+version: "1.0"
+description: "Schema registry configuration"
+created_at: "2025-03-15T20:45:00Z"
+updated_at: "2025-03-15T20:45:00Z"
+
+# Storage settings
+storage:
+  # Directory for storing schemas
+  dir: "utils/pipeline/schema/data/schemas"
+  
+  # Format for storing schemas (json or yaml)
+  format: "json"
+
+# Discovery settings
+discovery:
+  # Paths to discover schemas from
+  paths:
+    - "schemas"
+    - "document_types"
+  
+  # Whether to recursively discover schemas in subdirectories
+  recursive: true
+  
+  # File patterns to match (glob patterns)
+  patterns:
+    - "*.yaml"
+    - "*.yml"
+    - "*.json"
+
+# Versioning settings
+versioning:
+  # Whether to enable versioning
+  enabled: true
+  
+  # Maximum number of versions to keep
+  max_versions: 10
+  
+  # Whether to automatically migrate schemas
+  auto_migrate: false
+
+# Inheritance settings
+inheritance:
+  # Whether to enable inheritance
+  enabled: true
+  
+  # Whether to merge fields from parent schemas
+  merge_fields: true
+  
+  # Whether to merge validations from parent schemas
+  merge_validations: true
