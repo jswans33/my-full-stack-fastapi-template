@@ -1,0 +1,344 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml PDF_Classification_Decision
+!include <archimate/Archimate>
+
+' Enhanced styling for better readability
+skinparam backgroundColor white
+skinparam ActivityBackgroundColor #FEFECE
+skinparam ActivityBorderColor #A80036
+skinparam ActivityDiamondBackgroundColor #FEFECE
+skinparam ActivityDiamondBorderColor #A80036
+skinparam ArrowColor #A80036
+skinparam NoteBackgroundColor #FFFFCC
+skinparam NoteBorderColor #999999
+skinparam PartitionBackgroundColor #FAFAFA
+skinparam PartitionBorderColor #999999
+skinparam ArrowFontSize 11
+skinparam ArrowFontColor #444444
+
+' Title with improved diagram cross-reference
+title <b>PDF Document Classification Decision Flow (06-04)</b>
+caption <i>Related diagrams: 02-01 (Classifier Structure), 02-02 (Classification Flow), 06-02 (Processing Sequence), 06-03 (Classifier Components)</i>
+
+|<b>PDF Document Extraction</b>|
+start
+:Extract Text Content;
+note right
+  <b>Text Extraction Process:</b>
+  • Uses specialized PDF extraction libraries
+  • Handles multi-column layouts
+  • Processes tables and lists
+  • Preserves reading order
+  • Manages different text encodings
+  
+  <i>See extractor components in diagram 06-03</i>
+end note
+
+:Extract Document Metadata;
+note right
+  <b>Metadata Extraction:</b>
+  • Author, creation date, version
+  • PDF producer software
+  • Security settings
+  • Document properties
+  • Custom metadata fields
+end note
+
+:Analyze Document Layout;
+note right
+  <b>Layout Analysis:</b>
+  • Identifies page structure
+  • Detects columns and margins
+  • Maps content positioning
+  • Identifies headers/footers
+  • Analyzes whitespace distribution
+  
+  Layout patterns are crucial for accurate classification
+end note
+
+:Extract Form Fields (if any);
+note right
+  <b>Form Detection:</b>
+  • Identifies fillable fields
+  • Detects field types
+  • Extracts field labels
+  • Maps field relationships
+  • Determines form structure
+end note
+
+:Identify Images & Figures;
+note right
+  <b>Image Analysis:</b>
+  • Detects embedded images
+  • Identifies logos and watermarks
+  • Analyzes image content
+  • Performs OCR on image text
+  • Categorizes image types
+end note
+
+|<b>Feature Generation</b>|
+:Generate Text Features;
+note right
+  <b>Text Feature Types:</b>
+  • Keywords and key phrases
+  • Text density patterns
+  • Semantic content analysis
+  • Linguistic patterns
+  • Domain-specific terminology
+  • N-gram analysis
+  • Named entity recognition
+end note
+
+:Generate Layout Features;
+note right
+  <b>Layout Feature Types:</b>
+  • Page organization patterns
+  • Section arrangements
+  • Table structures
+  • Whitespace distribution
+  • Header/footer patterns
+  • Margin configurations
+  • Column layouts
+end note
+
+:Generate Metadata Features;
+note right
+  <b>Metadata Feature Types:</b>
+  • Author/creator information
+  • Creation date patterns
+  • Software signatures
+  • PDF version indicators
+  • Document property patterns
+  • Security settings
+end note
+
+:Combine Feature Sets;
+note right
+  <b>Feature Fusion:</b>
+  • Normalizes different feature types
+  • Weights features by importance
+  • Creates feature vector
+  • Prepares for classification algorithms
+  
+  <i>Combined features are used by all classifier strategies in diagram 02-01</i>
+end note
+
+|<b>Classification Decision Logic</b>|
+if (Template Matching Score > Threshold?) then (yes)
+  :<b>Classify by Template Match</b>;
+  note right
+    <b>Template Matching:</b>
+    • Fastest and most reliable method
+    • Compares against known templates
+    • Uses signature-based matching
+    • Threshold typically set at 85%
+    • Highest confidence classification
+    
+    <i>See TemplateMatcher in 06-03</i>
+  end note
+elseif (Contains Form Fields?) then (yes)
+  :<b>Classify as Form Document</b>;
+  if (Known Form Type?) then (yes)
+    :<b>Apply Specific Form Template</b>;
+    note right
+      <b>Form Templates:</b>
+      • Managed in schema registry
+      • Maps fields to known structures
+      • Enables targeted data extraction
+      • Supports versioned form types
+      
+      <i>Templates managed in schema registry (05-01)</i>
+    end note
+  else (no)
+    :<b>Mark as Generic Form</b>;
+    note right
+      <b>Generic Form Handling:</b>
+      • Basic field extraction
+      • Field type detection
+      • Generic structure mapping
+      • Limited semantic understanding
+    end note
+  endif
+elseif (Has Official Letterhead/Logo?) then (yes)
+  :<b>Classify as Official Document</b>;
+  note right
+    <b>Official Document Detection:</b>
+    • Logo recognition uses image analysis
+    • Detects organizational watermarks
+    • Identifies official layouts
+    • Recognizes government patterns
+    
+    <i>Logo detection uses image recognition components in 06-03</i>
+  end note
+  if (Contains Specific Header Keywords?) then (yes)
+    :<b>Sub-Classify by Department/Agency</b>;
+    note right
+      <b>Department Detection:</b>
+      • Analyzes organizational markers
+      • Matches against known entities
+      • Uses keyword signature patterns
+      • Enables specific processing rules
+    end note
+  endif
+elseif (Contains Tables/Financial Data?) then (yes)
+  :<b>Classify as Financial/Report Document</b>;
+  note right
+    <b>Financial Document Features:</b>
+    • Table structure detection
+    • Numerical content analysis
+    • Financial terminology matching
+    • Currency and date pattern recognition
+    • Accounting structure identification
+  end note
+  if (Contains Balance Sheet Structure?) then (yes)
+    :<b>Sub-Classify as Financial Statement</b>;
+    note right
+      <b>Balance Sheet Detection:</b>
+      • Assets/liabilities pattern
+      • Account structure recognition
+      • Financial reporting terminology
+      • Standard layout patterns
+    end note
+  elseif (Contains Tabular Time Series?) then (yes)
+    :<b>Sub-Classify as Periodic Report</b>;
+    note right
+      <b>Periodic Report Features:</b>
+      • Time-based data organization
+      • Comparative period structure
+      • Performance metric patterns
+      • Trend analysis indicators
+    end note
+  endif
+elseif (ML Classifier Confidence > 85%?) then (yes)
+  :<b>Apply ML Classification</b>;
+  note right
+    <b>Machine Learning Classification:</b>
+    • Uses trained document models
+    • Selects most confident prediction
+    • Supports multiple ML algorithms
+    • Adaptable to new document types
+    • Confidence threshold configurable
+    
+    <i>ML models are selected based on document features, see 02-01</i>
+  end note
+else (no)
+  if (Keyword Match Score > Threshold?) then (yes)
+    :<b>Apply Keyword-Based Classification</b>;
+    note right
+      <b>Keyword Classification:</b>
+      • Uses domain-specific keyword sets
+      • Analyzes term frequency
+      • Considers term positioning
+      • Evaluates contextual relevance
+      • Lower confidence but flexible
+    end note
+  else (no)
+    :<b>Mark as Unclassified/Needs Review</b>;
+    note right
+      <b>Manual Classification Process:</b>
+      • Document sent to review queue
+      • Flagged for expert evaluation
+      • Metadata marked for training
+      • Review feedback captured
+      • Used to improve future classification
+    end note
+  endif
+endif
+
+|<b>Result Processing</b>|
+:<b>Combine Classification Results</b>;
+note right
+  <b>Ensemble Classification:</b>
+  • Weighted voting algorithm
+  • Higher weights for more reliable methods
+  • Confidence score aggregation
+  • Conflict resolution rules
+  • Classification consensus approach
+  
+  <i>Ensemble techniques detailed in EnsembleManager (02-01)</i>
+end note
+
+:<b>Calculate Confidence Scores</b>;
+note right
+  <b>Confidence Calculation:</b>
+  • Probability-based scoring
+  • Classification agreement metrics
+  • Feature strength evaluation
+  • Uncertainty quantification
+  • Threshold-based decision making
+end note
+
+:<b>Select Best Classification</b>;
+note right
+  <b>Classification Selection:</b>
+  • Highest confidence prioritization
+  • Classification hierarchy rules
+  • Tie-breaking mechanisms
+  • Multi-label consideration
+  • Special case handling
+end note
+
+:<b>Validate Against Schema Registry</b>;
+note right
+  <b>Schema Validation:</b>
+  • Matches document against schema
+  • Verifies required fields present
+  • Checks structural conformance
+  • Validates data types and formats
+  • Reports validation issues
+  
+  <i>Schema validation process detailed in diagram 05-02</i>
+end note
+
+|<b>Output Generation</b>|
+:<b>Generate Classification Report</b>;
+note right
+  <b>Classification Report:</b>
+  • Document type determination
+  • Confidence metrics
+  • Feature importance analysis
+  • Alternative classifications
+  • Validation results summary
+end note
+
+:<b>Tag Document with Classification</b>;
+note right
+  <b>Document Tagging:</b>
+  • Adds metadata classifications
+  • Records classification source
+  • Timestamps classification
+  • Includes confidence scores
+  • Enables downstream filtering
+end note
+
+:<b>Extract Structured Data Based on Type</b>;
+note right
+  <b>Structured Extraction:</b>
+  • Type-specific data mapping
+  • Field identification and extraction
+  • Normalized data output
+  • Schema-compliant formatting
+  • Data quality validation
+  
+  <i>Extraction patterns are dynamically selected based on document classification</i>
+end note
+stop
+
+legend right
+  <b>Classification Strategy Priority Hierarchy:</b>
+  1. <b>Template Matching</b> - Highest precision, fastest
+  2. <b>Form Structure</b> - Reliable for form documents
+  3. <b>Document Layout/Official Markers</b> - Good for institutional docs
+  4. <b>Content-based Analysis</b> - Tables, Financial patterns
+  5. <b>ML Classification</b> - Adaptive but needs confidence
+  6. <b>Keyword Analysis</b> - Simple but less precise
+  7. <b>Manual Review</b> - Human fallback for uncertain cases
+  
+  <i>For component implementation details, see diagram 06-03</i>
+  <i>For processing sequence details, see diagram 06-02</i>
+  <i>For classifier architecture, see diagrams 02-01 and 02-02</i>
+endlegend
+
+@enduml

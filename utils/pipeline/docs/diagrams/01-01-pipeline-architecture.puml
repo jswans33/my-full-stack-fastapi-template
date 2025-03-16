@@ -1,0 +1,217 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml Pipeline_Architecture
+title Pipeline System Architecture
+caption Core components and their relationships
+
+' Main components with descriptions
+[CLI] as CLI #lightblue
+note top of CLI
+  <b>Command Line Interface</b>
+  - Entry point for batch processing
+  - Accepts document paths and processing options
+  - Supports pipeline configuration via CLI args
+  - Returns processing results or error codes
+  See diagram 01-02 for complete data flow
+end note
+
+[API] as API #lightblue
+note top of API
+  <b>Application Programming Interface</b>
+  - Entry point for programmatic integration
+  - RESTful endpoints for document submission
+  - Asynchronous processing capabilities
+  - Webhook support for completion notifications
+  See diagram 01-02 for complete data flow
+end note
+
+[FileProcessor] as FileProcessor #lightgreen
+note left of FileProcessor
+  <b>File Processor</b>
+  - Handles file I/O operations
+  - Validates input document format
+  - Extracts basic metadata
+  - Prepares document for pipeline processing
+end note
+
+[Pipeline] as Pipeline #orange
+note bottom of Pipeline
+  <b>Core Pipeline Orchestrator</b>
+  - Coordinates the document processing workflow
+  - Manages the sequence of operations
+  - Handles error conditions and retries
+  - Collects processing metrics
+  
+  For PDF-specific processing see diagrams:
+  - 06-01: PDF processing use cases
+  - 06-02: PDF processing sequence
+  - 06-03: PDF classifier components
+  - 06-04: PDF classification decision flow
+end note
+
+[StrategySelector] as StrategySelector #yellow
+note left of StrategySelector
+  <b>Strategy Selector</b>
+  - Analyzes document characteristics
+  - Selects optimal processing strategy
+  - Can adapt based on document content
+end note
+
+[DocumentClassifier] as DocumentClassifier #pink
+note right of DocumentClassifier
+  <b>Document Classifier</b>
+  - Determines document type using multiple strategies
+  - Combines results with confidence scores
+  - Supports pluggable classification algorithms
+  - Extensible for new document types
+  
+  For detailed structure, see diagrams:
+  - 02-01: Classifier class structure
+  - 02-02: Classification process flow
+  - 02-03: Component architecture
+end note
+
+[SchemaRegistry] as SchemaRegistry #lightgreen
+note right of SchemaRegistry
+  <b>Schema Registry</b>
+  - Maintains repository of document schemas
+  - Validates documents against schemas
+  - Supports schema versioning
+  - Enables schema evolution over time
+  
+  For detailed structure, see diagrams:
+  - 05-01: Schema registry class structure
+  - 05-02: Schema validation flow
+end note
+
+[FormatterFactory] as FormatterFactory #lightyellow
+note right of FormatterFactory
+  <b>Formatter Factory</b>
+  - Creates formatters for various output formats
+  - Supports pluggable formatter implementations
+  - Configurable output options
+  - Handles formatting errors gracefully
+  
+  For details, see diagrams:
+  - 03-01: Formatter class structure
+  - 03-02: Formatting process flow
+end note
+
+[VerifierFactory] as VerifierFactory #lightpink
+note right of VerifierFactory
+  <b>Verifier Factory</b>
+  - Creates verifiers for output validation
+  - Ensures output quality and correctness
+  - Supports format-specific verification
+  - Provides detailed verification reports
+  
+  For details, see diagrams:
+  - 04-01: Verifier class structure
+  - 04-02: Verification process flow
+end note
+
+' Classifier components with enhanced descriptions
+package "ClassifierFactory" {
+  [register_classifier()] as CF_Register
+  [create_classifier()] as CF_Create
+  note bottom of CF_Register
+    Registers classifier implementations
+    with the factory at runtime
+  end note
+  note bottom of CF_Create
+    Creates appropriate classifier
+    instance based on document type
+  end note
+}
+
+package "ClassifierStrategies" {
+  interface "ClassifierStrategy" as CS_Interface
+  [BaseClassifier] as CS_Base
+  [RuleBasedClassifier] as CS_Rule
+  [PatternMatcherClassifier] as CS_Pattern
+  [MLBasedClassifier] as CS_ML
+  
+  note bottom of ClassifierStrategies
+    <b>Strategy Pattern Implementation</b>
+    Different algorithms for document classification
+    that can be selected at runtime
+  end note
+  
+  note right of CS_Rule
+    Uses predefined rules and heuristics
+    for classification (fastest)
+  end note
+  
+  note right of CS_Pattern
+    Uses regex and structural patterns
+    for classification (reliable)
+  end note
+  
+  note right of CS_ML
+    Uses machine learning models
+    for classification (most flexible)
+  end note
+}
+
+package "Formatters" {
+  [JSONFormatter] as F_JSON
+  [MarkdownFormatter] as F_Markdown
+  [EnhancedMarkdownFormatter] as F_Enhanced
+  
+  note bottom of Formatters
+    <b>Output Format Options</b>
+    Multiple output formats supported
+    through consistent interface
+  end note
+}
+
+package "Verifiers" {
+  [JSONTreeVerifier] as V_JSON
+  [MarkdownVerifier] as V_Markdown
+  
+  note bottom of Verifiers
+    <b>Output Validation</b>
+    Format-specific verification logic
+    ensures output correctness
+  end note
+}
+
+' Relationships with descriptive labels
+CLI --> FileProcessor : "submits documents"
+API --> FileProcessor : "submits documents"
+FileProcessor --> Pipeline : "passes validated documents"
+
+Pipeline --> StrategySelector : "requests strategy"
+Pipeline --> DocumentClassifier : "requests classification"
+Pipeline --> FormatterFactory : "creates formatters"
+Pipeline --> VerifierFactory : "creates verifiers"
+
+DocumentClassifier --> ClassifierFactory : "gets classifiers"
+DocumentClassifier --> SchemaRegistry : "validates against schemas"
+
+ClassifierFactory --> ClassifierStrategies : "creates"
+CS_Interface <|-- CS_Base : "implements"
+CS_Base <|-- CS_Rule : "extends"
+CS_Base <|-- CS_Pattern : "extends"
+CS_Base <|-- CS_ML : "extends"
+
+FormatterFactory --> Formatters : "creates"
+VerifierFactory --> Verifiers : "creates"
+
+database "Input Document" as Input #palegreen
+database "Processed Output" as Output #paleblue
+
+Input --> FileProcessor : "read by"
+Pipeline --> Output : "produces"
+
+legend right
+  <b>Color Legend</b>
+  <#lightblue> Entry Points
+  <#orange> Core Components
+  <#pink> Classification Components
+  <#lightgreen> Document Handling
+  <#lightyellow> Output Components
+  <#lightpink> Verification Components
+endlegend
+@enduml

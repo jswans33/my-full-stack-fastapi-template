@@ -1,0 +1,225 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml PDF_Processing_UseCases
+left to right direction
+skinparam packageStyle rectangle
+skinparam actorStyle awesome
+skinparam usecaseBackgroundColor #F8F8F8
+skinparam usecaseBorderColor #5D5D5D
+skinparam usecaseFontSize 14
+skinparam noteBackgroundColor #FFFFCC
+skinparam noteBorderColor #999999
+skinparam actorBackgroundColor #FFFFFF
+
+' Title and caption
+title <b>PDF Document Processing System: User Interactions</b>
+caption <i>This diagram shows the key interactions between users, administrators, external systems and the PDF processing pipeline</i>
+
+' Actor definitions with detailed notes
+actor "End User" as User #lightblue
+note left of User
+  <b>Regular System Users</b>
+  • Document owners needing extraction
+  • Business users requiring data
+  • Occasional system users
+  • Focus on document results
+end note
+
+actor "Administrator" as Admin #lightgreen
+note right of Admin
+  <b>System Administrators</b>
+  • Technical configuration managers
+  • Template administrators
+  • Batch process schedulers
+  • System performance monitors
+  • Focus on system maintenance
+end note
+
+actor "External System" as ExtSystem #lightyellow
+note right of ExtSystem
+  <b>Integrated Applications</b>
+  • Workflow management systems
+  • Document management systems
+  • Enterprise applications
+  • Analytics platforms
+  • External APIs
+  • Focus on automated integration
+end note
+
+' Main use case container with color-coded use cases
+rectangle "PDF Document Pipeline" {
+  usecase "Upload PDF Document" as UC1 #CCFFFF
+  note bottom of UC1
+    <b>PDF Document Upload</b>
+    • Supports single/multi document upload
+    • Validates PDF format and structure
+    • Accepts various PDF versions
+    • Provides immediate upload feedback
+    • Security scanning integration
+    
+    <i>Entry point for manual document processing</i>
+  end note
+  
+  usecase "Process PDF Document" as UC2 #FFCC99
+  note bottom of UC2
+    <b>Core PDF Processing</b>
+    • Comprehensive PDF processing workflow:
+      - Text and layout extraction
+      - Document type classification
+      - Data structure identification
+      - Content validation
+      - Schema matching
+      - Information extraction
+    
+    <i>See diagram 06-02 for detailed sequence</i>
+    <i>See diagram 06-03 for component architecture</i>
+    <i>See diagram 06-04 for classification decisions</i>
+  end note
+  
+  usecase "View Processing Results" as UC3 #CCFFCC
+  note bottom of UC3
+    <b>Results Visualization</b>
+    • Interactive result viewing
+    • Document structure visualization
+    • Extracted data presentation
+    • Classification confidence metrics
+    • Validation issue highlighting
+    • Processing metadata display
+    
+    <i>Results are formatted based on document type</i>
+  end note
+  
+  usecase "Export Processed Data" as UC4 #CCE5FF
+  note right of UC4
+    <b>Data Export Options</b>
+    • Multiple export formats (JSON, CSV, XML)
+    • Structured data export
+    • Document metadata inclusion
+    • Export customization options
+    • Batch export capabilities
+    • Downstream system integration
+  end note
+  
+  usecase "Configure Pipeline Settings" as UC5 #FFE6CC
+  note top of UC5
+    <b>System Configuration</b>
+    • Processing pipeline configuration
+    • Classification thresholds
+    • Performance tuning options
+    • Component enabling/disabling
+    • System integration settings
+    • Security configuration
+    
+    <i>Configuration impacts all pipeline components</i>
+  end note
+  
+  usecase "Manage Document Templates" as UC6 #E6CCFF
+  note right of UC6
+    <b>Template Management</b>
+    • Create and edit document templates
+    • Define document type signatures
+    • Configure extraction rules
+    • Manage template versions
+    • Test template accuracy
+    • Template effectiveness metrics
+    
+    <i>Templates significantly improve classification accuracy</i>
+    <i>Used by classifier components in diagram 06-03</i>
+  end note
+  
+  usecase "Generate Analytics Reports" as UC7 #FFCCCC
+  note left of UC7
+    <b>System Analytics</b>
+    • Processing volume metrics
+    • Classification accuracy statistics
+    • Performance monitoring
+    • Error rate tracking
+    • Document type distribution
+    • System usage patterns
+    • Trend analysis visualization
+  end note
+  
+  usecase "Schedule Batch Processing" as UC8 #CCE5FF
+  note left of UC8
+    <b>Batch Processing</b>
+    • Schedule recurring batch jobs
+    • Configure processing windows
+    • Define document sources
+    • Set batch priorities
+    • Monitor batch status
+    • Manage processing queues
+    
+    <i>Enables automated document processing</i>
+    <i>See diagram 06-04 for batch classification logic</i>
+  end note
+  
+  usecase "Integrate with External Systems" as UC9 #FFFFCC
+  note right of UC9
+    <b>External Integration</b>
+    • API-based integration
+    • Event notification webhooks
+    • Data exchange protocols
+    • Authentication mechanisms
+    • Integration monitoring
+    • Error handling protocols
+    
+    <i>Enables system-to-system automation</i>
+  end note
+}
+
+' Relationships with descriptive labels
+User --> UC1 : "uploads documents"
+User --> UC2 : "initiates processing"
+User --> UC3 : "reviews results"
+User --> UC4 : "exports data"
+
+Admin --> UC5 : "configures system"
+Admin --> UC6 : "manages templates"
+Admin --> UC7 : "analyzes performance"
+Admin --> UC8 : "schedules jobs"
+
+ExtSystem --> UC9 : "connects with"
+ExtSystem --> UC2 : "sends documents"
+ExtSystem <-- UC4 : "receives processed data"
+
+' Relationship types with more descriptive labels
+UC1 ..> UC2 : <<include>> "automatically triggers"
+UC2 ..> UC3 : <<include>> "produces results for"
+UC3 ..> UC4 : <<extends>> "optionally leads to"
+UC5 ..> UC6 : <<extends>> "includes capability for"
+UC7 ..> UC3 : <<extends>> "analyzes data from"
+UC8 ..> UC2 : <<include>> "automates multiple"
+UC9 ..> UC2 : <<include>> "enables remote"
+
+' Cross-reference notes with enhanced information
+note bottom of UC2 #FFFFDD
+  <b>PDF Processing Architecture References</b>
+  • All PDF processing follows the pipeline architecture shown in diagram 01-01
+  • Classification strategy selection described in diagram 02-03
+  • Formatting options detailed in diagram 03-01
+  • Verification process shown in diagram 04-02
+  • Schema validation explained in diagram 05-02
+end note
+
+note "For technical details of the classifier implementation, see diagrams:\n• 02-01: Classifier classes\n• 02-02: Classification flow\n• 02-03: Component architecture" as N2 #FFFFDD
+N2 .. UC3
+
+' Legend for better understanding
+legend right
+  <b>Relationship Types</b>
+  <b><<include>></b> - Mandatory inclusion of one use case in another
+  <b><<extends>></b> - Optional extension of one use case by another
+  
+  <b>Use Case Colors</b>
+  <#CCFFFF> Document Input
+  <#FFCC99> Core Processing
+  <#CCFFCC> Results Viewing
+  <#CCE5FF> Data Export/Batch
+  <#FFE6CC> Configuration
+  <#E6CCFF> Template Management
+  <#FFCCCC> Analytics
+  <#FFFFCC> Integration
+endlegend
+
+@enduml

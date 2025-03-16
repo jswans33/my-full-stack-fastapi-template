@@ -1,0 +1,313 @@
+' Configure PlantUML server
+!define PLANTUML_SERVER_URL https://www.plantuml.com/plantuml
+
+@startuml PDF_Classifier_Components
+skinparam componentStyle uml2
+skinparam component {
+  BorderColor #678DB2
+  BackgroundColor #FFFFFF
+  ArrowColor #678DB2
+}
+
+' Title with diagram cross-references
+title PDF Document Classifier Components (06-03)
+caption Related diagrams: 02-01 (Classifier Structure), 06-02 (Processing Sequence), 06-04 (Classification Decision)
+
+package "PDF Processing Pipeline" #F0F8FF {
+  [CLI/API Interface] as Interface #CCFFCC
+  [PDF File Processor] as FileProcessor #CCFFCC
+  note bottom of Interface
+    <b>User Entry Points</b>
+    - CLI for batch processing
+    - API for integration scenarios
+    - Accepts PDF documents and processing options
+    - Returns processing results or error information
+    
+    <i>See diagram 01-01 for the complete architecture context</i>
+  end note
+  
+  package "PDF Document Classifier" #FFEFDB {
+    [Feature Extractor] as FeatureExtractor #FFCC99
+    [Text Analyzer] as TextAnalyzer #FFE5CC
+    [Layout Analyzer] as LayoutAnalyzer #FFE5CC
+    [Metadata Extractor] as MetadataExtractor #FFE5CC
+    [Image Recognizer] as ImageRecognizer #FFE5CC
+    
+    note bottom of FeatureExtractor
+      <b>Feature Extraction Orchestrator</b>
+      - Coordinates multiple extraction techniques
+      - Aggregates features for classification
+      - Caches results for performance
+      - Can handle partial extraction failures
+      
+      <i>Corresponds to _extract_features() method in ClassifierStrategy (02-01)</i>
+    end note
+    
+    note right of TextAnalyzer
+      <b>Text Content Analysis</b>
+      - Extracts full text content
+      - Performs NLP processing
+      - Identifies key terms and phrases
+      - Generates text-based features
+    end note
+    
+    note right of LayoutAnalyzer
+      <b>Document Layout Analysis</b>
+      - Identifies structural elements
+      - Analyzes spatial relationships
+      - Detects tables and sections
+      - Generates layout-based features
+    end note
+    
+    note right of MetadataExtractor
+      <b>Document Metadata Analysis</b>
+      - Extracts embedded metadata
+      - Analyzes creation information
+      - Identifies document properties
+      - Generates metadata-based features
+    end note
+    
+    note right of ImageRecognizer
+      <b>Image Content Analysis</b>
+      - Detects logos and watermarks
+      - Performs OCR on images
+      - Analyzes graphical elements
+      - Generates image-based features
+    end note
+    
+    package "Classification Strategies" #FFE4E1 {
+      [Template Matcher] as TemplateMatcher #FFCCCC
+      [Keyword Classifier] as KeywordClassifier #FFCCCC
+      [Header/Footer Analyzer] as HeaderFooter #FFCCCC
+      [ML Document Classifier] as MLClassifier #FFCCCC
+      [Form Field Detector] as FormDetector #FFCCCC
+      
+      note right of TemplateMatcher
+        <b>Template-Based Classification</b>
+        - Fastest and most reliable method
+        - Matches document against known templates
+        - Uses similarity scoring algorithms
+        - Highest priority in classification chain
+        
+        <i>For detailed decision logic see diagram 06-04</i>
+      end note
+      
+      note right of KeywordClassifier
+        <b>Keyword-Based Classification</b>
+        - Identifies documents by key terms
+        - Uses frequency and position analysis
+        - Supports multiple languages
+        - Medium priority in classification chain
+      end note
+      
+      note right of HeaderFooter
+        <b>Header/Footer Analysis</b>
+        - Identifies organizational markers
+        - Detects letterheads and footers
+        - Recognizes official document markings
+        - Medium-high priority in classification
+      end note
+      
+      note right of MLClassifier
+        <b>Machine Learning Classification</b>
+        - Uses trained models for classification
+        - Supports multiple ML algorithms
+        - Adapts to new document types
+        - High flexibility but medium priority
+        
+        <i>Based on MLBasedClassifier in diagram 02-01</i>
+      end note
+      
+      note right of FormDetector
+        <b>Form Field Detection</b>
+        - Identifies fillable form documents
+        - Detects form fields and structures
+        - Maps fields to known form types
+        - High priority for form documents
+      end note
+    }
+    
+    [Ensemble Manager] as EnsembleManager #FFAEAE
+    [Classification Result Manager] as ResultManager #FFAEAE
+    
+    note bottom of EnsembleManager
+      <b>Classification Ensemble</b>
+      - Implements weighted voting algorithm
+      - Combines results from all classifiers
+      - Resolves conflicts between classifiers
+      - Produces final classification with confidence score
+      
+      <i>See EnsembleManager class in diagram 02-01</i>
+      <i>Priority logic detailed in diagram 06-04</i>
+    end note
+    
+    note bottom of ResultManager
+      <b>Result Management</b>
+      - Finalizes classification outcome
+      - Stores classification metadata
+      - Triggers appropriate schema validation
+      - Prepares for downstream processing
+    end note
+  }
+  
+  package "Document Schema Registry" #E6E6FA {
+    [Schema Validator] as SchemaValidator #CCCCFF
+    [Document Types Database] as DocTypeDB #CCCCFF
+    
+    note right of SchemaValidator
+      <b>Schema Validation</b>
+      - Validates document against schema
+      - Ensures structural compliance
+      - Performs content validation
+      - Reports validation issues
+      
+      <i>See schema registry flow in diagram 05-02</i>
+    end note
+    
+    note right of DocTypeDB
+      <b>Document Type Repository</b>
+      - Stores document type definitions
+      - Maintains schema versions
+      - Provides schema lookup
+      - Supports schema evolution
+    end note
+  }
+  
+  package "Normalization & Output" #F0FFF0 {
+    [Data Normalizer] as Normalizer #CCFFCC
+    [JSON Formatter] as JSONFormatter #CCFFCC
+    [Structured Text Formatter] as TextFormatter #CCFFCC
+    
+    note bottom of Normalizer
+      <b>Data Normalization</b>
+      - Standardizes extracted data
+      - Applies type-specific transformations
+      - Resolves formatting inconsistencies
+      - Prepares for output formatting
+      
+      <i>For formatting details see diagram 03-02</i>
+    end note
+    
+    note right of JSONFormatter
+      <b>JSON Output Format</b>
+      - Produces machine-readable output
+      - Supports nested data structures
+      - Includes metadata and confidence scores
+      - Used for API responses and data exchange
+    end note
+    
+    note right of TextFormatter
+      <b>Text Output Format</b>
+      - Produces human-readable output
+      - Supports markdown and structured text
+      - Includes document summary
+      - Used for reports and documentation
+    end note
+  }
+  
+  database "PDF Templates" as Templates #D8BFD8
+  database "Classification Models" as Models #D8BFD8
+  database "Processed Results" as Results #D8BFD8
+}
+
+' Main flow with descriptive labels
+Interface --> FileProcessor : "submits"
+FileProcessor --> FeatureExtractor : "extracts from"
+FeatureExtractor --> TextAnalyzer : "analyzes text"
+FeatureExtractor --> LayoutAnalyzer : "analyzes layout"
+FeatureExtractor --> MetadataExtractor : "extracts metadata"
+FeatureExtractor --> ImageRecognizer : "analyzes images"
+
+TextAnalyzer --> KeywordClassifier : "feeds keywords"
+LayoutAnalyzer --> TemplateMatcher : "provides layout features"
+LayoutAnalyzer --> FormDetector : "identifies form elements"
+MetadataExtractor --> HeaderFooter : "provides header/footer data"
+TextAnalyzer --> MLClassifier : "provides text features"
+ImageRecognizer --> MLClassifier : "provides image features"
+
+KeywordClassifier --> EnsembleManager : "contributes classification"
+TemplateMatcher --> EnsembleManager : "contributes classification"
+HeaderFooter --> EnsembleManager : "contributes classification"
+MLClassifier --> EnsembleManager : "contributes classification"
+FormDetector --> EnsembleManager : "contributes classification"
+
+EnsembleManager --> ResultManager : "provides combined result"
+ResultManager --> SchemaValidator : "requests validation"
+SchemaValidator --> DocTypeDB : "looks up schema"
+
+ResultManager --> Normalizer : "forwards classified data"
+Normalizer --> JSONFormatter : "sends for JSON formatting"
+Normalizer --> TextFormatter : "sends for text formatting"
+
+JSONFormatter --> Results : "stores"
+TextFormatter --> Results : "stores"
+
+' External dependencies with descriptive labels
+TemplateMatcher --> Templates : "looks up templates"
+MLClassifier --> Models : "uses trained models"
+
+' Data flow note
+note top of FileProcessor
+  <b>PDF Document Processing Flow</b>
+  
+  The processing follows a pipeline pattern:
+  1. Document intake through Interface
+  2. Feature extraction from PDF
+  3. Multi-strategy classification
+  4. Ensemble-based decision
+  5. Schema validation
+  6. Normalization and formatting
+  7. Result storage and delivery
+  
+  <i>See diagram 06-02 for the complete sequence</i>
+end note
+
+' Error handling note
+note bottom of Results
+  <b>Processing Results</b>
+  - Classified and structured document data
+  - Classification confidence metrics
+  - Processing metadata and timestamps
+  - Error information (if applicable)
+  
+  Results can be exported through various formatters (03-01)
+  and verified for quality assurance (04-01)
+  
+  <b>Error Handling:</b> Each component includes error
+  recovery mechanisms to ensure processing continuity
+end note
+
+' External resources
+note right of Templates
+  <b>Template Repository</b>
+  - Contains known document templates
+  - Includes template signatures and features
+  - Supports versioning and updates
+  - Can be extended with new templates
+  
+  <i>Templates can be managed by administrators (see diagram 06-01)</i>
+end note
+
+note right of Models
+  <b>Machine Learning Models</b>
+  - Trained document classification models
+  - Support for multiple ML frameworks
+  - Regular retraining capability
+  - Model performance monitoring
+  
+  <i>These implement MLBasedClassifier from diagram 02-01</i>
+end note
+
+' Legend for color coding
+legend right
+  <b>Component Color Coding</b>
+  <#CCFFCC> Input/Output Components
+  <#FFCC99> Core Extraction Components
+  <#FFE5CC> Feature Analyzers
+  <#FFCCCC> Classification Strategies
+  <#FFAEAE> Decision Components
+  <#CCCCFF> Schema Components
+  <#D8BFD8> Data Stores
+endlegend
+
+@enduml

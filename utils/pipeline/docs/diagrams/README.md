@@ -2,6 +2,14 @@
 
 This folder contains architectural diagrams for the utils/pipeline system. Each diagram is stored in its own file for better organization and usability.
 
+## Documentation Overview
+
+To understand the pipeline architecture, consult these documentation files:
+
+- **[ARCHITECTURE_OVERVIEW.md](ARCHITECTURE_OVERVIEW.md)**: Comprehensive overview of the pipeline architecture and its components
+- **[DOCUMENT_FLOW_GUIDE.md](DOCUMENT_FLOW_GUIDE.md)**: Detailed explanation of how documents flow through the pipeline
+- **[DIAGRAM_NAVIGATION_GUIDE.md](DIAGRAM_NAVIGATION_GUIDE.md)**: Guide for navigating between related diagrams based on your goals
+
 ## Diagram Numbering System
 
 The diagrams follow a structured numbering system to indicate their place in the overall architecture:
@@ -84,3 +92,13 @@ The diagrams illustrate the consistent use of several design patterns across the
 4. **Abstract Interfaces**: Components program to interfaces, not implementations
 
 This architecture allows the system to be easily extended with new document types, processing strategies, classifiers, formatters, and verifiers.
+
+## Diagram Update Guidelines
+
+When updating the architecture:
+
+1. Follow the existing numbering convention for any new diagrams
+2. Update cross-references in related diagrams
+3. Maintain consistent styling and notation
+4. Update the documentation files to reflect architectural changes
+5. Add cross-references to related diagrams in comments or notes
