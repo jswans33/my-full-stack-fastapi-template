@@ -2,8 +2,10 @@
   "input_dir": "data/input",
   "output_dir": "data/output",
   "output_format": "json",
-  "log_level": "INFO",
+  "log_level": "DEBUG",
   "validation_level": "basic",
+  "record_schemas": true,
+  "enable_classification": true,
 
   "strategies": {
     "pdf": {

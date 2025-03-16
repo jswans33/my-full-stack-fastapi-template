@@ -164,6 +164,8 @@ class FileProcessor:
             "classification",
             "use_enhanced_markdown",
             "markdown_options",
+            "record_schemas",
+            "enable_classification",
         ]:
             if key in self.config:
                 pipeline_config[key] = self.config[key]
