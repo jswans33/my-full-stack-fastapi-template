@@ -68,3 +68,27 @@ For more detailed information, see the following documentation:
 ## Examples
 
 See the [config_example.py](../examples/config_example.py) script for examples of using the configuration system.
+
+## Configuration Files Overview
+
+The configuration directory contains several types of configuration files:
+
+### Example Configurations
+These files demonstrate available options and serve as templates:
+- **example_config.yaml**: Comprehensive example of pipeline configuration options
+- **example_classifier_config.yaml**: Example classifier configuration with standard document types
+
+### Domain-Specific Configurations
+These files are specialized for specific domains:
+- **hvac_config.yaml**: Pipeline configuration optimized for HVAC documents
+- **hvac_classifier_config.yaml**: Classifier configuration with HVAC-specific rules and patterns
+
+### Output Format Configurations
+These files control output formatting:
+- **enhanced_markdown_config_v2.json**: Current configuration for enhanced markdown output
+
+### System Configurations
+These files configure system components:
+- **schema_registry.yaml**: Configuration for the schema registry component
+
+For a complete reference of all configuration files, see [CONFIG_FILES.md](CONFIG_FILES.md).

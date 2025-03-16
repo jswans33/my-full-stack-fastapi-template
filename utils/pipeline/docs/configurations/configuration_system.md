@@ -50,6 +50,46 @@ utils/pipeline/config/
     └── invoice_v1_to_v2.yaml  # Example schema migration
 ```
 
+## Configuration File Organization
+
+The configuration system uses several types of configuration files, organized by purpose:
+
+### Reference Examples
+These files provide comprehensive examples of all available options:
+- **example_config.yaml**: Complete pipeline configuration example
+- **example_classifier_config.yaml**: Complete classifier configuration example
+
+These files are primarily for documentation and learning purposes. They demonstrate all available options but are not used directly in production.
+
+### Active Configurations
+These files are actively used by the pipeline and examples:
+- **hvac_config.yaml**: Active configuration for HVAC document processing
+- **hvac_classifier_config.yaml**: Active configuration for HVAC document classification
+- **schema_registry.yaml**: Active configuration for the schema registry
+
+### Format Variations
+Some configurations are available in multiple formats:
+- **hvac_config.yaml** and **hvac_config.json**: Same configuration in YAML and JSON formats
+  - YAML is the primary format used throughout the codebase
+  - JSON is provided for compatibility with systems that require JSON
+
+### Version Variations
+Some configurations have multiple versions:
+- **enhanced_markdown_config.json**: Original version
+- **enhanced_markdown_config_v2.json**: Current version with improvements
+  - The v2 version includes all functionality from v1 with additional features
+  - New code should use v2, while v1 is maintained for backward compatibility
+
+### Configuration Loading Precedence
+When loading configuration, the system follows this precedence:
+1. Command-line arguments
+2. Environment variables
+3. Environment-specific configuration files
+4. Domain-specific configuration files
+5. Default configuration files
+
+For a complete reference of all configuration files, see [../config/CONFIG_FILES.md](../config/CONFIG_FILES.md).
+
 ## Configuration Files
 
 The configuration system uses YAML or JSON files for storing configuration. The files are organized into the following directories:

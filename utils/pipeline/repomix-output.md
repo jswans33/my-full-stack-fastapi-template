@@ -33,6 +33,7 @@ The content is organized as follows:
 - Files matching patterns in .gitignore are excluded
 - Files matching default ignore patterns are excluded
 - Content has been formatted for parsing in markdown style
+- Files are sorted by Git change count (files with more changes are at the bottom)
 
 ## Additional Info
 
@@ -45,14 +46,14 @@ analyzer/pdf.py
 cleaner/__init__.py
 cleaner/pdf.py
 config/__init__.py
+config/CONFIG_FILES.md
 config/config.py
 config/document_types/invoice.yaml
 config/enhanced_markdown_config_v2.json
-config/enhanced_markdown_config.json
 config/environments/development.yaml
 config/example_classifier_config.yaml
 config/example_config.yaml
-config/hvac_config.json
+config/hvac_classifier_config.yaml
 config/hvac_config.yaml
 config/manager.py
 config/migrations/invoice_1.0.0_to_1.1.0.yaml
@@ -75,20 +76,25 @@ config/schemas/financial_document.yaml
 config/schemas/invoice_v1.yaml
 config/schemas/purchase_order.yaml
 core/file_processor.py
+examples/__init__.py
 examples/batch_processing_example.py
 examples/config_example.py
 examples/config.yaml
 examples/config/app_config.yaml
+examples/debug_hvac_classifier.py
 examples/document_classification_example.py
 examples/pdf_extraction_example.py
 examples/runtime_updates_example.py
 examples/schema_analysis_example.py
 examples/schema_migration_example.py
 examples/schema_registry_example.py
+examples/test_hvac_classification.py
+examples/test_sample_pdf.py
 models/models.py
 pipeline.py
 processors/__init__.py
 processors/classifiers/__init__.py
+processors/classifiers/keyword_analyzer.py
 processors/classifiers/ml_based.py
 processors/classifiers/pattern_matcher.py
 processors/classifiers/rule_based.py
@@ -102,7 +108,6 @@ processors/pdf_formatter.py
 processors/pdf_validator.py
 pyproject.toml
 pytest.ini
-rename_input_files.py
 repomix.config.json
 requirements-dev.txt
 run_pipeline.py
@@ -113,6 +118,10 @@ schema/data/schemas/hvac_specification_20250315171953.json
 schema/data/schemas/invoice_20250315221257.json
 schema/data/schemas/invoice_20250315221447.json
 schema/data/schemas/test_document_20250315153312.json
+schema/data/schemas/unknown_20250315233958.json
+schema/data/schemas/unknown_20250315234312.json
+schema/data/schemas/unknown_20250315235539.json
+schema/data/schemas/unknown_20250316000142.json
 schema/enhanced_registry.py
 schema/extended_registry.py
 schema/matchers.py
@@ -121,7 +130,11 @@ schema/registry.py
 schema/templates/__init__.py
 schema/vectorizer.py
 schema/visualizer.py
-setup_pytest_env.py
+scripts/pipeline_test.bat
+scripts/pipeline_test.ps1
+scripts/rename_input_files.py
+scripts/setup_pytest_env.py
+scripts/visualize_schema.py
 strategies/__init__.py
 strategies/base.py
 strategies/classifier_factory.py
@@ -134,7 +147,6 @@ verify/base.py
 verify/factory.py
 verify/json_tree.py
 verify/markdown.py
-visualize_schema.py
 ```
 
 # Files
@@ -505,6 +517,57 @@ __all__ = [
     "SchemaValidation",
     "SchemaMigration",
 ]
+````
+
+## File: config/CONFIG_FILES.md
+````markdown
+# Configuration Files Reference
+
+This document provides a reference for all configuration files in the pipeline.
+
+## Core Configuration Files
+
+| File | Format | Purpose | Status |
+|------|--------|---------|--------|
+| **example_config.yaml** | YAML | Complete example of pipeline configuration | Reference |
+| **hvac_config.yaml** | YAML | HVAC-specific pipeline configuration | Active |
+| **hvac_config.json** | JSON | JSON version of hvac_config.yaml | Alternative format (consider removing) |
+
+## Classifier Configuration Files
+
+| File | Format | Purpose | Status |
+|------|--------|---------|--------|
+| **example_classifier_config.yaml** | YAML | Example classifier configuration | Reference |
+| **hvac_classifier_config.yaml** | YAML | HVAC-specific classifier configuration | Active |
+
+## Output Format Configuration Files
+
+| File | Format | Purpose | Status |
+|------|--------|---------|--------|
+| **enhanced_markdown_config.json** | JSON | Enhanced markdown configuration | Legacy (consider removing) |
+| **enhanced_markdown_config_v2.json** | JSON | Updated enhanced markdown configuration | Current |
+
+## System Configuration Files
+
+| File | Format | Purpose | Status |
+|------|--------|---------|--------|
+| **schema_registry.yaml** | YAML | Schema registry configuration | Active |
+
+## File Relationships
+
+- **example_config.yaml** → **hvac_config.yaml**: hvac_config.yaml is a specialized version of example_config.yaml
+- **example_classifier_config.yaml** → **hvac_classifier_config.yaml**: hvac_classifier_config.yaml extends example_classifier_config.yaml with HVAC-specific rules
+- **enhanced_markdown_config.json** → **enhanced_markdown_config_v2.json**: v2 is an updated version of the original
+- **hvac_config.yaml** ↔ **hvac_config.json**: These contain the same configuration in different formats
+
+## Usage in Examples
+
+| Example | Configuration Files Used |
+|---------|--------------------------|
+| document_classification_example.py | example_classifier_config.yaml |
+| debug_hvac_classifier.py | hvac_classifier_config.yaml |
+| test_hvac_classification.py | hvac_classifier_config.yaml, hvac_config.yaml |
+| test_sample_pdf.py | example_config.yaml, example_classifier_config.yaml |
 ````
 
 ## File: config/config.py
@@ -931,47 +994,6 @@ metadata:
 }
 ````
 
-## File: config/enhanced_markdown_config.json
-````json
-{
-  "use_enhanced_markdown": true,
-  "output_format": "markdown",
-  "markdown_options": {
-    "content_segmentation": true,
-    "inline_formatting": true,
-    "enhanced_tables": true,
-    "html_for_complex_tables": true,
-    "html_anchors": true,
-    "post_processing": true,
-    "validation": true,
-    "include_validation_report": false
-  },
-  "classification": {
-    "method": "rule_based",
-    "rules": {
-      "HVAC_SPECIFICATION": {
-        "title_keywords": [
-          "hvac",
-          "heating",
-          "ventilation",
-          "air conditioning",
-          "furnace"
-        ],
-        "content_keywords": [
-          "hvac",
-          "heating",
-          "ventilation",
-          "air conditioning",
-          "furnace"
-        ],
-        "confidence": 0.8,
-        "schema_pattern": "hvac_spec"
-      }
-    }
-  }
-}
-````
-
 ## File: config/environments/development.yaml
 ````yaml
 name: development
@@ -1351,183 +1373,321 @@ file_processing:
     save_path: "processing_report.json"
 ````
 
-## File: config/hvac_config.json
-````json
-{
-  "input_dir": "data/input",
-  "output_dir": "data/output",
-  "output_format": "json",
-  "log_level": "DEBUG",
-  "validation_level": "basic",
-  "record_schemas": true,
-  "enable_classification": true,
+## File: config/hvac_classifier_config.yaml
+````yaml
+# HVAC Document Classification Configuration
 
-  "strategies": {
-    "pdf": {
-      "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
-      "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
-      "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
-      "validator": "utils.pipeline.processors.pdf_validator.PDFValidator"
-    }
-  },
+# Global classification settings
+enable_classification: true
+record_schemas: true
+match_schemas: true
 
-  "classification": {
-    "enabled": true,
-    "default_threshold": 0.3,
-    "method": "rule_based",
+# Ensemble configuration
+ensemble:
+  voting_method: weighted_average
+  minimum_confidence: 0.45
+  classifier_weights:
+    rule_based: 0.25
+    pattern_matcher: 0.25
+    ml_based: 0.1
+    keyword_analyzer: 0.4  # Higher weight for the specialized analyzer
+  default_weight: 0.3
 
-    "rules": {
-      "HVAC_SPECIFICATION": {
-        "title_keywords": [
-          "hvac",
-          "heating",
-          "ventilation",
-          "air conditioning",
-          "mechanical",
-          "air handling",
-          "ductwork",
-          "refrigeration",
-          "cooling",
-          "thermal"
-        ],
-        "content_keywords": [
-          "temperature",
-          "humidity",
-          "airflow",
-          "ductwork",
-          "refrigerant",
-          "cooling",
-          "heating",
-          "ventilation",
-          "air handling unit",
-          "ahu",
-          "vav",
-          "chiller",
-          "boiler",
-          "condenser",
-          "evaporator",
-          "thermostat",
-          "diffuser",
-          "damper",
-          "plenum",
-          "insulation",
-          "filter",
-          "air quality",
-          "ashrae"
-        ],
-        "patterns": [
-          "°f",
-          "°c",
-          "cfm",
-          "btu",
-          "btuh",
-          "ton",
-          "kw",
-          "hp",
-          "psi",
-          "inWC",
-          "inH2O",
-          "fpm",
-          "rpm",
-          "db",
-          "wb",
-          "rh%",
-          "merv"
-        ],
-        "weights": {
-          "title_match": 0.4,
-          "content_match": 0.4,
-          "pattern_match": 0.2
-        },
-        "threshold": 0.3,
-        "schema_pattern": "hvac_specification"
-      },
-      "MECHANICAL_SPECIFICATION": {
-        "title_keywords": [
-          "mechanical",
-          "plumbing",
-          "piping",
-          "equipment",
-          "system"
-        ],
-        "content_keywords": [
-          "mechanical",
-          "equipment",
-          "system",
-          "installation",
-          "pipe",
-          "duct",
-          "valve",
-          "pump",
-          "fan",
-          "motor",
-          "control",
-          "sensor"
-        ],
-        "patterns": ["psi", "gpm", "rpm", "hp", "kw", "in\\.", "ft\\."],
-        "threshold": 0.4,
-        "schema_pattern": "mechanical_specification"
-      },
-      "ELECTRICAL_SPECIFICATION": {
-        "title_keywords": [
-          "electrical",
-          "power",
-          "wiring",
-          "circuit",
-          "control"
-        ],
-        "content_keywords": [
-          "electrical",
-          "power",
-          "voltage",
-          "current",
-          "wire",
-          "conduit",
-          "circuit",
-          "breaker",
-          "panel",
-          "motor",
-          "controller",
-          "disconnect",
-          "transformer"
-        ],
-        "patterns": ["v", "kv", "a", "ma", "kva", "kw", "hz", "ohm", "awg"],
-        "threshold": 0.4,
-        "schema_pattern": "electrical_specification"
-      }
-    },
-
-    "filename_patterns": {
-      "HVAC_SPECIFICATION": "(?i)hvac|heating|ventilation|air.?conditioning|mechanical|ahu|vav|cooling",
-      "MECHANICAL_SPECIFICATION": "(?i)mechanical|plumbing|piping|equipment",
-      "ELECTRICAL_SPECIFICATION": "(?i)electrical|power|wiring|circuit|control"
-    }
-  },
-
-  "file_processing": {
-    "input": {
-      "patterns": ["*.pdf"],
-      "recursive": true,
-      "exclude_patterns": ["*_temp*", "*_backup*"]
-    },
-    "output": {
-      "formats": ["json", "markdown"],
-      "structure": "hierarchical",
-      "naming": {
-        "template": "{original_name}",
-        "preserve_extension": false,
-        "timestamp": true
-      },
-      "overwrite": true
-    },
-    "reporting": {
-      "summary": true,
-      "detailed": true,
-      "format": "json",
-      "save_path": "hvac_processing_report.json"
-    }
-  }
-}
+# Individual classifier configurations
+classifiers:
+  # New keyword analyzer configuration
+  keyword_analyzer:
+    name: "HVAC Document Analyzer"
+    version: "1.0.0"
+    description: "Specialized analyzer for HVAC documents"
+    
+    keyword_analysis:
+      threshold: 0.4  # Lower threshold to catch more documents
+      
+      # Define keyword groups (semantically related terms)
+      keyword_groups:
+        # General HVAC terminology
+        hvac_general:
+          - "hvac"
+          - "heating"
+          - "ventilation"
+          - "air conditioning"
+          - "cooling"
+          - "refrigeration"
+          - "air handling"
+          - "climate control"
+          - "thermal comfort"
+        
+        # Heating-specific terms
+        heating_terms:
+          - "boiler"
+          - "furnace"
+          - "heat pump"
+          - "radiant"
+          - "hot water"
+          - "steam"
+          - "combustion"
+          - "burner"
+          - "thermal"
+          - "btu"
+          - "thermostat"
+        
+        # Cooling-specific terms
+        cooling_terms:
+          - "chiller"
+          - "condenser"
+          - "evaporator"
+          - "refrigerant"
+          - "compressor"
+          - "cooling tower"
+          - "air-cooled"
+          - "water-cooled"
+          - "ton"
+          - "eer"
+          - "seer"
+        
+        # Ventilation-specific terms
+        ventilation_terms:
+          - "duct"
+          - "damper"
+          - "diffuser"
+          - "grille"
+          - "register"
+          - "plenum"
+          - "exhaust"
+          - "supply air"
+          - "return air"
+          - "fresh air"
+          - "makeup air"
+          - "air changes"
+          - "cfm"
+          - "fpm"
+        
+        # Control systems
+        control_terms:
+          - "control"
+          - "sensor"
+          - "thermostat"
+          - "humidistat"
+          - "actuator"
+          - "valve"
+          - "vfd"
+          - "variable frequency drive"
+          - "bms"
+          - "building management system"
+          - "automation"
+        
+        # Equipment and components
+        equipment_terms:
+          - "fan"
+          - "pump"
+          - "motor"
+          - "coil"
+          - "filter"
+          - "hepa"
+          - "heat exchanger"
+          - "economizer"
+          - "vav"
+          - "variable air volume"
+          - "ahu"
+          - "air handling unit"
+          - "rtu"
+          - "rooftop unit"
+        
+        # Design and performance
+        design_terms:
+          - "design"
+          - "specification"
+          - "requirement"
+          - "performance"
+          - "efficiency"
+          - "capacity"
+          - "load"
+          - "sizing"
+          - "calculation"
+          - "pressure drop"
+          - "static pressure"
+          - "velocity"
+        
+        # Standards and codes
+        standards_terms:
+          - "ashrae"
+          - "standard"
+          - "code"
+          - "regulation"
+          - "compliance"
+          - "certification"
+          - "rating"
+          - "energy star"
+          - "leed"
+          - "ahri"
+          - "amca"
+          - "smacna"
+          - "nfpa"
+        
+        # Measurement units
+        measurement_terms:
+          - "temperature"
+          - "humidity"
+          - "pressure"
+          - "flow"
+          - "velocity"
+          - "degree"
+          - "fahrenheit"
+          - "celsius"
+          - "psi"
+          - "pascal"
+          - "cfm"
+          - "cubic feet per minute"
+          - "fpm"
+          - "feet per minute"
+          - "btu"
+          - "british thermal unit"
+          - "watt"
+          - "kilowatt"
+          - "ton"
+      
+      # Define phrase patterns (regular expressions)
+      phrase_patterns:
+        # Temperature patterns
+        temperature_patterns:
+          - "\\d+\\s*degrees\\s*[fc]"
+          - "\\d+\\s*°\\s*[fc]"
+          - "\\d+\\s*deg\\s*[fc]"
+        
+        # Air flow patterns
+        airflow_patterns:
+          - "\\d+\\s*cfm"
+          - "\\d+\\s*cubic\\s*feet\\s*per\\s*minute"
+          - "\\d+\\s*fpm"
+          - "\\d+\\s*feet\\s*per\\s*minute"
+        
+        # Pressure patterns
+        pressure_patterns:
+          - "\\d+\\s*psi"
+          - "\\d+\\s*inches\\s*(of\\s*)?water"
+          - "\\d+\\s*pa"
+          - "\\d+\\s*pascal"
+        
+        # Capacity patterns
+        capacity_patterns:
+          - "\\d+\\s*btu"
+          - "\\d+\\s*ton"
+          - "\\d+\\s*kw"
+          - "\\d+\\s*kilowatt"
+        
+        # Requirement patterns
+        requirement_patterns:
+          - "shall\\s+\\w+"
+          - "must\\s+\\w+"
+          - "required\\s+to\\s+\\w+"
+          - "minimum\\s+\\w+"
+          - "maximum\\s+\\w+"
+        
+        # Table reference patterns
+        table_patterns:
+          - "table\\s+\\d+"
+          - "table\\s+[a-z0-9]+-\\d+"
+          - "figure\\s+\\d+"
+      
+      # Define contextual rules
+      contextual_rules:
+        # HVAC general sections
+        hvac_general_sections:
+          - section_keyword: "hvac"
+            content_keywords: ["system", "equipment", "design"]
+          - section_keyword: "mechanical"
+            content_keywords: ["hvac", "system", "equipment"]
+        
+        # Heating sections
+        heating_sections:
+          - section_keyword: "heating"
+            content_keywords: ["boiler", "furnace", "hot water", "steam"]
+          - section_keyword: "boiler"
+            content_keywords: ["heating", "hot water", "steam"]
+        
+        # Cooling sections
+        cooling_sections:
+          - section_keyword: "cooling"
+            content_keywords: ["chiller", "refrigeration", "condenser"]
+          - section_keyword: "refrigeration"
+            content_keywords: ["cooling", "chiller", "compressor"]
+        
+        # Ventilation sections
+        ventilation_sections:
+          - section_keyword: "ventilation"
+            content_keywords: ["air", "flow", "duct", "fan"]
+          - section_keyword: "air distribution"
+            content_keywords: ["duct", "diffuser", "grille"]
+          - section_keyword: "duct"
+            content_keywords: ["air", "distribution", "ventilation"]
+        
+        # Control sections
+        control_sections:
+          - section_keyword: "control"
+            content_keywords: ["system", "sensor", "thermostat"]
+          - section_keyword: "building management"
+            content_keywords: ["control", "automation", "monitor"]
+        
+        # Design sections
+        design_sections:
+          - section_keyword: "design"
+            content_keywords: ["criteria", "requirement", "calculation"]
+          - section_keyword: "specification"
+            content_keywords: ["requirement", "standard", "compliance"]
+        
+        # Standard sections
+        standard_sections:
+          - section_keyword: "standard"
+            content_keywords: ["compliance", "code", "regulation"]
+          - section_keyword: "code"
+            content_keywords: ["compliance", "standard", "requirement"]
+      
+      # Define document types
+      document_types:
+        # HVAC Manual/Guide
+        HVAC_MANUAL:
+          schema_pattern: "hvac_manual"
+          keyword_groups: ["hvac_general", "heating_terms", "cooling_terms", "ventilation_terms", "equipment_terms"]
+          phrase_patterns: ["temperature_patterns", "airflow_patterns", "pressure_patterns", "capacity_patterns"]
+          contextual_rules: ["hvac_general_sections", "heating_sections", "cooling_sections", "ventilation_sections"]
+          weights:
+            keywords: 0.4
+            phrases: 0.3
+            context: 0.3
+        
+        # HVAC Specification
+        HVAC_SPECIFICATION:
+          schema_pattern: "hvac_specification"
+          keyword_groups: ["hvac_general", "design_terms", "standards_terms", "measurement_terms"]
+          phrase_patterns: ["requirement_patterns", "temperature_patterns", "airflow_patterns", "pressure_patterns"]
+          contextual_rules: ["design_sections", "standard_sections"]
+          weights:
+            keywords: 0.3
+            phrases: 0.4
+            context: 0.3
+        
+        # HVAC Design Guide
+        HVAC_DESIGN_GUIDE:
+          schema_pattern: "hvac_design_guide"
+          keyword_groups: ["design_terms", "hvac_general", "standards_terms"]
+          phrase_patterns: ["requirement_patterns", "table_patterns"]
+          contextual_rules: ["design_sections", "hvac_general_sections"]
+          weights:
+            keywords: 0.4
+            phrases: 0.2
+            context: 0.4
+        
+        # HVAC Standard
+        HVAC_STANDARD:
+          schema_pattern: "hvac_standard"
+          keyword_groups: ["standards_terms", "design_terms", "measurement_terms"]
+          phrase_patterns: ["requirement_patterns", "table_patterns"]
+          contextual_rules: ["standard_sections"]
+          weights:
+            keywords: 0.3
+            phrases: 0.4
+            context: 0.3
 ````
 
 ## File: config/hvac_config.yaml
@@ -3376,6 +3536,30 @@ For more detailed information, see the following documentation:
 ## Examples
 
 See the [config_example.py](../examples/config_example.py) script for examples of using the configuration system.
+
+## Configuration Files Overview
+
+The configuration directory contains several types of configuration files:
+
+### Example Configurations
+These files demonstrate available options and serve as templates:
+- **example_config.yaml**: Comprehensive example of pipeline configuration options
+- **example_classifier_config.yaml**: Example classifier configuration with standard document types
+
+### Domain-Specific Configurations
+These files are specialized for specific domains:
+- **hvac_config.yaml**: Pipeline configuration optimized for HVAC documents
+- **hvac_classifier_config.yaml**: Classifier configuration with HVAC-specific rules and patterns
+
+### Output Format Configurations
+These files control output formatting:
+- **enhanced_markdown_config_v2.json**: Current configuration for enhanced markdown output
+
+### System Configurations
+These files configure system components:
+- **schema_registry.yaml**: Configuration for the schema registry component
+
+For a complete reference of all configuration files, see [CONFIG_FILES.md](CONFIG_FILES.md).
 ````
 
 ## File: config/schema_registry.yaml
@@ -4171,6 +4355,11 @@ class FileProcessor:
         return save_path
 ````
 
+## File: examples/__init__.py
+````python
+"""Examples package for the pipeline module."""
+````
+
 ## File: examples/batch_processing_example.py
 ````python
 """
@@ -4455,6 +4644,214 @@ feature_flags:
 logging:
   level: info
   format: json
+````
+
+## File: examples/debug_hvac_classifier.py
+````python
+"""
+Debug script for HVAC document classifier.
+
+This script helps troubleshoot the keyword analyzer classifier by providing
+detailed debugging information about the classification process.
+"""
+
+import json
+import sys
+from pathlib import Path
+
+# Add parent directory to path to allow relative imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+import yaml
+
+from utils.pipeline.processors.classifiers.keyword_analyzer import (
+    KeywordAnalyzerClassifier,
+)
+from utils.pipeline.utils.progress import PipelineProgress
+
+
+def load_config():
+    """Load configuration from YAML files."""
+    current_dir = Path(__file__).parent.parent
+
+    # Load HVAC-specific configuration
+    hvac_config_path = current_dir / "config" / "hvac_classifier_config.yaml"
+    with open(hvac_config_path, "r") as f:
+        hvac_config = yaml.safe_load(f)
+
+    return hvac_config
+
+
+def load_document_data(json_path):
+    """Load document data from a JSON file."""
+    encodings = ["utf-8", "utf-8-sig", "latin-1"]
+
+    for encoding in encodings:
+        try:
+            with open(json_path, "r", encoding=encoding) as f:
+                return json.load(f)
+        except UnicodeDecodeError:
+            # Try the next encoding
+            continue
+
+    # If all encodings fail, try a fallback approach
+    with open(json_path, "rb") as f:
+        content = f.read()
+        # Replace problematic characters
+        content = content.decode("ascii", errors="replace")
+        return json.loads(content)
+
+
+def debug_classifier(document_data, config, output_file):
+    """Debug the keyword analyzer classifier."""
+    # Create an instance of the KeywordAnalyzerClassifier
+    classifier = KeywordAnalyzerClassifier(config=config)
+
+    # Open the output file
+    with open(output_file, "w") as f:
+        # Extract all text content from the document
+        f.write("\n=== Document Text Analysis ===\n")
+        content_text = classifier._extract_all_text(document_data)
+        f.write(f"Total text length: {len(content_text)} characters\n")
+        f.write(f"First 200 characters: {content_text[:200]}...\n")
+
+        # Analyze keyword frequencies
+        f.write("\n=== Keyword Frequency Analysis ===\n")
+        keyword_frequencies = classifier._analyze_keyword_frequencies(content_text)
+        if keyword_frequencies:
+            f.write("Found keywords in these groups:\n")
+            for group_name, keywords in keyword_frequencies.items():
+                f.write(f"  {group_name}: {len(keywords)} matches\n")
+                for keyword, count in keywords.items():
+                    f.write(f"    - '{keyword}': {count} occurrences\n")
+        else:
+            f.write("No keyword matches found!\n")
+
+        # Match phrase patterns
+        f.write("\n=== Phrase Pattern Analysis ===\n")
+        phrase_matches = classifier._match_phrase_patterns(content_text)
+        if phrase_matches:
+            f.write("Found phrase pattern matches:\n")
+            for pattern_type, matches in phrase_matches.items():
+                f.write(f"  {pattern_type}: {len(matches)} matches\n")
+                for match in matches[:5]:  # Show first 5 matches
+                    f.write(f"    - '{match}'\n")
+                if len(matches) > 5:
+                    f.write(f"    - ... and {len(matches) - 5} more\n")
+        else:
+            f.write("No phrase pattern matches found!\n")
+
+        # Analyze keyword context
+        f.write("\n=== Contextual Analysis ===\n")
+        contextual_matches = classifier._analyze_keyword_context(document_data)
+        if contextual_matches:
+            f.write("Found contextual matches:\n")
+            for context_type, matches in contextual_matches.items():
+                f.write(f"  {context_type}: {len(matches)} matches\n")
+                for match in matches[:5]:  # Show first 5 matches
+                    f.write(f"    - {match}\n")
+                if len(matches) > 5:
+                    f.write(f"    - ... and {len(matches) - 5} more\n")
+        else:
+            f.write("No contextual matches found!\n")
+
+        # Calculate scores for each document type
+        f.write("\n=== Document Type Scores ===\n")
+        type_scores = classifier._calculate_type_scores(
+            keyword_frequencies, phrase_matches, contextual_matches
+        )
+        if type_scores:
+            f.write("Document type scores:\n")
+            for doc_type, (score, features) in type_scores.items():
+                f.write(f"  {doc_type}: {score:.4f}\n")
+                f.write(f"    Features: {', '.join(features)}\n")
+        else:
+            f.write("No document type scores calculated!\n")
+
+        # Get best matching document type
+        f.write("\n=== Best Match ===\n")
+        best_match = classifier._get_best_match(type_scores)
+        f.write(f"Best match: {best_match[0]}\n")
+        f.write(f"Confidence: {best_match[1]:.4f}\n")
+        f.write(f"Features: {best_match[2]}\n")
+
+        # Check if confidence exceeds threshold
+        f.write(f"\nThreshold: {classifier.threshold:.4f}\n")
+        if best_match[1] >= classifier.threshold:
+            f.write(f"RESULT: Document classified as {best_match[0]}\n")
+        else:
+            f.write(
+                "RESULT: Document classified as UNKNOWN (confidence below threshold)\n"
+            )
+
+    # Return the classification result
+    return classifier.classify(document_data, {})
+
+
+def main():
+    """Run the debug script."""
+    progress = PipelineProgress()
+
+    try:
+        # Get the current directory
+        current_dir = Path(__file__).parent.parent
+
+        # Set up paths
+        input_file = current_dir / "data" / "tests" / "pdf" / "sample.pdf"
+        output_dir = current_dir / "data" / "output"
+        json_path = output_dir / f"{input_file.stem}_hvac.json"
+
+        # Display setup info
+        progress.display_success(f"Debugging classifier for: {input_file.name}")
+        progress.display_success(f"Using JSON data from: {json_path}")
+
+        # Load configuration
+        config = load_config()
+        progress.display_success("Configuration loaded")
+
+        # Load document data
+        document_data = load_document_data(json_path)
+        progress.display_success("Document data loaded")
+
+        # Set up debug output file
+        debug_output_file = output_dir / f"{input_file.stem}_debug.txt"
+        progress.display_success(
+            f"Debug output will be written to: {debug_output_file}"
+        )
+
+        # Extract the keyword analyzer configuration
+        keyword_analyzer_config = config.get("classifiers", {}).get(
+            "keyword_analyzer", {}
+        )
+        progress.display_success("Using keyword analyzer configuration")
+
+        # Debug the classifier
+        result = debug_classifier(
+            document_data, keyword_analyzer_config, debug_output_file
+        )
+
+        # Display classification results
+        progress.display_success("\nFinal Classification Results:")
+        progress.display_success(f"Document Type: {result['document_type']}")
+        progress.display_success(f"Confidence: {result.get('confidence', 0):.4f}")
+        progress.display_success(
+            f"Schema Pattern: {result.get('schema_pattern', 'N/A')}"
+        )
+
+        if "key_features" in result and result["key_features"]:
+            progress.display_success("\nKey Features:")
+            for feature in result["key_features"]:
+                progress.display_success(f"- {feature}")
+
+    except Exception as e:
+        progress.display_error(f"Error debugging classifier: {str(e)}")
+        import traceback
+
+        traceback.print_exc()
+
+
+if __name__ == "__main__":
+    main()
 ````
 
 ## File: examples/document_classification_example.py
@@ -5382,6 +5779,386 @@ if __name__ == "__main__":
     main()
 ````
 
+## File: examples/test_hvac_classification.py
+````python
+"""
+Test script for HVAC document classification.
+
+This script demonstrates how to use the keyword analyzer classifier
+to classify HVAC documents, using the same approach as the debug script.
+"""
+
+import sys
+from pathlib import Path
+
+# Add parent directory to path to allow relative imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+import yaml
+
+from utils.pipeline.pipeline import Pipeline
+from utils.pipeline.processors.classifiers.keyword_analyzer import (
+    KeywordAnalyzerClassifier,
+)
+from utils.pipeline.utils.progress import PipelineProgress
+
+
+def load_config():
+    """Load configuration from YAML files."""
+    current_dir = Path(__file__).parent.parent
+
+    # Load base configuration for pipeline processing only
+    config_path = current_dir / "config" / "example_config.yaml"
+    with open(config_path, "r") as f:
+        config = yaml.safe_load(f)
+
+    # Load HVAC-specific configuration
+    hvac_config_path = current_dir / "config" / "hvac_classifier_config.yaml"
+    with open(hvac_config_path, "r") as f:
+        hvac_config = yaml.safe_load(f)
+
+    # Update paths for this specific test
+    config["input_dir"] = str(current_dir / "data" / "tests" / "pdf")
+    config["output_dir"] = str(current_dir / "data" / "output")
+
+    # Disable classification in the pipeline - we'll do it manually
+    config["enable_classification"] = False
+
+    return config, hvac_config
+
+
+def debug_classifier(document_data, config, progress):
+    """Debug the keyword analyzer classifier."""
+    # Create an instance of the KeywordAnalyzerClassifier
+    classifier = KeywordAnalyzerClassifier(config=config)
+
+    progress.display_success("\n=== Document Text Analysis ===")
+    content_text = classifier._extract_all_text(document_data)
+    progress.display_success(f"Total text length: {len(content_text)} characters")
+
+    # Analyze keyword frequencies
+    progress.display_success("\n=== Keyword Frequency Analysis ===")
+    keyword_frequencies = classifier._analyze_keyword_frequencies(content_text)
+    if keyword_frequencies:
+        progress.display_success("Found keywords in these groups:")
+        for group_name, keywords in keyword_frequencies.items():
+            progress.display_success(f"  {group_name}: {len(keywords)} matches")
+    else:
+        progress.display_success("No keyword matches found!")
+
+    # Match phrase patterns
+    progress.display_success("\n=== Phrase Pattern Analysis ===")
+    phrase_matches = classifier._match_phrase_patterns(content_text)
+    if phrase_matches:
+        progress.display_success("Found phrase pattern matches:")
+        for pattern_type, matches in phrase_matches.items():
+            progress.display_success(f"  {pattern_type}: {len(matches)} matches")
+    else:
+        progress.display_success("No phrase pattern matches found!")
+
+    # Analyze keyword context
+    progress.display_success("\n=== Contextual Analysis ===")
+    contextual_matches = classifier._analyze_keyword_context(document_data)
+    if contextual_matches:
+        progress.display_success("Found contextual matches:")
+        for context_type, matches in contextual_matches.items():
+            progress.display_success(f"  {context_type}: {len(matches)} matches")
+    else:
+        progress.display_success("No contextual matches found!")
+
+    # Calculate scores for each document type
+    progress.display_success("\n=== Document Type Scores ===")
+    type_scores = classifier._calculate_type_scores(
+        keyword_frequencies, phrase_matches, contextual_matches
+    )
+    if type_scores:
+        progress.display_success("Document type scores:")
+        for doc_type, (score, features) in type_scores.items():
+            progress.display_success(f"  {doc_type}: {score:.4f}")
+    else:
+        progress.display_success("No document type scores calculated!")
+
+    # Get best matching document type
+    progress.display_success("\n=== Best Match ===")
+    best_match = classifier._get_best_match(type_scores)
+    progress.display_success(f"Best match: {best_match[0]}")
+    progress.display_success(f"Confidence: {best_match[1]:.4f}")
+
+    # Check if confidence exceeds threshold
+    progress.display_success(f"\nThreshold: {classifier.threshold:.4f}")
+    if best_match[1] >= classifier.threshold:
+        progress.display_success(f"RESULT: Document classified as {best_match[0]}")
+    else:
+        progress.display_success(
+            "RESULT: Document classified as UNKNOWN (confidence below threshold)"
+        )
+
+    # Return the classification result
+    return classifier.classify(document_data, {})
+
+
+def main():
+    """Run HVAC document classification test."""
+    progress = PipelineProgress()
+
+    try:
+        # Get the current directory
+        current_dir = Path(__file__).parent.parent
+
+        # Set up paths
+        input_file = current_dir / "data" / "tests" / "pdf" / "sample.pdf"
+        output_dir = current_dir / "data" / "output"
+        json_path = output_dir / f"{input_file.stem}_hvac.json"
+
+        # Create output directory if it doesn't exist
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Display setup info
+        progress.display_success(f"Processing {input_file.name}")
+        progress.display_success(f"Input file path: {input_file}")
+        progress.display_success(f"Output directory: {output_dir}")
+
+        # Load configurations
+        config, hvac_config = load_config()
+        progress.display_success("Configuration loaded")
+
+        # Initialize pipeline for document processing only (no classification)
+        pipeline = Pipeline(config)
+        progress.display_success("Pipeline initialized for document processing")
+
+        # Process the PDF to extract content
+        progress.display_success("Processing document...")
+        document_data = pipeline.run(str(input_file))
+
+        # Save the processed data
+        pipeline.save_output(document_data, str(json_path))
+        progress.display_success(f"Processed document saved to: {json_path}")
+
+        # Now directly use the KeywordAnalyzerClassifier like in the debug script
+        progress.display_success("\nPerforming HVAC classification...")
+
+        # Get the keyword analyzer configuration
+        keyword_analyzer_config = hvac_config.get("classifiers", {}).get(
+            "keyword_analyzer", {}
+        )
+
+        # Debug and classify the document
+        classification_result = debug_classifier(
+            document_data, keyword_analyzer_config, progress
+        )
+
+        # Update the document data with classification results
+        document_data.update(classification_result)
+
+        # Save the updated data with classification results
+        json_path = output_dir / f"{input_file.stem}_hvac.json"
+        with open(json_path, "w") as f:
+            import json
+
+            json.dump(document_data, f, indent=2)
+        progress.display_success(f"Classification results saved to: {json_path}")
+
+        # Display classification results
+        progress.display_success("\nClassification Results:")
+        progress.display_success(
+            f"Document Type: {classification_result['document_type']}"
+        )
+        progress.display_success(
+            f"Confidence: {classification_result.get('confidence', 0):.2f}"
+        )
+        progress.display_success(
+            f"Schema Pattern: {classification_result.get('schema_pattern', 'N/A')}"
+        )
+
+        if "key_features" in classification_result:
+            progress.display_success("\nKey Features:")
+            for feature in classification_result["key_features"]:
+                progress.display_success(f"- {feature}")
+
+        # Display summary
+        progress.display_summary(
+            {
+                "Input File": {"path": str(input_file), "status": "Processed"},
+                "JSON Output": {"path": str(json_path), "status": "Complete"},
+                "Classification": {
+                    "document_type": classification_result.get(
+                        "document_type", "Unknown"
+                    ),
+                    "confidence": f"{classification_result.get('confidence', 0):.2f}",
+                    "schema_pattern": classification_result.get(
+                        "schema_pattern", "N/A"
+                    ),
+                },
+            }
+        )
+
+    except Exception as e:
+        progress.display_error(f"Error processing PDF: {str(e)}")
+        import traceback
+
+        traceback.print_exc()
+
+
+if __name__ == "__main__":
+    main()
+````
+
+## File: examples/test_sample_pdf.py
+````python
+"""
+Test script for processing the sample.pdf file.
+
+This script demonstrates how to process the sample PDF file using the existing
+configuration files and the pipeline's run_pipeline module.
+"""
+
+import sys
+from pathlib import Path
+
+# Add parent directory to path to allow relative imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+
+import yaml
+
+from utils.pipeline.pipeline import Pipeline
+from utils.pipeline.utils.progress import PipelineProgress
+
+
+def load_config():
+    """Load configuration from example config files."""
+    current_dir = Path(__file__).parent.parent
+
+    # Load base configuration
+    config_path = current_dir / "config" / "example_config.yaml"
+    with open(config_path, "r") as f:
+        config = yaml.safe_load(f)
+
+    # Load classifier configuration
+    classifier_config_path = current_dir / "config" / "example_classifier_config.yaml"
+    with open(classifier_config_path, "r") as f:
+        classifier_config = yaml.safe_load(f)
+
+    # Merge configurations
+    config.update(classifier_config)
+
+    # Update paths for this specific test
+    config["input_dir"] = str(current_dir / "data" / "tests" / "pdf")
+    config["output_dir"] = str(current_dir / "data" / "output")
+
+    return config
+
+
+def main():
+    """Run sample PDF test."""
+    progress = PipelineProgress()
+
+    try:
+        # Get the current directory
+        current_dir = Path(__file__).parent.parent
+
+        # Set up paths
+        input_file = current_dir / "data" / "tests" / "pdf" / "sample.pdf"
+        output_dir = current_dir / "data" / "output"
+
+        # Create output directory if it doesn't exist
+        output_dir.mkdir(parents=True, exist_ok=True)
+
+        # Display setup info
+        progress.display_success(f"Processing {input_file.name}")
+        progress.display_success(f"Input file path: {input_file}")
+        progress.display_success(f"Output directory: {output_dir}")
+
+        # Load configuration
+        config = load_config()
+        progress.display_success("Configuration loaded")
+
+        # Initialize pipeline
+        pipeline = Pipeline(config)
+        progress.display_success("Pipeline initialized")
+
+        # Process the PDF
+        progress.display_success("Starting pipeline processing...")
+        result = pipeline.run(str(input_file))
+
+        # Save output in different formats
+        json_path = output_dir / f"{input_file.stem}.json"
+        pipeline.save_output(result, str(json_path))
+        progress.display_success(f"JSON output saved to: {json_path.name}")
+
+        # For Markdown output, we need to use the run_pipeline.py script directly
+        # since there's an issue with the Markdown formatter
+        try:
+            import subprocess
+
+            md_path = output_dir / f"{input_file.stem}.md"
+            cmd = [
+                "python",
+                "-m",
+                "utils.pipeline.run_pipeline",
+                "--file",
+                str(input_file),
+                "--output",
+                str(output_dir),
+                "--formats",
+                "markdown",
+            ]
+
+            subprocess_result = subprocess.run(cmd, capture_output=True, text=True)
+            if subprocess_result.returncode == 0:
+                progress.display_success(f"Markdown output saved to: {md_path.name}")
+            else:
+                progress.display_error(
+                    f"Error saving Markdown output: {subprocess_result.stderr}"
+                )
+        except Exception as e:
+            progress.display_error(f"Error saving Markdown output: {str(e)}")
+            progress.display_error("This is a known issue with the Markdown formatter.")
+            progress.display_error("You can use the pipeline_test.bat script instead.")
+
+        # Display classification results
+        if "document_type" in result:
+            progress.display_success("\nClassification Results:")
+            progress.display_success(f"Document Type: {result['document_type']}")
+            progress.display_success(f"Confidence: {result.get('confidence', 0):.2f}")
+            progress.display_success(
+                f"Schema Pattern: {result.get('schema_pattern', 'N/A')}"
+            )
+
+            if "key_features" in result:
+                progress.display_success("\nKey Features:")
+                for feature in result["key_features"]:
+                    progress.display_success(f"- {feature}")
+
+            if "classifiers" in result:
+                progress.display_success("\nClassifiers Used:")
+                for classifier in result["classifiers"]:
+                    progress.display_success(f"- {classifier}")
+
+        # Display summary
+        progress.display_summary(
+            {
+                "Input File": {"path": str(input_file), "status": "Processed"},
+                "JSON Output": {"path": str(json_path), "status": "Complete"},
+                "Markdown Output": {"path": str(md_path), "status": "Complete"},
+                "Classification": {
+                    "document_type": result.get("document_type", "Unknown"),
+                    "confidence": f"{result.get('confidence', 0):.2f}",
+                    "schema_pattern": result.get("schema_pattern", "N/A"),
+                },
+            }
+        )
+
+    except Exception as e:
+        progress.display_error(f"Error processing PDF: {str(e)}")
+        import traceback
+
+        traceback.print_exc()
+
+
+if __name__ == "__main__":
+    main()
+````
+
 ## File: models/models.py
 ````python
 from typing import Any, Dict, Optional
@@ -6060,6 +6837,328 @@ class PipelineError(Exception):
 ## File: processors/classifiers/__init__.py
 ````python
 """Classifiers package."""
+````
+
+## File: processors/classifiers/keyword_analyzer.py
+````python
+"""
+Keyword/Phrase Analyzer classifier.
+
+This module provides advanced keyword and phrase analysis for document classification.
+"""
+
+import re
+from typing import Any, Dict, List, Optional, Tuple
+
+from utils.pipeline.strategies.classifier_strategy import BaseClassifier
+
+
+class KeywordAnalyzerClassifier(BaseClassifier):
+    """
+    Classifies documents using advanced keyword and phrase analysis.
+
+    This classifier extends beyond simple keyword matching to include:
+    - Frequency analysis
+    - Contextual keyword analysis
+    - Phrase pattern matching
+    - Semantic grouping of related terms
+    """
+
+    def __init__(self, *, config: Optional[Dict[str, Any]] = None):
+        """
+        Initialize the keyword analyzer classifier.
+
+        Args:
+            config: Configuration dictionary for the classifier
+        """
+        super().__init__(config=config)
+
+        # Get keyword analysis configuration
+        self.keyword_config = self.config.get("keyword_analysis", {})
+        self.document_types = self.keyword_config.get("document_types", {})
+        self.threshold = self.keyword_config.get("threshold", 0.5)
+
+        # Configure keyword groups (semantically related terms)
+        self.keyword_groups = self.keyword_config.get("keyword_groups", {})
+
+        # Configure phrase patterns (regular expressions)
+        self.phrase_patterns = self.keyword_config.get("phrase_patterns", {})
+
+        # Configure contextual rules
+        self.contextual_rules = self.keyword_config.get("contextual_rules", {})
+
+    def classify(
+        self, document_data: Dict[str, Any], features: Dict[str, Any]
+    ) -> Dict[str, Any]:
+        """
+        Classify the document using keyword/phrase analysis.
+
+        Args:
+            document_data: Processed document data
+            features: Extracted features from the document
+
+        Returns:
+            Classification result with document type, confidence, and schema pattern
+        """
+        # Extract all text content from the document
+        content_text = self._extract_all_text(document_data)
+
+        # Analyze keyword frequencies
+        keyword_frequencies = self._analyze_keyword_frequencies(content_text)
+
+        # Match phrase patterns
+        phrase_matches = self._match_phrase_patterns(content_text)
+
+        # Analyze keyword context
+        contextual_matches = self._analyze_keyword_context(document_data)
+
+        # Calculate scores for each document type
+        type_scores = self._calculate_type_scores(
+            keyword_frequencies, phrase_matches, contextual_matches
+        )
+
+        # Get best matching document type
+        best_match = self._get_best_match(type_scores)
+
+        if best_match[1] < self.threshold:
+            return {
+                "document_type": "UNKNOWN",
+                "confidence": best_match[1],
+                "schema_pattern": "unknown",
+                "key_features": [],
+            }
+
+        return {
+            "document_type": best_match[0],
+            "confidence": best_match[1],
+            "schema_pattern": self.document_types.get(best_match[0], {}).get(
+                "schema_pattern", "standard"
+            ),
+            "key_features": best_match[2],
+        }
+
+    def get_supported_types(self) -> List[str]:
+        """
+        Get the document types supported by this classifier.
+
+        Returns:
+            List of supported document type identifiers
+        """
+        return list(self.document_types.keys())
+
+    def _extract_all_text(self, document_data: Dict[str, Any]) -> str:
+        """
+        Extract all text content from the document.
+
+        Args:
+            document_data: Processed document data
+
+        Returns:
+            Combined text content from all sections
+        """
+        # Extract metadata text
+        metadata = document_data.get("metadata", {})
+        metadata_text = " ".join([str(v) for v in metadata.values()])
+
+        # Extract content text
+        content_sections = document_data.get("content", [])
+        content_text = " ".join(
+            [
+                section.get("title", "") + " " + section.get("content", "")
+                for section in content_sections
+            ]
+        )
+
+        # Extract table text
+        tables = document_data.get("tables", [])
+        table_text = ""
+        for table in tables:
+            table_text += table.get("title", "") + " "
+            for row in table.get("rows", []):
+                table_text += " ".join([str(cell) for cell in row]) + " "
+
+        # Combine all text
+        return (metadata_text + " " + content_text + " " + table_text).lower()
+
+    def _analyze_keyword_frequencies(self, text: str) -> Dict[str, Dict[str, int]]:
+        """
+        Analyze keyword frequencies in the document.
+
+        Args:
+            text: Document text content
+
+        Returns:
+            Dictionary mapping keyword groups to frequency counts
+        """
+        results = {}
+
+        # Check each keyword group
+        for group_name, keywords in self.keyword_groups.items():
+            group_counts = {}
+            for keyword in keywords:
+                # Count occurrences of the keyword
+                count = len(
+                    re.findall(r"\b" + re.escape(keyword.lower()) + r"\b", text)
+                )
+                if count > 0:
+                    group_counts[keyword] = count
+
+            if group_counts:
+                results[group_name] = group_counts
+
+        return results
+
+    def _match_phrase_patterns(self, text: str) -> Dict[str, List[str]]:
+        """
+        Match phrase patterns in the document.
+
+        Args:
+            text: Document text content
+
+        Returns:
+            Dictionary mapping pattern types to matched phrases
+        """
+        results = {}
+
+        # Check each phrase pattern
+        for pattern_type, patterns in self.phrase_patterns.items():
+            matches = []
+            for pattern in patterns:
+                # Find all matches for the pattern
+                found = re.findall(pattern, text)
+                matches.extend(found)
+
+            if matches:
+                results[pattern_type] = matches
+
+        return results
+
+    def _analyze_keyword_context(
+        self, document_data: Dict[str, Any]
+    ) -> Dict[str, List[str]]:
+        """
+        Analyze keyword context in the document.
+
+        Args:
+            document_data: Processed document data
+
+        Returns:
+            Dictionary mapping context types to matched contexts
+        """
+        results = {}
+
+        # Extract section titles and content
+        sections = document_data.get("content", [])
+
+        # Check each contextual rule
+        for context_type, rules in self.contextual_rules.items():
+            matches = []
+
+            for rule in rules:
+                section_keyword = rule.get("section_keyword", "")
+                content_keywords = rule.get("content_keywords", [])
+
+                # Find sections matching the section keyword
+                for section in sections:
+                    title = section.get("title", "").lower()
+                    content = section.get("content", "").lower()
+
+                    # Check if section title contains the keyword
+                    if section_keyword and section_keyword.lower() in title:
+                        # Check if content contains any of the content keywords
+                        for keyword in content_keywords:
+                            if keyword.lower() in content:
+                                matches.append(f"{title}: {keyword}")
+
+            if matches:
+                results[context_type] = matches
+
+        return results
+
+    def _calculate_type_scores(
+        self,
+        keyword_frequencies: Dict[str, Dict[str, int]],
+        phrase_matches: Dict[str, List[str]],
+        contextual_matches: Dict[str, List[str]],
+    ) -> Dict[str, Tuple[float, List[str]]]:
+        """
+        Calculate scores for each document type.
+
+        Args:
+            keyword_frequencies: Keyword frequency analysis results
+            phrase_matches: Phrase pattern matching results
+            contextual_matches: Contextual analysis results
+
+        Returns:
+            Dictionary mapping document types to (score, features) tuples
+        """
+        type_scores = {}
+
+        # Calculate score for each document type
+        for doc_type, type_config in self.document_types.items():
+            score = 0.0
+            features = []
+
+            # Score based on keyword groups
+            keyword_groups = type_config.get("keyword_groups", [])
+            keyword_weight = type_config.get("weights", {}).get("keywords", 0.4)
+
+            for group in keyword_groups:
+                if group in keyword_frequencies:
+                    group_score = sum(keyword_frequencies[group].values()) / len(
+                        self.keyword_groups[group]
+                    )
+                    score += keyword_weight * group_score
+                    features.append(f"keyword_group_{group}")
+
+            # Score based on phrase patterns
+            phrase_patterns = type_config.get("phrase_patterns", [])
+            phrase_weight = type_config.get("weights", {}).get("phrases", 0.3)
+
+            for pattern in phrase_patterns:
+                if pattern in phrase_matches:
+                    pattern_score = len(phrase_matches[pattern]) / len(
+                        self.phrase_patterns[pattern]
+                    )
+                    score += phrase_weight * pattern_score
+                    features.append(f"phrase_pattern_{pattern}")
+
+            # Score based on contextual rules
+            context_rules = type_config.get("contextual_rules", [])
+            context_weight = type_config.get("weights", {}).get("context", 0.3)
+
+            for rule in context_rules:
+                if rule in contextual_matches:
+                    rule_score = len(contextual_matches[rule]) / len(
+                        self.contextual_rules[rule]
+                    )
+                    score += context_weight * rule_score
+                    features.append(f"context_rule_{rule}")
+
+            # Store the score and features
+            type_scores[doc_type] = (min(score, 1.0), features)
+
+        return type_scores
+
+    def _get_best_match(
+        self, type_scores: Dict[str, Tuple[float, List[str]]]
+    ) -> Tuple[str, float, List[str]]:
+        """
+        Get the best matching document type.
+
+        Args:
+            type_scores: Scores for each document type
+
+        Returns:
+            Tuple of (document_type, confidence, key_features)
+        """
+        if not type_scores:
+            return ("UNKNOWN", 0.0, [])
+
+        # Find the document type with the highest score
+        best_type = max(type_scores.items(), key=lambda x: x[1][0])
+
+        return (best_type[0], best_type[1][0], best_type[1][1])
 ````
 
 ## File: processors/classifiers/ml_based.py
@@ -6820,6 +7919,9 @@ class DocumentClassifier:
     def _register_default_classifiers(self) -> None:
         """Register the default set of classifiers."""
         # Import default classifiers
+        from utils.pipeline.processors.classifiers.keyword_analyzer import (
+            KeywordAnalyzerClassifier,
+        )
         from utils.pipeline.processors.classifiers.ml_based import MLBasedClassifier
         from utils.pipeline.processors.classifiers.pattern_matcher import (
             PatternMatcherClassifier,
@@ -6845,6 +7947,12 @@ class DocumentClassifier:
             "ml_based",
             MLBasedClassifier,
             classifier_configs.get("ml_based", {}),
+        )
+
+        self.factory.register_classifier(
+            "keyword_analyzer",
+            KeywordAnalyzerClassifier,
+            classifier_configs.get("keyword_analyzer", {}),
         )
 
     def classify(self, document_data: Dict[str, Any]) -> Dict[str, Any]:
@@ -10173,68 +11281,6 @@ filterwarnings =
     ignore::DeprecationWarning:pytest_asyncio.*:
 ````
 
-## File: rename_input_files.py
-````python
-"""
-Script to rename input files with a QUOTE_ prefix.
-"""
-
-import shutil
-from pathlib import Path
-
-
-def rename_files_with_prefix(directory, prefix="QUOTE_"):
-    """
-    Rename all files in the directory with the given prefix.
-
-    Args:
-        directory: Directory containing files to rename
-        prefix: Prefix to add to filenames
-    """
-    directory_path = Path(directory)
-
-    if not directory_path.exists() or not directory_path.is_dir():
-        print(f"Directory {directory} does not exist or is not a directory")
-        return
-
-    # Create a backup directory
-    backup_dir = directory_path / "original_files_backup"
-    backup_dir.mkdir(exist_ok=True)
-
-    # Get all files in the directory
-    files = [f for f in directory_path.iterdir() if f.is_file()]
-
-    renamed_count = 0
-    for file_path in files:
-        # Skip files that already have the prefix
-        if file_path.name.startswith(prefix):
-            continue
-
-        # Create backup
-        backup_path = backup_dir / file_path.name
-        shutil.copy2(file_path, backup_path)
-
-        # Create new filename with prefix
-        new_name = f"{prefix}{file_path.name}"
-        new_path = file_path.parent / new_name
-
-        # Rename file
-        try:
-            file_path.rename(new_path)
-            renamed_count += 1
-            print(f"Renamed: {file_path.name} -> {new_name}")
-        except Exception as e:
-            print(f"Error renaming {file_path.name}: {str(e)}")
-
-    print(f"\nRenamed {renamed_count} files")
-    print(f"Original files backed up to {backup_dir}")
-
-
-if __name__ == "__main__":
-    input_dir = Path(__file__).parent / "data" / "input"
-    rename_files_with_prefix(input_dir, "QUOTE_")
-````
-
 ## File: repomix.config.json
 ````json
 {
@@ -11558,6 +12604,426 @@ class SchemaAnalyzer:
   "section_count": 6,
   "table_count": 4,
   "document_path": "test_document.pdf"
+}
+````
+
+## File: schema/data/schemas/unknown_20250315233958.json
+````json
+{
+  "id": "unknown_20250315233958",
+  "document_type": "UNKNOWN",
+  "document_name": "Engineering Standards Manual Ch. 6, D30 HVAC",
+  "recorded_at": "2025-03-15T23:39:58.896889",
+  "metadata": {
+    "title": "Engineering Standards Manual Ch. 6, D30 HVAC",
+    "author": "169689",
+    "subject": "HVAC",
+    "creator": "Acrobat PDFMaker 10.1 for Word",
+    "producer": "Adobe PDF Library 10.0",
+    "creation_date": "D:20140929103132-06'00'",
+    "modification_date": "D:20140929103138-06'00'"
+  },
+  "content_samples": [],
+  "table_samples": [
+    {
+      "headers": [
+        "D30 HVAC, Heating, Cooling, HVAC Distribution, and TAB"
+      ],
+      "column_count": 1,
+      "row_count": 60,
+      "data_sample": [
+        [
+          "D30GEN"
+        ],
+        [
+          "ADDITIONAL GENERAL HVAC REQUIREMENTS .......................................................... 4"
+        ],
+        [
+          "1.0"
+        ],
+        [
+          "Codes and Standards ......................................................................................................................... 4"
+        ],
+        [
+          "2.0"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 1,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "electrical resistance heating requirements."
+      ],
+      "column_count": 1,
+      "row_count": 13,
+      "data_sample": [
+        [
+          "Charles Dupre"
+        ],
+        [
+          "ES-DE"
+        ],
+        [
+          "Larry Goen,"
+        ],
+        [
+          "CENG"
+        ],
+        [
+          "5"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 2,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "presented in the format of the 1993 ASHRAE Fundamentals Handbook, Load and Energy"
+      ],
+      "column_count": 1,
+      "row_count": 4,
+      "data_sample": [
+        [
+          "Calculations Division, Weather Data Chapter 24.",
+          "Refer to ASHRAE Handbook for"
+        ],
+        [
+          "explanation of columns and acronyms.",
+          "[Guidance: 1994-2003 data (both I-P and S-I"
+        ],
+        [
+          "unit) for energy usage predictions (not sizing) is available from the Mechanical POC or"
+        ],
+        [
+          "directly from LANL Calculation 00-0000-CALC-M-0006.]."
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 6,
+      "border_info": {}
+    }
+  ],
+  "section_count": 0,
+  "table_count": 12,
+  "document_path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\tests\\pdf\\sample.pdf"
+}
+````
+
+## File: schema/data/schemas/unknown_20250315234312.json
+````json
+{
+  "id": "unknown_20250315234312",
+  "document_type": "UNKNOWN",
+  "document_name": "Engineering Standards Manual Ch. 6, D30 HVAC",
+  "recorded_at": "2025-03-15T23:43:12.040871",
+  "metadata": {
+    "title": "Engineering Standards Manual Ch. 6, D30 HVAC",
+    "author": "169689",
+    "subject": "HVAC",
+    "creator": "Acrobat PDFMaker 10.1 for Word",
+    "producer": "Adobe PDF Library 10.0",
+    "creation_date": "D:20140929103132-06'00'",
+    "modification_date": "D:20140929103138-06'00'"
+  },
+  "content_samples": [],
+  "table_samples": [
+    {
+      "headers": [
+        "D30 HVAC, Heating, Cooling, HVAC Distribution, and TAB"
+      ],
+      "column_count": 1,
+      "row_count": 60,
+      "data_sample": [
+        [
+          "D30GEN"
+        ],
+        [
+          "ADDITIONAL GENERAL HVAC REQUIREMENTS .......................................................... 4"
+        ],
+        [
+          "1.0"
+        ],
+        [
+          "Codes and Standards ......................................................................................................................... 4"
+        ],
+        [
+          "2.0"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 1,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "electrical resistance heating requirements."
+      ],
+      "column_count": 1,
+      "row_count": 13,
+      "data_sample": [
+        [
+          "Charles Dupre"
+        ],
+        [
+          "ES-DE"
+        ],
+        [
+          "Larry Goen,"
+        ],
+        [
+          "CENG"
+        ],
+        [
+          "5"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 2,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "presented in the format of the 1993 ASHRAE Fundamentals Handbook, Load and Energy"
+      ],
+      "column_count": 1,
+      "row_count": 4,
+      "data_sample": [
+        [
+          "Calculations Division, Weather Data Chapter 24.",
+          "Refer to ASHRAE Handbook for"
+        ],
+        [
+          "explanation of columns and acronyms.",
+          "[Guidance: 1994-2003 data (both I-P and S-I"
+        ],
+        [
+          "unit) for energy usage predictions (not sizing) is available from the Mechanical POC or"
+        ],
+        [
+          "directly from LANL Calculation 00-0000-CALC-M-0006.]."
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 6,
+      "border_info": {}
+    }
+  ],
+  "section_count": 0,
+  "table_count": 12,
+  "document_path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\tests\\pdf\\sample.pdf"
+}
+````
+
+## File: schema/data/schemas/unknown_20250315235539.json
+````json
+{
+  "id": "unknown_20250315235539",
+  "document_type": "UNKNOWN",
+  "document_name": "Engineering Standards Manual Ch. 6, D30 HVAC",
+  "recorded_at": "2025-03-15T23:55:39.152671",
+  "metadata": {
+    "title": "Engineering Standards Manual Ch. 6, D30 HVAC",
+    "author": "169689",
+    "subject": "HVAC",
+    "creator": "Acrobat PDFMaker 10.1 for Word",
+    "producer": "Adobe PDF Library 10.0",
+    "creation_date": "D:20140929103132-06'00'",
+    "modification_date": "D:20140929103138-06'00'"
+  },
+  "content_samples": [],
+  "table_samples": [
+    {
+      "headers": [
+        "D30 HVAC, Heating, Cooling, HVAC Distribution, and TAB"
+      ],
+      "column_count": 1,
+      "row_count": 60,
+      "data_sample": [
+        [
+          "D30GEN"
+        ],
+        [
+          "ADDITIONAL GENERAL HVAC REQUIREMENTS .......................................................... 4"
+        ],
+        [
+          "1.0"
+        ],
+        [
+          "Codes and Standards ......................................................................................................................... 4"
+        ],
+        [
+          "2.0"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 1,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "electrical resistance heating requirements."
+      ],
+      "column_count": 1,
+      "row_count": 13,
+      "data_sample": [
+        [
+          "Charles Dupre"
+        ],
+        [
+          "ES-DE"
+        ],
+        [
+          "Larry Goen,"
+        ],
+        [
+          "CENG"
+        ],
+        [
+          "5"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 2,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "presented in the format of the 1993 ASHRAE Fundamentals Handbook, Load and Energy"
+      ],
+      "column_count": 1,
+      "row_count": 4,
+      "data_sample": [
+        [
+          "Calculations Division, Weather Data Chapter 24.",
+          "Refer to ASHRAE Handbook for"
+        ],
+        [
+          "explanation of columns and acronyms.",
+          "[Guidance: 1994-2003 data (both I-P and S-I"
+        ],
+        [
+          "unit) for energy usage predictions (not sizing) is available from the Mechanical POC or"
+        ],
+        [
+          "directly from LANL Calculation 00-0000-CALC-M-0006.]."
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 6,
+      "border_info": {}
+    }
+  ],
+  "section_count": 0,
+  "table_count": 12,
+  "document_path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\tests\\pdf\\sample.pdf"
+}
+````
+
+## File: schema/data/schemas/unknown_20250316000142.json
+````json
+{
+  "id": "unknown_20250316000142",
+  "document_type": "UNKNOWN",
+  "document_name": "Engineering Standards Manual Ch. 6, D30 HVAC",
+  "recorded_at": "2025-03-16T00:01:42.841647",
+  "metadata": {
+    "title": "Engineering Standards Manual Ch. 6, D30 HVAC",
+    "author": "169689",
+    "subject": "HVAC",
+    "creator": "Acrobat PDFMaker 10.1 for Word",
+    "producer": "Adobe PDF Library 10.0",
+    "creation_date": "D:20140929103132-06'00'",
+    "modification_date": "D:20140929103138-06'00'"
+  },
+  "content_samples": [],
+  "table_samples": [
+    {
+      "headers": [
+        "D30 HVAC, Heating, Cooling, HVAC Distribution, and TAB"
+      ],
+      "column_count": 1,
+      "row_count": 60,
+      "data_sample": [
+        [
+          "D30GEN"
+        ],
+        [
+          "ADDITIONAL GENERAL HVAC REQUIREMENTS .......................................................... 4"
+        ],
+        [
+          "1.0"
+        ],
+        [
+          "Codes and Standards ......................................................................................................................... 4"
+        ],
+        [
+          "2.0"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 1,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "electrical resistance heating requirements."
+      ],
+      "column_count": 1,
+      "row_count": 13,
+      "data_sample": [
+        [
+          "Charles Dupre"
+        ],
+        [
+          "ES-DE"
+        ],
+        [
+          "Larry Goen,"
+        ],
+        [
+          "CENG"
+        ],
+        [
+          "5"
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 2,
+      "border_info": {}
+    },
+    {
+      "headers": [
+        "presented in the format of the 1993 ASHRAE Fundamentals Handbook, Load and Energy"
+      ],
+      "column_count": 1,
+      "row_count": 4,
+      "data_sample": [
+        [
+          "Calculations Division, Weather Data Chapter 24.",
+          "Refer to ASHRAE Handbook for"
+        ],
+        [
+          "explanation of columns and acronyms.",
+          "[Guidance: 1994-2003 data (both I-P and S-I"
+        ],
+        [
+          "unit) for energy usage predictions (not sizing) is available from the Mechanical POC or"
+        ],
+        [
+          "directly from LANL Calculation 00-0000-CALC-M-0006.]."
+        ]
+      ],
+      "detection_method": "labeled_table",
+      "page": 6,
+      "border_info": {}
+    }
+  ],
+  "section_count": 0,
+  "table_count": 12,
+  "document_path": "C:\\Repos\\FCA-dashboard3\\my-full-stack-fastapi-template\\utils\\pipeline\\data\\tests\\pdf\\sample.pdf"
 }
 ````
 
@@ -13969,7 +15435,171 @@ class SchemaVisualizer:
         return max_depth
 ````
 
-## File: setup_pytest_env.py
+## File: scripts/pipeline_test.bat
+````
+@echo off
+REM pipeline_test.bat
+REM Script to execute the document pipeline test plan
+
+REM Set variables
+set PIPELINE_DIR=C:\Repos\FCA-dashboard3\my-full-stack-fastapi-template\utils\pipeline
+set SAMPLE_PDF=C:\Repos\FCA-dashboard3\my-full-stack-fastapi-template\utils\pipeline\data\tests\pdf\sample.pdf
+set OUTPUT_DIR=C:\Repos\FCA-dashboard3\my-full-stack-fastapi-template\utils\pipeline\data\output
+set REPORT_PATH=%OUTPUT_DIR%\report.json
+
+REM Create output directory if it doesn't exist
+if not exist %OUTPUT_DIR% (
+    mkdir %OUTPUT_DIR%
+    echo Created output directory: %OUTPUT_DIR%
+)
+
+REM Verify sample PDF exists
+if not exist %SAMPLE_PDF% (
+    echo Error: Sample PDF not found at %SAMPLE_PDF%
+    exit /b 1
+)
+
+REM Navigate to pipeline directory
+cd %PIPELINE_DIR%
+
+REM Check Python version
+python --version
+
+REM Run the pipeline with basic settings
+echo Running pipeline with basic settings...
+python -m utils.pipeline.run_pipeline --file %SAMPLE_PDF% --output %OUTPUT_DIR%
+
+REM Run with multiple output formats
+echo Running pipeline with multiple output formats...
+python -m utils.pipeline.run_pipeline --file %SAMPLE_PDF% --output %OUTPUT_DIR% --formats json,markdown
+
+REM Run with processing report
+echo Running pipeline with processing report...
+python -m utils.pipeline.run_pipeline --file %SAMPLE_PDF% --output %OUTPUT_DIR% --report %REPORT_PATH%
+
+REM Verify output files
+echo Verifying output files...
+dir %OUTPUT_DIR%
+
+echo Test execution completed.
+````
+
+## File: scripts/pipeline_test.ps1
+````powershell
+# pipeline_test.ps1
+# Script to execute the document pipeline test plan
+
+# Set variables
+$PIPELINE_DIR = "C:\Repos\FCA-dashboard3\my-full-stack-fastapi-template\utils\pipeline"
+$SAMPLE_PDF = "C:\Repos\FCA-dashboard3\my-full-stack-fastapi-template\utils\pipeline\data\tests\pdf\sample.pdf"
+$OUTPUT_DIR = "C:\Repos\FCA-dashboard3\my-full-stack-fastapi-template\utils\pipeline\data\output"
+$REPORT_PATH = "$OUTPUT_DIR\report.json"
+
+# Create output directory if it doesn't exist
+if (-not (Test-Path $OUTPUT_DIR)) {
+    New-Item -ItemType Directory -Path $OUTPUT_DIR
+    Write-Host "Created output directory: $OUTPUT_DIR"
+}
+
+# Verify sample PDF exists
+if (-not (Test-Path $SAMPLE_PDF)) {
+    Write-Host "Error: Sample PDF not found at $SAMPLE_PDF" -ForegroundColor Red
+    exit 1
+}
+
+# Navigate to pipeline directory
+Set-Location $PIPELINE_DIR
+
+# Check Python version
+$pythonVersion = python --version
+Write-Host "Using $pythonVersion"
+
+# Run the pipeline with basic settings
+Write-Host "Running pipeline with basic settings..." -ForegroundColor Green
+python -m utils.pipeline.run_pipeline --file $SAMPLE_PDF --output $OUTPUT_DIR
+
+# Run with multiple output formats
+Write-Host "Running pipeline with multiple output formats..." -ForegroundColor Green
+python -m utils.pipeline.run_pipeline --file $SAMPLE_PDF --output $OUTPUT_DIR --formats json,markdown
+
+# Run with processing report
+Write-Host "Running pipeline with processing report..." -ForegroundColor Green
+python -m utils.pipeline.run_pipeline --file $SAMPLE_PDF --output $OUTPUT_DIR --report $REPORT_PATH
+
+# Verify output files
+Write-Host "Verifying output files..." -ForegroundColor Green
+$outputFiles = Get-ChildItem $OUTPUT_DIR
+Write-Host "Found $($outputFiles.Count) files in output directory:"
+foreach ($file in $outputFiles) {
+    Write-Host "- $($file.Name)"
+}
+
+Write-Host "Test execution completed." -ForegroundColor Green
+````
+
+## File: scripts/rename_input_files.py
+````python
+"""
+Script to rename input files with a QUOTE_ prefix.
+"""
+
+import shutil
+from pathlib import Path
+
+
+def rename_files_with_prefix(directory, prefix="QUOTE_"):
+    """
+    Rename all files in the directory with the given prefix.
+
+    Args:
+        directory: Directory containing files to rename
+        prefix: Prefix to add to filenames
+    """
+    directory_path = Path(directory)
+
+    if not directory_path.exists() or not directory_path.is_dir():
+        print(f"Directory {directory} does not exist or is not a directory")
+        return
+
+    # Create a backup directory
+    backup_dir = directory_path / "original_files_backup"
+    backup_dir.mkdir(exist_ok=True)
+
+    # Get all files in the directory
+    files = [f for f in directory_path.iterdir() if f.is_file()]
+
+    renamed_count = 0
+    for file_path in files:
+        # Skip files that already have the prefix
+        if file_path.name.startswith(prefix):
+            continue
+
+        # Create backup
+        backup_path = backup_dir / file_path.name
+        shutil.copy2(file_path, backup_path)
+
+        # Create new filename with prefix
+        new_name = f"{prefix}{file_path.name}"
+        new_path = file_path.parent / new_name
+
+        # Rename file
+        try:
+            file_path.rename(new_path)
+            renamed_count += 1
+            print(f"Renamed: {file_path.name} -> {new_name}")
+        except Exception as e:
+            print(f"Error renaming {file_path.name}: {str(e)}")
+
+    print(f"\nRenamed {renamed_count} files")
+    print(f"Original files backed up to {backup_dir}")
+
+
+if __name__ == "__main__":
+    input_dir = Path(__file__).parent / "data" / "input"
+    rename_files_with_prefix(input_dir, "QUOTE_")
+````
+
+## File: scripts/setup_pytest_env.py
 ````python
 #!/usr/bin/env python
 """
@@ -14057,6 +15687,154 @@ def setup_env():
 if __name__ == "__main__":
     if not setup_env():
         sys.exit(1)
+````
+
+## File: scripts/visualize_schema.py
+````python
+#!/usr/bin/env python3
+"""
+Script to visualize a specific schema.
+"""
+
+import os
+import sys
+from pathlib import Path
+
+# Add parent directory to path to allow imports
+sys.path.insert(0, str(Path(__file__).parent.parent.parent))
+
+from utils.pipeline.schema.extended_registry import ExtendedSchemaRegistry
+from utils.pipeline.utils.progress import PipelineProgress
+
+
+def main():
+    """Main entry point for schema visualization."""
+    progress = PipelineProgress()
+
+    # Check arguments
+    if len(sys.argv) < 2:
+        print_usage()
+        return
+
+    # Parse command
+    command = sys.argv[1]
+
+    if command == "list":
+        # List available schemas
+        list_schemas(progress)
+        return
+    elif command == "help":
+        print_usage()
+        return
+    elif command in ["clusters", "features", "structure", "tables"]:
+        # Visualization command
+        visualization_type = command
+
+        # Check if schema ID is provided
+        if len(sys.argv) < 3 and visualization_type not in ["clusters", "features"]:
+            print(
+                f"Error: Schema ID is required for {visualization_type} visualization"
+            )
+            print_usage()
+            return
+
+        # Get schema ID (optional for clusters and features)
+        schema_id = sys.argv[2] if len(sys.argv) >= 3 else "all"
+
+        # Generate visualization
+        generate_visualization(visualization_type, schema_id, progress)
+    else:
+        print(f"Unknown command: {command}")
+        print_usage()
+
+
+def print_usage():
+    """Print usage information."""
+    print("Usage:")
+    print(
+        "  python visualize_schema.py list                     - List available schemas"
+    )
+    print(
+        "  python visualize_schema.py clusters [schema_id]     - Generate cluster visualization"
+    )
+    print(
+        "  python visualize_schema.py features [schema_id]     - Generate feature visualization"
+    )
+    print(
+        "  python visualize_schema.py structure <schema_id>    - Generate structure visualization"
+    )
+    print(
+        "  python visualize_schema.py tables <schema_id>       - Generate table visualization"
+    )
+    print(
+        "  python visualize_schema.py help                     - Show this help message"
+    )
+
+
+def list_schemas(progress):
+    """List available schemas."""
+    # Initialize registry
+    registry = ExtendedSchemaRegistry()
+
+    # Get all schemas
+    schemas = registry.list_schemas()
+
+    if not schemas:
+        progress.display_error("No schemas found in registry")
+        return
+
+    # Display schemas
+    progress.display_success(f"Found {len(schemas)} schemas:")
+
+    # Group schemas by document type
+    schemas_by_type = {}
+    for schema in schemas:
+        doc_type = schema.get("document_type", "UNKNOWN")
+        if doc_type not in schemas_by_type:
+            schemas_by_type[doc_type] = []
+        schemas_by_type[doc_type].append(schema)
+
+    # Display schemas by type
+    for doc_type, type_schemas in schemas_by_type.items():
+        progress.display_success(f"\n{doc_type} ({len(type_schemas)}):")
+        for schema in type_schemas:
+            schema_id = schema.get("id")
+            recorded_at = schema.get("recorded_at", "Unknown")
+            document_name = schema.get("document_name", "")
+            progress.display_success(f"  - {schema_id} ({recorded_at}) {document_name}")
+
+
+def generate_visualization(visualization_type, schema_id, progress):
+    """Generate visualization for schema."""
+    # Create visualizations directory
+    viz_dir = os.path.join("utils", "pipeline", "schema", "data", "visualizations")
+    os.makedirs(viz_dir, exist_ok=True)
+
+    # Initialize registry
+    registry = ExtendedSchemaRegistry()
+
+    # Prepare schema IDs
+    schema_ids = None
+    if schema_id != "all":
+        schema_ids = [schema_id]
+
+    # Generate visualization
+    progress.display_success(
+        f"Generating {visualization_type} visualization for schema {schema_id}..."
+    )
+    viz_path = registry.visualize(visualization_type, schema_ids, viz_dir)
+
+    # Handle multiple visualization paths
+    if isinstance(viz_path, list):
+        progress.display_success(f"Generated {len(viz_path)} visualizations:")
+        for path in viz_path:
+            progress.display_success(f"  - {path}")
+    else:
+        progress.display_success(f"Visualization saved to: {viz_path}")
+
+
+if __name__ == "__main__":
+    main()
 ````
 
 ## File: strategies/__init__.py
@@ -15489,152 +17267,4 @@ class MarkdownVerifier(BaseVerifier):
                     # Check consistent column count
                     if line.count("|") - 1 != header_count:
                         errors.append(f"Inconsistent table column count: {line}")
-````
-
-## File: visualize_schema.py
-````python
-#!/usr/bin/env python3
-"""
-Script to visualize a specific schema.
-"""
-
-import os
-import sys
-from pathlib import Path
-
-# Add parent directory to path to allow imports
-sys.path.insert(0, str(Path(__file__).parent.parent.parent))
-
-from utils.pipeline.schema.extended_registry import ExtendedSchemaRegistry
-from utils.pipeline.utils.progress import PipelineProgress
-
-
-def main():
-    """Main entry point for schema visualization."""
-    progress = PipelineProgress()
-
-    # Check arguments
-    if len(sys.argv) < 2:
-        print_usage()
-        return
-
-    # Parse command
-    command = sys.argv[1]
-
-    if command == "list":
-        # List available schemas
-        list_schemas(progress)
-        return
-    elif command == "help":
-        print_usage()
-        return
-    elif command in ["clusters", "features", "structure", "tables"]:
-        # Visualization command
-        visualization_type = command
-
-        # Check if schema ID is provided
-        if len(sys.argv) < 3 and visualization_type not in ["clusters", "features"]:
-            print(
-                f"Error: Schema ID is required for {visualization_type} visualization"
-            )
-            print_usage()
-            return
-
-        # Get schema ID (optional for clusters and features)
-        schema_id = sys.argv[2] if len(sys.argv) >= 3 else "all"
-
-        # Generate visualization
-        generate_visualization(visualization_type, schema_id, progress)
-    else:
-        print(f"Unknown command: {command}")
-        print_usage()
-
-
-def print_usage():
-    """Print usage information."""
-    print("Usage:")
-    print(
-        "  python visualize_schema.py list                     - List available schemas"
-    )
-    print(
-        "  python visualize_schema.py clusters [schema_id]     - Generate cluster visualization"
-    )
-    print(
-        "  python visualize_schema.py features [schema_id]     - Generate feature visualization"
-    )
-    print(
-        "  python visualize_schema.py structure <schema_id>    - Generate structure visualization"
-    )
-    print(
-        "  python visualize_schema.py tables <schema_id>       - Generate table visualization"
-    )
-    print(
-        "  python visualize_schema.py help                     - Show this help message"
-    )
-
-
-def list_schemas(progress):
-    """List available schemas."""
-    # Initialize registry
-    registry = ExtendedSchemaRegistry()
-
-    # Get all schemas
-    schemas = registry.list_schemas()
-
-    if not schemas:
-        progress.display_error("No schemas found in registry")
-        return
-
-    # Display schemas
-    progress.display_success(f"Found {len(schemas)} schemas:")
-
-    # Group schemas by document type
-    schemas_by_type = {}
-    for schema in schemas:
-        doc_type = schema.get("document_type", "UNKNOWN")
-        if doc_type not in schemas_by_type:
-            schemas_by_type[doc_type] = []
-        schemas_by_type[doc_type].append(schema)
-
-    # Display schemas by type
-    for doc_type, type_schemas in schemas_by_type.items():
-        progress.display_success(f"\n{doc_type} ({len(type_schemas)}):")
-        for schema in type_schemas:
-            schema_id = schema.get("id")
-            recorded_at = schema.get("recorded_at", "Unknown")
-            document_name = schema.get("document_name", "")
-            progress.display_success(f"  - {schema_id} ({recorded_at}) {document_name}")
-
-
-def generate_visualization(visualization_type, schema_id, progress):
-    """Generate visualization for schema."""
-    # Create visualizations directory
-    viz_dir = os.path.join("utils", "pipeline", "schema", "data", "visualizations")
-    os.makedirs(viz_dir, exist_ok=True)
-
-    # Initialize registry
-    registry = ExtendedSchemaRegistry()
-
-    # Prepare schema IDs
-    schema_ids = None
-    if schema_id != "all":
-        schema_ids = [schema_id]
-
-    # Generate visualization
-    progress.display_success(
-        f"Generating {visualization_type} visualization for schema {schema_id}..."
-    )
-    viz_path = registry.visualize(visualization_type, schema_ids, viz_dir)
-
-    # Handle multiple visualization paths
-    if isinstance(viz_path, list):
-        progress.display_success(f"Generated {len(viz_path)} visualizations:")
-        for path in viz_path:
-            progress.display_success(f"  - {path}")
-    else:
-        progress.display_success(f"Visualization saved to: {viz_path}")
-
-
-if __name__ == "__main__":
-    main()
 ````

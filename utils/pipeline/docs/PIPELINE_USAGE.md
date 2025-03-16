@@ -130,6 +130,43 @@ Use the configuration file:
 python -m utils.pipeline.run_pipeline --input path/to/input_dir --output path/to/output_dir --config pipeline_config.yaml
 ```
 
+### Configuration Files
+
+The pipeline includes several pre-defined configuration files:
+
+#### Example Configurations
+- **example_config.yaml**: Use this as a starting point for custom configurations
+  ```bash
+  python -m utils.pipeline.run_pipeline --config utils/pipeline/config/example_config.yaml
+  ```
+
+#### Domain-Specific Configurations
+- **hvac_config.yaml**: Optimized for HVAC document processing
+  ```bash
+  python -m utils.pipeline.run_pipeline --config utils/pipeline/config/hvac_config.yaml
+  ```
+
+#### Output Format Configurations
+To use enhanced markdown formatting:
+```bash
+python -m utils.pipeline.run_pipeline --config utils/pipeline/config/enhanced_markdown_config_v2.json
+```
+
+#### Creating Custom Configurations
+You can create custom configurations by copying and modifying the example files:
+```bash
+# Copy example configuration
+cp utils/pipeline/config/example_config.yaml my_custom_config.yaml
+
+# Edit the configuration
+# ...
+
+# Use custom configuration
+python -m utils.pipeline.run_pipeline --config my_custom_config.yaml
+```
+
+For a complete reference of all configuration files, see the [Configuration Files Reference](utils/pipeline/config/CONFIG_FILES.md).
+
 ### Environment Variables
 
 You can also configure the pipeline using environment variables:
