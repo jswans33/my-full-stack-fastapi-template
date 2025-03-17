@@ -1,15 +1,40 @@
 """Manual test script for configuration system."""
 
 import os
+import sys
 import tempfile
 import time
 
 import yaml
 
+# Add the project root to the Python path for imports
+project_root = os.path.dirname(
+    os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+)
+sys.path.insert(0, project_root)
+
+# Now we can import from utils module
 from utils.pipeline.config import (
-    config_manager,
+    ConfigurationManager,
+    EnvironmentConfigurationProvider,
+    FileConfigurationProvider,
+    PipelineConfig,
     get_pipeline_config,
 )
+
+# Create a default configuration manager
+config_manager = ConfigurationManager()
+
+# Register file provider (highest priority)
+file_provider = FileConfigurationProvider(base_dirs=["utils/pipeline/config", "config"])
+config_manager.register_provider(file_provider, priority=100)
+
+# Register environment provider (lower priority)
+env_provider = EnvironmentConfigurationProvider(prefix="PIPELINE_")
+config_manager.register_provider(env_provider, priority=50)
+
+# Register models
+config_manager.register_model("pipeline", PipelineConfig)
 
 
 def main():
