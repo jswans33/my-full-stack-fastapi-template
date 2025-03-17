@@ -1,0 +1,112 @@
+{
+  "version": "2.0.0",
+  "metadata": {
+    "description": "Enhanced markdown configuration for document formatting",
+    "last_updated": "2025-03-16",
+    "deprecated_fields": ["legacy_format", "old_style_headers"]
+  },
+
+  "formatting": {
+    "headers": {
+      "style": "atx",
+      "auto_increment": true,
+      "max_level": 6,
+      "spacing": {
+        "before": 2,
+        "after": 1
+      }
+    },
+
+    "lists": {
+      "bullet_style": "-",
+      "ordered_style": "1.",
+      "indent_spaces": 2,
+      "max_depth": 4
+    },
+
+    "tables": {
+      "alignment": "left",
+      "padding": 1,
+      "header_style": "bold",
+      "column_wrapping": true,
+      "max_width": 120
+    },
+
+    "code_blocks": {
+      "style": "fenced",
+      "syntax_highlighting": true,
+      "line_numbers": true,
+      "indent_size": 4
+    }
+  },
+
+  "content": {
+    "sections": {
+      "auto_toc": true,
+      "toc_depth": 3,
+      "section_numbering": true,
+      "collapse_empty": false
+    },
+
+    "links": {
+      "style": "reference",
+      "validate": true,
+      "external_marker": "↗",
+      "auto_reference": true
+    },
+
+    "images": {
+      "max_width": 800,
+      "lazy_loading": true,
+      "alt_text_required": true,
+      "caption_style": "figure"
+    }
+  },
+
+  "extensions": {
+    "enabled": [
+      "tables",
+      "fenced_code",
+      "footnotes",
+      "definition_lists",
+      "task_lists"
+    ],
+    "custom_blocks": {
+      "note": {
+        "prefix": "Note:",
+        "style": "blockquote"
+      },
+      "warning": {
+        "prefix": "⚠️ Warning:",
+        "style": "callout"
+      },
+      "info": {
+        "prefix": "ℹ️ Info:",
+        "style": "callout"
+      }
+    }
+  },
+
+  "output": {
+    "file_extension": ".md",
+    "encoding": "utf-8",
+    "line_endings": "lf",
+    "wrap_width": 80,
+    "front_matter": {
+      "enabled": true,
+      "format": "yaml",
+      "required_fields": ["title", "date", "author"]
+    }
+  },
+
+  "validation": {
+    "enabled": true,
+    "rules": {
+      "broken_links": "error",
+      "missing_images": "warning",
+      "heading_hierarchy": "warning",
+      "duplicate_headings": "error"
+    },
+    "ignore_patterns": ["^_draft", "^.temp"]
+  }
+}

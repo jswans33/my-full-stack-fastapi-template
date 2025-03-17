@@ -1,0 +1,151 @@
+# Reference Document Classifier Configuration Template
+# ================================================
+# This is a reference template that demonstrates all available classifier configuration options.
+# DO NOT modify this file directly. Instead, copy it and customize for your needs.
+# Version: 1.0.0
+
+# Basic classifier settings
+enabled: true
+default_threshold: 0.3
+method: "rule_based"  # Supported: rule_based, pattern_matcher, ml_based
+
+# Document type rules
+# Each rule defines how to identify a specific type of document
+rules:
+  # Example: Generic Document Types
+  SPECIFICATION:
+    title_keywords:
+      - "specification"
+      - "spec"
+      - "technical"
+      - "requirements"
+      - "design"
+    
+    content_keywords:
+      - "dimensions"
+      - "capacity"
+      - "performance"
+      - "material"
+      - "compliance"
+      - "standard"
+      - "requirements"
+      - "specifications"
+    
+    patterns:
+      - "\\d+(?:\\.\\d+)?\\s*(?:mm|cm|m|kg|lb)"  # Measurements
+      - "(?:±|\\+/-|\\+/-)\\s*\\d+(?:\\.\\d+)?"   # Tolerances
+      - "(?:°|deg)\\s*[CF]"                       # Temperatures
+      - "[A-Z]+\\s*\\d+(?:-\\d+)?"               # Standards (e.g., ISO 9001)
+    
+    weights:
+      title_match: 0.4
+      content_match: 0.3
+      pattern_match: 0.3
+    
+    threshold: 0.4
+    schema_pattern: "detailed_specification"
+
+  INVOICE:
+    title_keywords:
+      - "invoice"
+      - "bill"
+      - "receipt"
+      - "statement"
+    
+    content_keywords:
+      - "invoice #"
+      - "invoice no"
+      - "bill to"
+      - "payment"
+      - "due date"
+      - "subtotal"
+      - "total"
+      - "tax"
+    
+    patterns:
+      - "\\$\\s*\\d+(?:\\.\\d{2})?"              # Currency
+      - "(?:Invoice|Bill)\\s*#\\s*\\d+"          # Invoice numbers
+      - "\\d{1,2}/\\d{1,2}/\\d{2,4}"            # Dates
+    
+    weights:
+      title_match: 0.3
+      content_match: 0.4
+      pattern_match: 0.3
+    
+    threshold: 0.5
+    schema_pattern: "detailed_invoice"
+
+  PROPOSAL:
+    title_keywords:
+      - "proposal"
+      - "quote"
+      - "quotation"
+      - "bid"
+      - "tender"
+    
+    content_keywords:
+      - "proposed"
+      - "scope of work"
+      - "timeline"
+      - "deliverables"
+      - "pricing"
+      - "terms"
+      - "validity"
+    
+    patterns:
+      - "valid for \\d+ days"
+      - "\\$\\s*\\d+(?:\\.\\d{2})?"
+      - "\\d{1,2}/\\d{1,2}/\\d{2,4}"
+    
+    weights:
+      title_match: 0.4
+      content_match: 0.4
+      pattern_match: 0.2
+    
+    threshold: 0.4
+    schema_pattern: "detailed_proposal"
+
+# Filename pattern matching
+# Regular expressions to identify document types from filenames
+filename_patterns:
+  SPECIFICATION: "(?i)spec|specification|requirements"
+  INVOICE: "(?i)invoice|bill|receipt"
+  PROPOSAL: "(?i)proposal|quote|bid|tender"
+
+# Advanced classification settings
+advanced:
+  # Text preprocessing options
+  preprocessing:
+    remove_headers_footers: true
+    clean_whitespace: true
+    normalize_text: true
+    extract_tables: true
+  
+  # Feature extraction settings
+  features:
+    use_metadata: true
+    use_structure: true
+    use_content: true
+    use_tables: true
+  
+  # Machine learning settings (when method is "ml_based")
+  ml_settings:
+    model_path: "models/classifier"
+    min_confidence: 0.7
+    feature_importance_threshold: 0.1
+    update_model: false
+  
+  # Pattern matching settings
+  pattern_matching:
+    case_sensitive: false
+    whole_word: false
+    fuzzy_match: true
+    fuzzy_threshold: 0.8
+
+# Reporting configuration
+reporting:
+  log_level: "INFO"
+  save_results: true
+  output_format: "json"
+  include_confidence_scores: true
+  include_matched_patterns: true

@@ -1,0 +1,103 @@
+# Reference Pipeline Configuration Template
+# =============================================
+# This is a reference template that demonstrates all available configuration options.
+# DO NOT modify this file directly. Instead, copy it and customize for your needs.
+# Version: 1.0.0
+
+# Basic settings
+input_dir: "data/input"
+output_dir: "data/output"
+output_format: "yaml"  # Supported: yaml, json
+log_level: "INFO"      # Supported: DEBUG, INFO, WARNING, ERROR, CRITICAL
+validation_level: "basic"  # Supported: basic, strict, custom
+
+# Document processing strategies
+strategies:
+  pdf:
+    analyzer: "utils.pipeline.analyzer.pdf.PDFAnalyzer"
+    cleaner: "utils.pipeline.cleaner.pdf.PDFCleaner"
+    extractor: "utils.pipeline.processors.pdf_extractor.PDFExtractor"
+    validator: "utils.pipeline.processors.pdf_validator.PDFValidator"
+    formatter: "utils.pipeline.formatters.pdf.PDFFormatter"
+  
+  excel:
+    analyzer: "utils.pipeline.analyzer.excel.ExcelAnalyzer"
+    cleaner: "utils.pipeline.cleaner.excel.ExcelCleaner"
+    extractor: "utils.pipeline.processors.excel_extractor.ExcelExtractor"
+    validator: "utils.pipeline.processors.excel_validator.ExcelValidator"
+    formatter: "utils.pipeline.formatters.excel.ExcelFormatter"
+  
+  word:
+    analyzer: "utils.pipeline.analyzer.word.WordAnalyzer"
+    cleaner: "utils.pipeline.cleaner.word.WordCleaner"
+    extractor: "utils.pipeline.processors.word_extractor.WordExtractor"
+    validator: "utils.pipeline.processors.word_validator.WordValidator"
+    formatter: "utils.pipeline.formatters.word.WordFormatter"
+  
+  text: "strategies.text"  # Simple strategy reference
+
+# Document classification configuration
+classification:
+  enabled: true
+  default_threshold: 0.3
+  method: "rule_based"  # Supported: rule_based, pattern_matcher, ml_based
+  
+  # Example document type rules
+  rules:
+    SPECIFICATION:
+      title_keywords: 
+        - "specification"
+        - "spec"
+        - "technical"
+        - "requirements"
+      
+      content_keywords:
+        - "dimensions"
+        - "capacity"
+        - "performance"
+        - "material"
+        - "compliance"
+        - "standard"
+      
+      patterns:
+        - "mm"
+        - "cm"
+        - "m"
+        - "kg"
+        - "lb"
+        - "°c"
+        - "°f"
+      
+      weights:
+        title_match: 0.4
+        content_match: 0.3
+        pattern_match: 0.3
+      
+      threshold: 0.4
+      schema_pattern: "detailed_specification"
+  
+  # Example filename patterns
+  filename_patterns:
+    SPECIFICATION: "(?i)spec|specification"
+
+# File processing configuration
+file_processing:
+  input:
+    patterns: ["*.pdf", "*.xlsx", "*.docx", "*.txt"]
+    recursive: true
+    exclude_patterns: ["*_temp*", "*_backup*"]
+  
+  output:
+    formats: ["json", "yaml", "markdown"]
+    structure: "flat"  # Supported: flat, hierarchical
+    naming:
+      template: "{original_name}"
+      preserve_extension: false
+      timestamp: true
+    overwrite: false
+  
+  reporting:
+    summary: true
+    detailed: true
+    format: "json"
+    save_path: "processing_report.json"
