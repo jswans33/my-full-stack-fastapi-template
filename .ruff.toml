@@ -1,6 +1,7 @@
 # Workspace-specific Ruff configuration
 # This file can be copied to project subdirectories to override global settings
 
+[tool.ruff]
 # Target Python version
 target-version = "py310"
 
@@ -19,15 +20,14 @@ exclude = [
 ]
 
 # Formatter configuration
-[formatter]
+[tool.ruff.format]
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
 docstring-code-format = true
 
 # Linter configuration
-[lint]
-# Enable specific rule sets (can be customized per project)
+[tool.ruff.lint]
 select = [
     "E",    # pycodestyle errors
     "W",    # pycodestyle warnings
@@ -50,7 +50,6 @@ select = [
     "RUF",  # ruff-specific rules
 ]
 
-# Rules to ignore (can be customized per project)
 ignore = [
     "E501",  # line too long (handled by formatter)
     "B008",  # do not perform function calls in argument defaults
@@ -65,20 +64,20 @@ fixable = ["ALL"]
 unfixable = []
 
 # Maximum McCabe complexity allowed
-[lint.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 10
 
 # isort configuration
-[lint.isort]
+[tool.ruff.lint.isort]
 known-first-party = ["app"]
 known-third-party = ["fastapi", "pydantic", "sqlmodel"]
 section-order = ["future", "standard-library", "third-party", "first-party", "local-folder"]
 
 # pyupgrade configuration
-[lint.pyupgrade]
+[tool.ruff.lint.pyupgrade]
 keep-runtime-typing = true
 
 # Per-file ignores
-[lint.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "__init__.py" = ["F401"]  # Unused imports
 "tests/**/*.py" = ["PLR2004", "S101"]  # Magic values and assert statements in tests

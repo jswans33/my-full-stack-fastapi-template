@@ -1,7 +1,12 @@
-"""Example demonstrating enhanced configuration validation features."""
+"""Tests for configuration validation examples."""
 
 import os
+import sys
+from io import StringIO
 from pathlib import Path
+
+import pytest
+import yaml
 
 from utils.pipeline.config.config import (
     ComponentConfig,
@@ -12,58 +17,57 @@ from utils.pipeline.config.config import (
     StrategyConfig,
     ClassificationConfig,
 )
+from utils.pipeline.examples.config_validation_example import main
 
-def main():
-    """Run configuration validation examples."""
-    print("\n=== Configuration Validation Examples ===\n")
 
-    # Example 1: Basic Valid Configuration
-    print("1. Creating a valid configuration...")
-    try:
-        config = PipelineConfig(
-            input_dir="data/input",
-            output_dir="data/output",
-            output_format="yaml",
-            validation_level=ValidationLevel.BASIC,
-            strategies=StrategyConfig(
-                pdf=ComponentConfig(
-                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
-                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
-                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
-                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
-                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
-                ),
-                excel=ComponentConfig(
-                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
-                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
-                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
-                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
-                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
-                ),
-                word=ComponentConfig(
-                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
-                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
-                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
-                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
-                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
-                ),
-                text=ComponentConfig(
-                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
-                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
-                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
-                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
-                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
-                )
+def test_valid_configuration():
+    """Test Example 1: Creating a valid configuration."""
+    config = PipelineConfig(
+        input_dir="data/input",
+        output_dir="data/output",
+        output_format="yaml",
+        validation_level=ValidationLevel.BASIC,
+        strategies=StrategyConfig(
+            pdf=ComponentConfig(
+                analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+            ),
+            excel=ComponentConfig(
+                analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+            ),
+            word=ComponentConfig(
+                analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+            ),
+            text=ComponentConfig(
+                analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
             )
         )
-        print("✓ Valid configuration created successfully")
-    except Exception as e:
-        print(f"✗ Error: {str(e)}")
+    )
+    assert config is not None
+    assert config.input_dir == "data/input"
+    assert config.output_format == "yaml"
+    assert config.validation_level == ValidationLevel.BASIC
 
-    # Example 2: Invalid Strategy Path
-    print("\n2. Testing invalid strategy path validation...")
-    try:
-        config = PipelineConfig(
+
+def test_invalid_strategy_path():
+    """Test Example 2: Invalid strategy path validation."""
+    with pytest.raises(ValueError) as exc_info:
+        PipelineConfig(
             strategies=StrategyConfig(
                 pdf=ComponentConfig(
                     analyzer="nonexistent.module.Analyzer",
@@ -74,14 +78,13 @@ def main():
                 )
             )
         )
-        print("✗ Should have raised an error")
-    except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+    assert "Module not found" in str(exc_info.value)
 
-    # Example 3: Invalid Weight Distribution
-    print("\n3. Testing weight validation...")
-    try:
-        rule = DocumentTypeRule(
+
+def test_invalid_weight_distribution():
+    """Test Example 3: Invalid weight distribution."""
+    with pytest.raises(ValueError) as exc_info:
+        DocumentTypeRule(
             title_keywords=["test"],
             content_keywords=["test"],
             patterns=["test"],
@@ -91,14 +94,13 @@ def main():
                 "pattern_match": 0.3,
             }
         )
-        print("✗ Should have raised an error")
-    except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+    assert "Weights must sum to 1.0" in str(exc_info.value)
 
-    # Example 4: Strict Validation Level with Low Threshold
-    print("\n4. Testing strict validation level constraints...")
-    try:
-        config = PipelineConfig(
+
+def test_strict_validation_level_with_low_threshold():
+    """Test Example 4: Strict validation level with low threshold."""
+    with pytest.raises(ValueError) as exc_info:
+        PipelineConfig(
             validation_level=ValidationLevel.STRICT,
             strategies=StrategyConfig(
                 pdf=ComponentConfig(
@@ -141,14 +143,13 @@ def main():
                 }
             )
         )
-        print("✗ Should have raised an error")
-    except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+    assert "threshold" in str(exc_info.value) and "too low" in str(exc_info.value)
 
-    # Example 5: Invalid Schema Pattern
-    print("\n5. Testing schema pattern validation...")
-    try:
-        config = PipelineConfig(
+
+def test_invalid_schema_pattern():
+    """Test Example 5: Invalid schema pattern."""
+    with pytest.raises(ValueError) as exc_info:
+        PipelineConfig(
             strategies=StrategyConfig(
                 pdf=ComponentConfig(
                     analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
@@ -190,12 +191,12 @@ def main():
                 }
             )
         )
-        print("✗ Should have raised an error")
-    except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+    assert "Invalid schema_pattern" in str(exc_info.value)
 
-    # Example 6: Loading from YAML
-    print("\n6. Testing configuration loading from YAML...")
+
+def test_loading_from_yaml(tmp_path):
+    """Test Example 6: Loading configuration from YAML."""
+    # Create test config file
     example_config = {
         "input_dir": "data/input",
         "output_dir": "data/output",
@@ -232,23 +233,58 @@ def main():
             }
         }
     }
-
-    # Create example config file
-    config_path = Path("utils/pipeline/examples/example_config.yaml")
-    config_path.parent.mkdir(parents=True, exist_ok=True)
     
-    import yaml
+    config_path = tmp_path / "test_example_config.yaml"
     with open(config_path, "w") as f:
         yaml.dump(example_config, f)
+    
+    # Test loading the config
+    config = load_config(str(config_path))
+    assert config is not None
+    assert config.input_dir == "data/input"
+    assert config.validation_level == ValidationLevel.BASIC
+    assert "pdf" in config.strategies.model_dump()
 
-    try:
-        config = load_config(str(config_path))
-        print("✓ Successfully loaded configuration from YAML")
-    except Exception as e:
-        print(f"✗ Error loading configuration: {str(e)}")
-    finally:
-        # Clean up example file
-        os.remove(config_path)
 
-if __name__ == "__main__":
+def test_main_function(monkeypatch, tmpdir):
+    """Test the main function execution with console output capture."""
+    # Mock sys.stdout to capture print statements
+    captured_output = StringIO()
+    monkeypatch.setattr(sys, "stdout", captured_output)
+    
+    # Create a temporary directory for the example config file
+    monkeypatch.chdir(tmpdir)
+    
+    # Ensure the utils/pipeline/examples directory exists in the temporary directory
+    examples_dir = tmpdir.join("utils", "pipeline", "examples")
+    os.makedirs(examples_dir, exist_ok=True)
+    
+    # Run the main function
     main()
+    
+    # Check if output contains expected messages
+    output = captured_output.getvalue()
+    
+    # Check Example 1 output
+    assert "1. Creating a valid configuration..." in output
+    assert "✓ Valid configuration created successfully" in output
+    
+    # Check Example 2 output
+    assert "2. Testing invalid strategy path validation..." in output
+    assert "✓ Caught expected error:" in output
+    
+    # Check Example 3 output
+    assert "3. Testing weight validation..." in output
+    assert "✓ Caught expected error:" in output
+    
+    # Check Example 4 output
+    assert "4. Testing strict validation level constraints..." in output
+    assert "✓ Caught expected error:" in output
+    
+    # Check Example 5 output
+    assert "5. Testing schema pattern validation..." in output
+    assert "✓ Caught expected error:" in output
+    
+    # Check Example 6 output
+    assert "6. Testing configuration loading from YAML..." in output
+    assert "✓ Successfully loaded configuration from YAML" in output

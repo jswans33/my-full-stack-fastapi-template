@@ -49,10 +49,10 @@ config/__init__.py
 config/CONFIG_FILES.md
 config/config.py
 config/document_types/invoice.yaml
-config/enhanced_markdown_config_v2.json
+config/enhanced_markdown_config.json
 config/environments/development.yaml
-config/example_classifier_config.yaml
-config/example_config.yaml
+config/example_classifier_config.yaml.old
+config/example_config.yaml.old
 config/hvac_classifier_config.yaml
 config/hvac_config.yaml
 config/manager.py
@@ -71,25 +71,28 @@ config/providers/env.py
 config/providers/file_watcher.py
 config/providers/file.py
 config/README.md
+config/reference_classifier_config.yaml
+config/reference_config.yaml
 config/schema_registry.yaml
 config/schemas/financial_document.yaml
 config/schemas/invoice_v1.yaml
 config/schemas/purchase_order.yaml
 core/file_processor.py
 examples/__init__.py
-examples/batch_processing_example.py
-examples/config_example.py
-examples/config.yaml
-examples/config/app_config.yaml
-examples/debug_hvac_classifier.py
-examples/document_classification_example.py
-examples/pdf_extraction_example.py
-examples/runtime_updates_example.py
-examples/schema_analysis_example.py
-examples/schema_migration_example.py
-examples/schema_registry_example.py
-examples/test_hvac_classification.py
-examples/test_sample_pdf.py
+examples/config_validation_example.py
+examples/old/batch_processing_example.py
+examples/old/config_example.py
+examples/old/config.yaml
+examples/old/config/app_config.yaml
+examples/old/debug_hvac_classifier.py
+examples/old/document_classification_example.py
+examples/old/pdf_extraction_example.py
+examples/old/runtime_updates_example.py
+examples/old/schema_analysis_example.py
+examples/old/schema_migration_example.py
+examples/old/schema_registry_example.py
+examples/old/test_hvac_classification.py
+examples/old/test_sample_pdf.py
 models/models.py
 pipeline.py
 processors/__init__.py
@@ -522,23 +525,21 @@ This document provides a reference for all configuration files in the pipeline.
 
 | File | Format | Purpose | Status |
 |------|--------|---------|--------|
-| **example_config.yaml** | YAML | Complete example of pipeline configuration | Reference |
+| **reference_config.yaml** | YAML | Complete reference example of pipeline configuration | Reference Template |
 | **hvac_config.yaml** | YAML | HVAC-specific pipeline configuration | Active |
-| **hvac_config.json** | JSON | JSON version of hvac_config.yaml | Alternative format (consider removing) |
 
 ## Classifier Configuration Files
 
 | File | Format | Purpose | Status |
 |------|--------|---------|--------|
-| **example_classifier_config.yaml** | YAML | Example classifier configuration | Reference |
+| **reference_classifier_config.yaml** | YAML | Reference classifier configuration | Reference Template |
 | **hvac_classifier_config.yaml** | YAML | HVAC-specific classifier configuration | Active |
 
 ## Output Format Configuration Files
 
 | File | Format | Purpose | Status |
 |------|--------|---------|--------|
-| **enhanced_markdown_config.json** | JSON | Enhanced markdown configuration | Legacy (consider removing) |
-| **enhanced_markdown_config_v2.json** | JSON | Updated enhanced markdown configuration | Current |
+| **enhanced_markdown_config.json** | JSON | Enhanced markdown configuration | Active |
 
 ## System Configuration Files
 
@@ -548,19 +549,39 @@ This document provides a reference for all configuration files in the pipeline.
 
 ## File Relationships
 
-- **example_config.yaml** → **hvac_config.yaml**: hvac_config.yaml is a specialized version of example_config.yaml
-- **example_classifier_config.yaml** → **hvac_classifier_config.yaml**: hvac_classifier_config.yaml extends example_classifier_config.yaml with HVAC-specific rules
-- **enhanced_markdown_config.json** → **enhanced_markdown_config_v2.json**: v2 is an updated version of the original
-- **hvac_config.yaml** ↔ **hvac_config.json**: These contain the same configuration in different formats
+- **reference_config.yaml** → **hvac_config.yaml**: hvac_config.yaml is a specialized implementation of reference_config.yaml
+- **reference_classifier_config.yaml** → **hvac_classifier_config.yaml**: hvac_classifier_config.yaml extends reference_classifier_config.yaml with HVAC-specific rules
 
 ## Usage in Examples
 
 | Example | Configuration Files Used |
 |---------|--------------------------|
-| document_classification_example.py | example_classifier_config.yaml |
+| document_classification_example.py | reference_classifier_config.yaml |
 | debug_hvac_classifier.py | hvac_classifier_config.yaml |
 | test_hvac_classification.py | hvac_classifier_config.yaml, hvac_config.yaml |
-| test_sample_pdf.py | example_config.yaml, example_classifier_config.yaml |
+| test_sample_pdf.py | reference_config.yaml, reference_classifier_config.yaml |
+
+## Configuration Guidelines
+
+1. **Reference Templates**
+   - Files prefixed with `reference_` serve as templates and documentation
+   - Do not modify these files for specific implementations
+   - Use them as a base for creating specialized configurations
+
+2. **Active Configurations**
+   - Files without the `reference_` prefix are active configurations
+   - These can be customized for specific use cases
+   - Follow the structure shown in reference files
+
+3. **Version Control**
+   - Configuration versions are tracked within the files themselves
+   - Use the `version` field in configurations when available
+   - Avoid version numbers in filenames
+
+4. **Format Standards**
+   - YAML is preferred for human-readable configurations
+   - JSON is used only when required by specific components
+   - Maintain consistent formatting within each file type
 ````
 
 ## File: config/config.py
@@ -569,12 +590,15 @@ This document provides a reference for all configuration files in the pipeline.
 Configuration module for the pipeline.
 
 This module handles loading, validating, and merging configuration settings using Pydantic.
+Includes enhanced validation for strategy paths, cross-field relationships, and schema validation.
 """
 
 import os
 from enum import Enum
+from importlib import import_module
+from importlib.util import find_spec
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import yaml
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -646,6 +670,14 @@ class DocumentTypeRule(BaseModel):
 
     # Schema pattern to use for this document type
     schema_pattern: str = "standard"
+
+    @model_validator(mode="after")
+    def validate_weights(self) -> "DocumentTypeRule":
+        """Validate that weights sum to 1.0."""
+        total = sum(self.weights.values())
+        if not (0.99 <= total <= 1.01):  # Allow for floating point imprecision
+            raise ValueError(f"Weights must sum to 1.0, got {total}")
+        return self
 
 
 class ClassificationConfig(BaseModel):
@@ -732,6 +764,31 @@ class ClassificationConfig(BaseModel):
     )
 
 
+def _split_module_class_path(path: str) -> Tuple[str, str]:
+    """Split path into module path and class name."""
+    parts = path.rsplit(".", 1)
+    if len(parts) != 2:
+        raise ValueError(f"Invalid module.class path: {path}")
+    return parts[0], parts[1]
+
+
+def _is_valid_module_path(module_path: str) -> bool:
+    """Check if module can be imported."""
+    try:
+        return find_spec(module_path) is not None
+    except (ImportError, AttributeError):
+        return False
+
+
+def _class_exists_in_module(module_path: str, class_name: str) -> bool:
+    """Check if class exists in module."""
+    try:
+        module = import_module(module_path)
+        return hasattr(module, class_name)
+    except (ImportError, AttributeError):
+        return False
+
+
 class PipelineConfig(BaseModel):
     """Pipeline configuration model with validation."""
 
@@ -792,20 +849,81 @@ class PipelineConfig(BaseModel):
 
     @model_validator(mode="after")
     def validate_strategy_paths(self) -> "PipelineConfig":
-        """Validate strategy paths are not empty."""
+        """Validate strategy paths point to valid modules and classes."""
         for strategy_type, strategy in self.strategies.model_dump().items():
             if isinstance(strategy, str):
-                if not strategy.strip():
-                    raise ValueError(
-                        f"Invalid strategy path for {strategy_type}: {strategy}"
-                    )
+                # Validate module path exists
+                if not _is_valid_module_path(strategy):
+                    raise ValueError(f"Invalid strategy module path for {strategy_type}: {strategy}")
             elif isinstance(strategy, dict):
                 for component, path in strategy.items():
                     if not isinstance(path, str) or not path.strip():
-                        raise ValueError(
-                            f"Invalid {component} path for {strategy_type}: {path}"
-                        )
+                        raise ValueError(f"Invalid {component} path for {strategy_type}: {path}")
+                    
+                    # Validate module and class exist
+                    module_path, class_name = _split_module_class_path(path)
+                    if not _is_valid_module_path(module_path):
+                        raise ValueError(f"Module not found: {module_path} for {strategy_type}.{component}")
+                    
+                    if not _class_exists_in_module(module_path, class_name):
+                        raise ValueError(f"Class {class_name} not found in module {module_path}")
         return self
+
+    @model_validator(mode="after")
+    def validate_cross_field_relationships(self) -> "PipelineConfig":
+        """Ensure consistency between related configuration settings."""
+        # Validate output_format and formatter compatibility
+        if self.output_format not in ["yaml", "json"]:
+            raise ValueError(f"Unsupported output format: {self.output_format}")
+        
+        # Ensure validation_level and classification thresholds are compatible
+        if self.validation_level == ValidationLevel.STRICT:
+            # In strict mode, ensure thresholds are high enough
+            for doc_type, rule in self.classification.rules.items():
+                if rule.threshold < 0.5:
+                    raise ValueError(
+                        f"Document type {doc_type} has threshold {rule.threshold} which is too low "
+                        f"for validation_level={self.validation_level}. Minimum is 0.5."
+                    )
+        
+        # Check schema_pattern consistency with available schemas
+        valid_schema_patterns = ["standard", "detailed_specification", "detailed_invoice", 
+                               "detailed_proposal", "formal_terms"]
+        for doc_type, rule in self.classification.rules.items():
+            if rule.schema_pattern not in valid_schema_patterns:
+                raise ValueError(f"Invalid schema_pattern '{rule.schema_pattern}' for {doc_type}")
+        
+        return self
+
+
+def _validate_against_schema(config: PipelineConfig, schema_config: BaseModel) -> None:
+    """Validate configuration against a schema configuration."""
+    schema_dict = schema_config.model_dump()
+    errors = []
+    
+    # Validate each field against schema
+    for field_name, schema_value in schema_dict.items():
+        if not hasattr(config, field_name):
+            continue  # Skip fields that don't exist in config
+            
+        config_value = getattr(config, field_name)
+        
+        # Check field type compatibility
+        expected_type = type(schema_value)
+        if not isinstance(config_value, expected_type) and config_value is not None:
+            errors.append(f"Field '{field_name}' has wrong type: expected {expected_type}, got {type(config_value)}")
+            continue
+            
+        # Validate against schema constraints
+        if hasattr(schema_config, f"validate_{field_name}"):
+            validator = getattr(schema_config, f"validate_{field_name}")
+            try:
+                validator(config_value)
+            except ValueError as e:
+                errors.append(f"Validation failed for field '{field_name}': {str(e)}")
+    
+    if errors:
+        raise ValueError(f"Configuration failed schema validation:\n" + "\n".join(errors))
 
 
 def load_config(
@@ -813,6 +931,7 @@ def load_config(
     config_dict: Optional[dict] = None,
     override_dict: Optional[dict] = None,
     use_env: bool = False,
+    schema_config: Optional[BaseModel] = None,
 ) -> PipelineConfig:
     """
     Load configuration from various sources and merge them.
@@ -829,6 +948,7 @@ def load_config(
         config_dict: Configuration dictionary to use instead of loading from file
         override_dict: Dictionary with values that override the loaded configuration
         use_env: Whether to use environment variables to override configuration
+        schema_config: Optional schema model to validate against
 
     Returns:
         A validated PipelineConfig instance
@@ -859,7 +979,13 @@ def load_config(
         config_data = _merge_configs(config_data, env_config)
 
     # Create and validate the configuration
-    return PipelineConfig(**config_data)
+    config = PipelineConfig(**config_data)
+
+    # Additional schema validation if provided
+    if schema_config is not None:
+        _validate_against_schema(config, schema_config)
+
+    return config
 
 
 def _load_from_file(config_path: str) -> dict:
@@ -889,9 +1015,6 @@ def _load_from_env() -> dict:
             else:
                 # For any other keys, use as-is
                 config[config_key] = value
-
-    # Print environment variables for debugging
-    print(f"Environment variables: {config}")
 
     return config
 
@@ -946,43 +1069,118 @@ metadata:
   priority: high
 ````
 
-## File: config/enhanced_markdown_config_v2.json
+## File: config/enhanced_markdown_config.json
 ````json
 {
-  "output_format": "MARKDOWN",
-  "use_enhanced_markdown": true,
-  "markdown_options": {
-    "content_segmentation": true,
-    "inline_formatting": true,
-    "enhanced_tables": true,
-    "html_for_complex_tables": true,
-    "html_anchors": true,
-    "post_processing": true,
-    "validation": true,
-    "include_validation_report": true
+  "version": "2.0.0",
+  "metadata": {
+    "description": "Enhanced markdown configuration for document formatting",
+    "last_updated": "2025-03-16",
+    "deprecated_fields": ["legacy_format", "old_style_headers"]
   },
-  "classification": {
-    "method": "rule_based",
-    "rules": {
-      "HVAC_SPECIFICATION": {
-        "title_keywords": [
-          "hvac",
-          "heating",
-          "ventilation",
-          "air conditioning",
-          "furnace"
-        ],
-        "content_keywords": [
-          "hvac",
-          "heating",
-          "ventilation",
-          "air conditioning",
-          "furnace"
-        ],
-        "confidence": 0.8,
-        "schema_pattern": "hvac_spec"
+
+  "formatting": {
+    "headers": {
+      "style": "atx",
+      "auto_increment": true,
+      "max_level": 6,
+      "spacing": {
+        "before": 2,
+        "after": 1
+      }
+    },
+
+    "lists": {
+      "bullet_style": "-",
+      "ordered_style": "1.",
+      "indent_spaces": 2,
+      "max_depth": 4
+    },
+
+    "tables": {
+      "alignment": "left",
+      "padding": 1,
+      "header_style": "bold",
+      "column_wrapping": true,
+      "max_width": 120
+    },
+
+    "code_blocks": {
+      "style": "fenced",
+      "syntax_highlighting": true,
+      "line_numbers": true,
+      "indent_size": 4
+    }
+  },
+
+  "content": {
+    "sections": {
+      "auto_toc": true,
+      "toc_depth": 3,
+      "section_numbering": true,
+      "collapse_empty": false
+    },
+
+    "links": {
+      "style": "reference",
+      "validate": true,
+      "external_marker": "↗",
+      "auto_reference": true
+    },
+
+    "images": {
+      "max_width": 800,
+      "lazy_loading": true,
+      "alt_text_required": true,
+      "caption_style": "figure"
+    }
+  },
+
+  "extensions": {
+    "enabled": [
+      "tables",
+      "fenced_code",
+      "footnotes",
+      "definition_lists",
+      "task_lists"
+    ],
+    "custom_blocks": {
+      "note": {
+        "prefix": "Note:",
+        "style": "blockquote"
+      },
+      "warning": {
+        "prefix": "⚠️ Warning:",
+        "style": "callout"
+      },
+      "info": {
+        "prefix": "ℹ️ Info:",
+        "style": "callout"
       }
     }
+  },
+
+  "output": {
+    "file_extension": ".md",
+    "encoding": "utf-8",
+    "line_endings": "lf",
+    "wrap_width": 80,
+    "front_matter": {
+      "enabled": true,
+      "format": "yaml",
+      "required_fields": ["title", "date", "author"]
+    }
+  },
+
+  "validation": {
+    "enabled": true,
+    "rules": {
+      "broken_links": "error",
+      "missing_images": "warning",
+      "heading_hierarchy": "warning",
+      "duplicate_headings": "error"
+    },
+    "ignore_patterns": ["^_draft", "^.temp"]
   }
 }
 ````
@@ -1022,8 +1220,8 @@ overrides:
         debug_mode: true
 ````
 
-## File: config/example_classifier_config.yaml
-````yaml
+## File: config/example_classifier_config.yaml.old
+````
 # Example configuration for document classification system
 
 # Global classification settings
@@ -1132,8 +1330,8 @@ schema_matching:
   content_weight: 0.4
 ````
 
-## File: config/example_config.yaml
-````yaml
+## File: config/example_config.yaml.old
+````
 # Example Pipeline Configuration
 # This file demonstrates the available configuration options for the pipeline
 
@@ -3555,6 +3753,268 @@ These files configure system components:
 For a complete reference of all configuration files, see [CONFIG_FILES.md](CONFIG_FILES.md).
 ````
 
+## File: config/reference_classifier_config.yaml
+````yaml
+# Reference Document Classifier Configuration Template
+# ================================================
+# This is a reference template that demonstrates all available classifier configuration options.
+# DO NOT modify this file directly. Instead, copy it and customize for your needs.
+# Version: 1.0.0
+
+# Basic classifier settings
+enabled: true
+default_threshold: 0.3
+method: "rule_based"  # Supported: rule_based, pattern_matcher, ml_based
+
+# Document type rules
+# Each rule defines how to identify a specific type of document
+rules:
+  # Example: Generic Document Types
+  SPECIFICATION:
+    title_keywords:
+      - "specification"
+      - "spec"
+      - "technical"
+      - "requirements"
+      - "design"
+    
+    content_keywords:
+      - "dimensions"
+      - "capacity"
+      - "performance"
+      - "material"
+      - "compliance"
+      - "standard"
+      - "requirements"
+      - "specifications"
+    
+    patterns:
+      - "\\d+(?:\\.\\d+)?\\s*(?:mm|cm|m|kg|lb)"  # Measurements
+      - "(?:±|\\+/-|\\+/-)\\s*\\d+(?:\\.\\d+)?"   # Tolerances
+      - "(?:°|deg)\\s*[CF]"                       # Temperatures
+      - "[A-Z]+\\s*\\d+(?:-\\d+)?"               # Standards (e.g., ISO 9001)
+    
+    weights:
+      title_match: 0.4
+      content_match: 0.3
+      pattern_match: 0.3
+    
+    threshold: 0.4
+    schema_pattern: "detailed_specification"
+
+  INVOICE:
+    title_keywords:
+      - "invoice"
+      - "bill"
+      - "receipt"
+      - "statement"
+    
+    content_keywords:
+      - "invoice #"
+      - "invoice no"
+      - "bill to"
+      - "payment"
+      - "due date"
+      - "subtotal"
+      - "total"
+      - "tax"
+    
+    patterns:
+      - "\\$\\s*\\d+(?:\\.\\d{2})?"              # Currency
+      - "(?:Invoice|Bill)\\s*#\\s*\\d+"          # Invoice numbers
+      - "\\d{1,2}/\\d{1,2}/\\d{2,4}"            # Dates
+    
+    weights:
+      title_match: 0.3
+      content_match: 0.4
+      pattern_match: 0.3
+    
+    threshold: 0.5
+    schema_pattern: "detailed_invoice"
+
+  PROPOSAL:
+    title_keywords:
+      - "proposal"
+      - "quote"
+      - "quotation"
+      - "bid"
+      - "tender"
+    
+    content_keywords:
+      - "proposed"
+      - "scope of work"
+      - "timeline"
+      - "deliverables"
+      - "pricing"
+      - "terms"
+      - "validity"
+    
+    patterns:
+      - "valid for \\d+ days"
+      - "\\$\\s*\\d+(?:\\.\\d{2})?"
+      - "\\d{1,2}/\\d{1,2}/\\d{2,4}"
+    
+    weights:
+      title_match: 0.4
+      content_match: 0.4
+      pattern_match: 0.2
+    
+    threshold: 0.4
+    schema_pattern: "detailed_proposal"
+
+# Filename pattern matching
+# Regular expressions to identify document types from filenames
+filename_patterns:
+  SPECIFICATION: "(?i)spec|specification|requirements"
+  INVOICE: "(?i)invoice|bill|receipt"
+  PROPOSAL: "(?i)proposal|quote|bid|tender"
+
+# Advanced classification settings
+advanced:
+  # Text preprocessing options
+  preprocessing:
+    remove_headers_footers: true
+    clean_whitespace: true
+    normalize_text: true
+    extract_tables: true
+  
+  # Feature extraction settings
+  features:
+    use_metadata: true
+    use_structure: true
+    use_content: true
+    use_tables: true
+  
+  # Machine learning settings (when method is "ml_based")
+  ml_settings:
+    model_path: "models/classifier"
+    min_confidence: 0.7
+    feature_importance_threshold: 0.1
+    update_model: false
+  
+  # Pattern matching settings
+  pattern_matching:
+    case_sensitive: false
+    whole_word: false
+    fuzzy_match: true
+    fuzzy_threshold: 0.8
+
+# Reporting configuration
+reporting:
+  log_level: "INFO"
+  save_results: true
+  output_format: "json"
+  include_confidence_scores: true
+  include_matched_patterns: true
+````
+
+## File: config/reference_config.yaml
+````yaml
+# Reference Pipeline Configuration Template
+# =============================================
+# This is a reference template that demonstrates all available configuration options.
+# DO NOT modify this file directly. Instead, copy it and customize for your needs.
+# Version: 1.0.0
+
+# Basic settings
+input_dir: "data/input"
+output_dir: "data/output"
+output_format: "yaml"  # Supported: yaml, json
+log_level: "INFO"      # Supported: DEBUG, INFO, WARNING, ERROR, CRITICAL
+validation_level: "basic"  # Supported: basic, strict, custom
+
+# Document processing strategies
+strategies:
+  pdf:
+    analyzer: "utils.pipeline.analyzer.pdf.PDFAnalyzer"
+    cleaner: "utils.pipeline.cleaner.pdf.PDFCleaner"
+    extractor: "utils.pipeline.processors.pdf_extractor.PDFExtractor"
+    validator: "utils.pipeline.processors.pdf_validator.PDFValidator"
+    formatter: "utils.pipeline.formatters.pdf.PDFFormatter"
+  
+  excel:
+    analyzer: "utils.pipeline.analyzer.excel.ExcelAnalyzer"
+    cleaner: "utils.pipeline.cleaner.excel.ExcelCleaner"
+    extractor: "utils.pipeline.processors.excel_extractor.ExcelExtractor"
+    validator: "utils.pipeline.processors.excel_validator.ExcelValidator"
+    formatter: "utils.pipeline.formatters.excel.ExcelFormatter"
+  
+  word:
+    analyzer: "utils.pipeline.analyzer.word.WordAnalyzer"
+    cleaner: "utils.pipeline.cleaner.word.WordCleaner"
+    extractor: "utils.pipeline.processors.word_extractor.WordExtractor"
+    validator: "utils.pipeline.processors.word_validator.WordValidator"
+    formatter: "utils.pipeline.formatters.word.WordFormatter"
+  
+  text: "strategies.text"  # Simple strategy reference
+
+# Document classification configuration
+classification:
+  enabled: true
+  default_threshold: 0.3
+  method: "rule_based"  # Supported: rule_based, pattern_matcher, ml_based
+  
+  # Example document type rules
+  rules:
+    SPECIFICATION:
+      title_keywords: 
+        - "specification"
+        - "spec"
+        - "technical"
+        - "requirements"
+      
+      content_keywords:
+        - "dimensions"
+        - "capacity"
+        - "performance"
+        - "material"
+        - "compliance"
+        - "standard"
+      
+      patterns:
+        - "mm"
+        - "cm"
+        - "m"
+        - "kg"
+        - "lb"
+        - "°c"
+        - "°f"
+      
+      weights:
+        title_match: 0.4
+        content_match: 0.3
+        pattern_match: 0.3
+      
+      threshold: 0.4
+      schema_pattern: "detailed_specification"
+  
+  # Example filename patterns
+  filename_patterns:
+    SPECIFICATION: "(?i)spec|specification"
+
+# File processing configuration
+file_processing:
+  input:
+    patterns: ["*.pdf", "*.xlsx", "*.docx", "*.txt"]
+    recursive: true
+    exclude_patterns: ["*_temp*", "*_backup*"]
+  
+  output:
+    formats: ["json", "yaml", "markdown"]
+    structure: "flat"  # Supported: flat, hierarchical
+    naming:
+      template: "{original_name}"
+      preserve_extension: false
+      timestamp: true
+    overwrite: false
+  
+  reporting:
+    summary: true
+    detailed: true
+    format: "json"
+    save_path: "processing_report.json"
+````
+
 ## File: config/schema_registry.yaml
 ````yaml
 name: pipeline_schema_registry
@@ -4353,7 +4813,161 @@ class FileProcessor:
 """Examples package for the pipeline module."""
 ````
 
-## File: examples/batch_processing_example.py
+## File: examples/config_validation_example.py
+````python
+"""Example demonstrating enhanced configuration validation features."""
+
+import os
+from pathlib import Path
+
+from utils.pipeline.config.config import (
+    ComponentConfig,
+    DocumentTypeRule,
+    PipelineConfig,
+    ValidationLevel,
+    load_config,
+)
+
+def main():
+    """Run configuration validation examples."""
+    print("\n=== Configuration Validation Examples ===\n")
+
+    # Example 1: Basic Valid Configuration
+    print("1. Creating a valid configuration...")
+    try:
+        config = PipelineConfig(
+            input_dir="data/input",
+            output_dir="data/output",
+            output_format="yaml",
+            validation_level=ValidationLevel.BASIC,
+            strategies={
+                "pdf": {
+                    "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
+                    "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
+                    "formatter": "utils.pipeline.formatters.pdf.PDFFormatter",
+                }
+            }
+        )
+        print("✓ Valid configuration created successfully")
+    except Exception as e:
+        print(f"✗ Error: {str(e)}")
+
+    # Example 2: Invalid Strategy Path
+    print("\n2. Testing invalid strategy path validation...")
+    try:
+        config = PipelineConfig(
+            strategies={
+                "pdf": {
+                    "analyzer": "nonexistent.module.Analyzer",
+                    "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
+                    "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
+                    "formatter": "utils.pipeline.formatters.pdf.PDFFormatter",
+                }
+            }
+        )
+        print("✗ Should have raised an error")
+    except ValueError as e:
+        print(f"✓ Caught expected error: {str(e)}")
+
+    # Example 3: Invalid Weight Distribution
+    print("\n3. Testing weight validation...")
+    try:
+        rule = DocumentTypeRule(
+            title_keywords=["test"],
+            content_keywords=["test"],
+            patterns=["test"],
+            weights={
+                "title_match": 0.5,
+                "content_match": 0.6,  # Total > 1.0
+                "pattern_match": 0.3,
+            }
+        )
+        print("✗ Should have raised an error")
+    except ValueError as e:
+        print(f"✓ Caught expected error: {str(e)}")
+
+    # Example 4: Strict Validation Level with Low Threshold
+    print("\n4. Testing strict validation level constraints...")
+    try:
+        config = PipelineConfig(
+            validation_level=ValidationLevel.STRICT,
+            classification={
+                "rules": {
+                    "TEST": DocumentTypeRule(
+                        title_keywords=["test"],
+                        content_keywords=["test"],
+                        patterns=["test"],
+                        threshold=0.3  # Too low for STRICT mode
+                    )
+                }
+            }
+        )
+        print("✗ Should have raised an error")
+    except ValueError as e:
+        print(f"✓ Caught expected error: {str(e)}")
+
+    # Example 5: Invalid Schema Pattern
+    print("\n5. Testing schema pattern validation...")
+    try:
+        config = PipelineConfig(
+            classification={
+                "rules": {
+                    "TEST": DocumentTypeRule(
+                        title_keywords=["test"],
+                        content_keywords=["test"],
+                        patterns=["test"],
+                        schema_pattern="nonexistent_pattern"
+                    )
+                }
+            }
+        )
+        print("✗ Should have raised an error")
+    except ValueError as e:
+        print(f"✓ Caught expected error: {str(e)}")
+
+    # Example 6: Loading from YAML
+    print("\n6. Testing configuration loading from YAML...")
+    example_config = {
+        "input_dir": "data/input",
+        "output_dir": "data/output",
+        "output_format": "yaml",
+        "validation_level": "basic",
+        "strategies": {
+            "pdf": {
+                "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
+                "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
+                "formatter": "utils.pipeline.formatters.pdf.PDFFormatter"
+            }
+        }
+    }
+
+    # Create example config file
+    config_path = Path("utils/pipeline/examples/example_config.yaml")
+    config_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    import yaml
+    with open(config_path, "w") as f:
+        yaml.dump(example_config, f)
+
+    try:
+        config = load_config(str(config_path))
+        print("✓ Successfully loaded configuration from YAML")
+    except Exception as e:
+        print(f"✗ Error loading configuration: {str(e)}")
+    finally:
+        # Clean up example file
+        os.remove(config_path)
+
+if __name__ == "__main__":
+    main()
+````
+
+## File: examples/old/batch_processing_example.py
 ````python
 """
 Example script demonstrating batch PDF extraction using the FileProcessor.
@@ -4446,7 +5060,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/config_example.py
+## File: examples/old/config_example.py
 ````python
 """
 Configuration system example.
@@ -4609,7 +5223,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/config.yaml
+## File: examples/old/config.yaml
 ````yaml
 input_dir: data/tests/pdf
 output_dir: data/output
@@ -4628,7 +5242,7 @@ strategies:
   text: strategies.text
 ````
 
-## File: examples/config/app_config.yaml
+## File: examples/old/config/app_config.yaml
 ````yaml
 feature_flags:
   dark_mode: true
@@ -4639,7 +5253,7 @@ logging:
   format: json
 ````
 
-## File: examples/debug_hvac_classifier.py
+## File: examples/old/debug_hvac_classifier.py
 ````python
 """
 Debug script for HVAC document classifier.
@@ -4847,7 +5461,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/document_classification_example.py
+## File: examples/old/document_classification_example.py
 ````python
 """
 Example usage of the document classification system.
@@ -4988,7 +5602,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/pdf_extraction_example.py
+## File: examples/old/pdf_extraction_example.py
 ````python
 """
 Example script demonstrating PDF extraction pipeline usage.
@@ -5080,7 +5694,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/runtime_updates_example.py
+## File: examples/old/runtime_updates_example.py
 ````python
 """
 Example demonstrating runtime configuration updates and hot-reloading.
@@ -5209,7 +5823,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/schema_analysis_example.py
+## File: examples/old/schema_analysis_example.py
 ````python
 """
 Example script demonstrating schema analysis and visualization.
@@ -5347,7 +5961,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/schema_migration_example.py
+## File: examples/old/schema_migration_example.py
 ````python
 """
 Example demonstrating schema migration functionality.
@@ -5558,7 +6172,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/schema_registry_example.py
+## File: examples/old/schema_registry_example.py
 ````python
 """
 Enhanced schema registry example.
@@ -5772,7 +6386,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/test_hvac_classification.py
+## File: examples/old/test_hvac_classification.py
 ````python
 """
 Test script for HVAC document classification.
@@ -5996,7 +6610,7 @@ if __name__ == "__main__":
     main()
 ````
 
-## File: examples/test_sample_pdf.py
+## File: examples/old/test_sample_pdf.py
 ````python
 """
 Test script for processing the sample.pdf file.
