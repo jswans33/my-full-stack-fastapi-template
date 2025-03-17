@@ -1,14 +1,11 @@
 """
 Configuration module for the pipeline.
-
-This module provides functions and classes for loading and managing configuration settings.
 """
 
-# Legacy configuration (for backward compatibility)
-from .config import PipelineConfig
-from .config import load_config as load_legacy_config
 
-# New configuration system
+from .config import (
+    PipelineConfig,
+)
 from .manager import ConfigurationManager
 from .models.base import BaseConfig
 from .models.document_type import DocumentField, DocumentRule, DocumentTypeConfig
@@ -21,12 +18,23 @@ from .providers.file import FileConfigurationProvider
 
 
 def create_configuration_manager() -> ConfigurationManager:
-    """
-    Create a new configuration manager with default providers.
+    """Create a new configuration manager with default providers."""
+    manager = ConfigurationManager()
 
-    Returns:
-        Configured ConfigurationManager instance
-    """
+    file_provider = FileConfigurationProvider(
+        base_dirs=["utils/pipeline/config", "config"]
+    )
+    manager.register_provider(file_provider, priority=100)
+
+    env_provider = EnvironmentConfigurationProvider(prefix="PIPELINE_")
+    manager.register_provider(env_provider, priority=50)
+
+    return manager
+
+
+# Create and configure the default configuration manager
+def create_default_manager() -> ConfigurationManager:
+    """Create and configure the default configuration manager."""
     manager = ConfigurationManager()
 
     # Register file provider (highest priority)
@@ -39,34 +47,59 @@ def create_configuration_manager() -> ConfigurationManager:
     env_provider = EnvironmentConfigurationProvider(prefix="PIPELINE_")
     manager.register_provider(env_provider, priority=50)
 
+    # Register models
+    manager.register_model("pipeline", PipelineConfig)
+    manager.register_model("document_type", DocumentTypeConfig)
+    manager.register_model("environment", EnvironmentConfig)
+    manager.register_model("processor", ProcessorConfig)
+    manager.register_model("schema", SchemaConfig)
+
     return manager
 
 
 # Default configuration manager instance
-config_manager = create_configuration_manager()
+config_manager = create_default_manager()
 
 
-def load_config(config_name: str) -> dict:
-    """
-    Load configuration by name using the default configuration manager.
+def get_pipeline_config() -> PipelineConfig:
+    """Get validated pipeline configuration."""
+    config = config_manager.get_config("pipeline", as_model=True)
+    assert isinstance(config, PipelineConfig)
+    return config
 
-    Args:
-        config_name: Name of the configuration to load
 
-    Returns:
-        Configuration dictionary
-    """
-    return config_manager.get_config(config_name)
+def get_document_type_config() -> DocumentTypeConfig:
+    """Get validated document type configuration."""
+    config = config_manager.get_config("document_type", as_model=True)
+    assert isinstance(config, DocumentTypeConfig)
+    return config
+
+
+def get_environment_config() -> EnvironmentConfig:
+    """Get validated environment configuration."""
+    config = config_manager.get_config("environment", as_model=True)
+    assert isinstance(config, EnvironmentConfig)
+    return config
+
+
+def get_processor_config() -> ProcessorConfig:
+    """Get validated processor configuration."""
+    config = config_manager.get_config("processor", as_model=True)
+    assert isinstance(config, ProcessorConfig)
+    return config
+
+
+def get_schema_config() -> SchemaConfig:
+    """Get validated schema configuration."""
+    config = config_manager.get_config("schema", as_model=True)
+    assert isinstance(config, SchemaConfig)
+    return config
 
 
 __all__ = [
-    # Legacy configuration
-    "PipelineConfig",
-    "load_legacy_config",
     # Configuration manager
     "ConfigurationManager",
     "config_manager",
-    "load_config",
     "create_configuration_manager",
     # Configuration providers
     "ConfigurationProvider",
@@ -84,4 +117,10 @@ __all__ = [
     "SchemaField",
     "SchemaValidation",
     "SchemaMigration",
+    # Helper functions
+    "get_pipeline_config",
+    "get_document_type_config",
+    "get_environment_config",
+    "get_processor_config",
+    "get_schema_config",
 ]

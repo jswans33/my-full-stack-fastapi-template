@@ -4819,6 +4819,11 @@ class FileProcessor:
 
 import os
 from pathlib import Path
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 
 from utils.pipeline.config.config import (
     ComponentConfig,
@@ -4826,6 +4831,8 @@ from utils.pipeline.config.config import (
     PipelineConfig,
     ValidationLevel,
     load_config,
+    StrategyConfig,
+    ClassificationConfig,
 )
 
 def main():
@@ -4840,37 +4847,58 @@ def main():
             output_dir="data/output",
             output_format="yaml",
             validation_level=ValidationLevel.BASIC,
-            strategies={
-                "pdf": {
-                    "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
-                    "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
-                    "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
-                    "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
-                    "formatter": "utils.pipeline.formatters.pdf.PDFFormatter",
-                }
-            }
+            strategies=StrategyConfig(
+                pdf=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                excel=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                word=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                text=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                )
+            )
         )
-        print("✓ Valid configuration created successfully")
+        print("[OK] Valid configuration created successfully")
     except Exception as e:
-        print(f"✗ Error: {str(e)}")
+        print(f"[ERROR] Error: {str(e)}")
 
     # Example 2: Invalid Strategy Path
     print("\n2. Testing invalid strategy path validation...")
     try:
         config = PipelineConfig(
-            strategies={
-                "pdf": {
-                    "analyzer": "nonexistent.module.Analyzer",
-                    "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
-                    "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
-                    "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
-                    "formatter": "utils.pipeline.formatters.pdf.PDFFormatter",
-                }
-            }
+            strategies=StrategyConfig(
+                pdf=ComponentConfig(
+                    analyzer="nonexistent.module.Analyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                )
+            )
         )
-        print("✗ Should have raised an error")
+        print("[ERROR] Should have raised an error")
     except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+        print(f"[OK] Caught expected error: {str(e)}")
 
     # Example 3: Invalid Weight Distribution
     print("\n3. Testing weight validation...")
@@ -4885,17 +4913,47 @@ def main():
                 "pattern_match": 0.3,
             }
         )
-        print("✗ Should have raised an error")
+        print("[ERROR] Should have raised an error")
     except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+        print(f"[OK] Caught expected error: {str(e)}")
 
     # Example 4: Strict Validation Level with Low Threshold
     print("\n4. Testing strict validation level constraints...")
     try:
         config = PipelineConfig(
             validation_level=ValidationLevel.STRICT,
-            classification={
-                "rules": {
+            strategies=StrategyConfig(
+                pdf=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                excel=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                word=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                text=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                )
+            ),
+            classification=ClassificationConfig(
+                rules={
                     "TEST": DocumentTypeRule(
                         title_keywords=["test"],
                         content_keywords=["test"],
@@ -4903,18 +4961,48 @@ def main():
                         threshold=0.3  # Too low for STRICT mode
                     )
                 }
-            }
+            )
         )
-        print("✗ Should have raised an error")
+        print("[ERROR] Should have raised an error")
     except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+        print(f"[OK] Caught expected error: {str(e)}")
 
     # Example 5: Invalid Schema Pattern
     print("\n5. Testing schema pattern validation...")
     try:
         config = PipelineConfig(
-            classification={
-                "rules": {
+            strategies=StrategyConfig(
+                pdf=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                excel=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                word=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                ),
+                text=ComponentConfig(
+                    analyzer="utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                    cleaner="utils.pipeline.cleaner.pdf.PDFCleaner",
+                    extractor="utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                    validator="utils.pipeline.processors.pdf_validator.PDFValidator",
+                    formatter="utils.pipeline.processors.pdf_formatter.PDFFormatter",
+                )
+            ),
+            classification=ClassificationConfig(
+                rules={
                     "TEST": DocumentTypeRule(
                         title_keywords=["test"],
                         content_keywords=["test"],
@@ -4922,11 +5010,11 @@ def main():
                         schema_pattern="nonexistent_pattern"
                     )
                 }
-            }
+            )
         )
-        print("✗ Should have raised an error")
+        print("[ERROR] Should have raised an error")
     except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+        print(f"[OK] Caught expected error: {str(e)}")
 
     # Example 6: Loading from YAML
     print("\n6. Testing configuration loading from YAML...")
@@ -4941,7 +5029,28 @@ def main():
                 "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
                 "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
                 "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
-                "formatter": "utils.pipeline.formatters.pdf.PDFFormatter"
+                "formatter": "utils.pipeline.processors.pdf_formatter.PDFFormatter"
+            },
+            "excel": {
+                "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
+                "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
+                "formatter": "utils.pipeline.processors.pdf_formatter.PDFFormatter"
+            },
+            "word": {
+                "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
+                "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
+                "formatter": "utils.pipeline.processors.pdf_formatter.PDFFormatter"
+            },
+            "text": {
+                "analyzer": "utils.pipeline.analyzer.pdf.PDFAnalyzer",
+                "cleaner": "utils.pipeline.cleaner.pdf.PDFCleaner",
+                "extractor": "utils.pipeline.processors.pdf_extractor.PDFExtractor",
+                "validator": "utils.pipeline.processors.pdf_validator.PDFValidator",
+                "formatter": "utils.pipeline.processors.pdf_formatter.PDFFormatter"
             }
         }
     }
@@ -4956,9 +5065,9 @@ def main():
 
     try:
         config = load_config(str(config_path))
-        print("✓ Successfully loaded configuration from YAML")
+        print("[OK] Successfully loaded configuration from YAML")
     except Exception as e:
-        print(f"✗ Error loading configuration: {str(e)}")
+        print(f"[ERROR] Error loading configuration: {str(e)}")
     finally:
         # Clean up example file
         os.remove(config_path)

@@ -1,0 +1,9 @@
+input_dir: test_input
+output_dir: test_output
+output_format: yaml
+validation_level: basic
+strategies:
+  pdf: strategies.pdf
+  excel: strategies.excel
+  word: strategies.word
+  text: strategies.text

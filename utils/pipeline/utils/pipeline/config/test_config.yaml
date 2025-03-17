@@ -1,0 +1,5 @@
+name: test
+value: 100
+invalid: data
+extra: base
+new: override

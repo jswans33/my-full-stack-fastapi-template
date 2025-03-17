@@ -15,6 +15,8 @@ dependencies = [
     "opencv-python-headless>=4.9.0.80",  # for camelot
     "ghostscript>=0.7",  # for camelot
     "watchdog>=3.0.0",  # for file system monitoring
+    "pytest>=8.0.0",  # for testing
+    "pydantic>=2.6.0",  # for configuration validation
 ]
 requires-python = ">=3.9"
 
@@ -43,3 +45,16 @@ quote-style = "double"
 indent-style = "space"
 skip-magic-trailing-comma = false
 line-ending = "auto"
+
+[tool.pytest.ini_options]
+minversion = "8.0"
+addopts = "-ra -q --cov=utils.pipeline --cov-report=html"
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_classes = ["Test*"]
+python_functions = ["test_*"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::pytest.PytestDeprecationWarning",
+]
+asyncio_mode = "strict"

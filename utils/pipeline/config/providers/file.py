@@ -37,6 +37,7 @@ class FileConfigurationProvider(ConfigurationProvider):
         """
         self.base_dirs = [Path(d) for d in base_dirs]
         self.file_extensions = file_extensions or [".yaml", ".yml", ".json"]
+        self.config_files: Dict[str, str] = {}  # Maps config names to file names
 
         # Ensure base directories exist
         for base_dir in self.base_dirs:
@@ -46,6 +47,16 @@ class FileConfigurationProvider(ConfigurationProvider):
         self.enable_hot_reload = enable_hot_reload
         self.file_watcher = FileSystemWatcher() if enable_hot_reload else None
         self.change_callbacks: List[Callable[[str], None]] = []
+
+    def add_config_file(self, config_name: str, file_name: str) -> None:
+        """
+        Add a specific configuration file mapping.
+
+        Args:
+            config_name: Name of the configuration
+            file_name: Name of the file to load configuration from
+        """
+        self.config_files[config_name] = file_name
 
     def start_watching(self) -> None:
         """Start watching for configuration file changes."""
@@ -73,8 +84,31 @@ class FileConfigurationProvider(ConfigurationProvider):
         Args:
             file_path: Path to the changed file
         """
-        # Get config name from file path
-        config_name = str(Path(file_path).relative_to(self.base_dirs[0]))
+        # Find the config name that corresponds to this file
+        file_path_obj = Path(file_path)
+        file_name = file_path_obj.name
+
+        # Check direct mappings first
+        config_name = None
+        for name, mapped_file in self.config_files.items():
+            if mapped_file == file_name or Path(mapped_file).name == file_name:
+                config_name = name
+                break
+
+        # If no mapping found, use the file name as the config name
+        if config_name is None:
+            # Try to make path relative to any base dir
+            for base_dir in self.base_dirs:
+                try:
+                    relative_path = file_path_obj.relative_to(base_dir)
+                    config_name = str(relative_path.with_suffix(""))
+                    break
+                except ValueError:
+                    continue
+
+            # If still no config name, use the file name without extension
+            if config_name is None:
+                config_name = file_path_obj.stem
 
         # Notify callbacks
         for callback in self.change_callbacks:
@@ -93,7 +127,12 @@ class FileConfigurationProvider(ConfigurationProvider):
         Returns:
             Resolved path if found, None otherwise
         """
-        config_path = Path(config_name)
+        # Check if we have a specific file mapping
+        if config_name in self.config_files:
+            file_name = self.config_files[config_name]
+            config_path = Path(file_name)
+        else:
+            config_path = Path(config_name)
 
         # If already absolute or includes base_dir
         if config_path.is_absolute():
@@ -110,7 +149,7 @@ class FileConfigurationProvider(ConfigurationProvider):
             # Try with extensions if no extension provided
             if not config_path.suffix:
                 for ext in self.file_extensions:
-                    candidate = base_dir / f"{config_name}{ext}"
+                    candidate = base_dir / f"{config_path}{ext}"
                     if candidate.exists():
                         return candidate
 
