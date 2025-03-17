@@ -19,7 +19,7 @@ exclude = [
 ]
 
 # Formatter configuration
-[format]
+[formatter]
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
