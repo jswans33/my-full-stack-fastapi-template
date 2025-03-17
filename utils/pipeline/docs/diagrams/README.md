@@ -1,3 +1,4 @@
+
 # Pipeline Architecture Diagrams
 
 This folder contains architectural diagrams for the utils/pipeline system. Each diagram is stored in its own file for better organization and usability.
@@ -20,6 +21,7 @@ The diagrams follow a structured numbering system to indicate their place in the
 - **04-XX**: Verifier component diagrams
 - **05-XX**: Schema registry component diagrams
 - **06-XX**: PDF document processing diagrams
+- **07-XX**: Schema analysis and visualization diagrams
 
 Within each category, the numbering further breaks down by diagram type:
 - **XX-01**: Class/component structure diagrams
@@ -60,6 +62,16 @@ Within each category, the numbering further breaks down by diagram type:
 - **[06-02-pdf-processing-sequence.puml](06-02-pdf-processing-sequence.puml)**: Sequence diagram illustrating the step-by-step process of PDF document extraction and classification
 - **[06-03-pdf-classifier-components.puml](06-03-pdf-classifier-components.puml)**: Component diagram showing the detailed architecture of the PDF document classifier
 - **[06-04-pdf-classification-decision.puml](06-04-pdf-classification-decision.puml)**: Activity diagram depicting the decision logic used in PDF document classification
+
+### 7. Schema Analysis and Visualization
+
+- **[07-01-schema-analyzer-class.puml](07-01-schema-analyzer-class.puml)**: Class diagram showing the structure of the schema analyzer system
+- **[07-02-schema-analyzer-flow.puml](07-02-schema-analyzer-flow.puml)**: Data flow diagram showing how schema analysis works
+- **[07-03-schema-visualizer-class.puml](07-03-schema-visualizer-class.puml)**: Class diagram showing the structure of the schema visualizer system
+- **[07-04-schema-visualizer-flow.puml](07-04-schema-visualizer-flow.puml)**: Data flow diagram showing how schema visualization works
+- **[07-05-complete-analysis-visualization-flow.puml](07-05-complete-analysis-visualization-flow.puml)**: End-to-end workflow showing how analysis and visualization components interact
+- **[07-06-schema-analysis-usage.puml](07-06-schema-analysis-usage.puml)**: Use case diagram showing how different users interact with the schema analysis system
+- **[07-07-schema-visualization-usage.puml](07-07-schema-visualization-usage.puml)**: Use case diagram showing how different users interact with the visualization system
 
 ## How to View the Diagrams
 

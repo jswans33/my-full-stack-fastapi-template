@@ -1,0 +1,74 @@
+@startuml Schema_Analysis_Usage
+
+!include <archimate/Archimate>
+
+' Title
+title Schema Analysis Usage Scenarios
+
+' Actors
+actor "Data Engineer" as Engineer
+actor "Data Analyst" as Analyst
+actor "System Admin" as Admin
+
+' Use Cases
+rectangle "Schema Analysis System" {
+    usecase "Compare Document Schemas" as UC1
+    usecase "Analyze Schema Patterns" as UC2
+    usecase "Cluster Similar Schemas" as UC3
+    usecase "Export Analysis Results" as UC4
+    usecase "Configure Analysis Parameters" as UC5
+    usecase "Register New Schema" as UC6
+    usecase "View Schema Summary" as UC7
+    usecase "Generate Schema Reports" as UC8
+}
+
+' Relationships
+Engineer --> UC1 : performs comparison
+Engineer --> UC2 : analyzes patterns
+Engineer --> UC6 : registers schemas
+Engineer --> UC7 : views details
+
+Analyst --> UC2 : reviews patterns
+Analyst --> UC3 : identifies clusters
+Analyst --> UC4 : exports results
+Analyst --> UC8 : generates reports
+
+Admin --> UC5 : configures system
+Admin --> UC6 : manages schemas
+
+' Extensions
+UC1 ..> UC7 : includes
+UC2 ..> UC8 : includes
+UC3 ..> UC4 : extends
+UC7 ..> UC8 : extends
+
+' Notes
+note right of UC1
+  Compare schemas to identify:
+  • Structural similarities
+  • Common patterns
+  • Variations
+end note
+
+note right of UC2
+  Analyze patterns across:
+  • Metadata fields
+  • Table structures
+  • Document sections
+end note
+
+note right of UC3
+  Cluster schemas based on:
+  • Similarity threshold
+  • Feature weights
+  • Document types
+end note
+
+note right of UC5
+  Configure:
+  • Similarity thresholds
+  • Clustering parameters
+  • Analysis weights
+end note
+
+@enduml

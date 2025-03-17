@@ -1,0 +1,98 @@
+@startuml SchemaVisualizer_Flow
+
+!include <archimate/Archimate>
+
+' Title
+title Schema Visualization Workflow
+
+skinparam {
+    ComponentStyle uml2
+    ArrowColor #666666
+    ComponentBorderColor #666666
+    DatabaseBorderColor #666666
+    FolderBorderColor #666666
+    NoteBackgroundColor #f5f5f5
+    NoteBorderColor #999999
+}
+
+' Layout hints
+together {
+    ' Input components
+    rectangle "Schema Registry" as Registry #e1f5fe
+    database "Schema Store" as Store
+    rectangle "Schema Visualizer" as Visualizer #e1f5fe
+}
+
+together {
+    ' Processing components
+    rectangle "Data Preprocessor" as Preprocessor #f3e5f5
+    
+    together {
+        rectangle "Cluster Visualizer" as ClusterViz #fff3e0
+        rectangle "Feature Visualizer" as FeatureViz #fff3e0
+        rectangle "Structure Visualizer" as StructureViz #fff3e0
+        rectangle "Table Visualizer" as TableViz #fff3e0
+    }
+}
+
+together {
+    ' Output components
+    rectangle "Output Generator" as Output #e8f5e9
+    folder "Visualization Output" as VisOutput {
+        file "Cluster Maps" as Maps
+        file "Feature Heatmaps" as Heatmaps
+        file "Structure Graphs" as Graphs
+        file "Table Patterns" as Patterns
+    }
+}
+
+' Flow
+Registry -right-> Store : fetch schemas
+Store -right-> Visualizer : provide schemas
+Visualizer -right-> Preprocessor : prepare data
+
+Preprocessor -down-> ClusterViz : cluster data
+Preprocessor -down-> FeatureViz : feature data
+Preprocessor -down-> StructureViz : structure data
+Preprocessor -down-> TableViz : table data
+
+ClusterViz -right-> Output : generate maps
+FeatureViz -right-> Output : generate heatmaps
+StructureViz -right-> Output : generate graphs
+TableViz -right-> Output : generate patterns
+
+Output -right-> Maps : save
+Output -right-> Heatmaps : save
+Output -right-> Graphs : save
+Output -right-> Patterns : save
+
+' Notes
+note bottom of Preprocessor
+  Prepares data for visualization:
+  • Dimensionality reduction
+  • Feature extraction
+  • Graph conversion
+  • Statistical analysis
+end note
+
+note bottom of ClusterViz
+  t-SNE based visualization
+  of schema similarities
+end note
+
+note bottom of FeatureViz
+  Heatmap generation for
+  feature comparison
+end note
+
+note bottom of StructureViz
+  NetworkX-based visualization
+  of schema hierarchies
+end note
+
+note bottom of TableViz
+  Statistical plots of
+  table patterns
+end note
+
+@enduml

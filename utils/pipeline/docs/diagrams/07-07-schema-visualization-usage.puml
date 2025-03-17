@@ -1,0 +1,85 @@
+@startuml Schema_Visualization_Usage
+
+!include <archimate/Archimate>
+
+' Title
+title Schema Visualization Usage Scenarios
+
+' Actors
+actor "Data Engineer" as Engineer
+actor "Business Analyst" as Analyst
+actor "Project Manager" as Manager
+
+' Use Cases
+rectangle "Schema Visualization System" {
+    usecase "Generate Cluster Maps" as UC1
+    usecase "Create Feature Heatmaps" as UC2
+    usecase "Visualize Schema Structure" as UC3
+    usecase "Plot Table Patterns" as UC4
+    usecase "Export Visualizations" as UC5
+    usecase "Customize Visualization" as UC6
+    usecase "Share Visualization Reports" as UC7
+    usecase "View Interactive Diagrams" as UC8
+}
+
+' Relationships
+Engineer --> UC1 : generates maps
+Engineer --> UC3 : creates diagrams
+Engineer --> UC6 : customizes output
+Engineer --> UC8 : explores interactively
+
+Analyst --> UC2 : analyzes features
+Analyst --> UC4 : examines patterns
+Analyst --> UC5 : exports results
+Analyst --> UC7 : shares insights
+
+Manager --> UC7 : reviews reports
+Manager --> UC8 : views diagrams
+
+' Extensions
+UC1 ..> UC5 : includes
+UC2 ..> UC5 : includes
+UC3 ..> UC5 : includes
+UC4 ..> UC5 : includes
+UC6 ..> UC8 : extends
+UC7 ..> UC8 : includes
+
+' Notes
+note right of UC1
+  Cluster visualization:
+  • Schema similarity maps
+  • Document type clusters
+  • Relationship graphs
+end note
+
+note right of UC2
+  Feature analysis:
+  • Metadata comparisons
+  • Structure similarities
+  • Pattern distributions
+end note
+
+note right of UC3
+  Structure visualization:
+  • Hierarchical views
+  • Component relationships
+  • Cross-references
+end note
+
+note right of UC6
+  Customization options:
+  • Color schemes
+  • Layout styles
+  • Detail levels
+  • Export formats
+end note
+
+skinparam {
+    ActorBackgroundColor #e1f5fe
+    UseCaseBackgroundColor #fff3e0
+    NoteBorderColor #999999
+    NoteBackgroundColor #f5f5f5
+    UseCaseBorderColor #666666
+}
+
+@enduml

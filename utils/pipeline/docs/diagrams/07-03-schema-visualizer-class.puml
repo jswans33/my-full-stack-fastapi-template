@@ -1,0 +1,121 @@
+@startuml SchemaVisualizer_Class
+
+!include <archimate/Archimate>
+
+' Title
+title Schema Visualizer Class Structure
+
+' Classes
+class SchemaVisualizer {
+  - registry: SchemaRegistry
+  - config: Dict
+  - logger: Logger
+  + __init__(registry, config)
+  + visualize(visualization_type, schema_ids, output_dir)
+  + visualize_schema_clusters(output_path)
+  + visualize_schema_features(schema_ids, output_path)
+  + visualize_schema_structure(schema_id, output_path)
+  + visualize_table_patterns(schema_id, output_path)
+  - _add_structure_to_graph(G, parent_name, structure, prefix)
+  - _calculate_max_depth(structure)
+}
+
+class SchemaRegistry {
+  + list_schemas()
+  + get_schema()
+}
+
+' Visualization Types
+class ClusterVisualization {
+  + dimensionality_reduction: str
+  + perplexity: float
+  + random_state: int
+}
+
+class FeatureVisualization {
+  + feature_names: List
+  + normalization: bool
+  + color_map: str
+}
+
+class StructureVisualization {
+  + layout_engine: str
+  + node_attributes: Dict
+  + edge_attributes: Dict
+}
+
+class TableVisualization {
+  + max_tables: int
+  + sample_rows: int
+  + show_statistics: bool
+}
+
+' Output Formats
+class VisualizationOutput {
+  + format: str
+  + dpi: int
+  + figure_size: Tuple
+}
+
+' Dependencies
+class NetworkX {
+  + create_graph()
+  + layout()
+  + draw()
+}
+
+class Matplotlib {
+  + figure()
+  + plot()
+  + save()
+}
+
+class Seaborn {
+  + heatmap()
+  + style()
+}
+
+' Relationships
+SchemaVisualizer --> SchemaRegistry : uses
+SchemaVisualizer --> ClusterVisualization : produces
+SchemaVisualizer --> FeatureVisualization : produces
+SchemaVisualizer --> StructureVisualization : produces
+SchemaVisualizer --> TableVisualization : produces
+SchemaVisualizer --> VisualizationOutput : configures
+
+ClusterVisualization --> Matplotlib : uses
+FeatureVisualization --> Seaborn : uses
+StructureVisualization --> NetworkX : uses
+TableVisualization --> Matplotlib : uses
+
+' Notes
+note right of SchemaVisualizer
+  Core component for generating
+  visual representations of
+  schema analysis results
+end note
+
+note right of ClusterVisualization
+  Uses t-SNE for dimensionality
+  reduction and clustering
+  visualization
+end note
+
+note right of FeatureVisualization
+  Creates heatmaps and comparative
+  visualizations of schema features
+end note
+
+note right of StructureVisualization
+  Generates hierarchical graph
+  visualizations of schema
+  structure
+end note
+
+note right of TableVisualization
+  Creates statistical plots and
+  sample visualizations of
+  table patterns
+end note
+
+@enduml

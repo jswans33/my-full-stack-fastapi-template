@@ -1,0 +1,89 @@
+@startuml Complete_Analysis_Visualization_Flow
+
+!include <archimate/Archimate>
+
+' Title
+title Complete Schema Analysis and Visualization Workflow
+
+' Participants
+actor User
+participant "Schema Registry" as Registry
+participant "Schema Analyzer" as Analyzer
+participant "Schema Visualizer" as Visualizer
+database "Schema Store" as Store
+database "Analysis Results" as Results
+database "Visualization Output" as Output
+
+' Analysis Phase
+== Analysis Phase ==
+
+Registry -> Store : Fetch schemas
+activate Store
+Store --> Analyzer : Provide schema data
+deactivate Store
+
+activate Analyzer
+Analyzer -> Analyzer : Extract patterns
+Analyzer -> Analyzer : Analyze metadata
+Analyzer -> Analyzer : Compare structures
+Analyzer -> Analyzer : Analyze tables
+Analyzer -> Analyzer : Cluster similar schemas
+
+Analyzer -> Results : Store analysis results
+deactivate Analyzer
+
+' Visualization Phase
+== Visualization Phase ==
+
+Results -> Visualizer : Provide analysis data
+activate Visualizer
+
+' Data Preprocessing
+Visualizer -> Visualizer : Prepare cluster data
+Visualizer -> Visualizer : Extract features
+Visualizer -> Visualizer : Convert structures
+Visualizer -> Visualizer : Process table data
+
+' Generate Visualizations
+Visualizer -> Output : Generate cluster maps
+Visualizer -> Output : Create feature heatmaps
+Visualizer -> Output : Build structure graphs
+Visualizer -> Output : Plot table patterns
+
+deactivate Visualizer
+
+' Final Output
+Output -> User : Deliver visualizations
+
+' Notes
+note over Registry
+  Provides access to all
+  document schemas
+end note
+
+note over Analyzer
+  Performs comprehensive
+  analysis of patterns
+  and relationships
+end note
+
+note over Results
+  Stores:
+  - Pattern insights
+  - Similarity scores
+  - Cluster assignments
+end note
+
+note over Visualizer
+  Transforms analysis
+  into visual formats
+end note
+
+note over Output
+  Produces:
+  - Cluster maps
+  - Feature heatmaps
+  - Structure graphs
+end note
+
+@enduml

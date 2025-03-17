@@ -1,0 +1,96 @@
+@startuml SchemaAnalyzer_Class
+
+!include <archimate/Archimate>
+
+' Title
+title Schema Analyzer Class Structure
+
+' Classes
+class SchemaAnalyzer {
+  - registry: SchemaRegistry
+  - config: Dict
+  - logger: Logger
+  + __init__(registry, config)
+  + analyze_schemas(document_type)
+  + compare_schemas(schema_id1, schema_id2)
+  + cluster_schemas(similarity_threshold)
+  + get_schema_summary(schema_id)
+  + export_analysis(analysis, output_path, format)
+  - _find_common_metadata(schemas)
+  - _analyze_table_patterns(schemas)
+  - _analyze_section_patterns(schemas)
+  - _compare_metadata(schema1, schema2)
+  - _compare_structure(schema1, schema2)
+  - _compare_tables(schema1, schema2)
+  - _summarize_schema(schema_id, schema)
+  - _get_max_section_depth(structure)
+}
+
+class SchemaRegistry {
+  + list_schemas()
+  + get_schema()
+  + store_schema()
+}
+
+class StructureMatcher {
+  + match(schema1, schema2)
+}
+
+' Configuration
+class AnalyzerConfig {
+  + similarity_threshold: float
+  + cluster_method: str
+  + feature_weights: Dict
+}
+
+' Analysis Results
+class AnalysisResult {
+  + schema_count: int
+  + document_types: Dict
+  + common_metadata: Dict
+  + table_patterns: Dict
+  + section_patterns: Dict
+}
+
+class ComparisonResult {
+  + overall_similarity: float
+  + same_document_type: bool
+  + metadata_comparison: Dict
+  + structure_comparison: Dict
+  + table_comparison: Dict
+}
+
+class SchemaCluster {
+  + cluster_id: str
+  + schema_ids: List
+  + similarity_scores: Dict
+}
+
+' Relationships
+SchemaAnalyzer --> SchemaRegistry : uses
+SchemaAnalyzer --> StructureMatcher : uses
+SchemaAnalyzer --> AnalyzerConfig : configured by
+SchemaAnalyzer --> AnalysisResult : produces
+SchemaAnalyzer --> ComparisonResult : produces
+SchemaAnalyzer --> SchemaCluster : produces
+
+' Notes
+note right of SchemaAnalyzer
+  Core component for analyzing
+  and comparing document schemas
+end note
+
+note right of AnalyzerConfig
+  Default configuration:
+  - similarity_threshold: 0.7
+  - cluster_method: hierarchical
+  - feature_weights for metadata,
+    structure, and tables
+end note
+
+note right of AnalysisResult
+  Contains comprehensive analysis
+  of schema patterns and insights
+end note
+
+@enduml

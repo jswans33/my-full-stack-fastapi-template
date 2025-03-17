@@ -1,0 +1,78 @@
+@startuml SchemaAnalyzer_Flow
+
+!include <archimate/Archimate>
+
+' Title
+title Schema Analysis Workflow
+
+' Components
+rectangle "Schema Registry" as Registry
+rectangle "Schema Analyzer" as Analyzer
+rectangle "Structure Matcher" as Matcher
+rectangle "Pattern Analyzer" as Pattern
+rectangle "Metadata Analyzer" as Meta
+rectangle "Table Analyzer" as Table
+rectangle "Section Analyzer" as Section
+rectangle "Clustering Engine" as Cluster
+rectangle "Export Module" as Export
+
+' Data stores
+database "Schema Store" as Store
+database "Analysis Results" as Results
+
+' Flow
+Registry --> Store : "fetch schemas"
+Store --> Analyzer : "provide schemas"
+
+Analyzer --> Pattern : "extract patterns"
+Analyzer --> Meta : "analyze metadata"
+Analyzer --> Table : "analyze tables"
+Analyzer --> Section : "analyze sections"
+Analyzer --> Matcher : "compare schemas"
+Analyzer --> Cluster : "cluster similar schemas"
+
+Pattern --> Results : "store patterns"
+Meta --> Results : "store metadata insights"
+Table --> Results : "store table patterns"
+Section --> Results : "store section patterns"
+Matcher --> Results : "store comparisons"
+Cluster --> Results : "store clusters"
+
+Results --> Export : "format results"
+Export --> [*] : "output analysis"
+
+' Notes
+note right of Pattern
+  Identifies common patterns
+  across schema structures
+end note
+
+note right of Meta
+  Analyzes metadata fields
+  and their frequencies
+end note
+
+note right of Table
+  Analyzes table structures,
+  headers, and patterns
+end note
+
+note right of Section
+  Analyzes document sections
+  and hierarchical structure
+end note
+
+note right of Cluster
+  Groups similar schemas
+  based on configurable
+  similarity threshold
+end note
+
+note right of Export
+  Supports multiple formats:
+  - JSON
+  - CSV
+  - Visualizations
+end note
+
+@enduml

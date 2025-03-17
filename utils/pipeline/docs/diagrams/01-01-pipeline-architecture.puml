@@ -5,7 +5,7 @@
 title Pipeline System Architecture
 caption Core components and their relationships
 
-' Main components with descriptions
+
 [CLI] as CLI #lightblue
 note top of CLI
   <b>Command Line Interface</b>
