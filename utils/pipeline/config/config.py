@@ -2,12 +2,15 @@
 Configuration module for the pipeline.
 
 This module handles loading, validating, and merging configuration settings using Pydantic.
+Includes enhanced validation for strategy paths, cross-field relationships, and schema validation.
 """
 
 import os
 from enum import Enum
+from importlib import import_module
+from importlib.util import find_spec
 from pathlib import Path
-from typing import Dict, List, Optional, Union
+from typing import Dict, List, Optional, Tuple, Union
 
 import yaml
 from pydantic import BaseModel, Field, field_validator, model_validator
@@ -79,6 +82,14 @@ class DocumentTypeRule(BaseModel):
 
     # Schema pattern to use for this document type
     schema_pattern: str = "standard"
+
+    @model_validator(mode="after")
+    def validate_weights(self) -> "DocumentTypeRule":
+        """Validate that weights sum to 1.0."""
+        total = sum(self.weights.values())
+        if not (0.99 <= total <= 1.01):  # Allow for floating point imprecision
+            raise ValueError(f"Weights must sum to 1.0, got {total}")
+        return self
 
 
 class ClassificationConfig(BaseModel):
@@ -165,6 +176,31 @@ class ClassificationConfig(BaseModel):
     )
 
 
+def _split_module_class_path(path: str) -> Tuple[str, str]:
+    """Split path into module path and class name."""
+    parts = path.rsplit(".", 1)
+    if len(parts) != 2:
+        raise ValueError(f"Invalid module.class path: {path}")
+    return parts[0], parts[1]
+
+
+def _is_valid_module_path(module_path: str) -> bool:
+    """Check if module can be imported."""
+    try:
+        return find_spec(module_path) is not None
+    except (ImportError, AttributeError):
+        return False
+
+
+def _class_exists_in_module(module_path: str, class_name: str) -> bool:
+    """Check if class exists in module."""
+    try:
+        module = import_module(module_path)
+        return hasattr(module, class_name)
+    except (ImportError, AttributeError):
+        return False
+
+
 class PipelineConfig(BaseModel):
     """Pipeline configuration model with validation."""
 
@@ -225,20 +261,81 @@ class PipelineConfig(BaseModel):
 
     @model_validator(mode="after")
     def validate_strategy_paths(self) -> "PipelineConfig":
-        """Validate strategy paths are not empty."""
+        """Validate strategy paths point to valid modules and classes."""
         for strategy_type, strategy in self.strategies.model_dump().items():
             if isinstance(strategy, str):
-                if not strategy.strip():
-                    raise ValueError(
-                        f"Invalid strategy path for {strategy_type}: {strategy}"
-                    )
+                # Validate module path exists
+                if not _is_valid_module_path(strategy):
+                    raise ValueError(f"Invalid strategy module path for {strategy_type}: {strategy}")
             elif isinstance(strategy, dict):
                 for component, path in strategy.items():
                     if not isinstance(path, str) or not path.strip():
-                        raise ValueError(
-                            f"Invalid {component} path for {strategy_type}: {path}"
-                        )
+                        raise ValueError(f"Invalid {component} path for {strategy_type}: {path}")
+                    
+                    # Validate module and class exist
+                    module_path, class_name = _split_module_class_path(path)
+                    if not _is_valid_module_path(module_path):
+                        raise ValueError(f"Module not found: {module_path} for {strategy_type}.{component}")
+                    
+                    if not _class_exists_in_module(module_path, class_name):
+                        raise ValueError(f"Class {class_name} not found in module {module_path}")
         return self
+
+    @model_validator(mode="after")
+    def validate_cross_field_relationships(self) -> "PipelineConfig":
+        """Ensure consistency between related configuration settings."""
+        # Validate output_format and formatter compatibility
+        if self.output_format not in ["yaml", "json"]:
+            raise ValueError(f"Unsupported output format: {self.output_format}")
+        
+        # Ensure validation_level and classification thresholds are compatible
+        if self.validation_level == ValidationLevel.STRICT:
+            # In strict mode, ensure thresholds are high enough
+            for doc_type, rule in self.classification.rules.items():
+                if rule.threshold < 0.5:
+                    raise ValueError(
+                        f"Document type {doc_type} has threshold {rule.threshold} which is too low "
+                        f"for validation_level={self.validation_level}. Minimum is 0.5."
+                    )
+        
+        # Check schema_pattern consistency with available schemas
+        valid_schema_patterns = ["standard", "detailed_specification", "detailed_invoice", 
+                               "detailed_proposal", "formal_terms"]
+        for doc_type, rule in self.classification.rules.items():
+            if rule.schema_pattern not in valid_schema_patterns:
+                raise ValueError(f"Invalid schema_pattern '{rule.schema_pattern}' for {doc_type}")
+        
+        return self
+
+
+def _validate_against_schema(config: PipelineConfig, schema_config: BaseModel) -> None:
+    """Validate configuration against a schema configuration."""
+    schema_dict = schema_config.model_dump()
+    errors = []
+    
+    # Validate each field against schema
+    for field_name, schema_value in schema_dict.items():
+        if not hasattr(config, field_name):
+            continue  # Skip fields that don't exist in config
+            
+        config_value = getattr(config, field_name)
+        
+        # Check field type compatibility
+        expected_type = type(schema_value)
+        if not isinstance(config_value, expected_type) and config_value is not None:
+            errors.append(f"Field '{field_name}' has wrong type: expected {expected_type}, got {type(config_value)}")
+            continue
+            
+        # Validate against schema constraints
+        if hasattr(schema_config, f"validate_{field_name}"):
+            validator = getattr(schema_config, f"validate_{field_name}")
+            try:
+                validator(config_value)
+            except ValueError as e:
+                errors.append(f"Validation failed for field '{field_name}': {str(e)}")
+    
+    if errors:
+        raise ValueError(f"Configuration failed schema validation:\n" + "\n".join(errors))
 
 
 def load_config(
@@ -246,6 +343,7 @@ def load_config(
     config_dict: Optional[dict] = None,
     override_dict: Optional[dict] = None,
     use_env: bool = False,
+    schema_config: Optional[BaseModel] = None,
 ) -> PipelineConfig:
     """
     Load configuration from various sources and merge them.
@@ -262,6 +360,7 @@ def load_config(
         config_dict: Configuration dictionary to use instead of loading from file
         override_dict: Dictionary with values that override the loaded configuration
         use_env: Whether to use environment variables to override configuration
+        schema_config: Optional schema model to validate against
 
     Returns:
         A validated PipelineConfig instance
@@ -292,7 +391,13 @@ def load_config(
         config_data = _merge_configs(config_data, env_config)
 
     # Create and validate the configuration
-    return PipelineConfig(**config_data)
+    config = PipelineConfig(**config_data)
+
+    # Additional schema validation if provided
+    if schema_config is not None:
+        _validate_against_schema(config, schema_config)
+
+    return config
 
 
 def _load_from_file(config_path: str) -> dict:
@@ -322,9 +427,6 @@ def _load_from_env() -> dict:
             else:
                 # For any other keys, use as-is
                 config[config_key] = value
-
-    # Print environment variables for debugging
-    print(f"Environment variables: {config}")
 
     return config
 
