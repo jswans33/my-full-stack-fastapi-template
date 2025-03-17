@@ -2,6 +2,7 @@
 
 import os
 import sys
+import subprocess
 from io import StringIO
 from pathlib import Path
 
@@ -267,24 +268,43 @@ def test_main_function(monkeypatch, tmpdir):
     
     # Check Example 1 output
     assert "1. Creating a valid configuration..." in output
-    assert "✓ Valid configuration created successfully" in output
+    assert "[OK] Valid configuration created successfully" in output
     
     # Check Example 2 output
     assert "2. Testing invalid strategy path validation..." in output
-    assert "✓ Caught expected error:" in output
+    assert "[OK] Caught expected error:" in output
     
     # Check Example 3 output
     assert "3. Testing weight validation..." in output
-    assert "✓ Caught expected error:" in output
+    assert "[OK] Caught expected error:" in output
     
     # Check Example 4 output
     assert "4. Testing strict validation level constraints..." in output
-    assert "✓ Caught expected error:" in output
+    assert "[OK] Caught expected error:" in output
     
     # Check Example 5 output
     assert "5. Testing schema pattern validation..." in output
-    assert "✓ Caught expected error:" in output
+    assert "[OK] Caught expected error:" in output
     
     # Check Example 6 output
     assert "6. Testing configuration loading from YAML..." in output
-    assert "✓ Successfully loaded configuration from YAML" in output
+    assert "[OK] Successfully loaded configuration from YAML" in output
+
+
+def test_script_execution():
+    """Test running the script directly."""
+    script_path = Path(__file__).parent.parent.parent / "examples" / "config_validation_example.py"
+    project_root = script_path.parent.parent.parent.parent  # Go up one more level to include utils package
+    env = os.environ.copy()
+    env["PYTHONPATH"] = str(project_root)
+    env["PYTHONIOENCODING"] = "utf-8"  # Force UTF-8 encoding for the subprocess
+    
+    # Change to the project root directory
+    original_cwd = os.getcwd()
+    os.chdir(str(project_root))
+    try:
+        result = subprocess.run([sys.executable, str(script_path)], capture_output=True, text=True, env=env)
+        assert result.returncode == 0, f"Script failed with error: {result.stderr}"
+        assert "=== Configuration Validation Examples ===" in result.stdout
+    finally:
+        os.chdir(original_cwd)

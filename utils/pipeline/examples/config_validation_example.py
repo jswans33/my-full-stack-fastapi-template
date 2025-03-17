@@ -2,6 +2,11 @@
 
 import os
 from pathlib import Path
+import sys
+import io
+
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+
 
 from utils.pipeline.config.config import (
     ComponentConfig,
@@ -56,9 +61,9 @@ def main():
                 )
             )
         )
-        print("✓ Valid configuration created successfully")
+        print("[OK] Valid configuration created successfully")
     except Exception as e:
-        print(f"✗ Error: {str(e)}")
+        print(f"[ERROR] Error: {str(e)}")
 
     # Example 2: Invalid Strategy Path
     print("\n2. Testing invalid strategy path validation...")
@@ -74,9 +79,9 @@ def main():
                 )
             )
         )
-        print("✗ Should have raised an error")
+        print("[ERROR] Should have raised an error")
     except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+        print(f"[OK] Caught expected error: {str(e)}")
 
     # Example 3: Invalid Weight Distribution
     print("\n3. Testing weight validation...")
@@ -91,9 +96,9 @@ def main():
                 "pattern_match": 0.3,
             }
         )
-        print("✗ Should have raised an error")
+        print("[ERROR] Should have raised an error")
     except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+        print(f"[OK] Caught expected error: {str(e)}")
 
     # Example 4: Strict Validation Level with Low Threshold
     print("\n4. Testing strict validation level constraints...")
@@ -141,9 +146,9 @@ def main():
                 }
             )
         )
-        print("✗ Should have raised an error")
+        print("[ERROR] Should have raised an error")
     except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+        print(f"[OK] Caught expected error: {str(e)}")
 
     # Example 5: Invalid Schema Pattern
     print("\n5. Testing schema pattern validation...")
@@ -190,9 +195,9 @@ def main():
                 }
             )
         )
-        print("✗ Should have raised an error")
+        print("[ERROR] Should have raised an error")
     except ValueError as e:
-        print(f"✓ Caught expected error: {str(e)}")
+        print(f"[OK] Caught expected error: {str(e)}")
 
     # Example 6: Loading from YAML
     print("\n6. Testing configuration loading from YAML...")
@@ -243,9 +248,9 @@ def main():
 
     try:
         config = load_config(str(config_path))
-        print("✓ Successfully loaded configuration from YAML")
+        print("[OK] Successfully loaded configuration from YAML")
     except Exception as e:
-        print(f"✗ Error loading configuration: {str(e)}")
+        print(f"[ERROR] Error loading configuration: {str(e)}")
     finally:
         # Clean up example file
         os.remove(config_path)
